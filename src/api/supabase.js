@@ -8,4 +8,16 @@ const urlValid = !isPlaceholder(url) && url.startsWith('http')
 const keyValid = !isPlaceholder(key) && key.length > 20
 
 export const hasSupabaseEnv = urlValid && keyValid
-export const supabase = hasSupabaseEnv ? createClient(url, key) : null
+export const supabase = hasSupabaseEnv
+  ? createClient(url, key, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+      realtime: {
+        // Limita eventos realtime a 5/seg — evita tormentas de reconexión
+        params: { eventsPerSecond: 5 },
+      },
+    })
+  : null
