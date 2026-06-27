@@ -84,10 +84,15 @@ export const updateProfile = async (uid, fields) => {
   }
 
   // Contacto PRIVADO → profiles_private (solo el dueño lo lee)
-  const { error: privErr } = await supabase
-    .from('profiles_private')
-    .upsert({ id: uid, phone, email, updated_at: new Date().toISOString() })
-  if (privErr) throw privErr
+  // tryWithFallback maneja columnas que no existen (ej: updated_at puede no estar)
+  const privResult = await tryWithFallback(
+    p => supabase.from('profiles_private').upsert(p).select().maybeSingle(),
+    { id: uid, phone, email, updated_at: new Date().toISOString() }
+  )
+  if (privResult.error) {
+    // Si falla por RLS u otro motivo, lo advertimos pero NO bloqueamos al usuario
+    console.warn('profiles_private upsert falló:', privResult.error.message)
+  }
 
   return { ...row, phone, email }
 }

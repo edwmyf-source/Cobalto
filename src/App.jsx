@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ToastProvider } from './components/shared/Toast'
@@ -12,7 +12,7 @@ import { routes } from './routes'
 const router = createBrowserRouter(routes)
 
 function AppInner() {
-  const { session, profile, loading, error, mfaRequired, setMfaRequired } = useAuth()
+  const { session, profile, loading, error, mfaRequired, setMfaRequired, refreshProfile } = useAuth()
   const [splashDone, setSplashDone] = useState(false)
   const onSplashDone = useCallback(() => setSplashDone(true), [])
 
@@ -52,7 +52,25 @@ function AppInner() {
     )
   }
 
-  // phone es opcional — solo full_name y city son requeridos para entrar
+  // Si profile es null pero tenemos sesión válida, puede ser que getProfile falló.
+  // Reintentamos una vez antes de mostrar el setup.
+  const [profileRetried, setProfileRetried] = useState(false)
+
+  useEffect(() => {
+    if (!profile && session?.user?.id && !profileRetried) {
+      setProfileRetried(true)
+      refreshProfile()
+    }
+  }, [profile, session?.user?.id, profileRetried, refreshProfile])
+
+  if (!profile && !profileRetried) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
+        <Spinner size={28} className="text-brand-600" />
+      </div>
+    )
+  }
+
   const profileComplete = profile?.full_name && profile?.city
   if (!profileComplete) return <ProfileSetup />
 

@@ -16,7 +16,13 @@ export const signOut = () => supabase?.auth.signOut()
 
 // Cambiar/establecer contraseña del usuario logueado
 export const updatePassword = async (newPassword) => {
-  const { data, error } = await supabase.auth.updateUser({ password: newPassword })
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('La actualización de contraseña tardó demasiado.')), 8000)
+  )
+  const { data, error } = await Promise.race([
+    supabase.auth.updateUser({ password: newPassword }),
+    timeout,
+  ])
   if (error) throw error
   return data
 }
