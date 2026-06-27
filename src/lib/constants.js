@@ -1,7 +1,7 @@
 export const ADMIN_EMAILS = ['edwmyf@gmail.com']
 
-export const isAdmin = (profile) =>
-  profile?.role === 'admin' || ADMIN_EMAILS.includes(profile?.email)
+export const isAdmin = (profile, email = '') =>
+  profile?.role === 'admin' || ADMIN_EMAILS.includes(email) || ADMIN_EMAILS.includes(profile?.email)
 
 // Nuevas categorías con subcategorías
 export const CATEGORIES = [

@@ -38,6 +38,15 @@ export default function FeedPage() {
   const { session } = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
+
+  // Abrir modal de publicación si viene ?publish=1 desde el sidebar
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('publish') === '1') {
+      setPublishOpen(true)
+      navigate('/feed', { replace: true })
+    }
+  }, [location.search, navigate])
   const toast       = useToast()
 
   const [posts,          setPosts         ] = useState([])

@@ -223,7 +223,7 @@ export default function ProfilePage() {
         </button>
       </form>
 
-      {isAdmin(profile) && (
+      {isAdmin(profile, session?.user?.email) && (
         <div className="mt-4">
           <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mb-2">Seguridad</p>
           <MFASetup />

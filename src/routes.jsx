@@ -23,8 +23,8 @@ function Loader() {
 }
 
 function RequireAdmin({ children }) {
-  const { profile } = useAuth()
-  if (!isAdmin(profile)) return <Navigate to="/feed" replace />
+  const { profile, session } = useAuth()
+  if (!isAdmin(profile, session?.user?.email)) return <Navigate to="/feed" replace />
   return children
 }
 

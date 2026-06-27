@@ -49,7 +49,7 @@ export default function AppLayout() {
     { id: '/notifications', label: 'Notif.', icon: Bell, badge: unreadCount },
     { id: '/profile', label: 'Perfil', icon: User },
     { id: '/contact', label: 'Soporte', icon: HelpCircle },
-    ...(isAdmin(profile) ? [{ id: '/admin', label: 'Admin', icon: Lock }] : []),
+    ...(isAdmin(profile, session?.user?.email) ? [{ id: '/admin', label: 'Admin', icon: Lock }] : []),
   ]
 
   return (

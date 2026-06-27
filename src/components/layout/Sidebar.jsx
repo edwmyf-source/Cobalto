@@ -59,7 +59,7 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
     { path: '/profile',       label: 'Mi perfil',      icon: User },
     { path: '/contact',       label: 'Soporte',        icon: HelpCircle },
   ]
-  if (isAdmin(profile)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
+  if (isAdmin(profile, session?.user?.email)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[220px] bg-gradient-to-b from-violet-950 via-[#1b1330] to-violet-950 shadow-2xl flex flex-col z-40">
