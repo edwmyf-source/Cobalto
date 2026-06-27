@@ -46,7 +46,8 @@ const engagementScore = (post) => {
 }
 
 export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smart' } = {}) => {
-  const fetchLimit = sort === 'smart' ? Math.min(limit * 3, 60) : limit
+  // Smart sort: trae el doble para tener margen de ranking sin desperdiciar el triple
+  const fetchLimit = sort === 'smart' ? Math.min(limit * 2, 40) : limit
 
   let q = supabase
     .from('posts')

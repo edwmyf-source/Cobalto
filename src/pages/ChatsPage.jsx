@@ -51,7 +51,7 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
   )
 }
 
-function ChatThread({ conversation, userId }) {
+function ChatThread({ conversation, userId, myProfile }) {
   const toast = useToast()
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -77,9 +77,13 @@ function ChatThread({ conversation, userId }) {
     return () => { mounted = false }
   }, [fetchMessages])
 
+  // Realtime: solo agregar mensajes del OTRO usuario — los propios ya se appendean optimistamente
   useRealtime('messages', 'INSERT', useCallback((payload) => {
-    if (payload.new?.conversation_id === conversation.id) fetchMessages()
-  }, [conversation.id, fetchMessages]))
+    const msg = payload.new
+    if (msg?.conversation_id !== conversation.id) return
+    if (msg.sender_id === userId) return           // ya está en pantalla por append optimista
+    setMessages(prev => [...prev, { ...msg, profiles: other }])
+  }, [conversation.id, userId, other]))
 
   useEffect(() => {
     if (!loading) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -87,9 +91,13 @@ function ChatThread({ conversation, userId }) {
 
   const handleSend = async () => {
     if (!text.trim() || sending) return
+    const content = text.trim()
+    setText('')                                    // limpiar input de inmediato
     setSending(true)
     try {
-      await sendMessage({ conversation_id: conversation.id, sender_id: userId, content: text.trim() })
+      const sent = await sendMessage({ conversation_id: conversation.id, sender_id: userId, content })
+      // Append optimista con el objeto real devuelto por la DB
+      setMessages(prev => [...prev, { ...sent, profiles: myProfile || {} }])
       const otherId = conversation.user1_id === userId ? conversation.user2_id : conversation.user1_id
       createNotification({
         user_id: otherId,
@@ -98,9 +106,7 @@ function ChatThread({ conversation, userId }) {
         content: `te envió un mensaje`,
         post_id: conversation.post_id,
       })
-      setText('')
-      await fetchMessages()
-    } catch (e) { toast(safeErrorMessage(e), 'error') }
+    } catch (e) { toast(safeErrorMessage(e), 'error'); setText(content) }  // restaurar si falla
     setSending(false)
   }
 
@@ -174,7 +180,7 @@ function ChatThread({ conversation, userId }) {
 }
 
 export default function ChatsPage() {
-  const { session } = useAuth()
+  const { session, profile: myProfile } = useAuth()
   const toast = useToast()
   const location = useLocation()
   const [conversations, setConversations] = useState([])
@@ -225,7 +231,7 @@ export default function ChatsPage() {
               </button>
               <p className="text-sm font-semibold text-ink-900 truncate">Inbox</p>
             </div>
-            <ChatThread conversation={active} userId={session.user.id} />
+            <ChatThread conversation={active} userId={session.user.id} myProfile={myProfile} />
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6">

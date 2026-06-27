@@ -11,21 +11,16 @@ export const getPublicProfile = async (uid) => {
 }
 
 export const getProfile = async (uid) => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', uid)
-    .maybeSingle()
-  if (error) throw error
-  if (!data) return data
-  // Fusionar contacto privado (solo el dueño puede leerlo)
-  const { data: priv, error: privErr } = await supabase
-    .from('profiles_private')
-    .select('phone, email')
-    .eq('id', uid)
-    .maybeSingle()
-  if (privErr) console.warn('profiles_private select falló:', privErr.message)
-  return { ...data, phone: priv?.phone || null, email: priv?.email || null }
+  // Ambas queries en paralelo — antes eran secuenciales (+100ms innecesario)
+  const [profileRes, privRes] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', uid).maybeSingle(),
+    supabase.from('profiles_private').select('phone, email').eq('id', uid).maybeSingle(),
+  ])
+  if (profileRes.error) throw profileRes.error
+  if (!profileRes.data) return profileRes.data
+  if (privRes.error) console.warn('profiles_private select falló:', privRes.error.message)
+  const priv = privRes.data
+  return { ...profileRes.data, phone: priv?.phone || null, email: priv?.email || null }
 }
 
 export const uploadAvatar = async (uid, file) => {

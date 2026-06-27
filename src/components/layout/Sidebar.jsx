@@ -5,13 +5,27 @@ import { isAdmin } from '../../lib/constants'
 import { getTrending } from '../../api/posts'
 import { publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
+import { useAuth } from '../../contexts/AuthContext'
 import LitioMark from '../shared/LitioMark'
+
+// Cache de tendencias: se renueva cada 5 minutos para no consultar en cada render
+let _trendingCache = null
+let _trendingTs = 0
+const TRENDING_TTL = 5 * 60 * 1000
+
+async function getTrendingCached() {
+  if (_trendingCache && Date.now() - _trendingTs < TRENDING_TTL) return _trendingCache
+  const data = await getTrending()
+  _trendingCache = data
+  _trendingTs = Date.now()
+  return data
+}
 
 function TrendingWidget({ navigate }) {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    getTrending().then(setPosts).catch(() => {})
+    getTrendingCached().then(setPosts).catch(() => {})
   }, [])
 
   if (posts.length === 0) return null
@@ -52,6 +66,7 @@ function TrendingWidget({ navigate }) {
 }
 
 export default function Sidebar({ currentPath, navigate, profile, unreadCount = 0 }) {
+  const { session } = useAuth()
   const navItems = [
     { path: '/feed',          label: 'Feed',           icon: LayoutList },
     { path: '/chats',         label: 'Inbox',          icon: MessageSquare },

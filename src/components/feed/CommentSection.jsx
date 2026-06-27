@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Send } from 'lucide-react'
 import { getComments, createComment } from '../../api/comments'
 import { createNotification } from '../../api/notifications'
@@ -13,9 +13,12 @@ export default function CommentSection({ post, isOpen }) {
   const [loading, setLoading] = useState(false)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
+  // Solo cargamos comentarios la primera vez que se abre la sección
+  const loadedRef = useRef(false)
 
   useEffect(() => {
-    if (!isOpen || !post?.id) return
+    if (!isOpen || !post?.id || loadedRef.current) return
+    loadedRef.current = true
     setLoading(true)
     getComments(post.id)
       .then(setComments)
