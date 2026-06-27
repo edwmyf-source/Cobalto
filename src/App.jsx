@@ -52,7 +52,8 @@ function AppInner() {
     )
   }
 
-  const profileComplete = profile?.full_name && profile?.phone && profile?.city
+  // phone es opcional — solo full_name y city son requeridos para entrar
+  const profileComplete = profile?.full_name && profile?.city
   if (!profileComplete) return <ProfileSetup />
 
   return <RouterProvider router={router} />
