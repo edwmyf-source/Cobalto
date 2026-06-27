@@ -1,0 +1,22 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root{
+ overflow-x:hidden;
+ width:100%;
+}
+
+body{
+ background:#f6f8fc;
+ background-image:
+ radial-gradient(circle at top left, rgba(99,102,241,.12), transparent 30%),
+ radial-gradient(circle at top right, rgba(139,92,246,.08), transparent 25%);
+}
+
+@layer components{
+ .modern-card{
+   @apply bg-white rounded-3xl shadow-[0_12px_40px_rgba(15,23,42,0.08)];
+ }
+}
