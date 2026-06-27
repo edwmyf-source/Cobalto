@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, MessageSquare, Heart, MessageCircle, Bell } from 'lucide-react'
+import { Check, MessageSquare, Heart, MessageCircle, Bell, AtSign } from 'lucide-react'
 import { getNotifications, markAsRead, markAllRead } from '../api/notifications'
 import { getOrCreateConversation } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
@@ -14,6 +14,7 @@ const ICONS = {
   reaction: Heart,
   comment: MessageCircle,
   message: MessageSquare,
+  mention: AtSign,
 }
 
 export default function NotificationsPage() {

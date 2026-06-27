@@ -1,5 +1,9 @@
 export const ADMIN_EMAILS = ['edwmyf@gmail.com']
 
+// Cuando esté en true, el código de verificación por WhatsApp será OBLIGATORIO
+// en el onboarding. Por ahora el campo se muestra pero es opcional.
+export const WHATSAPP_VERIFICATION_ENABLED = false
+
 export const isAdmin = (profile, email = '') =>
   profile?.role === 'admin' || ADMIN_EMAILS.includes(email) || ADMIN_EMAILS.includes(profile?.email)
 

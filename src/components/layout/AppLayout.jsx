@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, User, HelpCircle, Lock } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, User, HelpCircle, Lock, Plus } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -58,20 +58,33 @@ export default function AppLayout() {
         <Sidebar currentPath={currentTab} navigate={navigate} profile={profile} unreadCount={unreadCount} />
       </div>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-ink-300 flex">
-        {mobileNav.map(item => {
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-ink-300 flex items-end">
+        {mobileNav.map((item, idx) => {
           const Icon = item.icon
+          // Insertar el botón flotante "+" justo en el centro del menú
+          const insertPlus = idx === Math.floor(mobileNav.length / 2)
           return (
-          <button key={item.id} onClick={() => navigate(item.id)}
-            className={`flex-1 py-3 text-center text-xs font-medium relative flex flex-col items-center gap-0.5 ${currentTab === item.id ? 'text-brand-600' : 'text-ink-900'}`}>
-            <Icon size={19} />
-            {item.label}
-            {item.badge > 0 && (
-              <span className="absolute top-1 right-1/4 bg-danger-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px]">
-                {item.badge > 99 ? '99+' : item.badge}
-              </span>
-            )}
-          </button>
+            <Fragment key={item.id}>
+              {insertPlus && (
+                <button key="fab-plus" onClick={() => navigate('/feed?publish=1')}
+                  aria-label="Nueva publicación"
+                  className="flex-1 flex justify-center -mt-5">
+                  <span className="w-12 h-12 rounded-full bg-brand-600 hover:bg-brand-700 active:scale-95 transition-all flex items-center justify-center shadow-lg shadow-brand-600/30 border-4 border-white">
+                    <Plus size={22} className="text-white" strokeWidth={2.5} />
+                  </span>
+                </button>
+              )}
+              <button onClick={() => navigate(item.id)}
+                className={`flex-1 py-3 text-center text-xs font-medium relative flex flex-col items-center gap-0.5 ${currentTab === item.id ? 'text-brand-600' : 'text-ink-900'}`}>
+                <Icon size={19} />
+                {item.label}
+                {item.badge > 0 && (
+                  <span className="absolute top-1 right-1/4 bg-danger-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px]">
+                    {item.badge > 99 ? '99+' : item.badge}
+                  </span>
+                )}
+              </button>
+            </Fragment>
           )
         })}
       </div>

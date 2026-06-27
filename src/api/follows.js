@@ -37,3 +37,36 @@ export const getFollowCounts = async (userId) => {
     following: fng.count ?? 0,
   }
 }
+
+// Candidatos para mencionar (@): unión de seguidores + seguidos, con su perfil público.
+// Se cachea por usuario durante la sesión para no consultar en cada "@".
+const _mentionCache = new Map()
+
+export const getMentionCandidates = async (userId) => {
+  if (!userId) return []
+  if (_mentionCache.has(userId)) return _mentionCache.get(userId)
+
+  const [followingRes, followersRes] = await Promise.all([
+    // a quién sigo yo → traigo el perfil del seguido
+    supabase.from('follows')
+      .select('following_id, following:profiles!follows_following_id_fkey(id, full_name, identity_mode, identity_number, avatar_url)')
+      .eq('follower_id', userId),
+    // quién me sigue → traigo el perfil del seguidor
+    supabase.from('follows')
+      .select('follower_id, follower:profiles!follows_follower_id_fkey(id, full_name, identity_mode, identity_number, avatar_url)')
+      .eq('following_id', userId),
+  ])
+
+  const map = new Map()
+  for (const row of (followingRes.data || [])) {
+    const p = row.following
+    if (p?.id) map.set(p.id, p)
+  }
+  for (const row of (followersRes.data || [])) {
+    const p = row.follower
+    if (p?.id) map.set(p.id, p)
+  }
+  const list = Array.from(map.values())
+  _mentionCache.set(userId, list)
+  return list
+}

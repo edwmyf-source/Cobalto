@@ -14,6 +14,13 @@ export const signIn = async (email, password) => {
 
 export const signOut = () => supabase?.auth.signOut()
 
+// Cambiar/establecer contraseña del usuario logueado
+export const updatePassword = async (newPassword) => {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword })
+  if (error) throw error
+  return data
+}
+
 // ─── 2FA / MFA ────────────────────────────────────────────────────────────────
 
 // Verificar si el login requiere 2FA

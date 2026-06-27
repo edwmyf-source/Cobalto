@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react'
-import { Eye, User, Check, Camera, Loader2 } from 'lucide-react'
+import { Eye, User, Check, Camera, Loader2, Lock, Globe, ShieldCheck } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/profiles'
 import { useAuth } from '../contexts/AuthContext'
 import { DEPARTAMENTOS, isAdmin } from '../lib/constants'
@@ -222,6 +222,39 @@ export default function ProfilePage() {
           {loading ? <Spinner size={16} /> : 'Guardar cambios'}
         </button>
       </form>
+
+      {/* ─── Configuración: privacidad de tus datos ─── */}
+      <div className="mt-5">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mb-2">Configuración · Privacidad de tus datos</p>
+        <div className="bg-white border border-ink-300 rounded-2xl p-4">
+          <div className="flex items-start gap-2 mb-3">
+            <ShieldCheck size={15} className="text-success-700 mt-0.5 flex-shrink-0" />
+            <p className="text-[11px] text-ink-500 leading-relaxed">
+              Esto es lo que la comunidad <strong className="text-ink-900 font-medium">ve</strong> y lo que <strong className="text-ink-900 font-medium">nunca verá</strong> de tu cuenta.
+            </p>
+          </div>
+          <div className="space-y-px">
+            {[
+              { label: 'Nombre completo', priv: true },
+              { label: 'Empresa', priv: true },
+              { label: 'Email', priv: true },
+              { label: 'Teléfono', priv: true },
+              { label: 'Departamento', priv: false },
+              { label: 'Identidad pública (nombre o anónimo)', priv: false },
+            ].map(row => (
+              <div key={row.label} className="flex items-center justify-between py-2 border-b border-ink-100 last:border-0">
+                <span className="text-[13px] text-ink-900 flex items-center gap-2">
+                  {row.priv
+                    ? <Lock size={13} className="text-ink-400" />
+                    : <Globe size={13} className="text-brand-600" />}
+                  {row.label}
+                </span>
+                <PrivacyBadge variant={row.priv ? 'private' : 'public'} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {isAdmin(profile, session?.user?.email) && (
         <div className="mt-4">
