@@ -104,7 +104,7 @@ function PostMenu({ post, onReport }) {
   )
 }
 
-export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [] }) {
+export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [], accentColor = '#7c3aed' }) {
   const { session } = useAuth()
   const navigate = useNavigate()
   const [showComments, setShowComments] = useState(false)
@@ -178,7 +178,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
         </button>
         {!isMine && (
           <button onClick={() => onContact?.(post)} disabled={isContacting}
-            className="flex items-center gap-1 text-[11px] bg-brand-600 hover:bg-brand-700 text-white font-medium px-2.5 py-1 rounded-lg disabled:opacity-60 transition-all">
+            className="flex items-center gap-1 text-[11px] text-white font-medium px-2.5 py-1 rounded-lg disabled:opacity-60 transition-all" style={{ background: accentColor }}>
             {isContacting ? <><Loader2 size={11} className="animate-spin" /> Abriendo...</> : <><Send size={11} /> Contactar</>}
           </button>
         )}

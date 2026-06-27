@@ -17,6 +17,7 @@ import PublishSuccessModal from '../components/feed/PublishSuccessModal'
 import BannerCarousel from '../components/feed/BannerCarousel'
 import Spinner from '../components/shared/Spinner'
 import ErrorBoundary from '../components/shared/ErrorBoundary'
+import { TAB_COLOR } from '../lib/constants'
 
 const SORT_OPTIONS = [
   { value: 'smart',   label: 'Relevante', icon: Sparkles },
@@ -145,6 +146,11 @@ export default function FeedPage() {
     }
   }
 
+  const activeTab = filters.tab || 'todo'
+  const tabStyle = TAB_COLOR[activeTab] || TAB_COLOR.todo
+  const accentColor = tabStyle.color
+  const feedBg = tabStyle.bg
+
   return (
     <div className="page-enter max-w-2xl mx-auto">
       <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
@@ -198,10 +204,11 @@ export default function FeedPage() {
           </button>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 rounded-2xl p-2 transition-all" style={{ background: feedBg }}>
           {posts.map(post => (
             <PostCard key={post.id} post={post}
               onContact={handleContact}
+              accentColor={accentColor}
               contactingId={contactingPost}
               blockedUsers={blockedUsers}
             />
