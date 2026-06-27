@@ -49,24 +49,39 @@ export function AuthProvider({ children }) {
 
     let mounted = true
 
+    // Safety: si Supabase se cuelga (red lenta / caído), loading siempre llega a false en ≤8s
+    const safetyTimer = setTimeout(() => { if (mounted) setLoading(false) }, 8000)
+
     supabase.auth.getSession().then(async ({ data, error: se }) => {
       if (!mounted) return
       if (se) setError(se.message)
       setSession(data.session)
-      await checkMFA(data.session)
-      if (data.session?.user) await syncProfile(data.session.user.id)
-      if (mounted) setLoading(false)
+      try {
+        await checkMFA(data.session)
+        if (data.session?.user) await syncProfile(data.session.user.id)
+      } catch (e) {
+        if (mounted) setError(e.message)
+      } finally {
+        clearTimeout(safetyTimer)
+        if (mounted) setLoading(false)
+      }
     }).catch((e) => {
+      clearTimeout(safetyTimer)
       if (mounted) { setError(e.message); setLoading(false) }
     })
 
     const { data: sub } = supabase.auth.onAuthStateChange(async (_ev, ns) => {
       if (!mounted) return
       setSession(ns)
-      await checkMFA(ns)
-      if (!ns?.user) { setProfile(null); setLoading(false); return }
-      await syncProfile(ns.user.id)
-      if (mounted) setLoading(false)
+      try {
+        await checkMFA(ns)
+        if (!ns?.user) { setProfile(null); return }
+        await syncProfile(ns.user.id)
+      } catch (e) {
+        console.warn('Auth state change:', e.message)
+      } finally {
+        if (mounted) setLoading(false)
+      }
     })
 
     return () => { mounted = false; sub.subscription.unsubscribe() }

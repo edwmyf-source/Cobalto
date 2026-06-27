@@ -74,7 +74,14 @@ export default function FeedPage() {
 
   const fetchPosts = useCallback(async (cursor, append = false) => {
     try {
-      const data = await listPosts({ cursor, limit: 20, filters: debouncedFilters, sort })
+      // Timeout de 10s: si Supabase no responde, muestra error en lugar de spinner eterno
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('La conexión tardó demasiado. Intenta de nuevo.')), 10000)
+      )
+      const data = await Promise.race([
+        listPosts({ cursor, limit: 20, filters: debouncedFilters, sort }),
+        timeout,
+      ])
       if (append) setPosts(p => [...p, ...data])
       else setPosts(data)
       setHasMore(data.length === 20)
