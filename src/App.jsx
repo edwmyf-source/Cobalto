@@ -14,7 +14,16 @@ const router = createBrowserRouter(routes)
 function AppInner() {
   const { session, profile, loading, error, mfaRequired, setMfaRequired, refreshProfile } = useAuth()
   const [splashDone, setSplashDone] = useState(false)
+  const [profileRetried, setProfileRetried] = useState(false)
   const onSplashDone = useCallback(() => setSplashDone(true), [])
+
+  // Si profile es null pero hay sesión, getProfile pudo fallar: reintentar una vez.
+  useEffect(() => {
+    if (!profile && session?.user?.id && !profileRetried) {
+      setProfileRetried(true)
+      refreshProfile?.()
+    }
+  }, [profile, session?.user?.id, profileRetried, refreshProfile])
 
   if (!splashDone) return <BrandSplash onDone={onSplashDone} />
 
@@ -52,17 +61,7 @@ function AppInner() {
     )
   }
 
-  // Si profile es null pero tenemos sesión válida, puede ser que getProfile falló.
-  // Reintentamos una vez antes de mostrar el setup.
-  const [profileRetried, setProfileRetried] = useState(false)
-
-  useEffect(() => {
-    if (!profile && session?.user?.id && !profileRetried) {
-      setProfileRetried(true)
-      refreshProfile()
-    }
-  }, [profile, session?.user?.id, profileRetried, refreshProfile])
-
+  // Mientras reintentamos cargar el perfil, mostramos spinner (no el setup)
   if (!profile && !profileRetried) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
