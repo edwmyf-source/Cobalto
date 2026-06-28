@@ -11,16 +11,30 @@ export const getPublicProfile = async (uid) => {
 }
 
 export const getProfile = async (uid) => {
-  // Ambas queries en paralelo — antes eran secuenciales (+100ms innecesario)
+  // Leer perfil público + datos privados en paralelo
   const [profileRes, privRes] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', uid).maybeSingle(),
     supabase.from('profiles_private').select('phone, email').eq('id', uid).maybeSingle(),
   ])
-  if (profileRes.error) throw profileRes.error
-  if (!profileRes.data) return profileRes.data
+
+  let base = profileRes.data
+  // Si el SELECT con `*` falló (ej: RLS sobre alguna columna), reintentar con
+  // las columnas mínimas seguras para no perder el perfil existente.
+  if (profileRes.error || !base) {
+    if (profileRes.error) console.warn('profiles select * falló:', profileRes.error.message)
+    const fallback = await supabase
+      .from('profiles')
+      .select('id, full_name, company_name, city, identity_mode, identity_number, avatar_url, role, segment, email_domain')
+      .eq('id', uid)
+      .maybeSingle()
+    if (fallback.data) base = fallback.data
+    else if (fallback.error) throw fallback.error
+  }
+
+  if (!base) return null
   if (privRes.error) console.warn('profiles_private select falló:', privRes.error.message)
   const priv = privRes.data
-  return { ...profileRes.data, phone: priv?.phone || null, email: priv?.email || null }
+  return { ...base, phone: priv?.phone || null, email: priv?.email || null }
 }
 
 export const uploadAvatar = async (uid, file) => {
