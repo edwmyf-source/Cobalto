@@ -79,10 +79,7 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10 flex-shrink-0">
         <LitioMark size={32} />
-        <div>
-          <span className="font-bold text-base text-white block leading-tight tracking-wide">LITIO</span>
-          <span className="text-[10px] text-violet-300 leading-tight">Conexiones que reaccionan</span>
-        </div>
+        <span className="font-bold text-base text-white block leading-tight tracking-wide">LITIO</span>
       </div>
 
       {/* Botón publicar */}

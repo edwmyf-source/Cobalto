@@ -42,14 +42,14 @@ export default function AuthScreen() {
             <span className="font-extrabold text-[26px] tracking-wide">LITIO</span>
           </div>
 
-          {/* Headline vertical, palabra por palabra */}
+          {/* Headline principal */}
           <div className="mb-3 md:mb-4">
-            <div className="text-2xl md:text-[32px] font-extrabold leading-[1.05] text-white">CONEXIONES</div>
-            <div className="text-2xl md:text-[32px] font-extrabold leading-[1.05]" style={{ color: '#9c8fc9' }}>QUE</div>
-            <div className="text-2xl md:text-[32px] font-extrabold leading-[1.05]" style={{ color: '#a78bfa' }}>
-              REACCIONAN <span className="text-xl md:text-2xl align-middle">🧪</span>
+            <div className="text-2xl md:text-[32px] font-extrabold leading-[1.12] text-white">
+              Impulsamos a <span style={{ color: '#a78bfa' }}>conectar</span> el sector <span style={{ color: '#a78bfa' }}>químico</span>.
             </div>
           </div>
+
+          <div className="w-10 h-[3px] bg-brand-600 rounded-full mb-4 md:mb-5"></div>
 
           <p className="text-base md:text-lg font-semibold text-white mb-5 md:mb-7">
             El punto de encuentro de la industria química.
