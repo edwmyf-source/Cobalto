@@ -30,18 +30,22 @@ export const createPost = async (payload, mediaFiles = []) => {
   if (mediaFiles.length > 0) {
     media = await Promise.all(mediaFiles.map(f => uploadMedia(f, author_id)))
   }
-  const { data, error } = await supabase
+  const baseRow = {
+    author_id, title, content: content || '', category,
+    subcategory: subcategory || null,
+    location:    location    || null,
+    intent:      intent      || 'ofrecen',
+    media: media.length > 0 ? media : null,
+  }
+  // Intentar con event_date; si la columna no existe, reintentar sin ella
+  let { data, error } = await supabase
     .from('posts')
-    .insert({
-      author_id, title, content: content || '', category,
-      subcategory: subcategory || null,
-      location:    location    || null,
-      intent:      intent      || 'ofrecen',
-      event_date:  event_date  || null,
-      media: media.length > 0 ? media : null,
-    })
+    .insert({ ...baseRow, event_date: event_date || null })
     .select().single()
-  // Rate limit: mensaje amigable
+  if (error && /event_date/.test(error.message || '')) {
+    console.warn('Columna event_date no existe — creando post sin fecha de evento')
+    ;({ data, error } = await supabase.from('posts').insert(baseRow).select().single())
+  }
   if (error?.message?.includes('rate_limit_exceeded')) {
     throw new Error('Máximo 10 publicaciones por hora. Intenta más tarde.')
   }
@@ -77,47 +81,46 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
   // Smart sort: trae el doble para tener margen de ranking sin desperdiciar el triple
   const fetchLimit = sort === 'smart' ? Math.min(limit * 2, 40) : limit
 
-  // Seleccionamos SOLO las columnas que el feed usa (antes era `*`).
-  // reaction_count y comment_count son agregados baratos. Ya NO traemos la
-  // lista completa de reacciones de cada post (antes: cientos de filas por post).
-  let q = supabase
-    .from('posts')
-    .select(`
-      id, author_id, title, content, category, subcategory, location, intent, media, event_date, created_at,
+  // Columnas base. event_date es opcional: si la columna no existe en la BD,
+  // reintentamos sin ella para que el feed nunca se rompa.
+  const buildSelect = (withEventDate) => `
+      id, author_id, title, content, category, subcategory, location, intent, media, created_at${withEventDate ? ', event_date' : ''},
       profiles!posts_author_id_fkey(id, full_name, identity_mode, identity_number, city, avatar_url),
       reaction_count:reactions(count),
       comment_count:comments(count)
-    `)
-    .order('created_at', { ascending: false })
-    .limit(fetchLimit)
+    `
 
-  if (cursor) q = q.lt('created_at', cursor)
+  const runQuery = (withEventDate) => {
+    let q = supabase
+      .from('posts')
+      .select(buildSelect(withEventDate))
+      .order('created_at', { ascending: false })
+      .limit(fetchLimit)
 
-  // Tab-level: filtrar por array de categorías (Tienda, Novedades, Vacantes)
-  if (filters.categories?.length) q = q.in('category', filters.categories)
-
-  // Categoría individual dentro de Tienda
-  if (filters.category)    q = q.eq('category', filters.category)
-  if (filters.subcategory) q = q.eq('subcategory', filters.subcategory)
-
-  // Intent: Buscan / Ofrecen — usa idx_posts_intent
-  if (filters.intent) q = q.eq('intent', filters.intent)
-
-  // Ubicación (Vacantes) — usa idx_posts_location
-  if (filters.location) q = q.eq('location', filters.location)
-
-  // Búsqueda: FTS con GIN en español para ≥3 chars, ilike para 1-2
-  if (filters.search) {
-    const term = filters.search.trim()
-    if (term.length >= 3) {
-      q = q.textSearch('title', term, { type: 'websearch', config: 'spanish' })
-    } else {
-      const safe = term.replace(/[%_\\]/g, '\\$&')
-      q = q.ilike('title', `%${safe}%`)
+    if (cursor) q = q.lt('created_at', cursor)
+    if (filters.categories?.length) q = q.in('category', filters.categories)
+    if (filters.category)    q = q.eq('category', filters.category)
+    if (filters.subcategory) q = q.eq('subcategory', filters.subcategory)
+    if (filters.intent)      q = q.eq('intent', filters.intent)
+    if (filters.location)    q = q.eq('location', filters.location)
+    if (filters.search) {
+      const term = filters.search.trim()
+      if (term.length >= 3) {
+        q = q.textSearch('title', term, { type: 'websearch', config: 'spanish' })
+      } else {
+        const safe = term.replace(/[%_\\]/g, '\\$&')
+        q = q.ilike('title', `%${safe}%`)
+      }
     }
+    return q
   }
 
-  const { data, error } = await q
+  let { data, error } = await runQuery(true)
+  // Si falla por columna event_date inexistente, reintentar sin ella
+  if (error && /event_date/.test(error.message || '')) {
+    console.warn('Columna event_date no existe — reintentando sin ella')
+    ;({ data, error } = await runQuery(false))
+  }
   if (error) throw error
 
   let posts = (data || []).map(p => ({
@@ -127,8 +130,7 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
     reactions: [],
   }))
 
-  // Una sola query para saber a cuáles de ESTOS posts reaccioné yo (en vez de
-  // traer todas las reacciones de todos). Trae solo mis filas, muy liviano.
+  // Una sola query para saber a cuáles de ESTOS posts reaccioné yo
   if (userId && posts.length > 0) {
     const ids = posts.map(p => p.id)
     const { data: mine } = await supabase
