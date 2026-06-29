@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { registerCacheCleaner } from '../lib/cacheManager'
 
 export const followUser = async (followerId, followingId) => {
   const { error } = await supabase
@@ -41,6 +42,7 @@ export const getFollowCounts = async (userId) => {
 // Candidatos para mencionar (@): unión de seguidores + seguidos, con su perfil público.
 // Se cachea por usuario durante la sesión para no consultar en cada "@".
 const _mentionCache = new Map()
+registerCacheCleaner(() => _mentionCache.clear())
 
 export const getMentionCandidates = async (userId) => {
   if (!userId) return []

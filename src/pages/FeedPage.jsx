@@ -19,6 +19,7 @@ import Spinner from '../components/shared/Spinner'
 import ErrorBoundary from '../components/shared/ErrorBoundary'
 import { TAB_COLOR } from '../lib/constants'
 import { preloadedFeed } from '../lib/feedPreloader'
+import { registerCacheCleaner } from '../lib/cacheManager'
 
 // Cache local — se inicializa desde el preloader si ya tiene datos
 const FEED_CACHE_TTL = 3 * 60 * 1000
@@ -26,6 +27,12 @@ let _feedCache = preloadedFeed
 
 // Cache de usuarios bloqueados (raramente cambia)
 let _blockedCache = null
+
+// Al cerrar sesión, limpiar caches para que el siguiente usuario no vea datos ajenos
+registerCacheCleaner(() => {
+  _feedCache = { posts: [], ts: 0, filters: '{}', sort: 'smart' }
+  _blockedCache = null
+})
 
 const SORT_OPTIONS = [
   { value: 'smart',   label: 'Relevante', icon: Sparkles },

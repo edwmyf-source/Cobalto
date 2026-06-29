@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { clearAllCaches } from '../lib/cacheManager'
 
 export const signUp = async (email, password) => {
   const { data, error } = await supabase.auth.signUp({ email, password })
@@ -12,7 +13,10 @@ export const signIn = async (email, password) => {
   return data
 }
 
-export const signOut = () => supabase?.auth.signOut()
+export const signOut = async () => {
+  clearAllCaches()
+  return supabase?.auth.signOut()
+}
 
 // Cambiar/establecer contraseña del usuario logueado
 export const updatePassword = async (newPassword) => {

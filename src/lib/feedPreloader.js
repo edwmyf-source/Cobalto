@@ -3,9 +3,14 @@
 // FeedPage lo lee normalmente — sin cambios en su lógica.
 
 import { listPosts } from '../api/posts'
+import { registerCacheCleaner } from './cacheManager'
 
 // Referencia compartida con FeedPage (mismo objeto, mismo módulo)
 export let preloadedFeed = { posts: [], ts: 0, filters: '{}', sort: 'smart' }
+
+registerCacheCleaner(() => {
+  preloadedFeed = { posts: [], ts: 0, filters: '{}', sort: 'smart' }
+})
 
 let _loading = false
 
