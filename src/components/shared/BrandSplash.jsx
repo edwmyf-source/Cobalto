@@ -1,51 +1,75 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function BrandSplash({ onDone }) {
-  const [visible, setVisible] = useState(false)
+  const doneRef = useRef(false)
 
   useEffect(() => {
-    // Forzar un frame antes de animar para que el navegador pinte el fondo primero
-    const raf = requestAnimationFrame(() => setVisible(true))
-    const t = setTimeout(onDone, 500)
-    return () => { cancelAnimationFrame(raf); clearTimeout(t) }
+    // La animación dura 700ms. Esperamos 900ms para que se vea completa + margen.
+    // El usuario también puede tocar para saltarla.
+    const t = setTimeout(() => {
+      if (!doneRef.current) { doneRef.current = true; onDone() }
+    }, 900)
+    return () => clearTimeout(t)
   }, [onDone])
 
+  const skip = () => {
+    if (!doneRef.current) { doneRef.current = true; onDone() }
+  }
+
   return (
-    <div onClick={onDone}
-      className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer overflow-hidden"
-      style={{ background: '#1b1330' }}>
+    <div
+      onClick={skip}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: '#1b1330', cursor: 'pointer', overflow: 'hidden',
+      }}>
 
       <style>{`
-        @keyframes markPop {
-          0%   { opacity: 0; transform: scale(.55) rotate(-6deg); }
-          65%  { opacity: 1; transform: scale(1.08) rotate(0deg); }
-          82%  { transform: scale(0.97); }
+        @keyframes litio-pop {
+          0%   { opacity: 0; transform: scale(0.5) rotate(-8deg); }
+          60%  { opacity: 1; transform: scale(1.1) rotate(0deg); }
+          80%  { transform: scale(0.96); }
           100% { opacity: 1; transform: scale(1); }
         }
-        @keyframes labelIn {
-          0%   { opacity: 0; transform: translateY(8px); }
-          55%  { opacity: 0; transform: translateY(8px); }
-          100% { opacity: 1; transform: translateY(0); }
+        @keyframes litio-label {
+          0%,50% { opacity: 0; transform: translateY(10px); }
+          100%   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes litio-glow {
+          0%,40%  { opacity: 0; transform: scale(0.3); }
+          65%     { opacity: 0.25; transform: scale(1); }
+          100%    { opacity: 0; transform: scale(1.4); }
+        }
+        .litio-mark {
+          width: 100px; height: 100px;
+          background: #4c1d8f;
+          border-radius: 26px;
+          display: flex; align-items: center; justify-content: center;
+          animation: litio-pop 700ms cubic-bezier(.22,.9,.25,1.1) both;
+          box-shadow: 0 20px 60px rgba(76,29,143,0.5);
+        }
+        .litio-label {
+          color: white; font-weight: 800; font-size: 19px;
+          letter-spacing: 0.3em; font-family: system-ui, sans-serif;
+          animation: litio-label 700ms ease both;
+        }
+        .litio-glow {
+          position: absolute;
+          width: 200px; height: 200px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+          animation: litio-glow 700ms ease both;
+          pointer-events: none;
         }
       `}</style>
 
-      <div className="flex flex-col items-center gap-4"
-        style={{ opacity: visible ? 1 : 0, transition: 'opacity 80ms' }}>
-        <div
-          className="rounded-[24px] flex items-center justify-center shadow-2xl"
-          style={{
-            width: 96, height: 96, background: '#4c1d8f',
-            animation: visible ? 'markPop 500ms cubic-bezier(.22,.9,.25,1.1) forwards' : 'none',
-          }}>
-          <span style={{ color: 'white', fontWeight: 800, fontSize: 42 }}>Li</span>
+      <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+        <div className="litio-glow" />
+        <div className="litio-mark">
+          <span style={{ color: 'white', fontWeight: 800, fontSize: 44, fontFamily: 'system-ui, sans-serif' }}>Li</span>
         </div>
-        <span
-          style={{
-            color: 'white', fontWeight: 700, fontSize: 18, letterSpacing: '0.28em',
-            animation: visible ? 'labelIn 500ms ease forwards' : 'none',
-          }}>
-          LITIO
-        </span>
+        <span className="litio-label">LITIO</span>
       </div>
     </div>
   )
