@@ -131,7 +131,10 @@ export default function FeedPage() {
       }
       setHasMore(data.length === 20)
     } catch (e) {
-      toast('No se pudo cargar el feed. Desliza para reintentar.', 'error')
+      // DIAGNÓSTICO: mostrar el error real en pantalla
+      const detail = e?.message || e?.error_description || e?.code || JSON.stringify(e).slice(0, 100)
+      toast(`Feed falló: ${detail}`, 'error')
+      console.error('FEED ERROR COMPLETO:', e)
     }
   }, [debouncedFilters, sort, toast, session?.user?.id])
 
