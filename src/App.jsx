@@ -14,20 +14,17 @@ const router = createBrowserRouter(routes)
 function AppInner() {
   const { session, profile, loading, error, mfaRequired, setMfaRequired } = useAuth()
   const [splashDone, setSplashDone] = useState(false)
-  const [profileTimedOut, setProfileTimedOut] = useState(false)
+  const [waitedForProfile, setWaitedForProfile] = useState(false)
   const onSplashDone = useCallback(() => setSplashDone(true), [])
 
-  // Si hay sesión pero el perfil no llega en 5s, asumimos que no existe → ProfileSetup
+  // Damos un margen amplio (8s) para que el perfil llegue de la red antes de
+  // asumir que el usuario es nuevo. Con el cache de localStorage, en la práctica
+  // el perfil ya está presente al instante y esto casi nunca se activa.
   useEffect(() => {
-    if (!session || profile) return
-    const t = setTimeout(() => setProfileTimedOut(true), 5000)
+    if (!session || profile) { setWaitedForProfile(false); return }
+    const t = setTimeout(() => setWaitedForProfile(true), 8000)
     return () => clearTimeout(t)
   }, [session, profile])
-
-  // Resetear timeout si el perfil llega
-  useEffect(() => {
-    if (profile) setProfileTimedOut(false)
-  }, [profile])
 
   if (!splashDone) return <BrandSplash onDone={onSplashDone} />
 
@@ -64,8 +61,9 @@ function AppInner() {
     )
   }
 
-  // Esperar máximo 5s al perfil — si no llega, ir a ProfileSetup
-  if (profile === null && !profileTimedOut) {
+  // Hay sesión pero el perfil aún no llega Y todavía no agotamos el margen → spinner
+  // (con cache esto rara vez se ve, pero protege a usuarios nuevos en red lenta)
+  if (profile === null && !waitedForProfile) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
         <Spinner size={28} className="text-brand-600" />
