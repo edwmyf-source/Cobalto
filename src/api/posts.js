@@ -106,15 +106,9 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
     return q
   }
 
-  // ── PARALELO: posts + mis reactions en una sola ronda de red ──────────────
-  // Antes: posts → (esperar) → reactions. Ahora: ambas en paralelo.
-  // Cuando userId no existe, reactionsPromise resuelve inmediatamente.
-  const postsPromise = runQuery(true)
-  const reactionsPromise = userId
-    ? supabase.from('reactions').select('post_id, type').eq('user_id', userId)
-    : Promise.resolve({ data: [] })
-
-  let [{ data, error }, { data: myReactions }] = await Promise.all([postsPromise, reactionsPromise])
+  // Primero traemos los posts. Necesitamos sus IDs para pedir SOLO las
+  // reactions de esos posts (no todo el historial del usuario — eso no escala).
+  let { data, error } = await runQuery(true)
 
   // Si falla por columna event_date inexistente, reintentar sin ella
   if (error && /event_date/.test(error.message || '')) {
@@ -122,6 +116,19 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
     ;({ data, error } = await runQuery(false))
   }
   if (error) throw error
+
+  // Mis reactions, pero SOLO de los posts que estoy viendo ahora.
+  // Antes traía TODAS mis reactions históricas → no escalaba con el tiempo.
+  let myReactions = []
+  if (userId && data && data.length > 0) {
+    const postIds = data.map(p => p.id)
+    const { data: mine } = await supabase
+      .from('reactions')
+      .select('post_id, type')
+      .eq('user_id', userId)
+      .in('post_id', postIds)
+    myReactions = mine || []
+  }
 
   // Índice de mis reactions por post_id
   const byPost = {}

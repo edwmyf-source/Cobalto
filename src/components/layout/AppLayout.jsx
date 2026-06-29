@@ -33,7 +33,9 @@ export default function AppLayout() {
   }, [session?.user?.id])
 
   useEffect(() => { refreshUnread() }, [refreshUnread, location.pathname])
-  useRealtime('notifications', 'INSERT', useCallback(() => { refreshUnread() }, [refreshUnread]))
+  // Filtro server-side: solo recibo MIS notificaciones, no las de los 300 usuarios
+  useRealtime('notifications', 'INSERT', useCallback(() => { refreshUnread() }, [refreshUnread]),
+    session?.user?.id ? `user_id=eq.${session.user.id}` : null)
 
   const myId = session?.user?.id
   const mobileNav = [
