@@ -159,6 +159,10 @@ export default function FeedPage() {
   const stateRef = useRef({ posts, hasMore, loadingMore })
   stateRef.current = { posts, hasMore, loadingMore }
 
+  // Ref a fetchPosts para que el IntersectionObserver no se recree en cada cambio
+  const fetchPostsRef = useRef(fetchPosts)
+  fetchPostsRef.current = fetchPosts
+
   useEffect(() => {
     if (!sentinel.current) return
     const obs = new IntersectionObserver(([entry]) => {
@@ -166,12 +170,12 @@ export default function FeedPage() {
       if (entry.isIntersecting && hm && !lm && ps.length > 0) {
         setLoadingMore(true)
         const cursor = ps[ps.length - 1].created_at
-        fetchPosts(cursor, true).finally(() => setLoadingMore(false))
+        fetchPostsRef.current(cursor, true).finally(() => setLoadingMore(false))
       }
     }, { rootMargin: '300px' })
     obs.observe(sentinel.current)
     return () => obs.disconnect()
-  }, [fetchPosts])
+  }, [])
 
   useEffect(() => {
     const targetId = location.state?.scrollToPostId
