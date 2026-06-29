@@ -94,7 +94,22 @@ export function AuthProvider({ children }) {
     let mounted = true
     const safetyTimer = setTimeout(() => { if (mounted) setLoading(false) }, 8000)
 
-    supabase.auth.getSession().then(async ({ data, error: se }) => {
+    // getSession con timeout propio: si cuelga >6s, reintentamos una vez.
+    // Evita el caso donde un usuario con sesión válida ve AuthScreen por un cuelgue.
+    const getSessionSafe = async () => {
+      const withTimeout = (p, ms) => Promise.race([
+        p,
+        new Promise((_, rej) => setTimeout(() => rej(new Error('getSession timeout')), ms)),
+      ])
+      try {
+        return await withTimeout(supabase.auth.getSession(), 6000)
+      } catch {
+        // Un reintento antes de rendirse
+        return await supabase.auth.getSession()
+      }
+    }
+
+    getSessionSafe().then(async ({ data, error: se }) => {
       if (!mounted) return
       if (se) setError(se.message)
       const sess = data.session
