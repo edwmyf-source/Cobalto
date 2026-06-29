@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ToastProvider } from './components/shared/Toast'
@@ -14,12 +14,23 @@ const router = createBrowserRouter(routes)
 function AppInner() {
   const { session, profile, loading, error, mfaRequired, setMfaRequired } = useAuth()
   const [splashDone, setSplashDone] = useState(false)
+  const [profileTimedOut, setProfileTimedOut] = useState(false)
   const onSplashDone = useCallback(() => setSplashDone(true), [])
 
-  // Splash corre en paralelo con auth — la app se inicializa detrás
+  // Si hay sesión pero el perfil no llega en 5s, asumimos que no existe → ProfileSetup
+  useEffect(() => {
+    if (!session || profile) return
+    const t = setTimeout(() => setProfileTimedOut(true), 5000)
+    return () => clearTimeout(t)
+  }, [session, profile])
+
+  // Resetear timeout si el perfil llega
+  useEffect(() => {
+    if (profile) setProfileTimedOut(false)
+  }, [profile])
+
   if (!splashDone) return <BrandSplash onDone={onSplashDone} />
 
-  // Auth todavía cargando (solo ocurre si el splash termina antes, raro con 3s)
   if (loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
@@ -53,9 +64,8 @@ function AppInner() {
     )
   }
 
-  // Si hay sesión pero el perfil aún no llegó, mostrar spinner breve
-  // en lugar de enviar al usuario a ProfileSetup por error
-  if (session && profile === null) {
+  // Esperar máximo 5s al perfil — si no llega, ir a ProfileSetup
+  if (profile === null && !profileTimedOut) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
         <Spinner size={28} className="text-brand-600" />
@@ -63,7 +73,6 @@ function AppInner() {
     )
   }
 
-  // Solo enviar a setup si el perfil ya cargó y está realmente incompleto
   const profileComplete = profile?.full_name && profile?.city
   if (!profileComplete) return <ProfileSetup />
 

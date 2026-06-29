@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { supabase, hasSupabaseEnv } from '../api/supabase'
 import { getProfile } from '../api/profiles'
 import { preloadFeed } from '../lib/feedPreloader'
@@ -12,25 +12,32 @@ export function AuthProvider({ children }) {
   const [error, setError]             = useState('')
   const [mfaRequired, setMfaRequired] = useState(false)
 
-  // Sin fetchingRef — era la causa del bug de congelamiento.
-  // Si llegan dos llamadas simultáneas simplemente la segunda sobreescribe, lo cual es correcto.
-  const syncProfile = useCallback(async (uid) => {
+  // Reintenta hasta 3 veces con backoff — crítico en móvil con conexión inestable
+  const syncProfile = useCallback(async (uid, retries = 3) => {
     if (!uid) return
-    try {
-      const p = await getProfile(uid)
-      if (p) {
-        setProfile(p)
-        setError('')
+    for (let i = 0; i < retries; i++) {
+      try {
+        const p = await getProfile(uid)
+        if (p) {
+          setProfile(p)
+          setError('')
+          return p
+        }
+      } catch (e) {
+        if (i === retries - 1) {
+          console.warn('syncProfile falló tras', retries, 'intentos:', e.message)
+          setError(e.message)
+        } else {
+          // Esperar antes de reintentar: 500ms, 1000ms
+          await new Promise(r => setTimeout(r, 500 * (i + 1)))
+        }
       }
-    } catch (e) {
-      console.warn('syncProfile:', e.message)
-      setError(e.message)
     }
   }, [])
 
   const refreshProfile = useCallback(async () => {
-    const uid = supabase?.auth ? (await supabase.auth.getUser())?.data?.user?.id : null
-    if (uid) await syncProfile(uid)
+    const { data } = await supabase.auth.getUser()
+    if (data?.user?.id) await syncProfile(data.user.id)
   }, [syncProfile])
 
   const checkMFA = useCallback(async (currentSession) => {
@@ -62,13 +69,12 @@ export function AuthProvider({ children }) {
       setLoading(false)
 
       if (sess?.user) {
-        // Perfil + MFA en paralelo, sin bloquear el render
+        // Perfil y MFA en paralelo, con reintentos automáticos
         Promise.all([
           syncProfile(sess.user.id),
           checkMFA(sess),
-        ]).then(() => {
-          // Feed en background una vez que el perfil ya cargó
-          if (mounted) preloadFeed(sess.user.id)
+        ]).then(([prof]) => {
+          if (mounted && prof) preloadFeed(sess.user.id)
         }).catch(e => console.warn('Init:', e.message))
       }
     }).catch((e) => {
@@ -79,14 +85,12 @@ export function AuthProvider({ children }) {
     const { data: sub } = supabase.auth.onAuthStateChange(async (event, ns) => {
       if (!mounted) return
 
-      // TOKEN_REFRESHED: solo actualizar sesión, NO re-sincronizar perfil
-      // Este evento llega cada ~55min y no indica cambio de usuario
+      // TOKEN_REFRESHED: solo actualizar sesión, no re-sincronizar
       if (event === 'TOKEN_REFRESHED') {
         setSession(ns)
         return
       }
 
-      // SIGNED_OUT: limpiar todo
       if (event === 'SIGNED_OUT') {
         setSession(null)
         setProfile(null)
@@ -94,7 +98,6 @@ export function AuthProvider({ children }) {
         return
       }
 
-      // SIGNED_IN / USER_UPDATED: cargar perfil fresco
       setSession(ns)
       if (ns?.user) {
         await Promise.all([checkMFA(ns), syncProfile(ns.user.id)])
