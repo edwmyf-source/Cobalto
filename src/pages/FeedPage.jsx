@@ -94,26 +94,45 @@ export default function FeedPage() {
   }, [session?.user?.id])
 
   const fetchPosts = useCallback(async (cursor, append = false) => {
-    try {
+    // Reintento automático: si la primera llamada falla (típico tras recargar
+    // cuando el cliente aún está renovando el token), reintenta hasta 2 veces.
+    const attempt = async () => {
       const timeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('La conexión tardó demasiado. Intenta de nuevo.')), 20000)
+        setTimeout(() => reject(new Error('timeout')), 8000)
       )
-      const data = await Promise.race([
+      return Promise.race([
         listPosts({ cursor, limit: 20, filters: debouncedFilters, sort, userId: session?.user?.id }),
         timeout,
       ])
+    }
+
+    try {
+      let data
+      let lastErr
+      for (let i = 0; i < 3; i++) {
+        try {
+          data = await attempt()
+          break
+        } catch (e) {
+          lastErr = e
+          if (i < 2) await new Promise(r => setTimeout(r, 600 * (i + 1)))
+        }
+      }
+      if (data === undefined) throw lastErr || new Error('No se pudo cargar el feed')
+
       if (append) {
         setPosts(p => [...p, ...data])
       } else {
         setPosts(data)
-        // Cachear solo el feed base (sin filtros)
         const filtersKey = JSON.stringify(debouncedFilters)
         if (filtersKey === '{}' && !cursor) {
           _feedCache = { posts: data, ts: Date.now(), filters: filtersKey, sort }
         }
       }
       setHasMore(data.length === 20)
-    } catch (e) { toast(safeErrorMessage(e), 'error') }
+    } catch (e) {
+      toast('No se pudo cargar el feed. Desliza para reintentar.', 'error')
+    }
   }, [debouncedFilters, sort, toast, session?.user?.id])
 
   useEffect(() => {

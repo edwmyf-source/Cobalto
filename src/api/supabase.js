@@ -23,7 +23,9 @@ export const supabase = hasSupabaseEnv
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
       },
       realtime: {
-        params: { eventsPerSecond: 5 },
+        params: { eventsPerSecond: 2 },
+        // timeout más corto para que un WebSocket colgado no afecte la app
+        timeout: 10000,
       },
       db: {
         schema: 'public',
