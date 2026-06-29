@@ -8,14 +8,27 @@ const urlValid = !isPlaceholder(url) && url.startsWith('http')
 const keyValid = !isPlaceholder(key) && key.length > 20
 
 export const hasSupabaseEnv = urlValid && keyValid
+
+// Fetch con timeout: si una request tarda más de 15s, se aborta en lugar de
+// quedar colgada para siempre (causa típica de "la app deja de cargar").
+const fetchWithTimeout = (input, init = {}) => {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 15000)
+  return fetch(input, { ...init, signal: controller.signal })
+    .finally(() => clearTimeout(timeout))
+}
+
 export const supabase = hasSupabaseEnv
   ? createClient(url, key, {
       auth: {
-        persistSession:     true,      // guarda en localStorage → sobrevive cierres del navegador
-        autoRefreshToken:   true,      // renueva el token automáticamente antes de que expire
+        persistSession:     true,
+        autoRefreshToken:   true,
         detectSessionInUrl: true,
-        storageKey:         'rodio-auth', // clave única, evita conflictos con otras apps
+        storageKey:         'rodio-auth',
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+      },
+      global: {
+        fetch: fetchWithTimeout,
       },
       realtime: {
         params: { eventsPerSecond: 5 },

@@ -137,6 +137,19 @@ export default function FeedPage() {
     setNewPostsAvailable(true)
   }, []))
 
+  // Al volver a la pestaña tras estar inactivo, refrescar el feed en silencio.
+  // Esto evita ver contenido obsoleto y "revive" la app si el realtime se durmió.
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        const stale = Date.now() - _feedCache.ts > 60_000
+        if (stale) fetchPosts()
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [fetchPosts])
+
   const loadNewPosts = useCallback(() => {
     setNewPostsAvailable(false)
     fetchPosts()
