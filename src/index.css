@@ -20,3 +20,40 @@ body{
    @apply bg-white rounded-3xl shadow-[0_12px_40px_rgba(15,23,42,0.08)];
  }
 }
+
+/* ── SKELETON OPTIMIZADO ──────────────────────────────────────────────────── */
+/* GPU-accelerated: usa transform en lugar de background-position */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.skeleton {
+  background: #e8e5f5;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+  animation: shimmer 1.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── TRANSICIÓN DE PÁGINA ─────────────────────────────────────────────────── */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: pageEnter 180ms ease-out forwards;
+}
+
+/* ── WILL-CHANGE PARA ANIMACIONES ─────────────────────────────────────────── */
+/* Evita repaints en elementos que animan frecuentemente */
+.transition-colors { will-change: color, background-color; }

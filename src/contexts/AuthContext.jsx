@@ -1,8 +1,13 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
 import { supabase, hasSupabaseEnv } from '../api/supabase'
 import { getProfile } from '../api/profiles'
 
 const AuthCtx = createContext(null)
+
+// Cache de perfil persistente entre montajes (stale-while-revalidate)
+// Si el usuario recarga, mostramos el perfil en caché mientras validamos en segundo plano.
+let _profileCache = null
+let _profileUid   = null
 
 export function AuthProvider({ children }) {
   const [session, setSession]         = useState(null)
@@ -10,26 +15,37 @@ export function AuthProvider({ children }) {
   const [loading, setLoading]         = useState(true)
   const [error, setError]             = useState('')
   const [mfaRequired, setMfaRequired] = useState(false)
+  const fetchingRef = useRef(false)
 
-  const syncProfile = useCallback(async (uid) => {
+  const syncProfile = useCallback(async (uid, { silent = false } = {}) => {
+    // Evita fetches duplicados simultáneos
+    if (fetchingRef.current) return
+    fetchingRef.current = true
     try {
+      // Si tenemos caché del mismo user, mostramos al instante y refrescamos en silencio
+      if (_profileCache && _profileUid === uid && !silent) {
+        setProfile(_profileCache)
+      }
       const p = await getProfile(uid)
+      _profileCache = p
+      _profileUid   = uid
       setProfile(p)
       setError('')
     } catch (e) {
       setError(e.message)
+    } finally {
+      fetchingRef.current = false
     }
   }, [])
 
   const refreshProfile = useCallback(async () => {
-    if (session?.user?.id) await syncProfile(session.user.id)
+    if (session?.user?.id) await syncProfile(session.user.id, { silent: true })
   }, [session?.user?.id, syncProfile])
 
   const checkMFA = useCallback(async (currentSession) => {
     if (!currentSession) { setMfaRequired(false); return }
     try {
       const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
-      // nextLevel > currentLevel significa que hay factores enrollados pero no verificados en esta sesión
       if (data?.nextLevel === 'aal2' && data?.currentLevel === 'aal1') {
         setMfaRequired(true)
       } else {
@@ -48,23 +64,22 @@ export function AuthProvider({ children }) {
     }
 
     let mounted = true
-
-    // Safety: si Supabase se cuelga (red lenta / caído), loading siempre llega a false en ≤8s
     const safetyTimer = setTimeout(() => { if (mounted) setLoading(false) }, 8000)
 
     supabase.auth.getSession().then(async ({ data, error: se }) => {
       if (!mounted) return
       if (se) setError(se.message)
       setSession(data.session)
-      // Liberamos loading apenas tenemos sesión: la app se muestra YA.
-      // El perfil se carga en paralelo sin bloquear el primer render.
       clearTimeout(safetyTimer)
       if (mounted) setLoading(false)
+      // MFA y perfil en paralelo — ninguno bloquea el primer render
       try {
-        await checkMFA(data.session)
-        if (data.session?.user) await syncProfile(data.session.user.id)
+        await Promise.all([
+          checkMFA(data.session),
+          data.session?.user ? syncProfile(data.session.user.id) : Promise.resolve(),
+        ])
       } catch (e) {
-        if (mounted) console.warn('Carga de perfil:', e.message)
+        if (mounted) console.warn('Carga inicial:', e.message)
       }
     }).catch((e) => {
       clearTimeout(safetyTimer)
@@ -73,21 +88,16 @@ export function AuthProvider({ children }) {
 
     const { data: sub } = supabase.auth.onAuthStateChange(async (event, ns) => {
       if (!mounted) return
-
-      // TOKEN_REFRESHED se dispara solo cada ~minuto. Si el usuario es el mismo,
-      // NO re-sincronizamos nada: actualizar session/profile aquí causaba un
-      // re-render en cascada de toda la app → la app se "congelaba" al minuto.
       if (event === 'TOKEN_REFRESHED') {
-        setSession(prev => prev ?? ns)   // mantener referencia previa si ya existe
+        setSession(prev => prev ?? ns)
         return
       }
-
-      // Solo reaccionar a cambios reales: login, logout, cambio de usuario
       setSession(ns)
       try {
-        await checkMFA(ns)
-        if (!ns?.user) { setProfile(null); return }
-        await syncProfile(ns.user.id)
+        await Promise.all([
+          checkMFA(ns),
+          ns?.user ? syncProfile(ns.user.id) : Promise.resolve(setProfile(null)),
+        ])
       } catch (e) {
         console.warn('Auth state change:', e.message)
       } finally {

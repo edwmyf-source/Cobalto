@@ -19,11 +19,11 @@ import Spinner from '../components/shared/Spinner'
 import ErrorBoundary from '../components/shared/ErrorBoundary'
 import { TAB_COLOR } from '../lib/constants'
 
-// Caché en memoria del feed por defecto (sin filtros). Al volver al feed se
-// muestran los posts cacheados al instante mientras se refresca en segundo plano.
-let _feedCache = { posts: [], ts: 0 }
-const FEED_CACHE_TTL = 60 * 1000 // 1 min
-// Caché de usuarios bloqueados (no cambia seguido)
+// TTL extendido a 3 min: el feed no cambia tan rápido como para refrescar cada 1 min
+let _feedCache = { posts: [], ts: 0, filters: '{}', sort: 'smart' }
+const FEED_CACHE_TTL = 3 * 60 * 1000
+
+// Cache de usuarios bloqueados (raramente cambia)
 let _blockedCache = null
 
 const SORT_OPTIONS = [
@@ -31,7 +31,6 @@ const SORT_OPTIONS = [
   { value: 'recent',  label: 'Reciente',  icon: Clock },
 ]
 
-// Debounce helper
 function useDebounce(value, ms) {
   const [deb, setDeb] = useState(value)
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function FeedPage() {
   const navigate    = useNavigate()
   const location    = useLocation()
 
-  // Abrir modal de publicación si viene ?publish=1 desde el sidebar
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     if (params.get('publish') === '1') {
@@ -54,10 +52,17 @@ export default function FeedPage() {
       navigate('/feed', { replace: true })
     }
   }, [location.search, navigate])
-  const toast       = useToast()
 
-  const [posts,          setPosts         ] = useState(_feedCache.posts)
-  const [loading,        setLoading       ] = useState(_feedCache.posts.length === 0)
+  const toast = useToast()
+
+  const [posts,          setPosts         ] = useState(() => {
+    // Inicializar con cache si es válido — cero flicker al volver al feed
+    const c = _feedCache
+    const noFilters = c.filters === '{}' && c.sort === 'smart'
+    if (noFilters && c.posts.length > 0 && Date.now() - c.ts < FEED_CACHE_TTL) return c.posts
+    return []
+  })
+  const [loading,        setLoading       ] = useState(posts.length === 0)
   const [loadingMore,    setLoadingMore   ] = useState(false)
   const [hasMore,        setHasMore       ] = useState(true)
   const [filters,        setFilters       ] = useState({})
@@ -69,10 +74,8 @@ export default function FeedPage() {
   const [blockedUsers,   setBlockedUsers  ] = useState(_blockedCache || [])
   const sentinel = useRef(null)
 
-  // Debounce búsqueda: espera 400ms antes de consultar
   const debouncedFilters = useDebounce(filters, 400)
 
-  // Cargar usuarios bloqueados al montar (con caché)
   useEffect(() => {
     if (!session?.user?.id) return
     if (_blockedCache) { setBlockedUsers(_blockedCache); return }
@@ -84,7 +87,6 @@ export default function FeedPage() {
 
   const fetchPosts = useCallback(async (cursor, append = false) => {
     try {
-      // Timeout de 10s: si Supabase no responde, muestra error en lugar de spinner eterno
       const timeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('La conexión tardó demasiado. Intenta de nuevo.')), 10000)
       )
@@ -92,12 +94,15 @@ export default function FeedPage() {
         listPosts({ cursor, limit: 20, filters: debouncedFilters, sort, userId: session?.user?.id }),
         timeout,
       ])
-      if (append) setPosts(p => [...p, ...data])
-      else {
+      if (append) {
+        setPosts(p => [...p, ...data])
+      } else {
         setPosts(data)
-        // Guardar en caché solo el feed por defecto (sin filtros activos)
-        const noFilters = !debouncedFilters || Object.keys(debouncedFilters).length === 0
-        if (noFilters && !cursor) _feedCache = { posts: data, ts: Date.now() }
+        // Cachear solo el feed base (sin filtros)
+        const filtersKey = JSON.stringify(debouncedFilters)
+        if (filtersKey === '{}' && !cursor) {
+          _feedCache = { posts: data, ts: Date.now(), filters: filtersKey, sort }
+        }
       }
       setHasMore(data.length === 20)
     } catch (e) { toast(safeErrorMessage(e), 'error') }
@@ -105,15 +110,20 @@ export default function FeedPage() {
 
   useEffect(() => {
     let mounted = true
-    // Si hay caché fresca y no hay filtros, no mostramos spinner: refrescamos en silencio
-    const noFilters = !debouncedFilters || Object.keys(debouncedFilters).length === 0
-    const cacheValid = noFilters && _feedCache.posts.length > 0 && (Date.now() - _feedCache.ts < FEED_CACHE_TTL)
+    const filtersKey = JSON.stringify(debouncedFilters)
+    const noFilters  = filtersKey === '{}'
+    const cacheValid = noFilters && sort === 'smart'
+      && _feedCache.posts.length > 0
+      && _feedCache.filters === filtersKey
+      && _feedCache.sort === sort
+      && (Date.now() - _feedCache.ts < FEED_CACHE_TTL)
+
+    // Si el cache es válido, mostramos el contenido al instante y refrescamos en silencio
     if (!cacheValid) setLoading(true)
     fetchPosts().finally(() => { if (mounted) setLoading(false) })
     return () => { mounted = false }
-  }, [fetchPosts])
+  }, [fetchPosts, debouncedFilters, sort])
 
-  // Realtime: no reemplazar el feed solo (rompe scroll). Avisar con un botón.
   const [newPostsAvailable, setNewPostsAvailable] = useState(false)
   useRealtime('posts', 'INSERT', useCallback(() => {
     setNewPostsAvailable(true)
@@ -125,8 +135,6 @@ export default function FeedPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [fetchPosts])
 
-  // Infinite scroll con IntersectionObserver — usamos refs para no recrear
-  // el observer en cada cambio de `posts` (eso causaba renders en cascada)
   const stateRef = useRef({ posts, hasMore, loadingMore })
   stateRef.current = { posts, hasMore, loadingMore }
 
@@ -144,7 +152,6 @@ export default function FeedPage() {
     return () => obs.disconnect()
   }, [fetchPosts])
 
-  // Venimos de una notificación: ir directo al post mencionado
   useEffect(() => {
     const targetId = location.state?.scrollToPostId
     if (!targetId || loading || posts.length === 0) return
@@ -179,28 +186,23 @@ export default function FeedPage() {
   const handleScrollToPost = (postId) => {
     const el = document.getElementById(`post-${postId}`)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    else {
-      // Si no está en pantalla, refrescar con sort reciente y buscar
-      setSort('recent')
-    }
+    else setSort('recent')
   }
 
-  const activeTab = filters.tab || 'todo'
-  const tabStyle = TAB_COLOR[activeTab] || TAB_COLOR.todo
+  const activeTab  = filters.tab || 'todo'
+  const tabStyle   = TAB_COLOR[activeTab] || TAB_COLOR.todo
   const accentColor = tabStyle.color
-  const feedBg = tabStyle.bg
+  const feedBg     = tabStyle.bg
 
   return (
     <div className="page-enter max-w-2xl mx-auto">
       <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
-
       <BannerCarousel />
 
       <ErrorBoundary>
         <FilterBar filters={filters} setFilters={setFilters} />
       </ErrorBoundary>
 
-      {/* Barra de ordenamiento */}
       <div className="flex items-center justify-between mb-2.5">
         <span className="text-[11px] text-ink-400">
           {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
@@ -228,7 +230,6 @@ export default function FeedPage() {
         </button>
       )}
 
-      {/* Posts */}
       {loading ? (
         <div className="space-y-3">
           {[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}

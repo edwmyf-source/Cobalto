@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ToastProvider } from './components/shared/Toast'
@@ -12,19 +12,12 @@ import { routes } from './routes'
 const router = createBrowserRouter(routes)
 
 function AppInner() {
-  const { session, profile, loading, error, mfaRequired, setMfaRequired, refreshProfile } = useAuth()
+  const { session, profile, loading, error, mfaRequired, setMfaRequired } = useAuth()
   const [splashDone, setSplashDone] = useState(false)
-  const [profileRetried, setProfileRetried] = useState(false)
   const onSplashDone = useCallback(() => setSplashDone(true), [])
 
-  // Si profile es null pero hay sesión, getProfile pudo fallar: reintentar una vez.
-  useEffect(() => {
-    if (!profile && session?.user?.id && !profileRetried) {
-      setProfileRetried(true)
-      refreshProfile?.()
-    }
-  }, [profile, session?.user?.id, profileRetried, refreshProfile])
-
+  // Splash y auth corren EN PARALELO: cuando el splash termina (400ms),
+  // la sesión ya está casi lista. Eliminamos el retry: AuthContext maneja eso.
   if (!splashDone) return <BrandSplash onDone={onSplashDone} />
 
   if (loading) {
@@ -47,7 +40,6 @@ function AppInner() {
 
   if (!session) return <AuthScreen />
 
-  // Sesión existe pero hay factor MFA pendiente de verificar
   if (mfaRequired) {
     return (
       <div className="min-h-screen bg-ink-100 flex items-center justify-center p-4">
@@ -57,15 +49,6 @@ function AppInner() {
             onCancel={() => { import('./api/auth').then(m => m.signOut()) }}
           />
         </div>
-      </div>
-    )
-  }
-
-  // Mientras reintentamos cargar el perfil, mostramos spinner (no el setup)
-  if (!profile && !profileRetried) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
-        <Spinner size={28} className="text-brand-600" />
       </div>
     )
   }

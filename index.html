@@ -3,26 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Preconnect: Supabase (acelera la primera petición de datos) -->
+
+    <!-- DNS/conexión temprana: reduce latencia de primera petición de datos -->
     <link rel="preconnect" href="https://oazbsvkysymahdudiodi.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://oazbsvkysymahdudiodi.supabase.co" />
-    <!-- Preconnect: Google Fonts -->
+    <!-- Storage de Supabase (avatares, imágenes de posts) -->
+    <link rel="preconnect" href="https://oazbsvkysymahdudiodi.supabase.co" crossorigin />
+
+    <!-- Fuente: preconnect primero, luego carga no-bloqueante -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Fuente no bloqueante: el primer render usa la fuente del sistema,
-         DM Sans carga en segundo plano y reemplaza sin FOUC perceptible -->
+    <!-- Solo 400 y 600: eliminamos 500 y 700 que no se usan en el critical path -->
     <link rel="preload" as="style"
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" />
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" />
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap"
       media="print" onload="this.media='all'" />
     <noscript>
       <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" />
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" />
     </noscript>
+
     <title>LITIO — Impulsamos a conectar el sector químico</title>
     <meta name="description" content="Red social B2B para laboratorio e industria en Colombia. Impulsamos a conectar el sector químico." />
     <meta name="theme-color" content="#1b1330" />
+
+    <!-- Evita FOUC: el fondo aparece antes del JS -->
+    <style>
+      body { background: #f6f8fc; margin: 0; }
+      #root { min-height: 100vh; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

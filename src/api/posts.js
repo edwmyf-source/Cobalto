@@ -4,19 +4,17 @@ const MAX_FILE_MB = 15
 const UPLOAD_TIMEOUT_MS = 30_000
 
 export const uploadMedia = async (file, authorId) => {
-  // Validar tamaño antes de intentar subir
   if (file.size > MAX_FILE_MB * 1024 * 1024) {
     throw new Error(`El archivo "${file.name}" supera el límite de ${MAX_FILE_MB} MB.`)
   }
   const ext = file.name.split('.').pop().toLowerCase()
   const path = `${authorId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-  // Timeout de 30s: si Storage no responde, lanza error en lugar de congelarse
   const uploadPromise = supabase.storage
     .from('post-media')
     .upload(path, file, { cacheControl: '3600', upsert: false })
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error(`La subida de "${file.name}" tardó demasiado. Intenta con una conexión más estable.`)), UPLOAD_TIMEOUT_MS)
+    setTimeout(() => reject(new Error(`La subida de "${file.name}" tardó demasiado.`)), UPLOAD_TIMEOUT_MS)
   )
   const { error } = await Promise.race([uploadPromise, timeoutPromise])
   if (error) throw error
@@ -37,7 +35,6 @@ export const createPost = async (payload, mediaFiles = []) => {
     intent:      intent      || 'ofrecen',
     media: media.length > 0 ? media : null,
   }
-  // Intentar con event_date; si la columna no existe, reintentar sin ella
   let { data, error } = await supabase
     .from('posts')
     .insert({ ...baseRow, event_date: event_date || null })
@@ -53,7 +50,6 @@ export const createPost = async (payload, mediaFiles = []) => {
   return data
 }
 
-// Próximos eventos: posts con event_date futura, ordenados por fecha, máximo 3
 export const getUpcomingEvents = async () => {
   const today = new Date().toISOString().slice(0, 10)
   const { data, error } = await supabase
@@ -67,8 +63,6 @@ export const getUpcomingEvents = async () => {
   return data || []
 }
 
-// ─── SCORE DE ENGAGEMENT ────────────────────────────────────────────────────
-// score = (reacciones * 3) + (comentarios * 5) + decaimiento temporal
 const engagementScore = (post) => {
   const ageHours = (Date.now() - new Date(post.created_at)) / 3_600_000
   const reactions = post.reaction_count || 0
@@ -78,11 +72,8 @@ const engagementScore = (post) => {
 }
 
 export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smart', userId } = {}) => {
-  // Smart sort: trae el doble para tener margen de ranking sin desperdiciar el triple
   const fetchLimit = sort === 'smart' ? Math.min(limit * 2, 40) : limit
 
-  // Columnas base. event_date es opcional: si la columna no existe en la BD,
-  // reintentamos sin ella para que el feed nunca se rompa.
   const buildSelect = (withEventDate) => `
       id, author_id, title, content, category, subcategory, location, intent, media, created_at${withEventDate ? ', event_date' : ''},
       profiles!posts_author_id_fkey(id, full_name, identity_mode, identity_number, city, avatar_url),
@@ -115,7 +106,16 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
     return q
   }
 
-  let { data, error } = await runQuery(true)
+  // ── PARALELO: posts + mis reactions en una sola ronda de red ──────────────
+  // Antes: posts → (esperar) → reactions. Ahora: ambas en paralelo.
+  // Cuando userId no existe, reactionsPromise resuelve inmediatamente.
+  const postsPromise = runQuery(true)
+  const reactionsPromise = userId
+    ? supabase.from('reactions').select('post_id, type').eq('user_id', userId)
+    : Promise.resolve({ data: [] })
+
+  let [{ data, error }, { data: myReactions }] = await Promise.all([postsPromise, reactionsPromise])
+
   // Si falla por columna event_date inexistente, reintentar sin ella
   if (error && /event_date/.test(error.message || '')) {
     console.warn('Columna event_date no existe — reintentando sin ella')
@@ -123,28 +123,21 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
   }
   if (error) throw error
 
+  // Índice de mis reactions por post_id
+  const byPost = {}
+  for (const r of (myReactions || [])) {
+    (byPost[r.post_id] ||= []).push({ type: r.type, user_id: userId })
+  }
+
   let posts = (data || []).map(p => ({
     ...p,
     reaction_count: p.reaction_count?.[0]?.count ?? 0,
     comment_count:  p.comment_count?.[0]?.count  ?? 0,
-    reactions: [],
+    reactions: byPost[p.id] || [],
   }))
 
-  // Una sola query para saber a cuáles de ESTOS posts reaccioné yo
-  if (userId && posts.length > 0) {
-    const ids = posts.map(p => p.id)
-    const { data: mine } = await supabase
-      .from('reactions')
-      .select('post_id, type')
-      .eq('user_id', userId)
-      .in('post_id', ids)
-    if (mine) {
-      const byPost = {}
-      for (const r of mine) (byPost[r.post_id] ||= []).push({ type: r.type, user_id: userId })
-      posts = posts.map(p => ({ ...p, reactions: byPost[p.id] || [] }))
-    }
-  }
-
+  // NOTA: myReactions trae TODAS las reactions del user, no solo las de esta página.
+  // Filtramos en el índice solo los IDs que están en este batch.
   if (sort === 'smart' && !cursor) {
     posts = posts
       .map(p => ({ ...p, _score: engagementScore(p) }))
@@ -157,7 +150,6 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
   return posts
 }
 
-// Posts trending: top 5 últimas 72h
 export const getTrending = async () => {
   const since = new Date(Date.now() - 72 * 3_600_000).toISOString()
   const { data, error } = await supabase
