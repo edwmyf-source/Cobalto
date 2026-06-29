@@ -1,5 +1,5 @@
-// Logo de marca: símbolo del Litio (Li), tono violeta oscuro.
-export default function LitioMark({ size = 32, rounded = 'rounded-2xl' }) {
+// Logo de marca: símbolo del Rodio (Ro), tono violeta oscuro.
+export default function RodioMark({ size = 32, rounded = 'rounded-2xl' }) {
   return (
     <div
       className={`${rounded} flex items-center justify-center flex-shrink-0 select-none`}

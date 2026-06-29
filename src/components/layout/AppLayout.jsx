@@ -20,7 +20,7 @@ export default function AppLayout() {
   const [unreadCount, setUnreadCount] = useState(0)
 
   const currentTab = '/' + (location.pathname.split('/')[1] || 'feed')
-  const title = titles[currentTab] || 'Litio'
+  const title = titles[currentTab] || 'Rodio'
   const lastFetchRef = useRef(0)
 
   const refreshUnread = useCallback(() => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Gift, Rocket, EyeOff, Lock, MessageCircle, FlaskConical } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
-import LitioMark from '../shared/LitioMark'
+import RodioMark from '../shared/RodioMark'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
@@ -38,22 +38,21 @@ export default function AuthScreen() {
         {/* PANEL IZQUIERDO */}
         <div className="bg-sidebar text-white p-5 md:p-10 md:w-[45%] flex flex-col justify-center">
           <div className="flex items-center gap-2.5 mb-5 md:mb-8">
-            <LitioMark size={46} />
-            <span className="font-extrabold text-[26px] tracking-wide">LITIO</span>
+            <RodioMark size={46} />
+            <span className="font-extrabold text-[26px] tracking-wide">RODIO</span>
           </div>
 
           {/* Headline principal */}
-          <div className="mb-3 md:mb-4">
-            <div className="text-2xl md:text-[32px] font-extrabold leading-[1.12] text-white">
-              Impulsamos a <span style={{ color: '#a78bfa' }}>conectar</span> el sector <span style={{ color: '#a78bfa' }}>químico</span>.
-            </div>
+          <div className="mb-4 md:mb-6">
+            <p className="text-2xl md:text-[30px] font-extrabold leading-tight text-white mb-1">
+              Punto de encuentro
+            </p>
+            <p className="text-2xl md:text-[30px] font-extrabold leading-tight" style={{ color: '#a78bfa' }}>
+              de la industria química.
+            </p>
           </div>
 
           <div className="w-10 h-[3px] bg-brand-600 rounded-full mb-4 md:mb-5"></div>
-
-          <p className="text-base md:text-lg font-semibold text-white mb-5 md:mb-7">
-            El punto de encuentro de la industria química.
-          </p>
 
           {/* Métricas — solo desktop */}
           <div className="hidden md:grid grid-cols-2 gap-2.5 mb-6">

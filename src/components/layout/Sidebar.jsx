@@ -6,7 +6,7 @@ import { getUpcomingEvents } from '../../api/posts'
 import { publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
-import LitioMark from '../shared/LitioMark'
+import RodioMark from '../shared/RodioMark'
 
 let _eventsCache = null
 let _eventsTs = 0
@@ -67,8 +67,8 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[220px] bg-gradient-to-b from-violet-950 via-[#1b1330] to-violet-950 shadow-2xl flex flex-col z-40">
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10 flex-shrink-0">
-        <LitioMark size={32} />
-        <span className="font-bold text-base text-white block leading-tight tracking-wide">LITIO</span>
+        <RodioMark size={32} />
+        <span className="font-bold text-base text-white block leading-tight tracking-wide">RODIO</span>
       </div>
 
       <div className="px-3 mt-4 mb-2 flex-shrink-0">
