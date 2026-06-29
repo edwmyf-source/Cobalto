@@ -11,9 +11,10 @@ export const hasSupabaseEnv = urlValid && keyValid
 export const supabase = hasSupabaseEnv
   ? createClient(url, key, {
       auth: {
-        persistSession:     true,
-        autoRefreshToken:   true,
+        persistSession:     true,      // guarda en localStorage → sobrevive cierres del navegador
+        autoRefreshToken:   true,      // renueva el token automáticamente antes de que expire
         detectSessionInUrl: true,
+        storageKey:         'rodio-auth', // clave única, evita conflictos con otras apps
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
       },
       realtime: {
