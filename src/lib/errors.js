@@ -25,5 +25,6 @@ export function safeErrorMessage(err) {
   if (import.meta.env.DEV) {
     return `Error: ${msg}`
   }
-  return 'Algo salió mal. Intenta de nuevo.'
+  // TEMPORAL: mostrar error real para diagnóstico en producción
+  return `Error: ${msg}`
 }
