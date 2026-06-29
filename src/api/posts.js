@@ -118,16 +118,21 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
   if (error) throw error
 
   // Mis reactions, pero SOLO de los posts que estoy viendo ahora.
-  // Antes traía TODAS mis reactions históricas → no escalaba con el tiempo.
+  // Envuelto en try/catch: si esta query falla, el feed igual se muestra
+  // (solo se pierde el resaltado de "ya reaccioné"), nunca rompe todo.
   let myReactions = []
   if (userId && data && data.length > 0) {
-    const postIds = data.map(p => p.id)
-    const { data: mine } = await supabase
-      .from('reactions')
-      .select('post_id, type')
-      .eq('user_id', userId)
-      .in('post_id', postIds)
-    myReactions = mine || []
+    try {
+      const postIds = data.map(p => p.id)
+      const { data: mine } = await supabase
+        .from('reactions')
+        .select('post_id, type')
+        .eq('user_id', userId)
+        .in('post_id', postIds)
+      myReactions = mine || []
+    } catch (e) {
+      console.warn('No se pudieron cargar mis reacciones:', e.message)
+    }
   }
 
   // Índice de mis reactions por post_id
