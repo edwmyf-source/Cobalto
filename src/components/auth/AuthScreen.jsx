@@ -7,10 +7,8 @@ import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
 
 const TAGLINES = [
-  { line1: 'Punto de encuentro',       line2: 'de la industria química.' },
-  { line1: 'Impulsamos a conectar',    line2: 'el sector químico.' },
-  { line1: 'Compra, vende y colabora', line2: 'con la industria.' },
-  { line1: 'Tu red profesional',       line2: 'de laboratorio e industria.' },
+  { line1: 'Punto de encuentro',    line2: 'de la industria química.' },
+  { line1: 'Impulsamos a conectar', line2: 'el sector químico.' },
 ]
 
 function TaglineRotator() {
