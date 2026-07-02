@@ -1,12 +1,20 @@
 import { useEffect, useRef } from 'react'
 
+// El splash completo (3s) solo se muestra una vez por sesión del navegador.
+// En recargas (F5) dura 600ms — suficiente para tapar el arranque sin frenar al usuario.
+const SPLASH_SEEN_KEY = 'rodio-splash-seen'
+
 export default function BrandSplash({ onDone }) {
   const doneRef = useRef(false)
 
   useEffect(() => {
+    let seen = false
+    try { seen = sessionStorage.getItem(SPLASH_SEEN_KEY) === '1' } catch {}
+    const duration = seen ? 600 : 3000
+    try { sessionStorage.setItem(SPLASH_SEEN_KEY, '1') } catch {}
     const t = setTimeout(() => {
       if (!doneRef.current) { doneRef.current = true; onDone() }
-    }, 3000)
+    }, duration)
     return () => clearTimeout(t)
   }, [onDone])
 

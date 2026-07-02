@@ -135,7 +135,12 @@ export function AuthProvider({ children }) {
       if (mounted) { setError(e.message); setLoading(false) }
     })
 
-    const { data: sub } = supabase.auth.onAuthStateChange(async (event, ns) => {
+    // IMPORTANTE: el callback de onAuthStateChange NO debe ser async ni hacer
+    // await de llamadas a Supabase. supabase-js mantiene un lock interno mientras
+    // corre este callback; si dentro esperamos otra llamada (getProfile, mfa...),
+    // esa llamada espera el lock → DEADLOCK → todas las queries se cuelgan y la
+    // app queda pegada en el spinner al recargar. Fix oficial: diferir con setTimeout.
+    const { data: sub } = supabase.auth.onAuthStateChange((event, ns) => {
       if (!mounted) return
 
       if (event === 'TOKEN_REFRESHED') {
@@ -153,15 +158,19 @@ export function AuthProvider({ children }) {
 
       setSession(ns)
       if (ns?.user) {
-        // Mostrar cache primero, refrescar después
+        // Mostrar cache primero, refrescar después (fuera del lock de auth)
         const cached = loadCachedProfile(ns.user.id)
         if (cached) setProfile(cached)
-        await Promise.all([checkMFA(ns), syncProfile(ns.user.id)])
+        setTimeout(() => {
+          if (!mounted) return
+          checkMFA(ns)
+          syncProfile(ns.user.id)
+        }, 0)
       } else {
         setProfile(null)
         clearCachedProfile()
       }
-      if (mounted) setLoading(false)
+      setLoading(false)
     })
 
     return () => { mounted = false; sub.subscription.unsubscribe() }
