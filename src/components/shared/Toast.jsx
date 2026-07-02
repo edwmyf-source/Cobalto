@@ -21,9 +21,9 @@ export function ToastProvider({ children }) {
   return (
     <ToastCtx.Provider value={toast}>
       {children}
-      <div className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-2 max-w-[calc(100vw-2rem)] md:max-w-sm">
+      <div className="fixed top-4 inset-x-4 md:inset-x-auto md:top-6 md:right-6 z-[60] flex flex-col items-center md:items-end gap-2 pointer-events-none">
         {toasts.map(t => (
-          <div key={t.id} className={`px-4 py-2 rounded-2xl border text-sm font-medium ${styles[t.type]}`}>
+          <div key={t.id} className={`px-4 py-2 rounded-2xl border text-sm font-medium shadow-lg pointer-events-auto max-w-[calc(100vw-2rem)] md:max-w-sm ${styles[t.type]}`}>
             {t.msg}
           </div>
         ))}

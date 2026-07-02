@@ -2,19 +2,12 @@ import { supabase } from './supabase'
 
 export const getCommunityStats = async () => {
   try {
-    const { count: postsCount } = await supabase
-      .from('posts')
-      .select('id', { count: 'exact', head: true })
-
-    const { count: reactionsCount } = await supabase
-      .from('reactions')
-      .select('id', { count: 'exact', head: true })
-
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-    const { count: activeWeek } = await supabase
-      .from('profiles')
-      .select('id', { count: 'exact', head: true })
-      .gte('updated_at', weekAgo)
+    const [{ count: postsCount }, { count: reactionsCount }, { count: activeWeek }] = await Promise.all([
+      supabase.from('posts').select('id', { count: 'exact', head: true }),
+      supabase.from('reactions').select('id', { count: 'exact', head: true }),
+      supabase.from('profiles').select('id', { count: 'exact', head: true }).gte('updated_at', weekAgo),
+    ])
 
     return {
       connections: reactionsCount || 0,

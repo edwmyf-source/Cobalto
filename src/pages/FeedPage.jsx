@@ -49,7 +49,7 @@ function useDebounce(value, ms) {
 }
 
 export default function FeedPage() {
-  const { session, loading: authLoading } = useAuth()
+  const { session, profile, loading: authLoading } = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
 
@@ -214,6 +214,15 @@ export default function FeedPage() {
     setLastPublishedId(newPost?.id || null)
     setPublishOpen(false)
     setSuccessOpen(true)
+    // Optimista: el post aparece YA en el feed, sin esperar el refetch de red
+    if (newPost?.id) {
+      const optimistic = {
+        ...newPost,
+        profiles: profile || null,
+        reaction_count: 0, comment_count: 0, reactions: [],
+      }
+      setPosts(p => [optimistic, ...p.filter(x => x.id !== newPost.id)])
+    }
     fetchPosts()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }

@@ -33,6 +33,22 @@ export default function AppLayout() {
   }, [session?.user?.id])
 
   useEffect(() => { refreshUnread() }, [refreshUnread, location.pathname])
+
+  // Precargar el código de las otras páginas cuando el navegador está ocioso.
+  // Así, al tocar Chats/Notificaciones/Perfil el chunk ya está descargado → cambio instantáneo.
+  useEffect(() => {
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1500))
+    const id = idle(() => {
+      import('../../pages/ChatsPage')
+      import('../../pages/NotificationsPage')
+      import('../../pages/UserProfilePage')
+      import('../../pages/ProfilePage')
+    })
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(id)
+      else clearTimeout(id)
+    }
+  }, [])
   // Filtro server-side: solo recibo MIS notificaciones, no las de los 300 usuarios
   useRealtime('notifications', 'INSERT', useCallback(() => { refreshUnread() }, [refreshUnread]),
     session?.user?.id ? `user_id=eq.${session.user.id}` : null)
