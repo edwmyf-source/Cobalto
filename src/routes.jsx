@@ -13,6 +13,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'))
+const HerramientasPage = lazy(() => import('./pages/HerramientasPage'))
 
 function Loader() {
   return (
@@ -49,6 +50,7 @@ export const routes = [
       { path: 'profile', element: <Page><ProfilePage /></Page> },
       { path: 'u/:userId', element: <Page><UserProfilePage /></Page> },
       { path: 'contact', element: <Page><ContactPage /></Page> },
+      { path: 'herramientas', element: <Page><HerramientasPage /></Page> },
       {
         path: 'admin',
         element: <RequireAdmin><Page><AdminPage /></Page></RequireAdmin>,

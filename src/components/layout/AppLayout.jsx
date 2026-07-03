@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, User, HelpCircle, Lock, Plus } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, User, HelpCircle, Lock, Plus, Wrench } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -59,6 +59,7 @@ export default function AppLayout() {
     { id: '/chats',         label: 'Inbox',  icon: MessageSquare },
     { id: '/notifications', label: 'Notif.', icon: Bell, badge: unreadCount },
     { id: myId ? `/u/${myId}` : '/profile', label: 'Perfil', icon: User, match: '/u/' },
+    { id: '/herramientas', label: 'Herram.', icon: Wrench },
     { id: '/contact',       label: 'Soporte', icon: HelpCircle },
     ...(isAdmin(profile, session?.user?.email) ? [{ id: '/admin', label: 'Admin', icon: Lock }] : []),
   ]
