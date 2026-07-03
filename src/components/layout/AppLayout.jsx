@@ -98,26 +98,26 @@ export default function AppLayout() {
 
       {/* ── Nav móvil ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40"
-        style={{ background: 'rgba(255,255,255,0.80)', backdropFilter: 'blur(20px)', borderTop: '0.5px solid rgba(147,197,253,0.4)' }}>
+        style={{ background: '#0d1b3e', borderTop: '0.5px solid rgba(255,255,255,0.08)' }}>
 
         {/* Menú perfil — se despliega hacia arriba desde la esquina derecha */}
         {profileMenuOpen && (
           <div ref={menuRef} className="absolute bottom-full right-2 mb-2 rounded-2xl overflow-hidden"
-            style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', border: '0.5px solid rgba(147,197,253,0.5)', boxShadow: '0 8px 32px rgba(37,99,235,0.15)', minWidth: 180 }}>
+            style={{ background: '#fff', border: '0.5px solid #e8eaef', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 180 }}>
             {/* Cabecera */}
-            <div className="px-4 py-3 border-b" style={{ borderColor: 'rgba(147,197,253,0.3)' }}>
-              <p className="text-sm font-semibold" style={{ color: '#1e3a5f' }}>{name}</p>
-              <p className="text-xs" style={{ color: '#93c5fd' }}>{session?.user?.email}</p>
+            <div className="px-4 py-3 border-b" style={{ borderColor: '#e8eaef' }}>
+              <p className="text-sm font-semibold" style={{ color: '#0d1b3e' }}>{name}</p>
+              <p className="text-xs" style={{ color: '#9fa8da' }}>{session?.user?.email}</p>
             </div>
             {profileMenuItems.map(item => {
               const Icon = item.icon
               return (
                 <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
                   className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-blue-50"
-                  style={{ color: '#1e3a5f' }}>
-                  <Icon size={16} style={{ color: '#2563eb' }} />
+                  style={{ color: '#0d1b3e' }}>
+                  <Icon size={16} style={{ color: '#1a237e' }} />
                   {item.label}
-                  <ChevronRight size={14} className="ml-auto" style={{ color: '#93c5fd' }} />
+                  <ChevronRight size={14} className="ml-auto" style={{ color: '#c5cae9' }} />
                 </button>
               )
             })}
@@ -142,8 +142,8 @@ export default function AppLayout() {
               <button key={item.id} onClick={() => navigate(item.id)}
                 className="flex-1 flex flex-col items-center gap-1 pt-1"
                 aria-label={item.label}>
-                <Icon size={24} style={{ color: active ? '#2563eb' : '#93c5fd' }} />
-                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#2563eb' : 'transparent' }} />
+                <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
+                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#7986cb' : 'transparent' }} />
               </button>
             )
           })}
@@ -152,7 +152,7 @@ export default function AppLayout() {
           <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
             className="flex-1 flex justify-center items-end pb-1">
             <span className="w-[58px] h-[58px] rounded-full flex items-center justify-center -mb-1 active:scale-95 transition-all"
-              style={{ background: '#2563eb', boxShadow: '0 6px 20px rgba(37,99,235,0.45)', border: '3px solid rgba(255,255,255,0.9)' }}>
+              style={{ background: '#1a237e', boxShadow: '0 6px 20px rgba(26,35,126,0.5)', border: '3px solid rgba(255,255,255,0.15)' }}>
               <Plus size={28} color="#fff" strokeWidth={2.5} />
             </span>
           </button>
@@ -166,14 +166,14 @@ export default function AppLayout() {
                 className="flex-1 flex flex-col items-center gap-1 pt-1 relative"
                 aria-label={item.label}>
                 <div className="relative">
-                  <Icon size={24} style={{ color: active ? '#2563eb' : '#93c5fd' }} />
+                  <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
                   {item.badge > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                       {item.badge > 99 ? '99+' : item.badge}
                     </span>
                   )}
                 </div>
-                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#2563eb' : 'transparent' }} />
+                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#7986cb' : 'transparent' }} />
               </button>
             )
           })}
@@ -183,7 +183,7 @@ export default function AppLayout() {
             className="flex-1 flex flex-col items-center gap-1 pt-1"
             aria-label="Perfil y más opciones">
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all"
-              style={{ background: profileMenuOpen ? '#1d4ed8' : '#2563eb', boxShadow: profileMenuOpen ? '0 0 0 2px #93c5fd' : 'none' }}>
+              style={{ background: profileMenuOpen ? '#0d1b3e' : '#1a237e', boxShadow: profileMenuOpen ? '0 0 0 2px #7986cb' : 'none' }}>
               {initials}
             </div>
             <div className="w-1 h-1 rounded-full" style={{ background: [myId ? `/u/${myId}` : '/profile', '/contact', '/admin'].some(p => currentTab === p) ? '#2563eb' : 'transparent' }} />

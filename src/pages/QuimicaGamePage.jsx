@@ -531,7 +531,7 @@ export default function QuimicaGamePage() {
 
   return (
     <div className="max-w-lg mx-auto" style={{ paddingBottom: 100 }}>
-      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(12px)', border: '0.5px solid rgba(147,197,253,0.5)' }}>
+      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: '#ffffff', border: '0.5px solid #e8eaef' }}>
         {pantalla === 'inicio' && <PantallaInicio onStart={iniciar} />}
         {pantalla === 'juego' && <JuegoPrincipal key={Date.now()} onGameOver={gameOver} />}
         {pantalla === 'final' && statsFinales && <PantallaFinal stats={statsFinales} onReiniciar={reiniciar} />}

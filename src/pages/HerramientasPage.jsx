@@ -670,7 +670,7 @@ export default function HerramientasPage() {
       </div>
 
       {/* Card calculadora */}
-      <div className="rounded-2xl overflow-hidden shadow-sm" style={{ background: 'rgba(255,255,255,0.80)', backdropFilter: 'blur(12px)', border: '0.5px solid rgba(147,197,253,0.5)' }}>
+      <div className="rounded-2xl overflow-hidden shadow-sm" style={{ background: '#ffffff', border: '0.5px solid #e8eaef' }}>
 
         {/* Sub-tabs — solo Laboral y Químico */}
         {tabs.length > 0 && (

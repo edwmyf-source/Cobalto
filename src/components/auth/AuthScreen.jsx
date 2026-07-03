@@ -35,10 +35,10 @@ function TaglineRotator() {
       transform: visible ? 'translateY(0)' : 'translateY(6px)',
       transition: 'opacity 350ms ease, transform 350ms ease',
     }}>
-      <p className="text-2xl md:text-[30px] font-extrabold leading-tight text-white mb-1">
+      <p className="text-3xl md:text-[42px] font-extrabold leading-tight text-white mb-1">
         {line1}
       </p>
-      <p className="text-2xl md:text-[30px] font-extrabold leading-tight" style={{ color: '#a78bfa' }}>
+      <p className="text-3xl md:text-[42px] font-extrabold leading-tight" style={{ color: '#9fa8da' }}>
         {line2}
       </p>
     </div>
@@ -71,11 +71,11 @@ export default function AuthScreen() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-ink-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{background:"#f0f2f8"}}>
       <div className="w-full max-w-4xl rounded-3xl overflow-hidden border border-white/10 flex flex-col md:flex-row shadow-2xl">
 
         {/* PANEL IZQUIERDO */}
-        <div className="bg-sidebar text-white p-5 md:p-10 md:w-[45%] flex flex-col justify-center">
+        <div className="text-white p-6 md:p-10 md:w-[45%] flex flex-col justify-center" style={{background:"#0d1b3e"}}>
           <div className="flex items-center gap-2.5 mb-5 md:mb-8">
             <RodioMark size={46} />
             <span className="font-extrabold text-[26px] tracking-wide">RODIO</span>
@@ -84,36 +84,36 @@ export default function AuthScreen() {
           {/* Headline rotativo cada 4s */}
           <TaglineRotator />
 
-          <div className="w-10 h-[3px] bg-brand-600 rounded-full mb-4 md:mb-5"></div>
+          <div className="w-10 h-[3px] rounded-full mb-4 md:mb-5" style={{background:"#1a237e"}}></div>
 
           {/* Métricas — solo desktop */}
           <div className="hidden md:grid grid-cols-2 gap-2.5 mb-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5">
+            <div className="rounded-2xl p-3.5" style={{background:"rgba(255,255,255,0.06)",border:"0.5px solid rgba(255,255,255,0.12)"}}>
               <p className="text-[22px] font-medium text-white leading-none tracking-tight">
                 {stats.connections.toLocaleString('es-CO')}
               </p>
-              <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#8a7fb0' }}>Conexiones</p>
+              <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#6b7db0' }}>Conexiones</p>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5">
+            <div className="rounded-2xl p-3.5" style={{background:"rgba(255,255,255,0.06)",border:"0.5px solid rgba(255,255,255,0.12)"}}>
               <p className="text-[22px] font-medium text-white leading-none tracking-tight">
                 {stats.requests.toLocaleString('es-CO')}
               </p>
-              <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#8a7fb0' }}>Solicitudes</p>
+              <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#6b7db0' }}>Solicitudes</p>
             </div>
           </div>
 
           <div key={groupIdx} className="hidden md:flex flex-col space-y-3 transition-opacity duration-500">
             {ADVANTAGE_GROUPS[groupIdx].map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-2.5">
-                <Icon size={16} className="text-brand-500 flex-shrink-0" />
-                <span className="text-xs" style={{ color: '#c4b5fd' }}>{text}</span>
+                <Icon size={16} className="flex-shrink-0" style={{color:"#7986cb"}} />
+                <span className="text-xs" style={{ color: '#c5cae9' }}>{text}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* PANEL DERECHO */}
-        <div className="p-5 md:p-10 md:w-[55%] flex flex-col justify-center bg-white">
+        <div className="p-5 md:p-10 md:w-[55%] flex flex-col justify-center" style={{background:"#ffffff"}}>
           {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
           {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
           {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}
