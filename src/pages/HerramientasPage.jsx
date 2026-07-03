@@ -79,26 +79,26 @@ function TabMensual() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Tipo de contrato actual</label>
-          <select value={tipo} onChange={e => setTipo(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Tipo de contrato actual</label>
+          <select value={tipo} onChange={e => setTipo(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
             <option value="servicios">Prestación de servicios</option>
             <option value="laboral">Contrato laboral</option>
           </select>
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">{tipo === 'servicios' ? 'Honorario mensual' : 'Salario mensual'}</label>
-          <input value={ingreso} onChange={e => setIngreso(formatMoney(e.target.value))} placeholder="$0" inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">{tipo === 'servicios' ? 'Honorario mensual' : 'Salario mensual'}</label>
+          <input value={ingreso} onChange={e => setIngreso(formatMoney(e.target.value))} placeholder="$0" inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">SMMLV 2026</label>
-          <input value={sm} onChange={e => setSm(formatMoney(e.target.value))} placeholder={cop0(SMMLV_DEFAULT)} inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">SMMLV 2026</label>
+          <input value={sm} onChange={e => setSm(formatMoney(e.target.value))} placeholder={cop0(SMMLV_DEFAULT)} inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Clase de riesgo ARL</label>
-          <select value={arl} onChange={e => setArl(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Clase de riesgo ARL</label>
+          <select value={arl} onChange={e => setArl(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
             <option value="1">I — 0.522% (oficina, admin)</option>
             <option value="2">II — 1.044% (lab, comercio)</option>
             <option value="3">III — 2.436% (química, técnico)</option>
@@ -107,9 +107,9 @@ function TabMensual() {
           </select>
         </div>
       </div>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Calcular equivalencia</button>
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Calcular equivalencia</button>
       {resultado && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="bg-brand-50 border border-brand-200 rounded-2xl p-4 text-center">
             <p className="text-xs text-brand-600 font-semibold mb-1">Tu ingreso neto mensual</p>
             <p className="text-3xl font-black text-brand-700">{cop0(resultado.neto)}</p>
@@ -163,15 +163,15 @@ function TabAnual() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">SMMLV 2026</label>
-          <input value={sm} onChange={e => setSm(formatMoney(e.target.value))} placeholder={cop0(SMMLV_DEFAULT)} inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">SMMLV 2026</label>
+          <input value={sm} onChange={e => setSm(formatMoney(e.target.value))} placeholder={cop0(SMMLV_DEFAULT)} inputMode="numeric" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Clase de riesgo ARL</label>
-          <select value={arl} onChange={e => setArl(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Clase de riesgo ARL</label>
+          <select value={arl} onChange={e => setArl(e.target.value)} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
             <option value="1">I — 0.522%</option><option value="2">II — 1.044%</option><option value="3">III — 2.436%</option><option value="4">IV — 4.350%</option><option value="5">V — 6.960%</option>
           </select>
         </div>
@@ -189,10 +189,10 @@ function TabAnual() {
           </tbody>
         </table>
       </div>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Calcular equivalencia anual</button>
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Calcular equivalencia anual</button>
       {resultado && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-2">
             {[
               { label: 'Neto anual (PS)', value: cop0(resultado.totalAnual), color: 'text-sky-700 bg-sky-50 border-sky-200' },
               { label: 'Promedio 12 meses', value: cop0(resultado.promedio12), color: 'text-sky-700 bg-sky-50 border-sky-200' },
@@ -235,20 +235,20 @@ function CalcDiluciones() {
   const unidades = { c1: '%', v1: 'mL / g', c2: '%', v2: 'mL / g' }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div>
-        <label className="block text-xs font-semibold text-neutral-600 mb-1">¿Qué quiero calcular?</label>
-        <select value={incognita} onChange={e => { setIncognita(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+        <label className="block text-xs font-semibold text-neutral-600 mb-0.5">¿Qué quiero calcular?</label>
+        <select value={incognita} onChange={e => { setIncognita(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
           <option value="v1">V₁ — Volumen a tomar de la solución concentrada</option>
           <option value="c1">C₁ — Concentración de la solución madre</option>
           <option value="c2">C₂ — Concentración final deseada</option>
           <option value="v2">V₂ — Volumen final de la dilución</option>
         </select>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         {['c1','v1','c2','v2'].map(k => (
           <div key={k} className={incognita === k ? 'opacity-40 pointer-events-none' : ''}>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">{labels[k]}</label>
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">{labels[k]}</label>
             <div className="flex gap-1">
               <input value={k==='c1'?c1:k==='v1'?v1:k==='c2'?c2:v2}
                 onChange={e => ({c1:setC1,v1:setV1,c2:setC2,v2:setV2}[k])(e.target.value)}
@@ -259,7 +259,7 @@ function CalcDiluciones() {
           </div>
         ))}
       </div>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Calcular (C₁V₁ = C₂V₂)</button>
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Calcular (C₁V₁ = C₂V₂)</button>
       {res && (
         <div className="bg-brand-50 border border-brand-200 rounded-2xl p-4 text-center">
           <p className="text-xs text-brand-600 font-semibold mb-1">{labels[res.incognita]}</p>
@@ -316,30 +316,30 @@ function CalcConversion() {
   const needsDens = desde === 'porcVV'
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Valor a convertir</label>
-          <input value={valor} onChange={e => setValor(e.target.value)} placeholder="0" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Valor a convertir</label>
+          <input value={valor} onChange={e => setValor(e.target.value)} placeholder="0" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Unidad de entrada</label>
-          <select value={desde} onChange={e => { setDesde(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Unidad de entrada</label>
+          <select value={desde} onChange={e => { setDesde(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
             {unidades.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
           </select>
         </div>
         {(needsDens || desde !== 'molL') && (
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">Densidad del soluto (g/mL) <span className="text-neutral-400 font-normal">— para % v/v</span></label>
-            <input value={densidad} onChange={e => setDensidad(e.target.value)} placeholder="1.00" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Densidad del soluto (g/mL) <span className="text-neutral-400 font-normal">— para % v/v</span></label>
+            <input value={densidad} onChange={e => setDensidad(e.target.value)} placeholder="1.00" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
           </div>
         )}
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Peso molecular (g/mol) <span className="text-neutral-400 font-normal">— para molar</span></label>
-          <input value={pmSoluto} onChange={e => setPmSoluto(e.target.value)} placeholder="opcional" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Peso molecular (g/mol) <span className="text-neutral-400 font-normal">— para molar</span></label>
+          <input value={pmSoluto} onChange={e => setPmSoluto(e.target.value)} placeholder="opcional" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
       </div>
-      <button onClick={convertir} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Convertir unidades</button>
+      <button onClick={convertir} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Convertir unidades</button>
       {res && (
         <div className="rounded-2xl border border-neutral-200 overflow-hidden">
           <div className="bg-neutral-50 px-4 py-2 text-xs font-bold text-neutral-500">Equivalencias</div>
@@ -367,24 +367,24 @@ function CalcPureza() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex gap-2">
         <Info size={14} className="text-amber-600 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-amber-800">Calcula cuánto principio activo real hay en una masa de reactivo según su certificado de análisis.</p>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Masa del reactivo (g o kg)</label>
-          <input value={masa} onChange={e => setMasa(e.target.value)} placeholder="100" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Masa del reactivo (g o kg)</label>
+          <input value={masa} onChange={e => setMasa(e.target.value)} placeholder="100" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Pureza del certificado (%)</label>
-          <input value={pureza} onChange={e => setPureza(e.target.value)} placeholder="99.5" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Pureza del certificado (%)</label>
+          <input value={pureza} onChange={e => setPureza(e.target.value)} placeholder="99.5" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
       </div>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Calcular</button>
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Calcular</button>
       {res && (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2">
           <div className="bg-brand-50 border border-brand-200 rounded-2xl p-3 text-center">
             <p className="text-xs text-brand-600 font-semibold mb-1">Masa total</p>
             <p className="text-xl font-black text-brand-700">{fmt4(res.m)}</p>
@@ -431,10 +431,10 @@ function CalcPH() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div>
-        <label className="block text-xs font-semibold text-neutral-600 mb-1">Tipo de cálculo</label>
-        <select value={tipo} onChange={e => { setTipo(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400">
+        <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Tipo de cálculo</label>
+        <select value={tipo} onChange={e => { setTipo(e.target.value); setRes(null) }} className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400">
           <option value="fuerte_acido">Ácido fuerte — pH = -log[H⁺]</option>
           <option value="fuerte_base">Base fuerte — pH = 14 + log[OH⁻]</option>
           <option value="debil">Ácido débil — equilibrio Ka</option>
@@ -444,28 +444,28 @@ function CalcPH() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {(tipo === 'fuerte_acido' || tipo === 'fuerte_base' || tipo === 'debil') && (
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">Concentración (mol/L)</label>
-            <input value={concentracion} onChange={e => setConcentracion(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Concentración (mol/L)</label>
+            <input value={concentracion} onChange={e => setConcentracion(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
           </div>
         )}
         {(tipo === 'debil' || tipo === 'buffer') && (
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">pKa del ácido</label>
-            <input value={pKa} onChange={e => setPKa(e.target.value)} placeholder="4.76" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">pKa del ácido</label>
+            <input value={pKa} onChange={e => setPKa(e.target.value)} placeholder="4.76" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
           </div>
         )}
         {tipo === 'buffer' && (<>
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">[Ácido] (mol/L)</label>
-            <input value={cAcido} onChange={e => setCAcido(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">[Ácido] (mol/L)</label>
+            <input value={cAcido} onChange={e => setCAcido(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-neutral-600 mb-1">[Base conjugada] (mol/L)</label>
-            <input value={cBase} onChange={e => setCBase(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            <label className="block text-xs font-semibold text-neutral-600 mb-0.5">[Base conjugada] (mol/L)</label>
+            <input value={cBase} onChange={e => setCBase(e.target.value)} placeholder="0.1" inputMode="decimal" className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
           </div>
         </>)}
       </div>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">Calcular pH</button>
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">Calcular pH</button>
       {res && (
         <div className="bg-brand-50 border border-brand-200 rounded-2xl p-4 text-center">
           <p className="text-xs text-brand-600 font-semibold mb-1">pH calculado</p>
@@ -522,11 +522,11 @@ function TabCostoMP() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div>
-        <label className="block text-xs font-semibold text-neutral-600 mb-1">Tamaño del batch (g)</label>
+        <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Tamaño del batch (g)</label>
         <input value={totalBatch} onChange={e => setTotalBatch(e.target.value)} placeholder="1000" inputMode="decimal"
-          className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         <p className="text-xs text-neutral-400 mt-1">Ejemplo: 1000 g = 1 kg de producto terminado</p>
       </div>
 
@@ -564,14 +564,14 @@ function TabCostoMP() {
         <Plus size={15} /> Agregar ingrediente
       </button>
 
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">
         Calcular costo de formulación
       </button>
 
       {res && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* Resumen */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             <div className="bg-brand-50 border border-brand-200 rounded-2xl p-3 text-center">
               <p className="text-xs text-brand-600 font-semibold mb-1">Costo batch ({res.batch}g)</p>
               <p className="text-lg font-black text-brand-700">{cop(res.totalCostoBatch)}</p>
@@ -661,21 +661,21 @@ function TabPresentaciones() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="bg-sky-50 border border-sky-200 rounded-xl p-3 flex gap-2">
         <Info size={14} className="text-sky-600 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-sky-800">Ingresa el costo de materia prima por kg del producto terminado (resultado de la calculadora anterior) y define tus presentaciones comerciales.</p>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Costo MP por kg ($)</label>
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Costo MP por kg ($)</label>
           <input value={costoPorKg} onChange={e => setCostoPorKg(e.target.value)} placeholder="0" inputMode="decimal"
-            className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-600 mb-1">Margen de venta (%) <span className="text-neutral-400 font-normal">opcional</span></label>
+          <label className="block text-xs font-semibold text-neutral-600 mb-0.5">Margen de venta (%) <span className="text-neutral-400 font-normal">opcional</span></label>
           <input value={margen} onChange={e => setMargen(e.target.value)} placeholder="30" inputMode="decimal"
-            className="w-full border border-neutral-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            className="w-full border border-neutral-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand-400" />
         </div>
       </div>
 
@@ -699,7 +699,7 @@ function TabPresentaciones() {
       <button onClick={addPres} className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-brand-300 text-brand-600 font-semibold py-2.5 rounded-xl hover:bg-brand-50 transition text-sm">
         <Plus size={15} /> Agregar presentación
       </button>
-      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition text-sm">
+      <button onClick={calcular} className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-xl transition text-sm">
         Calcular costo por presentación
       </button>
 
@@ -820,12 +820,12 @@ export default function HerramientasPage() {
         </div>
 
         {/* Título */}
-        <div className="px-4 pt-4 pb-2">
-          <h2 className="font-black text-neutral-800 text-base">{titulo[tabAct]}</h2>
+        <div className="px-3 pt-3 pb-1">
+          <h2 className="font-bold text-neutral-800 text-sm">{titulo[tabAct]}</h2>
         </div>
 
         {/* Contenido */}
-        <div className="p-4">
+        <div className="p-3">
           {tabAct === 'mensual'        && <TabMensual />}
           {tabAct === 'anual'          && <TabAnual />}
           {tabAct === 'diluciones'     && <CalcDiluciones />}

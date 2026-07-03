@@ -131,17 +131,17 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const goToProfile = () => navigate(`/u/${post.author_id}`)
 
   return (
-    <div className="px-3.5 py-3" style={{background:"rgba(255,255,255,0.72)",backdropFilter:"blur(8px)"}} id={`post-${post.id}`}>
+    <div className="px-4 pt-4 pb-3" style={{background:"rgba(255,255,255,0.75)",backdropFilter:"blur(8px)"}} id={`post-${post.id}`}>
 
       {/* Header */}
-      <div className="flex items-center gap-2.5 mb-2.5">
+      <div className="flex items-start gap-3 mb-3">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={32} />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={48} />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-1">
             <button onClick={goToProfile}
-              className="text-[12.5px] font-medium text-ink-900 hover:text-brand-600 transition-colors leading-none text-left truncate">
+              className="text-[15px] font-semibold leading-snug text-left hover:underline block" style={{color:"#1e3a5f"}}>
               {name}
             </button>
             <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -154,18 +154,19 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
                   {catLabel}
                 </span>
               )}
-              <span className="text-[10px] text-ink-400">{timeAgo(post.created_at)}</span>
+              
               {!isMine && <PostMenu post={post} onReport={() => setReportOpen(true)} />}
             </div>
           </div>
           {prof.city && (
-            <span className="text-[10px] text-ink-400 leading-none">{prof.city}</span>
+            <p className="text-[12px] leading-tight mt-0.5" style={{color:"#6b9fd4"}}>{prof.city}</p>
           )}
+          <p className="text-[11px] mt-0.5" style={{color:"#93c5fd"}}>{timeAgo(post.created_at)}</p>
         </div>
       </div>
 
       {/* Texto muro — un solo bloque, tipografía uniforme */}
-      <p className="text-[13px] text-ink-800 leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-5">
+      <p className="text-[14px] leading-relaxed mb-3 whitespace-pre-wrap break-words line-clamp-5" style={{color:"#1e3a5f"}}>
         {wallText}
       </p>
 
