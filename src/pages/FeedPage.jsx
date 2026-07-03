@@ -305,14 +305,19 @@ export default function FeedPage() {
           </button>
         </div>
       ) : (
-        <div className="space-y-2 rounded-2xl p-2 transition-all" style={{ background: feedBg }}>
-          {posts.map(post => (
-            <PostCard key={post.id} post={post}
-              onContact={handleContact}
-              accentColor={accentColor}
-              contactingId={contactingPost}
-              blockedUsers={blockedUsers}
-            />
+        <div className="rounded-2xl overflow-hidden border border-ink-200 transition-all" style={{ background: '#e2e2e2' }}>
+          {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
+            <div key={post.id}>
+              <PostCard post={post}
+                onContact={handleContact}
+                accentColor={accentColor}
+                contactingId={contactingPost}
+                blockedUsers={blockedUsers}
+              />
+              {idx < arr.length - 1 && (
+                <div style={{ background: '#e2e2e2', height: '7px' }} />
+              )}
+            </div>
           ))}
           <div ref={sentinel} />
           {loadingMore && (
