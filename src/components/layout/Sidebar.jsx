@@ -19,42 +19,17 @@ async function getUpcomingEventsCached() {
   return data
 }
 
-function formatEventDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr + 'T00:00:00')
-  return d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }).replace('.', '')
-}
-
-function UpcomingEventsWidget({ navigate }) {
-  const [events, setEvents] = useState([])
-  useEffect(() => { getUpcomingEventsCached().then(setEvents).catch(() => {}) }, [])
-  if (events.length === 0) return null
-  return (
-    <div className="mx-3 mb-2 flex-shrink-0">
-      <div className="flex items-center gap-1.5 mb-1.5 px-0.5">
-        <Calendar size={11} className="text-brand-400" />
-        <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">Próximos eventos</span>
-      </div>
-      <div className="space-y-1">
-        {events.map(ev => (
-          <button key={ev.id} onClick={() => navigate('/feed')}
-            className="w-full text-left group flex items-center gap-2 px-1 py-0.5 rounded-lg hover:bg-white/5 transition-colors">
-            <span className="text-[9px] font-bold text-brand-300 bg-brand-500/15 rounded px-1 py-0.5 flex-shrink-0 leading-tight whitespace-nowrap">
-              {formatEventDate(ev.event_date)}
-            </span>
-            <span className="text-[10px] text-white/55 group-hover:text-white/90 leading-tight truncate transition-colors">
-              {ev.title}
-            </span>
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 export default function Sidebar({ currentPath, navigate, profile, unreadCount = 0 }) {
   const { session } = useAuth()
   const myId = session?.user?.id
+  const name = publicName(profile)
+  const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+  const [upcomingEvents, setUpcomingEvents] = useState([])
+
+  useEffect(() => {
+    getUpcomingEventsCached().then(setUpcomingEvents).catch(() => {})
+  }, [])
+
   const navItems = [
     { path: '/feed',          label: 'Feed',           icon: LayoutList },
     { path: '/chats',         label: 'Inbox',          icon: MessageSquare },
@@ -66,56 +41,77 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
   if (isAdmin(profile, session?.user?.email)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[220px] bg-gradient-to-b from-violet-950 via-[#1b1330] to-violet-950 shadow-2xl flex flex-col z-40">
-      <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10 flex-shrink-0">
-        <RodioMark size={32} />
-        <span className="font-bold text-base text-white block leading-tight tracking-wide">RODIO</span>
+    <aside className="fixed left-0 top-0 h-screen w-[220px] flex flex-col z-40"
+      style={{ background: 'rgba(30,64,175,0.88)', backdropFilter: 'blur(20px)', borderRight: '0.5px solid rgba(255,255,255,0.15)' }}>
+
+      {/* Logo */}
+      <div className="px-5 pt-6 pb-4 flex items-center gap-2">
+        <RodioMark size={28} />
+        <span className="text-white font-bold text-lg tracking-tight">Rodio</span>
       </div>
 
-      <div className="px-3 mt-4 mb-2 flex-shrink-0">
+      {/* Publicar */}
+      <div className="px-3 mb-4">
         <button onClick={() => navigate('/feed?publish=1')}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 to-violet-600 hover:scale-[1.02] active:bg-brand-700 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl transition-all hover:-translate-y-px hover:shadow-md active:translate-y-0 active:shadow-none">
-          <Plus size={16} />
-          Nueva publicación
+          className="w-full flex items-center justify-center gap-2 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl transition-all hover:opacity-90 active:scale-95"
+          style={{ background: '#2563eb', border: '0.5px solid rgba(255,255,255,0.25)' }}>
+          <Plus size={16} /> Nueva publicación
         </button>
       </div>
 
-      <nav className="flex-1 px-3 mt-2 space-y-0.5 overflow-y-auto min-h-0">
+      {/* Nav */}
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
         {navItems.map(item => {
-          const active = item.match ? currentPath.startsWith(item.match) : currentPath === item.path
           const Icon = item.icon
+          const active = item.match ? currentPath.startsWith(item.match) : currentPath === item.path
           return (
             <button key={item.path} onClick={() => navigate(item.path)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all relative"
-              style={active ? {
-                background: 'linear-gradient(135deg, rgba(124,58,237,0.38), rgba(109,40,217,0.18))',
-                border: '1px solid rgba(139,92,246,0.42)',
-                color: 'white',
-              } : {
-                color: '#6b7280',
-                border: '1px solid transparent',
-              }}>
-              <Icon size={20} style={{ color: active ? '#a78bfa' : '#6b7280' }} />
-              <span className="flex-1 text-left">{item.label}</span>
-              {/* punto activo */}
-              {active && <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />}
-              {item.badge > 0 && (
-                <span className="bg-danger-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                  {item.badge > 99 ? '99+' : item.badge}
-                </span>
-              )}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm transition-all"
+              style={active
+                ? { background: 'rgba(255,255,255,0.18)', color: '#fff', fontWeight: 600 }
+                : { color: 'rgba(255,255,255,0.60)' }}>
+              <div className="relative">
+                <Icon size={18} />
+                {item.badge > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                    {item.badge > 99 ? '99+' : item.badge}
+                  </span>
+                )}
+              </div>
+              {item.label}
             </button>
           )
         })}
       </nav>
 
-      <UpcomingEventsWidget navigate={navigate} />
+      {/* Próximos eventos */}
+      {upcomingEvents.length > 0 && (
+        <div className="mx-3 mb-3 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.10)', border: '0.5px solid rgba(255,255,255,0.15)' }}>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Calendar size={12} style={{ color: '#93c5fd' }} />
+            <span className="text-[11px] font-semibold" style={{ color: '#93c5fd' }}>Próximos eventos</span>
+          </div>
+          {upcomingEvents.slice(0, 2).map(ev => (
+            <div key={ev.id} className="text-[11px] leading-tight mb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>
+              <span className="font-medium" style={{ color: '#fff' }}>{ev.title?.slice(0, 28)}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div className="px-3 pb-4 border-t border-white/10 pt-3 flex-shrink-0">
-        <button onClick={signOut}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-ink-300 hover:bg-white/5 hover:text-white text-sm transition-colors">
-          <LogOut size={18} />
-          <span>Salir</span>
+      {/* Footer usuario */}
+      <div className="px-3 pb-5 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.12)' }}>
+        <div className="flex items-center gap-2.5 mb-2 px-1">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+            style={{ background: '#2563eb', color: '#fff', border: '1.5px solid rgba(255,255,255,0.3)' }}>
+            {initials}
+          </div>
+          <span className="text-sm font-medium truncate" style={{ color: 'rgba(255,255,255,0.85)' }}>{name}</span>
+        </div>
+        <button onClick={() => signOut()}
+          className="w-full flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm transition-all"
+          style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <LogOut size={15} /> Cerrar sesión
         </button>
       </div>
     </aside>

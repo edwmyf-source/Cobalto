@@ -305,7 +305,7 @@ export default function FeedPage() {
           </button>
         </div>
       ) : (
-        <div className="rounded-2xl overflow-hidden border border-ink-200 transition-all" style={{ background: '#e2e2e2' }}>
+        <div className="rounded-2xl overflow-hidden border border-ink-200 transition-all" style={{ background: 'rgba(147,197,253,0.35)' }}>
           {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
             <div key={post.id}>
               <PostCard post={post}
@@ -315,7 +315,7 @@ export default function FeedPage() {
                 blockedUsers={blockedUsers}
               />
               {idx < arr.length - 1 && (
-                <div style={{ background: '#e2e2e2', height: '7px' }} />
+                <div style={{ background: 'rgba(147,197,253,0.35)', height: '7px' }} />
               )}
             </div>
           ))}

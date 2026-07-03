@@ -43,7 +43,7 @@ export default function FilterBar({ filters, setFilters }) {
   const tiendaCat = TIENDA_CATS.find(c => c.value === filters.category)
 
   return (
-    <div className="bg-white border border-ink-300 rounded-2xl mb-2 overflow-hidden">
+    <div className="rounded-2xl mb-2 overflow-hidden" style={{background:"rgba(255,255,255,0.65)",backdropFilter:"blur(12px)",border:"0.5px solid rgba(147,197,253,0.45)"}}>
 
       {/* Tabs + búsqueda */}
       <div className="flex items-center justify-between px-3 pt-2 pb-0">
