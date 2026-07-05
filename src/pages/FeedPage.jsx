@@ -267,62 +267,96 @@ export default function FeedPage() {
   const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
   return (
-    <div className="page-enter">
-      {/* Layout 3 columnas estilo LinkedIn — solo visible en md+ */}
-      <div className="hidden md:flex gap-4 max-w-5xl mx-auto items-start">
+    <div className="page-enter" style={{ paddingBottom: 80 }}>
 
-        {/* ── Columna izquierda: mini perfil ── */}
-        <div className="w-56 flex-shrink-0 sticky top-20 space-y-3">
-          {/* Card perfil */}
-          <div className="bg-white rounded-2xl overflow-hidden border border-ink-200 shadow-sm">
-            {/* Banner */}
-            <div className="h-14 w-full" style={{ background: 'linear-gradient(135deg, #0d1b3e 0%, #1a237e 100%)' }} />
-            <div className="px-3 pb-4 -mt-7">
-              <div className="w-14 h-14 rounded-full border-3 border-white bg-brand-600 flex items-center justify-center text-white font-bold text-lg mb-2 shadow-sm" style={{ border: '3px solid white' }}>
+      {/* ── DESKTOP: Layout 3 columnas tipo LinkedIn ── */}
+      <div className="hidden md:flex gap-4 max-w-5xl mx-auto px-4 pt-4 items-start">
+
+        {/* ── Columna izquierda (sticky) ── */}
+        <div className="w-52 flex-shrink-0 space-y-3" style={{ position: 'sticky', top: 72 }}>
+
+          {/* Mini perfil */}
+          <div className="bg-white rounded-xl overflow-hidden border border-ink-200 shadow-sm">
+            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #0d1b3e 0%, #1a237e 100%)' }} />
+            <div className="px-3 pb-3 -mt-6">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
+                style={{ border: '3px solid white', background: '#1a237e' }}>
                 {profile?.avatar_url
-                  ? <img src={profile.avatar_url} className="w-14 h-14 rounded-full object-cover" alt={name} />
+                  ? <img src={profile.avatar_url} className="w-12 h-12 object-cover" alt={name} />
                   : <span>{initials}</span>}
               </div>
-              <p className="font-bold text-sm text-ink-900 leading-tight">{name}</p>
-              {profile?.city && <p className="text-xs text-ink-400 mt-0.5">{profile.city}</p>}
+              <p className="font-bold text-sm leading-tight" style={{ color: '#0d1b3e' }}>{name}</p>
+              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: '#9fa8da' }}>{profile.city}</p>}
               {profile?.quimica_personaje && (
                 <div className="flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg" style={{ background: '#f0f2f8' }}>
-                  <span className="text-lg">{profile.quimica_personaje}</span>
-                  <span className="text-[10px] font-semibold text-ink-500">{profile.quimica_nombre}</span>
+                  <span className="text-base">{profile.quimica_personaje}</span>
+                  <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre}</span>
                 </div>
               )}
-              <div className="border-t border-ink-200 mt-3 pt-3 space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-ink-400">Publicaciones</span>
-                  <span className="font-bold text-ink-900">{communityStats.requests}</span>
+              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '0.5px solid #e8eaef' }}>
+                <div className="flex justify-between">
+                  <span className="text-[11px]" style={{ color: '#9fa8da' }}>Publicaciones</span>
+                  <span className="text-[11px] font-bold" style={{ color: '#1a237e' }}>{communityStats.requests || 0}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-ink-400">Activos esta semana</span>
-                  <span className="font-bold text-ink-900">{communityStats.activeThisWeek}</span>
+                <div className="flex justify-between">
+                  <span className="text-[11px]" style={{ color: '#9fa8da' }}>Activos hoy</span>
+                  <span className="text-[11px] font-bold" style={{ color: '#1a237e' }}>{communityStats.activeThisWeek || 0}</span>
                 </div>
               </div>
             </div>
           </div>
-          {/* Card juego */}
-          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-3 text-center">
-            <p className="text-lg mb-1">🧪</p>
-            <p className="text-xs font-bold text-ink-900 mb-0.5">¿Cuánto sabes de ciencias?</p>
-            <p className="text-[10px] text-ink-400 mb-2">Mejora tu rango en el feed</p>
-            <button onClick={() => window.location.href='/quimica'}
-              className="w-full py-1.5 rounded-lg text-xs font-bold text-white transition-all"
+
+          {/* Insignia del juego */}
+          <div className="bg-white rounded-xl border border-ink-200 shadow-sm p-3 text-center">
+            <div className="flex justify-center gap-0.5 mb-2">
+              {['🌱','📓','⚗️','👩‍🔬','🏆','⚡'].map((e,i,a) => (
+                <span key={e} style={{ fontSize: 10 + i*3, opacity: i === a.length-2 ? 1 : 0.35 + i*0.1 }}>{e}</span>
+              ))}
+            </div>
+            <p className="text-[11px] font-bold mb-0.5" style={{ color: '#0d1b3e' }}>🏅 Gana tu insignia</p>
+            <p className="text-[10px] mb-2" style={{ color: '#9fa8da' }}>Tu rango aparece en tus posts</p>
+            <button onClick={() => navigate('/quimica')}
+              className="w-full py-1.5 rounded-lg text-[11px] font-bold text-white"
               style={{ background: '#1a237e' }}>
               Jugar ahora →
             </button>
           </div>
+
+          {/* Próximos eventos */}
+          <div className="bg-white rounded-xl border border-ink-200 shadow-sm">
+            <p className="text-[11px] font-bold px-3 pt-3 pb-1" style={{ color: '#0d1b3e' }}>📅 Próximos eventos</p>
+            <div className="px-3 pb-3 space-y-2">
+              {[
+                { day: '12', mon: 'Jul', name: 'Expoquímica Bogotá', loc: 'Corferias · Presencial' },
+                { day: '18', mon: 'Jul', name: 'Webinar Formulación', loc: 'Virtual · Gratis' },
+                { day: '2',  mon: 'Ago', name: 'Taller reactivos lab', loc: 'Medellín · Cupos ltdos.' },
+              ].map(ev => (
+                <div key={ev.name} className="flex gap-2 items-start">
+                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#e8eaf6' }}>
+                    <p className="text-sm font-bold leading-none" style={{ color: '#1a237e' }}>{ev.day}</p>
+                    <p className="text-[8px] uppercase" style={{ color: '#9fa8da' }}>{ev.mon}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold leading-tight" style={{ color: '#0d1b3e' }}>{ev.name}</p>
+                    <p className="text-[9px]" style={{ color: '#9fa8da' }}>{ev.loc}</p>
+                  </div>
+                </div>
+              ))}
+              <button className="text-[10px] font-semibold mt-1" style={{ color: '#1a237e' }}>Ver todos →</button>
+            </div>
+          </div>
+
         </div>
 
-        {/* ── Columna central: feed ── */}
+        {/* ── Columna central ── */}
         <div className="flex-1 min-w-0 space-y-3">
           <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
           <BannerCarousel />
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-ink-400">{loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}</span>
+            <span className="text-[11px]" style={{ color: '#9fa8da' }}>
+              {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
+            </span>
             <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
               {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
                 <button key={opt.value} onClick={() => setSort(opt.value)}
@@ -343,13 +377,13 @@ export default function FeedPage() {
           {loading ? (
             <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
           ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-2xl border border-ink-200">
-              <h3 className="font-medium text-base text-ink-900 mb-1">Sin publicaciones</h3>
-              <p className="text-xs text-ink-400 mb-3">No hay publicaciones que coincidan.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl border border-ink-200">
+              <h3 className="font-medium text-base mb-1" style={{ color: '#0d1b3e' }}>Sin publicaciones</h3>
+              <p className="text-xs mb-3" style={{ color: '#9fa8da' }}>No hay publicaciones que coincidan.</p>
               <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#1a237e' }}>Crear publicación</button>
             </div>
           ) : (
-            <div className="rounded-2xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
+            <div className="rounded-xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
               {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
                 <div key={post.id}>
                   <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
@@ -362,118 +396,118 @@ export default function FeedPage() {
           )}
         </div>
 
-        {/* ── Columna derecha: comunidad ── */}
-        <div className="w-52 flex-shrink-0 sticky top-20 space-y-3">
-          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-4">
-            <p className="text-xs font-bold text-ink-900 mb-3">La comunidad RODIO</p>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-ink-400">Total publicaciones</span>
-                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.requests}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-ink-400">Interacciones</span>
-                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.connections}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-ink-400">Activos esta semana</span>
-                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.activeThisWeek}</span>
-              </div>
+        {/* ── Columna derecha (sticky) ── */}
+        <div className="w-52 flex-shrink-0 space-y-3" style={{ position: 'sticky', top: 72 }}>
+
+          {/* Banner patrocinado — configurable por admin */}
+          <div className="bg-white rounded-xl border border-ink-200 shadow-sm overflow-hidden">
+            <p className="text-[8px] font-medium px-3 pt-2" style={{ color: '#9fa8da', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Patrocinado</p>
+            <div className="mx-3 mb-2 rounded-lg flex flex-col items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, #0d1b3e 0%, #3949ab 100%)', minHeight: 70 }}>
+              <p className="text-xs font-bold text-white text-center leading-tight">Congreso Nacional de Química</p>
+              <p className="text-[9px] mt-1 text-center" style={{ color: '#9fa8da' }}>Bogotá · 15-17 Ago 2026</p>
+            </div>
+            <div className="px-3 pb-3">
+              <p className="text-[10px] mb-2 leading-snug" style={{ color: '#37474f' }}>Inscríbete antes del 31 Jul y obtén 20% de descuento.</p>
+              <button className="w-full py-1.5 rounded-lg text-[10px] font-semibold" style={{ background: '#f0f2f8', border: '0.5px solid #e8eaef', color: '#0d1b3e' }}>
+                Ver información →
+              </button>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-4">
-            <p className="text-xs font-bold text-ink-900 mb-3">Top rangos de la comunidad</p>
-            <div className="space-y-2">
-              {['⚡ Albert Einsteinium', '🌟 Maestro Alquimista', '🎓 PhD en Química', '🏆 Químico Senior', '🧪 Formulador Experto'].map((r, i) => (
-                <div key={r} className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-ink-400">#{i+1}</span>
-                  <span className="text-xs text-ink-600">{r}</span>
-                </div>
-              ))}
+
+          {/* Destacadas esta semana */}
+          <div className="bg-white rounded-xl border border-ink-200 shadow-sm p-3">
+            <p className="text-[11px] font-bold mb-2" style={{ color: '#0d1b3e' }}>🔥 Destacadas esta semana</p>
+            <div className="space-y-2.5">
+              {posts.slice(0, 3).map(p => {
+                const pName = p.profiles?.full_name || 'Usuario'
+                const pInit = pName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
+                const pText = (p.wall_text || p.content || '').slice(0, 55)
+                return (
+                  <div key={p.id} className="flex gap-2 items-start">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-bold text-white flex-shrink-0" style={{ background: '#1a237e' }}>
+                      {pInit}
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-semibold leading-tight" style={{ color: '#0d1b3e' }}>{pName}</p>
+                      <p className="text-[9px] leading-snug" style={{ color: '#9fa8da' }}>{pText}...</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-            <button onClick={() => window.location.href='/quimica'}
-              className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold text-white"
-              style={{ background: '#1a237e' }}>
-              ¿Cuál es tu rango? →
+          </div>
+
+          {/* Espacio publicitario libre — admin */}
+          <div className="rounded-xl p-4 text-center" style={{ border: '1.5px dashed #c5cae9', background: '#fafbff' }}>
+            <p className="text-lg mb-1">📣</p>
+            <p className="text-[10px] font-bold mb-1" style={{ color: '#0d1b3e' }}>Espacio publicitario</p>
+            <p className="text-[9px] leading-snug" style={{ color: '#9fa8da' }}>Configurable desde el panel de administración</p>
+          </div>
+
+          {/* Próximo evento destacado */}
+          <div className="bg-white rounded-xl border border-ink-200 shadow-sm p-3">
+            <p className="text-[11px] font-bold mb-2" style={{ color: '#0d1b3e' }}>📅 Próximo evento</p>
+            <div className="rounded-lg p-3 text-center" style={{ background: '#e8eaf6' }}>
+              <p className="text-2xl font-black leading-none" style={{ color: '#1a237e' }}>12</p>
+              <p className="text-[9px] uppercase font-medium" style={{ color: '#9fa8da' }}>Julio 2026</p>
+              <p className="text-[10px] font-semibold mt-1 leading-tight" style={{ color: '#0d1b3e' }}>Expoquímica Bogotá</p>
+              <p className="text-[9px]" style={{ color: '#9fa8da' }}>Corferias · Presencial</p>
+            </div>
+            <button className="w-full mt-2 py-1.5 rounded-lg text-[10px] font-bold text-white" style={{ background: '#1a237e' }}>
+              Ver detalle →
             </button>
           </div>
+
         </div>
       </div>
 
-      {/* ── Vista móvil — igual que antes ── */}
-      <div className="md:hidden max-w-2xl mx-auto">
-      <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
-      <BannerCarousel />
-
-      <ErrorBoundary>
-        <FilterBar filters={filters} setFilters={setFilters} />
-      </ErrorBoundary>
-
-      <div className="flex items-center justify-between mb-2.5">
-        <span className="text-[11px] text-ink-400">
-          {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
-        </span>
-        <div className="flex bg-white border border-ink-300 rounded-2xl overflow-hidden">
-          {SORT_OPTIONS.map(opt => {
-            const Icon = opt.icon
-            return (
+      {/* ── MÓVIL: columna única ── */}
+      <div className="md:hidden max-w-2xl mx-auto px-0">
+        <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
+        <BannerCarousel />
+        <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
+        <div className="flex items-center justify-between mb-2.5 px-2">
+          <span className="text-[11px]" style={{ color: '#9fa8da' }}>
+            {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
+          </span>
+          <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
+            {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
               <button key={opt.value} onClick={() => setSort(opt.value)}
-                className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${
-                  sort === opt.value ? 'bg-brand-600 text-white' : 'text-ink-600 hover:bg-ink-50'
-                }`}>
-                <Icon size={12} />
-                {opt.label}
+                className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
+                style={sort === opt.value ? { background: '#1a237e' } : {}}>
+                <Icon size={12} />{opt.label}
               </button>
-            )
-          })}
+            )})}
+          </div>
         </div>
-      </div>
-
-      {newPostsAvailable && (
-        <button onClick={loadNewPosts}
-          className="w-full flex items-center justify-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium py-2 rounded-2xl mb-2.5">
-          <ArrowUp size={13} /> Nuevas publicaciones — toca para ver
-        </button>
-      )}
-
-      {loading ? (
-        <div className="space-y-3">
-          {[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}
-        </div>
-      ) : posts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <h3 className="font-medium text-base text-ink-900 mb-1">Sin publicaciones</h3>
-          <p className="text-xs text-ink-500 mb-3">No hay publicaciones que coincidan.</p>
-          <button onClick={() => setPublishOpen(true)}
-            className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium px-4 py-2 rounded-2xl">
-            Crear publicación
+        {newPostsAvailable && (
+          <button onClick={loadNewPosts}
+            className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl mb-2.5 mx-2"
+            style={{ background: '#1a237e', width: 'calc(100% - 16px)' }}>
+            <ArrowUp size={13} /> Nuevas publicaciones
           </button>
-        </div>
-      ) : (
-        <div className="rounded-2xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
-          {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
-            <div key={post.id}>
-              <PostCard post={post}
-                onContact={handleContact}
-                accentColor={accentColor}
-                contactingId={contactingPost}
-                blockedUsers={blockedUsers}
-              />
-              {idx < arr.length - 1 && (
-                <div style={{ background: '#ede8e2', height: '5px' }} />
-              )}
-            </div>
-          ))}
-          <div ref={sentinel} />
-          {loadingMore && (
-            <div className="flex justify-center py-4">
-              <Spinner size={20} className="text-brand-600" />
-            </div>
-          )}
-        </div>
-      )}
-
-      </div>{/* fin md:hidden */}
+        )}
+        {loading ? (
+          <div className="space-y-3 px-2">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
+        ) : posts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <h3 className="font-medium text-base mb-1" style={{ color: '#0d1b3e' }}>Sin publicaciones</h3>
+            <p className="text-xs mb-3" style={{ color: '#9fa8da' }}>No hay publicaciones que coincidan.</p>
+            <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#1a237e' }}>Crear publicación</button>
+          </div>
+        ) : (
+          <div className="overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
+            {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
+              <div key={post.id}>
+                <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                {idx < arr.length - 1 && <div style={{ background: '#ede8e2', height: '5px' }} />}
+              </div>
+            ))}
+            <div ref={sentinel} />
+            {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-brand-600" /></div>}
+          </div>
+        )}
+      </div>
 
       {publishOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 bg-black/40"

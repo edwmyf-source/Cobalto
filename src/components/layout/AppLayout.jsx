@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, User, HelpCircle, Lock, Plus, Calculator, LogOut, ChevronRight, FlaskConical } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -9,13 +9,6 @@ import { getUnreadCount } from '../../api/notifications'
 import { useRealtime } from '../../hooks/useRealtime'
 import { signOut } from '../../api/auth'
 import { publicName } from '../../lib/helpers'
-
-const titles = {
-  '/feed': 'Feed', '/chats': 'Inbox', '/notifications': 'Notificaciones',
-  '/profile': 'Mi perfil', '/contact': 'Soporte', '/admin': 'Administración',
-  '/herramientas': 'Herramientas',
-  '/quimica': '¿Cuánto sabes de química?',
-}
 
 export default function AppLayout() {
   const { session, profile } = useAuth()
@@ -26,7 +19,6 @@ export default function AppLayout() {
   const menuRef = useRef(null)
 
   const currentTab = '/' + (location.pathname.split('/')[1] || 'feed')
-  const title = titles[currentTab] || 'Rodio'
   const lastFetchRef = useRef(0)
   const myId = session?.user?.id
   const name = publicName(profile)
@@ -60,7 +52,6 @@ export default function AppLayout() {
   useRealtime('notifications', 'INSERT', useCallback(() => { refreshUnread() }, [refreshUnread]),
     session?.user?.id ? `user_id=eq.${session.user.id}` : null)
 
-  // Cerrar menú al tocar fuera
   useEffect(() => {
     if (!profileMenuOpen) return
     const handler = (e) => {
@@ -70,7 +61,6 @@ export default function AppLayout() {
     return () => document.removeEventListener('pointerdown', handler)
   }, [profileMenuOpen])
 
-  // Cerrar menú al cambiar de ruta
   useEffect(() => { setProfileMenuOpen(false) }, [location.pathname])
 
   const profileMenuItems = [
@@ -80,31 +70,33 @@ export default function AppLayout() {
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
   ]
 
-  // 5 botones fijos en la barra
-  const navItems = [
+  const mobileNavItems = [
     { id: '/herramientas', label: 'Herram.', icon: Calculator },
     { id: '/feed',         label: 'Feed',    icon: LayoutList },
-    // centro = FAB publicar
-    { id: '/chats',        label: 'Mensajes', icon: MessageSquare, badge: null },
+    { id: '/chats',        label: 'Mensajes', icon: MessageSquare },
     { id: '/notifications',label: 'Alertas',  icon: Bell, badge: unreadCount },
   ]
 
   return (
-    <div className="flex min-h-screen" style={{ minHeight: '100vh' }}>
-      {/* Sidebar desktop */}
+    <div className="min-h-screen" style={{ minHeight: '100vh', background: '#f0f2f8' }}>
+
+      {/* ── Topbar LinkedIn — visible solo en desktop ── */}
       <div className="hidden md:block">
-        <Sidebar currentPath={currentTab} navigate={navigate} profile={profile} unreadCount={unreadCount} />
+        <Topbar profile={profile} unreadCount={unreadCount} session={session} />
+      </div>
+
+      {/* ── Sidebar — solo móvil ── */}
+      <div className="hidden">
+        {/* Sidebar oculto — mantenemos para compatibilidad */}
       </div>
 
       {/* ── Nav móvil ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40"
         style={{ background: '#0d1b3e', borderTop: '0.5px solid rgba(255,255,255,0.08)' }}>
 
-        {/* Menú perfil — se despliega hacia arriba desde la esquina derecha */}
         {profileMenuOpen && (
           <div ref={menuRef} className="absolute bottom-full right-2 mb-2 rounded-2xl overflow-hidden"
-            style={{ background: '#fff', border: '0.5px solid #e8eaef', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 180 }}>
-            {/* Cabecera */}
+            style={{ background: '#fff', border: '0.5px solid #e8eaef', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
             <div className="px-4 py-3 border-b" style={{ borderColor: '#e8eaef' }}>
               <p className="text-sm font-semibold" style={{ color: '#0d1b3e' }}>{name}</p>
               <p className="text-xs" style={{ color: '#9fa8da' }}>{session?.user?.email}</p>
@@ -121,7 +113,7 @@ export default function AppLayout() {
                 </button>
               )
             })}
-            <div style={{ borderTop: '0.5px solid rgba(147,197,253,0.3)' }}>
+            <div style={{ borderTop: '0.5px solid #e8eaef' }}>
               <button onClick={() => signOut()}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-red-50"
                 style={{ color: '#dc2626' }}>
@@ -132,23 +124,18 @@ export default function AppLayout() {
           </div>
         )}
 
-        {/* Barra de 5 botones */}
         <div className="flex items-end px-2 pb-3 pt-1">
-          {/* Izq: herramientas + feed */}
-          {navItems.slice(0, 2).map(item => {
+          {mobileNavItems.slice(0, 2).map(item => {
             const Icon = item.icon
             const active = currentTab === item.id
             return (
               <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-1 pt-1"
-                aria-label={item.label}>
+                className="flex-1 flex flex-col items-center gap-1 pt-1" aria-label={item.label}>
                 <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
                 <div className="w-1 h-1 rounded-full" style={{ background: active ? '#7986cb' : 'transparent' }} />
               </button>
             )
           })}
-
-          {/* Centro: FAB publicar */}
           <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
             className="flex-1 flex justify-center items-end pb-1">
             <span className="w-[58px] h-[58px] rounded-full flex items-center justify-center -mb-1 active:scale-95 transition-all"
@@ -156,15 +143,12 @@ export default function AppLayout() {
               <Plus size={28} color="#fff" strokeWidth={2.5} />
             </span>
           </button>
-
-          {/* Der: mensajes + alertas */}
-          {navItems.slice(2).map(item => {
+          {mobileNavItems.slice(2).map(item => {
             const Icon = item.icon
             const active = currentTab === item.id
             return (
               <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-1 pt-1 relative"
-                aria-label={item.label}>
+                className="flex-1 flex flex-col items-center gap-1 pt-1 relative" aria-label={item.label}>
                 <div className="relative">
                   <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
                   {item.badge > 0 && (
@@ -177,26 +161,21 @@ export default function AppLayout() {
               </button>
             )
           })}
-
-          {/* Perfil — abre menú */}
           <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center gap-1 pt-1"
-            aria-label="Perfil y más opciones">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all"
+            className="flex-1 flex flex-col items-center gap-1 pt-1" aria-label="Menú perfil">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
               style={{ background: profileMenuOpen ? '#0d1b3e' : '#1a237e', boxShadow: profileMenuOpen ? '0 0 0 2px #7986cb' : 'none' }}>
               {initials}
             </div>
-            <div className="w-1 h-1 rounded-full" style={{ background: [myId ? `/u/${myId}` : '/profile', '/contact', '/admin'].some(p => currentTab === p) ? '#2563eb' : 'transparent' }} />
+            <div className="w-1 h-1 rounded-full" style={{ background: 'transparent' }} />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 min-w-0 w-0 md:ml-[220px] overflow-x-hidden">
-        <Topbar title={title} profile={profile} unreadCount={unreadCount} />
-        <main className="p-3 md:p-5 pb-28 md:pb-5 overflow-x-hidden">
-          <Outlet />
-        </main>
-      </div>
+      {/* ── Contenido principal ── */}
+      <main className="md:pt-0 pb-28 md:pb-8 overflow-x-hidden">
+        <Outlet />
+      </main>
     </div>
   )
 }
