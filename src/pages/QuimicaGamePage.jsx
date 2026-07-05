@@ -4,21 +4,21 @@ import { useAuth } from '../contexts/AuthContext'
 
 // ─── 15 PERSONAJES ────────────────────────────────────────────────────────────
 const PERSONAJES = [
-  { id: 0,  min: 0,    emoji: '🐒', nombre: 'Simio Curioso',        desc: 'Confunde el agua con el café.' },
-  { id: 1,  min: 50,   emoji: '🦧', nombre: 'Mono Pensativo',        desc: 'Algo se mueve en ese cerebro.' },
-  { id: 2,  min: 120,  emoji: '👶', nombre: 'Bebé Científico',        desc: 'Lo prueba todo. Literalmente.' },
-  { id: 3,  min: 220,  emoji: '👦', nombre: 'Niño Curioso',          desc: '¿Por qué el cielo es azul?' },
-  { id: 4,  min: 350,  emoji: '🎒', nombre: 'Bachiller Aplicado',    desc: 'Memorizó la tabla periódica. Una vez.' },
-  { id: 5,  min: 520,  emoji: '📚', nombre: 'Universitario Primero', desc: 'Conoce la estequiometría. En teoría.' },
-  { id: 6,  min: 720,  emoji: '🔬', nombre: 'Practicante de Lab',    desc: 'Ya no rompe pipetas. Casi nunca.' },
-  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista',         desc: 'Sabe cuándo la reacción va mal.' },
-  { id: 8,  min: 1250, emoji: '🧪', nombre: 'Técnico Químico',        desc: 'Huele el reactivo y ya sabe qué es.' },
-  { id: 9,  min: 1600, emoji: '👨‍🏫', nombre: 'Profe Labortosita',     desc: 'Explica lo mismo 40 veces. Con amor.' },
-  { id: 10, min: 2000, emoji: '🧫', nombre: 'Investigador',           desc: 'Publica papers que nadie lee. Pero importan.' },
-  { id: 11, min: 2500, emoji: '🏆', nombre: 'Químico Senior',         desc: 'Ha visto explosiones no documentadas.' },
-  { id: 12, min: 3100, emoji: '🎓', nombre: 'PhD en Química',         desc: 'Cinco años de tesis para llegar aquí.' },
-  { id: 13, min: 3800, emoji: '⚗️',  nombre: 'Maestro Alquimista',    desc: 'Convierte el plomo en oro... casi.' },
-  { id: 14, min: 4600, emoji: '⚡', nombre: 'Albert Einsteinium',     desc: 'E=mc². Y sabe exactamente por qué.' },
+  { id: 0,  min: 0,    emoji: '🌱', nombre: 'Semilla Curiosa',       desc: 'Apenas descubre que la química existe.', color: '#e65100', bg: '#fff3e0' },
+  { id: 1,  min: 50,   emoji: '🧒', nombre: 'Niño Preguntón',         desc: '¿Por qué todo explota si lo mezclas?',  color: '#880e4f', bg: '#fce4ec' },
+  { id: 2,  min: 120,  emoji: '📓', nombre: 'Estudiante de Bachiller', desc: 'Memorizó la tabla periódica. Una vez.', color: '#1b5e20', bg: '#e8f5e9' },
+  { id: 3,  min: 220,  emoji: '🎒', nombre: 'Preuniversitario',        desc: 'Sabe escribir H₂O sin buscarla.',       color: '#0d47a1', bg: '#e3f2fd' },
+  { id: 4,  min: 350,  emoji: '📚', nombre: 'Universitario Primer Año', desc: 'Sobrevivió química general. Casi.',    color: '#4a148c', bg: '#f3e5f5' },
+  { id: 5,  min: 520,  emoji: '⚗️',  nombre: 'Practicante de Lab',     desc: 'Ya no rompe pipetas. Casi nunca.',     color: '#006064', bg: '#e0f7fa' },
+  { id: 6,  min: 720,  emoji: '🔬', nombre: 'Técnico Analítico',       desc: 'Lee una ficha técnica y entiende todo.', color: '#e65100', bg: '#fff8e1' },
+  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista Senior',  desc: 'Sabe cuándo la reacción va mal.',      color: '#1a237e', bg: '#e8eaf6' },
+  { id: 8,  min: 1250, emoji: '🧪', nombre: 'Formulador Experto',      desc: 'Huele el reactivo y ya sabe qué es.',  color: '#880e4f', bg: '#fce4ec' },
+  { id: 9,  min: 1600, emoji: '👨‍🏫', nombre: 'Profe Labortosita',      desc: 'Explica lo mismo 40 veces. Con amor.', color: '#1b5e20', bg: '#e8f5e9' },
+  { id: 10, min: 2000, emoji: '🧫', nombre: 'Investigador',             desc: 'Publica papers. Nadie los lee. Importan.', color: '#0d47a1', bg: '#e3f2fd' },
+  { id: 11, min: 2500, emoji: '🏆', nombre: 'Químico Senior',           desc: 'Ha visto explosiones no documentadas.', color: '#4a148c', bg: '#f3e5f5' },
+  { id: 12, min: 3100, emoji: '🎓', nombre: 'PhD en Química',           desc: 'Cinco años de tesis para llegar aquí.', color: '#e65100', bg: '#fff3e0' },
+  { id: 13, min: 3800, emoji: '🌟', nombre: 'Maestro Alquimista',       desc: 'Convierte el plomo en oro... casi.',    color: '#006064', bg: '#e0f7fa' },
+  { id: 14, min: 4600, emoji: '⚡', nombre: 'Albert Einsteinium',       desc: 'E=mc². Y sabe exactamente por qué.',   color: '#f57f17', bg: '#fffde7' },
 ]
 
 function shuffle(arr) {
@@ -417,21 +417,31 @@ function JuegoPrincipal({ onGameOver }) {
         <p className="text-[15px] font-semibold leading-snug text-center" style={{ color: '#1e3a5f' }}>{pregunta.q}</p>
       </div>
 
-      {/* 3 Opciones */}
+      {/* 3 Opciones coloridas */}
       <div className="flex flex-col gap-2">
         {pregunta.ops.map((op, i) => {
-          let bg = 'rgba(255,255,255,0.85)', border = '#bfdbfe', color = '#1e3a5f', fontW = '500'
+          const COLORES = [
+            { bg: '#fff3e0', border: '#ffb74d', letter: '#ff9800', text: '#e65100' },
+            { bg: '#e8f5e9', border: '#66bb6a', letter: '#4caf50', text: '#1b5e20' },
+            { bg: '#fce4ec', border: '#f48fb1', letter: '#e91e63', text: '#880e4f' },
+          ]
+          const c = COLORES[i]
+          let bg = c.bg, border = c.border, textC = c.text, fontW = '600', opacity = 1
           if (seleccion !== null) {
-            if (i === pregunta.r) { bg = '#f0fdf4'; border = '#4ade80'; color = '#15803d'; fontW = '700' }
-            else if (i === seleccion) { bg = '#fff1f2'; border = '#fca5a5'; color = '#dc2626' }
-            else { bg = 'rgba(255,255,255,0.4)'; color = '#9ca3af' }
+            if (i === pregunta.r) { bg = '#e8f5e9'; border = '#4caf50'; textC = '#1b5e20'; fontW = '700' }
+            else if (i === seleccion) { bg = '#fce4ec'; border = '#ef5350'; textC = '#c62828'; fontW = '600' }
+            else { opacity = 0.35 }
           }
           return (
             <button key={i} onClick={() => responder(i)}
               className="w-full text-left px-4 py-3 rounded-xl text-sm transition-all active:scale-[0.98]"
-              style={{ background: bg, border: `1.5px solid ${border}`, color, fontWeight: fontW, backdropFilter: 'blur(6px)' }}>
-              <span className="font-black mr-2 text-xs" style={{ color: '#93c5fd' }}>{['A', 'B', 'C'][i]}</span>
+              style={{ background: bg, border: `1.5px solid ${border}`, color: textC, fontWeight: fontW, opacity }}>
+              <span className="inline-flex items-center justify-center rounded-full text-white text-xs font-black mr-2"
+                style={{ width: 22, height: 22, background: seleccion !== null && i !== pregunta.r && i !== seleccion ? '#bdbdbd' : c.letter, flexShrink: 0 }}>
+                {['A','B','C'][i]}
+              </span>
               {op}
+              {seleccion !== null && i === pregunta.r && ' ✓'}
             </button>
           )
         })}
@@ -454,77 +464,142 @@ function JuegoPrincipal({ onGameOver }) {
 function PantallaFinal({ stats, onReiniciar }) {
   const { puntos, racha, nivelMax, statsNiveles, ganador } = stats
   const per = getPersonaje(puntos)
-  const [frameIdx, setFrameIdx] = useState(0)
   const frames = PERSONAJES.filter(p => p.min <= puntos)
+  const [frameIdx, setFrameIdx] = useState(0)
+  const [showCard, setShowCard] = useState(false)
 
   useEffect(() => {
     if (frameIdx < frames.length - 1) {
-      const t = setTimeout(() => setFrameIdx(i => i + 1), 280)
+      const t = setTimeout(() => setFrameIdx(i => i + 1), 260)
+      return () => clearTimeout(t)
+    } else {
+      const t = setTimeout(() => setShowCard(true), 400)
       return () => clearTimeout(t)
     }
   }, [frameIdx, frames.length])
 
+  const emojiSize = (i) => {
+    const dist = frames.length - 1 - i
+    if (dist === 0) return 72
+    if (dist === 1) return 40
+    if (dist === 2) return 28
+    if (dist === 3) return 22
+    return 16
+  }
+
   return (
     <div className="flex flex-col items-center text-center px-4 py-6 gap-4">
-      {/* Animación evolución */}
+
+      {/* Tira de evolución con tamaños crecientes */}
       <div>
-        <div className="text-7xl mb-1" style={{ filter: 'drop-shadow(0 4px 16px rgba(37,99,235,0.25))' }}>
-          {frames[frameIdx]?.emoji || per.emoji}
-        </div>
-        <div className="flex justify-center gap-0.5 mb-2">
-          {frames.map((f, i) => (
-            <span key={f.id} className="text-sm transition-all" style={{ opacity: i <= frameIdx ? 1 : 0.2 }}>{f.emoji}</span>
-          ))}
+        <p className="text-[10px] font-bold mb-3 tracking-widest" style={{ color: '#9fa8da' }}>TU EVOLUCIÓN</p>
+        <div className="flex items-end justify-center gap-1 mb-2">
+          {frames.map((f, i) => {
+            const size = emojiSize(i)
+            const isActive = i === frameIdx
+            const isPast = i < frameIdx
+            const isFinal = i === frames.length - 1 && frameIdx === frames.length - 1
+            return (
+              <div key={f.id} className="flex flex-col items-center gap-1 transition-all"
+                style={{ opacity: isPast || isActive ? 1 : 0.2 }}>
+                <span style={{
+                  fontSize: size,
+                  lineHeight: 1,
+                  filter: isFinal ? `drop-shadow(0 0 12px ${f.color || '#ffd54f'})` : 'none',
+                  transform: isFinal ? 'scale(1.1)' : 'scale(1)',
+                  transition: 'all 0.3s',
+                  display: 'block'
+                }}>{f.emoji}</span>
+                <div style={{
+                  width: 4, height: 4, borderRadius: '50%',
+                  background: isPast || isActive ? (f.color || '#4caf50') : 'rgba(255,255,255,0.2)'
+                }} />
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {ganador ? (
-        <div><p className="text-xs font-bold mb-0.5" style={{ color: '#f59e0b' }}>🏆 ¡COMPLETASTE LOS 20 NIVELES! 🏆</p></div>
-      ) : (
-        <div><p className="text-xs font-bold mb-0.5" style={{ color: '#ef4444' }}>⏰ SE ACABÓ EL TIEMPO EN NIVEL {nivelMax}</p></div>
-      )}
+      {/* Card resultado — aparece después de la animación */}
+      {showCard && (
+        <div className="w-full rounded-2xl overflow-hidden" style={{ background: '#fff', border: '0.5px solid #e8eaef' }}>
+          {/* Header del personaje */}
+          <div className="py-5 px-4" style={{ background: per.bg || '#e8f5e9' }}>
+            <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 8, filter: `drop-shadow(0 4px 16px ${per.color}40)` }}>
+              {per.emoji}
+            </div>
+            {ganador
+              ? <p className="text-xs font-bold mb-1" style={{ color: '#f9a825' }}>🏆 ¡COMPLETASTE LOS 20 NIVELES!</p>
+              : <p className="text-xs font-bold mb-1" style={{ color: '#ef5350' }}>⏰ Tiempo agotado en nivel {nivelMax}</p>
+            }
+            <h2 className="text-xl font-black mb-1" style={{ color: per.color || '#1b5e20' }}>{per.nombre}</h2>
+            <p className="text-xs italic" style={{ color: per.color || '#2e7d32', opacity: 0.8 }}>"{per.desc}"</p>
+          </div>
 
-      <div>
-        <h2 className="text-xl font-black" style={{ color: '#1e3a5f' }}>{per.nombre}</h2>
-        <p className="text-sm italic" style={{ color: '#6b9fd4' }}>"{per.desc}"</p>
-      </div>
+          {/* Stats en 4 tarjetas de colores */}
+          <div className="grid grid-cols-2 gap-2 p-3">
+            <div className="rounded-xl p-3 text-center" style={{ background: '#e8f5e9' }}>
+              <div className="text-2xl font-black" style={{ color: '#1b5e20' }}>{puntos}</div>
+              <div className="text-[10px] font-semibold mt-0.5" style={{ color: '#2e7d32', opacity: 0.8 }}>Puntos totales</div>
+            </div>
+            <div className="rounded-xl p-3 text-center" style={{ background: '#e3f2fd' }}>
+              <div className="text-2xl font-black" style={{ color: '#0d47a1' }}>Nv. {nivelMax}</div>
+              <div className="text-[10px] font-semibold mt-0.5" style={{ color: '#1565c0', opacity: 0.8 }}>Nivel máximo</div>
+            </div>
+            <div className="rounded-xl p-3 text-center" style={{ background: '#fff8e1' }}>
+              <div className="text-2xl font-black" style={{ color: '#e65100' }}>🔥 {racha}</div>
+              <div className="text-[10px] font-semibold mt-0.5" style={{ color: '#bf360c', opacity: 0.8 }}>Racha máxima</div>
+            </div>
+            <div className="rounded-xl p-3 text-center" style={{ background: '#f3e5f5' }}>
+              <div className="text-2xl font-black" style={{ color: '#4a148c' }}>{statsNiveles.length}</div>
+              <div className="text-[10px] font-semibold mt-0.5" style={{ color: '#6a1b9a', opacity: 0.8 }}>Niveles superados</div>
+            </div>
+          </div>
 
-      {/* Stats */}
-      <div className="w-full rounded-2xl p-4 space-y-2" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
-        <div className="flex justify-between"><span className="text-sm" style={{ color: '#6b9fd4' }}>Puntos totales</span><span className="text-lg font-black" style={{ color: '#1d4ed8' }}>{puntos}</span></div>
-        <div className="flex justify-between"><span className="text-sm" style={{ color: '#6b9fd4' }}>Nivel máximo</span><span className="text-sm font-bold" style={{ color: '#1d4ed8' }}>{nivelMax}/20 — {NIVELES[nivelMax-1]?.tema}</span></div>
-        <div className="flex justify-between"><span className="text-sm" style={{ color: '#6b9fd4' }}>Racha máxima</span><span className="text-sm font-bold" style={{ color: '#f59e0b' }}>🔥 {racha} seguidas</span></div>
-        {statsNiveles.length > 0 && (
-          <div className="pt-1 border-t border-blue-100">
-            <p className="text-xs font-bold mb-1" style={{ color: '#6b9fd4' }}>Niveles superados:</p>
-            <div className="flex flex-wrap gap-1">
-              {statsNiveles.map((s, i) => (
-                <span key={i} className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background: '#dbeafe', color: '#1d4ed8' }}>
-                  {NIVELES[s.nivel - 1]?.emoji} Nv.{s.nivel}
-                </span>
+          {/* Badges de niveles superados */}
+          {statsNiveles.length > 0 && (
+            <div className="px-3 pb-3">
+              <div className="flex flex-wrap gap-1.5">
+                {statsNiveles.map((s, i) => {
+                  const nv = NIVELES[s.nivel - 1]
+                  return (
+                    <span key={i} className="text-[10px] font-bold px-2 py-1 rounded-full"
+                      style={{ background: `${nv?.color}18`, color: nv?.color, border: `1px solid ${nv?.color}40` }}>
+                      {nv?.emoji} Nv.{s.nivel}
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Escala completa de personajes */}
+          <div className="mx-3 mb-3 rounded-xl p-3" style={{ background: '#f8f9ff', border: '0.5px solid #e8eaef' }}>
+            <div className="grid grid-cols-5 gap-1">
+              {PERSONAJES.map(p => (
+                <div key={p.id} className="flex flex-col items-center p-1 rounded-lg transition-all"
+                  style={{
+                    background: puntos >= p.min ? `${p.bg}` : 'transparent',
+                    border: per.id === p.id ? `2px solid ${p.color}` : '2px solid transparent',
+                    opacity: puntos >= p.min ? 1 : 0.25
+                  }}>
+                  <span style={{ fontSize: 20 }}>{p.emoji}</span>
+                  <span className="text-[7px] leading-tight text-center mt-0.5" style={{ color: puntos >= p.min ? p.color : '#9fa8da' }}>
+                    {p.nombre.split(' ')[0]}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
-        )}
-      </div>
 
-      {/* Escala personajes */}
-      <div className="w-full rounded-2xl p-3" style={{ background: 'rgba(255,255,255,0.7)', border: '0.5px solid #bfdbfe' }}>
-        <div className="grid grid-cols-5 gap-1">
-          {PERSONAJES.map(p => (
-            <div key={p.id} className="flex flex-col items-center p-1 rounded-lg"
-              style={{ background: puntos >= p.min ? 'rgba(37,99,235,0.1)' : 'transparent', border: per.id === p.id ? '1.5px solid #2563eb' : '1.5px solid transparent' }}>
-              <span className="text-xl" style={{ opacity: puntos >= p.min ? 1 : 0.2 }}>{p.emoji}</span>
-              <span className="text-[7px] leading-tight text-center" style={{ color: puntos >= p.min ? '#1d4ed8' : '#93c5fd' }}>{p.nombre.split(' ')[0]}</span>
-            </div>
-          ))}
+          <div className="px-3 pb-4">
+            <button onClick={onReiniciar} className="w-full py-3 rounded-xl text-white font-black text-sm active:scale-95 transition-all"
+              style={{ background: '#1a237e', boxShadow: '0 4px 16px rgba(26,35,126,0.35)' }}>
+              🔄 Jugar de nuevo
+            </button>
+          </div>
         </div>
-      </div>
-
-      <button onClick={onReiniciar} className="w-full py-3 rounded-2xl text-white font-black text-base active:scale-95 transition-all"
-        style={{ background: '#2563eb', boxShadow: '0 6px 20px rgba(37,99,235,0.35)' }}>
-        🔄 Jugar de nuevo
-      </button>
+      )}
     </div>
   )
 }
