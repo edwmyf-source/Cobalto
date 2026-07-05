@@ -18,6 +18,9 @@ import BannerCarousel from '../components/feed/BannerCarousel'
 import Spinner from '../components/shared/Spinner'
 import ErrorBoundary from '../components/shared/ErrorBoundary'
 import { TAB_COLOR } from '../lib/constants'
+import { getCommunityStats } from '../api/stats'
+import { publicName } from '../lib/helpers'
+import UserAvatar from '../components/shared/UserAvatar'
 import { preloadedFeed } from '../lib/feedPreloader'
 import { registerCacheCleaner } from '../lib/cacheManager'
 
@@ -255,8 +258,145 @@ export default function FeedPage() {
   const accentColor = tabStyle.color
   const feedBg     = tabStyle.bg
 
+  const name = publicName(profile)
+  const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+
   return (
-    <div className="page-enter max-w-2xl mx-auto">
+    <div className="page-enter">
+      {/* Layout 3 columnas estilo LinkedIn — solo visible en md+ */}
+      <div className="hidden md:flex gap-4 max-w-5xl mx-auto items-start">
+
+        {/* ── Columna izquierda: mini perfil ── */}
+        <div className="w-56 flex-shrink-0 sticky top-20 space-y-3">
+          {/* Card perfil */}
+          <div className="bg-white rounded-2xl overflow-hidden border border-ink-200 shadow-sm">
+            {/* Banner */}
+            <div className="h-14 w-full" style={{ background: 'linear-gradient(135deg, #0d1b3e 0%, #1a237e 100%)' }} />
+            <div className="px-3 pb-4 -mt-7">
+              <div className="w-14 h-14 rounded-full border-3 border-white bg-brand-600 flex items-center justify-center text-white font-bold text-lg mb-2 shadow-sm" style={{ border: '3px solid white' }}>
+                {profile?.avatar_url
+                  ? <img src={profile.avatar_url} className="w-14 h-14 rounded-full object-cover" alt={name} />
+                  : <span>{initials}</span>}
+              </div>
+              <p className="font-bold text-sm text-ink-900 leading-tight">{name}</p>
+              {profile?.city && <p className="text-xs text-ink-400 mt-0.5">{profile.city}</p>}
+              {profile?.quimica_personaje && (
+                <div className="flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg" style={{ background: '#f0f2f8' }}>
+                  <span className="text-lg">{profile.quimica_personaje}</span>
+                  <span className="text-[10px] font-semibold text-ink-500">{profile.quimica_nombre}</span>
+                </div>
+              )}
+              <div className="border-t border-ink-200 mt-3 pt-3 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-ink-400">Publicaciones</span>
+                  <span className="font-bold text-ink-900">{communityStats.requests}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-ink-400">Activos esta semana</span>
+                  <span className="font-bold text-ink-900">{communityStats.activeThisWeek}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Card juego */}
+          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-3 text-center">
+            <p className="text-lg mb-1">🧪</p>
+            <p className="text-xs font-bold text-ink-900 mb-0.5">¿Cuánto sabes de ciencias?</p>
+            <p className="text-[10px] text-ink-400 mb-2">Mejora tu rango en el feed</p>
+            <button onClick={() => window.location.href='/quimica'}
+              className="w-full py-1.5 rounded-lg text-xs font-bold text-white transition-all"
+              style={{ background: '#1a237e' }}>
+              Jugar ahora →
+            </button>
+          </div>
+        </div>
+
+        {/* ── Columna central: feed ── */}
+        <div className="flex-1 min-w-0 space-y-3">
+          <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
+          <BannerCarousel />
+          <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-ink-400">{loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}</span>
+            <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
+              {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
+                <button key={opt.value} onClick={() => setSort(opt.value)}
+                  className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
+                  style={sort === opt.value ? { background: '#1a237e' } : {}}>
+                  <Icon size={12} />{opt.label}
+                </button>
+              )})}
+            </div>
+          </div>
+          {newPostsAvailable && (
+            <button onClick={loadNewPosts}
+              className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl"
+              style={{ background: '#1a237e' }}>
+              <ArrowUp size={13} /> Nuevas publicaciones
+            </button>
+          )}
+          {loading ? (
+            <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
+          ) : posts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-2xl border border-ink-200">
+              <h3 className="font-medium text-base text-ink-900 mb-1">Sin publicaciones</h3>
+              <p className="text-xs text-ink-400 mb-3">No hay publicaciones que coincidan.</p>
+              <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#1a237e' }}>Crear publicación</button>
+            </div>
+          ) : (
+            <div className="rounded-2xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
+              {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
+                <div key={post.id}>
+                  <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                  {idx < arr.length - 1 && <div style={{ background: '#ede8e2', height: '5px' }} />}
+                </div>
+              ))}
+              <div ref={sentinel} />
+              {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-brand-600" /></div>}
+            </div>
+          )}
+        </div>
+
+        {/* ── Columna derecha: comunidad ── */}
+        <div className="w-52 flex-shrink-0 sticky top-20 space-y-3">
+          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-4">
+            <p className="text-xs font-bold text-ink-900 mb-3">La comunidad RODIO</p>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-ink-400">Total publicaciones</span>
+                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.requests}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-ink-400">Interacciones</span>
+                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.connections}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-ink-400">Activos esta semana</span>
+                <span className="text-sm font-black" style={{ color: '#1a237e' }}>{communityStats.activeThisWeek}</span>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl border border-ink-200 shadow-sm p-4">
+            <p className="text-xs font-bold text-ink-900 mb-3">Top rangos de la comunidad</p>
+            <div className="space-y-2">
+              {['⚡ Albert Einsteinium', '🌟 Maestro Alquimista', '🎓 PhD en Química', '🏆 Químico Senior', '🧪 Formulador Experto'].map((r, i) => (
+                <div key={r} className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-ink-400">#{i+1}</span>
+                  <span className="text-xs text-ink-600">{r}</span>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => window.location.href='/quimica'}
+              className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold text-white"
+              style={{ background: '#1a237e' }}>
+              ¿Cuál es tu rango? →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Vista móvil — igual que antes ── */}
+      <div className="md:hidden max-w-2xl mx-auto">
       <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
       <BannerCarousel />
 
@@ -305,7 +445,7 @@ export default function FeedPage() {
           </button>
         </div>
       ) : (
-        <div className="rounded-2xl overflow-hidden border border-ink-200 transition-all" style={{ background: 'rgba(147,197,253,0.35)' }}>
+        <div className="rounded-2xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
           {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
             <div key={post.id}>
               <PostCard post={post}
@@ -315,7 +455,7 @@ export default function FeedPage() {
                 blockedUsers={blockedUsers}
               />
               {idx < arr.length - 1 && (
-                <div style={{ background: 'rgba(147,197,253,0.35)', height: '7px' }} />
+                <div style={{ background: '#ede8e2', height: '5px' }} />
               )}
             </div>
           ))}
@@ -327,6 +467,8 @@ export default function FeedPage() {
           )}
         </div>
       )}
+
+      </div>{/* fin md:hidden */}
 
       {publishOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 bg-black/40"
