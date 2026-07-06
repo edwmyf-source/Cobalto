@@ -187,13 +187,21 @@ function TabAnual() {
       </div>
       <button onClick={calcular} className="w-full text-white font-bold py-2 rounded-xl transition text-sm" style={{ background: '#2563eb' }}>Calcular</button>
       {res && (
-        <div className="grid grid-cols-2 gap-2">
-          {[['Neto anual', cop0(res.total), '#eff6ff', '#1d4ed8'], ['Promedio mensual', cop0(res.promedio), '#eff6ff', '#1d4ed8'], ['Equivale a salario', cop0(res.salEq), '#f5f3ff', '#6d28d9']].map(([l, v, bg, c]) => (
-            <div key={l} className="rounded-xl p-2.5 text-center border border-blue-100" style={{ background: bg }}>
-              <p className="text-[10px] font-semibold mb-0.5" style={{ color: c, opacity: 0.7 }}>{l}</p>
-              <p className="text-base font-black" style={{ color: c }}>{v}</p>
-            </div>
-          ))}
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-2">
+            {[['Neto anual', cop0(res.total), '#eff6ff', '#1d4ed8'], ['Promedio mensual', cop0(res.promedio), '#eff6ff', '#1d4ed8'], ['Equivale a salario', cop0(res.salEq), '#f5f3ff', '#6d28d9']].map(([l, v, bg, c]) => (
+              <div key={l} className="rounded-xl p-2.5 text-center border border-blue-100" style={{ background: bg }}>
+                <p className="text-[10px] font-semibold mb-0.5" style={{ color: c, opacity: 0.7 }}>{l}</p>
+                <p className="text-base font-black" style={{ color: c }}>{v}</p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl p-4" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+            <p className="text-xs" style={{ color: '#1e3a5f', lineHeight: 1.5 }}>
+              Tus honorarios anuales equivalen aproximadamente a un contrato laboral por
+            </p>
+            <p className="text-2xl font-black mt-1" style={{ color: '#1d4ed8' }}>{cop0(res.salEq)} al mes</p>
+          </div>
         </div>
       )}
     </div>

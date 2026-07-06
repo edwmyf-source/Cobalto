@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, ThumbsUp, Share2 } from 'lucide-react'
+import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, Share2 } from 'lucide-react'
 import { timeAgo, publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
@@ -183,9 +183,6 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       {/* Footer estilo LinkedIn */}
       <div className="pt-2 mt-1" style={{ borderTop: '1px solid #e0e0e0' }}>
         <div className="flex items-center justify-between mb-1">
-          {post.reactions_count > 0 && (
-            <span className="text-[10px]" style={{ color: '#666' }}>👍❤️ {post.reactions_count} reacciones</span>
-          )}
           {post.comment_count > 0 && (
             <span className="text-[10px] ml-auto cursor-pointer hover:underline" style={{ color: '#666' }}
               onClick={() => setShowComments(!showComments)}>
@@ -194,10 +191,6 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           )}
         </div>
         <div className="flex items-center" style={{ borderTop: '1px solid #e0e0e0', paddingTop: '2px' }}>
-          <button className="flex flex-1 items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold transition-colors hover:bg-gray-50"
-            style={{ color: '#666' }}>
-            <ThumbsUp size={14} /> Me gusta
-          </button>
           <button onClick={() => setShowComments(!showComments)}
             className="flex flex-1 items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold transition-colors hover:bg-gray-50"
             style={{ color: '#666' }}>
