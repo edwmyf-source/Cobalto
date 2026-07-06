@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, Share2 } from 'lucide-react'
+import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, Share2, ThumbsUp } from 'lucide-react'
 import { timeAgo, publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
 import { blockUser } from '../../api/moderation'
+import { toggleReaction, getReactionsForPost } from '../../api/reactions'
+import { createNotification } from '../../api/notifications'
 import { useToast } from '../shared/Toast'
 import UserAvatar from '../shared/UserAvatar'
-import ReactionBar from './ReactionBar'
 import CommentSection from './CommentSection'
 import ReportModal from './ReportModal'
 
@@ -107,8 +108,50 @@ function PostMenu({ post, onReport }) {
 export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [], accentColor = '#7c3aed' }) {
   const { session } = useAuth()
   const navigate = useNavigate()
+  const userId = session?.user?.id
   const [showComments, setShowComments] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
+  const likeInitialized = useRef(false)
+
+  useEffect(() => {
+    if (likeInitialized.current) return
+    likeInitialized.current = true
+    const source = post.reactions ?? null
+    if (source !== null) {
+      const likes = source.filter(r => r.type === 'like')
+      setLikeCount(likes.length)
+      setLiked(likes.some(r => r.user_id === userId))
+    } else {
+      getReactionsForPost(post.id).then(data => {
+        const likes = data.filter(r => r.type === 'like')
+        setLikeCount(likes.length)
+        setLiked(likes.some(r => r.user_id === userId))
+      }).catch(() => {})
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleLike = async () => {
+    const wasLiked = liked
+    setLiked(!wasLiked)
+    setLikeCount(c => Math.max(0, c + (wasLiked ? -1 : 1)))
+    try {
+      const result = await toggleReaction(post.id, userId, 'like')
+      if (result.action === 'added' && post.author_id !== userId) {
+        createNotification({
+          user_id: post.author_id, from_user_id: userId,
+          type: 'reaction',
+          content: 'le dio me gusta a tu publicación',
+          post_id: post.id,
+        })
+      }
+    } catch (e) {
+      console.error('Like error:', e)
+      setLiked(wasLiked)
+      setLikeCount(c => Math.max(0, c + (wasLiked ? 1 : -1)))
+    }
+  }
 
   if (blockedUsers.includes(post.author_id)) return null
 
@@ -178,11 +221,15 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       </p>
 
       <MediaGallery media={media} />
-      <ReactionBar post={post} initialReactions={post.reactions ?? null} />
 
       {/* Footer estilo LinkedIn */}
       <div className="pt-2 mt-1" style={{ borderTop: '1px solid #e0e0e0' }}>
         <div className="flex items-center justify-between mb-1">
+          {likeCount > 0 && (
+            <span className="text-[10px]" style={{ color: '#666' }}>
+              {likeCount} me gusta
+            </span>
+          )}
           {post.comment_count > 0 && (
             <span className="text-[10px] ml-auto cursor-pointer hover:underline" style={{ color: '#666' }}
               onClick={() => setShowComments(!showComments)}>
@@ -191,6 +238,11 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           )}
         </div>
         <div className="flex items-center" style={{ borderTop: '1px solid #e0e0e0', paddingTop: '2px' }}>
+          <button onClick={handleLike}
+            className="flex flex-1 items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold transition-colors hover:bg-gray-50"
+            style={{ color: liked ? '#1d4ed8' : '#666' }}>
+            <ThumbsUp size={14} fill={liked ? '#1d4ed8' : 'none'} /> Me gusta
+          </button>
           <button onClick={() => setShowComments(!showComments)}
             className="flex flex-1 items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold transition-colors hover:bg-gray-50"
             style={{ color: '#666' }}>
