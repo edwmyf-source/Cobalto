@@ -44,13 +44,19 @@ function buscar(objetivo, tipo, arlPct, sm) {
 // ═══════════════════════════════════════════════════════════════════════════════
 // LABORAL — Tab Mensual
 // ═══════════════════════════════════════════════════════════════════════════════
-function FilaTab({ label, ps, lab, hi }) {
+function FilaLista({ label, valor, hi }) {
+  const positivo = valor > 0
+  const cero = valor === 0
+  const color = hi ? '#1d4ed8' : cero ? '#9fa8da' : positivo ? '#1b5e20' : '#c62828'
+  const signo = cero ? '' : positivo ? '+' : '−'
   return (
-    <tr className={hi ? 'font-bold' : 'border-t border-blue-50'} style={hi ? { color: '#1d4ed8', background: '#eff6ff' } : {}}>
-      <td className="py-1.5 px-3 text-xs">{label}</td>
-      <td className="py-1.5 px-3 text-right text-xs tabular-nums">{cop0(ps)}</td>
-      <td className="py-1.5 px-3 text-right text-xs tabular-nums">{cop0(lab)}</td>
-    </tr>
+    <div className="flex items-center justify-between px-3 py-2"
+      style={hi ? { background: '#eff6ff', borderTop: '1px solid #bfdbfe' } : { borderTop: '1px solid #eef2ff' }}>
+      <span className={hi ? 'text-xs font-bold' : 'text-xs'} style={{ color: hi ? '#1e3a5f' : '#1e3a5f' }}>{label}</span>
+      <span className={hi ? 'text-sm font-black tabular-nums' : 'text-xs font-semibold tabular-nums'} style={{ color }}>
+        {signo} {cop0(Math.abs(valor))}
+      </span>
+    </div>
   )
 }
 
@@ -74,8 +80,17 @@ function TabMensual() {
     }
   }
 
+  const actual = res ? (res.tipo === 'servicios' ? res.s : res.l) : null
+  const otro = res ? (res.tipo === 'servicios' ? res.l : res.s) : null
+  const nombreActual = res?.tipo === 'servicios' ? 'honorario' : 'salario'
+  const nombreOtro = res?.tipo === 'servicios' ? 'salario' : 'honorario'
+
   return (
     <div className="space-y-3">
+      <div>
+        <p className="text-sm font-black" style={{ color: '#1e3a5f' }}>Calculadora de ingreso</p>
+        <p className="text-xs" style={{ color: '#6b9fd4' }}>Honorarios vs salario</p>
+      </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <label className="block text-xs font-semibold mb-0.5" style={{ color: '#1e3a5f' }}>Tipo de contrato</label>
@@ -103,29 +118,28 @@ function TabMensual() {
       <button onClick={calcular} className="w-full text-white font-bold py-2 rounded-xl transition text-sm" style={{ background: '#2563eb' }}>Calcular equivalencia</button>
       {res && (
         <div className="space-y-3">
-          <div className="rounded-2xl p-3 text-center" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#2563eb' }}>Tu neto mensual</p>
-            <p className="text-2xl font-black" style={{ color: '#1d4ed8' }}>{cop0(res.neto)}</p>
-            <p className="text-xs mt-1" style={{ color: '#6b9fd4' }}>Equivale a <strong style={{ color: '#1d4ed8' }}>{cop0(res.eq)}</strong> de {res.tipo === 'servicios' ? 'salario' : 'honorarios'}</p>
+          <div className="rounded-xl border border-blue-100 overflow-hidden">
+            <div className="px-3 py-2" style={{ background: '#eff6ff' }}>
+              <p className="text-xs font-bold" style={{ color: '#1d4ed8' }}>Tu {nombreActual} — {cop0(actual.ing)}</p>
+            </div>
+            <FilaLista label="Ingreso" valor={actual.ing} />
+            <FilaLista label="Salud" valor={actual.salud} />
+            <FilaLista label="Pensión" valor={actual.pension} />
+            <FilaLista label="ARL" valor={actual.arl || 0} />
+            <FilaLista label="Solidaridad" valor={actual.fsp} />
+            <FilaLista label="Prima" valor={actual.prima || 0} />
+            <FilaLista label="Cesantías" valor={actual.cesantias || 0} />
+            <FilaLista label="Int. cesantías" valor={actual.intCes || 0} />
+            <FilaLista label="Vacaciones" valor={actual.vacaciones || 0} />
+            <FilaLista label="Neto mensual" valor={actual.total} hi />
           </div>
-          <div className="overflow-x-auto rounded-xl border border-blue-100">
-            <table className="w-full">
-              <thead style={{ background: '#eff6ff' }}>
-                <tr><th className="py-1.5 px-3 text-left text-xs font-bold" style={{ color: '#6b9fd4' }}>Concepto</th><th className="py-1.5 px-3 text-right text-xs font-bold" style={{ color: '#0369a1' }}>Prest. servicios</th><th className="py-1.5 px-3 text-right text-xs font-bold" style={{ color: '#7c3aed' }}>Laboral</th></tr>
-              </thead>
-              <tbody>
-                <FilaTab label="Ingreso" ps={res.s.ing} lab={res.l.ing} />
-                <FilaTab label="Salud" ps={res.s.salud} lab={res.l.salud} />
-                <FilaTab label="Pensión" ps={res.s.pension} lab={res.l.pension} />
-                <FilaTab label="ARL" ps={res.s.arl} lab={0} />
-                <FilaTab label="Solidaridad" ps={res.s.fsp} lab={res.l.fsp} />
-                <FilaTab label="Prima" ps={0} lab={res.l.prima} />
-                <FilaTab label="Cesantías" ps={0} lab={res.l.cesantias} />
-                <FilaTab label="Int. ces." ps={0} lab={res.l.intCes} />
-                <FilaTab label="Vacaciones" ps={0} lab={res.l.vacaciones} />
-                <FilaTab label="NETO" ps={res.s.total} lab={res.l.total} hi />
-              </tbody>
-            </table>
+
+          <div className="rounded-2xl p-4" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+            <p className="text-xs" style={{ color: '#1e3a5f', lineHeight: 1.5 }}>
+              Para ganar lo mismo neto que con tu {nombreActual} de <strong>{cop0(actual.ing)}</strong>,
+              necesitarías cobrar un {nombreOtro} bruto de
+            </p>
+            <p className="text-2xl font-black mt-1" style={{ color: '#1d4ed8' }}>{cop0(res.eq)}</p>
           </div>
         </div>
       )}
