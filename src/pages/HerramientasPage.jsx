@@ -44,18 +44,18 @@ function buscar(objetivo, tipo, arlPct, sm) {
 // ═══════════════════════════════════════════════════════════════════════════════
 // LABORAL — Tab Mensual
 // ═══════════════════════════════════════════════════════════════════════════════
-function FilaLista({ label, valor, hi }) {
-  const positivo = valor > 0
-  const cero = valor === 0
-  const color = hi ? '#1d4ed8' : cero ? '#9fa8da' : positivo ? '#1b5e20' : '#c62828'
-  const signo = cero ? '' : positivo ? '+' : '−'
+function FilaComparativa({ label, s, l, hi }) {
+  const fmtCelda = (v) => {
+    if (v === 0 || v === undefined) return { txt: '0', color: '#9fa8da' }
+    const signo = v > 0 ? '+ ' : '− '
+    return { txt: signo + cop0(Math.abs(v)), color: v > 0 ? '#1b5e20' : '#c62828' }
+  }
+  const cS = fmtCelda(s), cL = fmtCelda(l)
   return (
-    <div className="flex items-center justify-between px-3 py-2"
-      style={hi ? { background: '#eff6ff', borderTop: '1px solid #bfdbfe' } : { borderTop: '1px solid #eef2ff' }}>
-      <span className={hi ? 'text-xs font-bold' : 'text-xs'} style={{ color: hi ? '#1e3a5f' : '#1e3a5f' }}>{label}</span>
-      <span className={hi ? 'text-sm font-black tabular-nums' : 'text-xs font-semibold tabular-nums'} style={{ color }}>
-        {signo} {cop0(Math.abs(valor))}
-      </span>
+    <div className="grid gap-1 px-3 py-1.5" style={{ gridTemplateColumns: '1.3fr 1fr 1fr', ...(hi ? { background: '#eff6ff', borderTop: '1px solid #bfdbfe' } : { borderTop: '1px solid #eef2ff' }) }}>
+      <span className={hi ? 'text-xs font-bold' : 'text-xs'} style={{ color: '#1e3a5f' }}>{label}</span>
+      <span className={hi ? 'text-xs font-black text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? '#1d4ed8' : cS.color }}>{hi ? cop0(s) : cS.txt}</span>
+      <span className={hi ? 'text-xs font-black text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? '#6d28d9' : cL.color }}>{hi ? cop0(l) : cL.txt}</span>
     </div>
   )
 }
@@ -81,7 +81,6 @@ function TabMensual() {
   }
 
   const actual = res ? (res.tipo === 'servicios' ? res.s : res.l) : null
-  const nombreActual = res?.tipo === 'servicios' ? 'honorario' : 'salario'
 
   return (
     <div className="space-y-3">
@@ -113,19 +112,21 @@ function TabMensual() {
       {res && (
         <div className="space-y-3">
           <div className="rounded-xl border border-blue-100 overflow-hidden">
-            <div className="px-3 py-2" style={{ background: '#eff6ff' }}>
-              <p className="text-xs font-bold" style={{ color: '#1d4ed8' }}>Tu {nombreActual} — {cop0(actual.ing)}</p>
+            <div className="grid gap-1 px-3 py-2" style={{ gridTemplateColumns: '1.3fr 1fr 1fr', background: '#eff6ff' }}>
+              <span className="text-[10px] font-bold" style={{ color: '#6b9fd4' }}>Concepto</span>
+              <span className="text-[10px] font-bold text-right" style={{ color: '#1d4ed8' }}>Honorario</span>
+              <span className="text-[10px] font-bold text-right" style={{ color: '#6d28d9' }}>Salario</span>
             </div>
-            <FilaLista label="Ingreso" valor={actual.ing} />
-            <FilaLista label="Salud" valor={actual.salud} />
-            <FilaLista label="Pensión" valor={actual.pension} />
-            <FilaLista label="ARL" valor={actual.arl || 0} />
-            <FilaLista label="Solidaridad" valor={actual.fsp} />
-            <FilaLista label="Prima" valor={actual.prima || 0} />
-            <FilaLista label="Cesantías" valor={actual.cesantias || 0} />
-            <FilaLista label="Int. cesantías" valor={actual.intCes || 0} />
-            <FilaLista label="Vacaciones" valor={actual.vacaciones || 0} />
-            <FilaLista label="Neto mensual" valor={actual.total} hi />
+            <FilaComparativa label="Ingreso bruto" s={res.s.ing} l={res.l.ing} />
+            <FilaComparativa label="Salud" s={res.s.salud} l={res.l.salud} />
+            <FilaComparativa label="Pensión" s={res.s.pension} l={res.l.pension} />
+            <FilaComparativa label="Fondo solidaridad" s={res.s.fsp} l={res.l.fsp || 0} />
+            <FilaComparativa label="ARL" s={res.s.arl} l={0} />
+            <FilaComparativa label="Prima" s={0} l={res.l.prima || 0} />
+            <FilaComparativa label="Cesantías" s={0} l={res.l.cesantias || 0} />
+            <FilaComparativa label="Int. cesantías" s={0} l={res.l.intCes || 0} />
+            <FilaComparativa label="Vacaciones" s={0} l={res.l.vacaciones || 0} />
+            <FilaComparativa label="Neto mensual" s={res.s.total} l={res.l.total} hi />
           </div>
 
           <div className="rounded-2xl p-4" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
