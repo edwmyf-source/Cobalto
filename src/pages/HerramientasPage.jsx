@@ -87,16 +87,12 @@ function TabMensual() {
 
   return (
     <div className="space-y-3">
-      <div>
-        <p className="text-sm font-black" style={{ color: '#1e3a5f' }}>Calculadora de ingreso</p>
-        <p className="text-xs" style={{ color: '#6b9fd4' }}>Honorarios vs salario</p>
-      </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <label className="block text-xs font-semibold mb-0.5" style={{ color: '#1e3a5f' }}>Tipo de contrato</label>
           <select value={tipo} onChange={e => setTipo(e.target.value)} className="w-full border border-blue-100 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-blue-400">
-            <option value="servicios">Prestación servicios</option>
             <option value="laboral">Contrato laboral</option>
+            <option value="servicios">Prestación servicios</option>
           </select>
         </div>
         <div>
@@ -640,26 +636,12 @@ function FAQ({ pregunta, respuesta }) {
 // ═══════════════════════════════════════════════════════════════════════════════
 // PÁGINA PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════════
-const SECCIONES = [
-  { id: 'laboral',     icon: '💼', label: 'Laboral' },
-  { id: 'formulacion', icon: '⚗️', label: 'Formulación' },
-]
-const TABS_LAB  = [{ id: 'mensual', label: 'Mensual' }, { id: 'anual', label: 'Anual' }]
+const TABS_LAB = [{ id: 'mensual', label: 'Mensual' }, { id: 'anual', label: 'Anual' }]
 
 export default function HerramientasPage() {
-  const [sec, setSec] = useState('laboral')
   const [tabLab, setTabLab] = useState('mensual')
-  const [tabQui, setTabQui] = useState('diluciones')
 
-  const tabs   = sec === 'laboral' ? TABS_LAB : sec === 'quimico' ? TABS_QUI : []
-  const tabAct = sec === 'laboral' ? tabLab : tabQui
-  const setTab = sec === 'laboral' ? setTabLab : setTabQui
-
-  const titulo = {
-    mensual: 'Honorario vs Salario', anual: 'Ingresos anuales',
-    diluciones: 'Diluciones C₁V₁ = C₂V₂', conversion: 'Conversión de unidades',
-    pureza: 'Pureza real (certificado)', ph: 'pH y soluciones buffer',
-  }
+  const titulo = { mensual: 'Salario vs honorario', anual: 'Ingresos anuales' }
 
   return (
     <div className="max-w-2xl mx-auto px-3 py-4 space-y-4">
@@ -669,59 +651,31 @@ export default function HerramientasPage() {
         <h1 className="text-lg font-black" style={{ color: '#1e3a5f' }}>Herramientas</h1>
       </div>
 
-      {/* Selector sección */}
-      <div className="flex gap-2">
-        {SECCIONES.map(s => (
-          <button key={s.id} onClick={() => setSec(s.id)}
-            className="flex-1 py-2 rounded-xl text-xs font-bold transition border"
-            style={sec === s.id
-              ? { background: '#2563eb', color: '#fff', borderColor: '#2563eb' }
-              : { background: 'rgba(255,255,255,0.7)', color: '#6b9fd4', borderColor: '#bfdbfe' }}>
-            <span className="block text-sm leading-none mb-0.5">{s.icon}</span>
-            {s.label}
-          </button>
-        ))}
-      </div>
-
       {/* Card calculadora */}
       <div className="rounded-2xl overflow-hidden shadow-sm" style={{ background: '#ffffff', border: '0.5px solid #e8eaef' }}>
 
-        {/* Sub-tabs — solo Laboral y Químico */}
-        {tabs.length > 0 && (
-          <div className="flex p-2 gap-1.5" style={{ background: '#eff6ff', borderBottom: '0.5px solid #bfdbfe' }}>
-            {tabs.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)}
-                className="flex-1 py-1.5 rounded-lg text-xs font-bold transition"
-                style={tabAct === t.id
-                  ? { background: '#2563eb', color: '#fff' }
-                  : { background: 'transparent', color: '#93c5fd' }}>
-                {t.label}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Sub-tabs */}
+        <div className="flex p-2 gap-1.5" style={{ background: '#eff6ff', borderBottom: '0.5px solid #bfdbfe' }}>
+          {TABS_LAB.map(t => (
+            <button key={t.id} onClick={() => setTabLab(t.id)}
+              className="flex-1 py-1.5 rounded-lg text-xs font-bold transition"
+              style={tabLab === t.id
+                ? { background: '#2563eb', color: '#fff' }
+                : { background: 'transparent', color: '#93c5fd' }}>
+              {t.label}
+            </button>
+          ))}
+        </div>
 
         {/* Título */}
-        {sec !== 'formulacion' && (
-          <div className="px-3 pt-3 pb-1">
-            <h2 className="font-bold text-sm" style={{ color: '#1e3a5f' }}>{titulo[tabAct]}</h2>
-          </div>
-        )}
-        {sec === 'formulacion' && (
-          <div className="px-3 pt-3 pb-1">
-            <h2 className="font-bold text-sm" style={{ color: '#1e3a5f' }}>Costo de formulación y presentaciones</h2>
-          </div>
-        )}
+        <div className="px-3 pt-3 pb-1">
+          <h2 className="font-bold text-sm" style={{ color: '#1e3a5f' }}>{titulo[tabLab]}</h2>
+        </div>
 
         {/* Contenido */}
         <div className="p-3">
-          {tabAct === 'mensual'    && <TabMensual />}
-          {tabAct === 'anual'      && <TabAnual />}
-          {tabAct === 'diluciones' && <CalcDiluciones />}
-          {tabAct === 'conversion' && <CalcConversion />}
-          {tabAct === 'pureza'     && <CalcPureza />}
-          {tabAct === 'ph'         && <CalcPH />}
-          {sec === 'formulacion'   && <FormulacionSimple />}
+          {tabLab === 'mensual' && <TabMensual />}
+          {tabLab === 'anual'   && <TabAnual />}
         </div>
       </div>
 
@@ -729,8 +683,7 @@ export default function HerramientasPage() {
       <div className="rounded-xl p-3 flex gap-2" style={{ background: 'rgba(239,246,255,0.8)', border: '0.5px solid #bfdbfe' }}>
         <Info size={13} style={{ color: '#2563eb', flexShrink: 0, marginTop: 1 }} />
         <p className="text-[11px] leading-relaxed" style={{ color: '#6b9fd4' }}>
-          <strong style={{ color: '#1e3a5f' }}>Laboral:</strong> SMMLV 2026 $1.750.905 (Decreto 0159). ·{' '}
-          <strong style={{ color: '#1e3a5f' }}>Formulación:</strong> Solo costo de materia prima, sin envase ni mano de obra. Cálculos orientativos.
+          <strong style={{ color: '#1e3a5f' }}>Laboral:</strong> SMMLV 2026 $1.750.905 (Decreto 0159).
         </p>
       </div>
 
