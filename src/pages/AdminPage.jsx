@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight, TrendingUp, ShieldAlert, CheckCircle, Trash2, Ban, Image, Plus, X } from 'lucide-react'
 import { supabase } from '../api/supabase'
-import { adminGetUsers, adminGetPosts, adminGetBanners, adminUpsertBanner, adminDeleteBanner, uploadBannerImage } from '../api/admin'
+import { adminGetUsers, adminGetPosts, adminGetBanners, adminUpsertBanner, adminDeleteBanner, uploadBannerImage, uploadWidgetImage } from '../api/admin'
 import { getAdminStats } from '../api/stats'
 import { adminGetReports, adminResolveReport, adminRemovePost, adminBanUser } from '../api/moderation'
 import Spinner from '../components/shared/Spinner'
@@ -353,12 +353,17 @@ function BannersTab() {
   )
 }
 
+const WIDGET_FORM_DEFAULT = { titulo: '', imagen_url: '', imagen_emoji: '🧪', imagen_gradient: 'linear-gradient(135deg,#0d1b3e,#1a237e)', btn_url: '', btn_texto: 'Más información', btn_color: '#e8eaf6', btn_text_color: '#1a237e', orden: 0, activo: true }
+
 function WidgetsTab() {
   const [widgets, setWidgets] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [uploadingImg, setUploadingImg] = useState(false)
+  const [uploadError, setUploadError] = useState('')
   const [editId, setEditId] = useState(null)
-  const [form, setForm] = useState({ titulo: '', imagen_emoji: '🧪', imagen_gradient: 'linear-gradient(135deg,#0d1b3e,#1a237e)', btn_url: '', btn_texto: 'Más información', btn_color: '#e8eaf6', btn_text_color: '#1a237e', orden: 0, activo: true })
+  const [form, setForm] = useState(WIDGET_FORM_DEFAULT)
+  const fileRef = useRef(null)
 
   const loadWidgets = () => {
     setLoading(true)
@@ -367,6 +372,21 @@ function WidgetsTab() {
       .catch(() => setLoading(false))
   }
   useState(() => { loadWidgets() }, [])
+
+  const handleImageFile = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadError('')
+    setUploadingImg(true)
+    try {
+      const url = await uploadWidgetImage(file)
+      setForm(f => ({ ...f, imagen_url: url }))
+    } catch (err) {
+      setUploadError(err.message || 'Error al subir la imagen.')
+    }
+    setUploadingImg(false)
+    e.target.value = ''
+  }
 
   const save = async () => {
     if (!form.titulo || !form.btn_url) return
@@ -378,7 +398,7 @@ function WidgetsTab() {
     }
     setSaving(false)
     setEditId(null)
-    setForm({ titulo: '', imagen_emoji: '🧪', imagen_gradient: 'linear-gradient(135deg,#0d1b3e,#1a237e)', btn_url: '', btn_texto: 'Más información', btn_color: '#e8eaf6', btn_text_color: '#1a237e', orden: widgets.length, activo: true })
+    setForm({ ...WIDGET_FORM_DEFAULT, orden: widgets.length })
     loadWidgets()
   }
 
@@ -390,7 +410,7 @@ function WidgetsTab() {
 
   const edit = (w) => {
     setEditId(w.id)
-    setForm({ titulo: w.titulo, imagen_emoji: w.imagen_emoji, imagen_gradient: w.imagen_gradient, btn_url: w.btn_url, btn_texto: w.btn_texto, btn_color: w.btn_color, btn_text_color: w.btn_text_color, orden: w.orden, activo: w.activo })
+    setForm({ titulo: w.titulo, imagen_url: w.imagen_url || '', imagen_emoji: w.imagen_emoji, imagen_gradient: w.imagen_gradient, btn_url: w.btn_url, btn_texto: w.btn_texto, btn_color: w.btn_color, btn_text_color: w.btn_text_color, orden: w.orden, activo: w.activo })
   }
 
   const GRADIENTS = [
@@ -413,9 +433,13 @@ function WidgetsTab() {
           <div className="space-y-2">
             {widgets.map(w => (
               <div key={w.id} className="flex items-center gap-3 p-3 rounded-xl border border-ink-200">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style={{ background: w.imagen_gradient }}>
-                  {w.imagen_emoji}
-                </div>
+                {w.imagen_url ? (
+                  <img src={w.imagen_url} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-ink-200" />
+                ) : (
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style={{ background: w.imagen_gradient }}>
+                    {w.imagen_emoji}
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-semibold text-ink-900 truncate">{w.titulo}</p>
                   <p className="text-[10px] text-ink-400 truncate">{w.btn_url}</p>
@@ -439,9 +463,34 @@ function WidgetsTab() {
             <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Título del widget</label>
             <input className={fld} value={form.titulo} onChange={e => setForm(f => ({...f, titulo: e.target.value}))} placeholder="Ej: Congreso Nacional de Química 2026" />
           </div>
+          <div>
+            <label className="text-[10px] font-semibold text-ink-600 mb-2 block">Imagen del widget (1:1, recomendado 400×400px)</label>
+            <div className="flex items-center gap-3">
+              {form.imagen_url ? (
+                <img src={form.imagen_url} alt="" className="w-14 h-14 rounded-lg object-cover border border-ink-200 flex-shrink-0" />
+              ) : (
+                <div className="w-14 h-14 rounded-lg flex items-center justify-center text-2xl flex-shrink-0" style={{ background: form.imagen_gradient }}>
+                  {form.imagen_emoji}
+                </div>
+              )}
+              <button onClick={() => fileRef.current?.click()} disabled={uploadingImg}
+                className="text-xs font-medium px-3 py-1.5 rounded-xl bg-ink-100 text-ink-700 hover:bg-blue-50 disabled:opacity-50">
+                {uploadingImg ? 'Subiendo...' : form.imagen_url ? 'Cambiar imagen' : 'Subir imagen'}
+              </button>
+              {form.imagen_url && (
+                <button onClick={() => setForm(f => ({...f, imagen_url: ''}))}
+                  className="text-xs font-medium px-3 py-1.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100">
+                  Quitar imagen
+                </button>
+              )}
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageFile} />
+            </div>
+            {uploadError && <p className="text-[10px] text-red-500 mt-1">{uploadError}</p>}
+            <p className="text-[9px] text-ink-400 mt-1">Si no subes una imagen, se usará el emoji y color de fondo de respaldo.</p>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Emoji de la imagen</label>
+              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Emoji de respaldo (si no hay imagen)</label>
               <input className={fld} value={form.imagen_emoji} onChange={e => setForm(f => ({...f, imagen_emoji: e.target.value}))} placeholder="🧪" />
             </div>
             <div>
@@ -450,7 +499,7 @@ function WidgetsTab() {
             </div>
           </div>
           <div>
-            <label className="text-[10px] font-semibold text-ink-600 mb-2 block">Color de fondo de imagen</label>
+            <label className="text-[10px] font-semibold text-ink-600 mb-2 block">Color de fondo de respaldo (si no hay imagen)</label>
             <div className="flex gap-2 flex-wrap">
               {GRADIENTS.map(g => (
                 <button key={g} onClick={() => setForm(f => ({...f, imagen_gradient: g}))}
@@ -485,7 +534,7 @@ function WidgetsTab() {
           </div>
           <div className="flex gap-2 pt-1">
             {editId && (
-              <button onClick={() => { setEditId(null); setForm({ titulo: '', imagen_emoji: '🧪', imagen_gradient: GRADIENTS[0], btn_url: '', btn_texto: 'Más información', btn_color: '#e8eaf6', btn_text_color: '#1a237e', orden: 0, activo: true }) }}
+              <button onClick={() => { setEditId(null); setForm(WIDGET_FORM_DEFAULT); setUploadError('') }}
                 className="px-4 py-2 rounded-xl text-xs font-medium bg-ink-100 text-ink-700">
                 Cancelar
               </button>

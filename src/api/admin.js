@@ -75,6 +75,17 @@ export const uploadBannerImage = async (file) => {
   return data.publicUrl
 }
 
+export const uploadWidgetImage = async (file) => {
+  const ext = file.name.split('.').pop().toLowerCase()
+  const path = `widgets/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const { error } = await supabase.storage
+    .from('post-media')
+    .upload(path, file, { cacheControl: '3600', upsert: false })
+  if (error) throw error
+  const { data } = supabase.storage.from('post-media').getPublicUrl(path)
+  return data.publicUrl
+}
+
 export const getActiveBanners = async () => {
   const { data, error } = await supabase
     .from('banners')

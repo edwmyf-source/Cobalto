@@ -36,193 +36,29 @@ function getPersonaje(pts) {
   return p
 }
 
-// ─── 20 NIVELES TEMÁTICOS ─────────────────────────────────────────────────────
+// ─── 20 NIVELES TEMÁTICOS (sincronizados con tabla quiz_preguntas en Supabase) ─
 const NIVELES = [
-  { id: 1,  tema: 'La cocina del químico',      emoji: '🍳', color: '#16a34a', bg: '#f0fdf4', frase_inicio: '¡Vamos calentando motores!', frase_nivel: '¡Arrancamos!' },
-  { id: 2,  tema: 'Tabla periódica básica',     emoji: '📋', color: '#0d9488', bg: '#f0fdfa', frase_inicio: '¿Conoces los elementos?', frase_nivel: '¡Subiste de nivel! 🚀' },
-  { id: 3,  tema: 'Estados de la materia',      emoji: '🌡️', color: '#2563eb', bg: '#eff6ff', frase_inicio: '¡Vas bien, sigue así!', frase_nivel: '¡Nivel 3! ¡Se pone bueno!' },
-  { id: 4,  tema: 'Mezclas y soluciones',       emoji: '⚗️', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: 'Aquí empieza lo serio...', frase_nivel: '¡Nivel 4! ¡Eso es!' },
-  { id: 5,  tema: 'Ácidos y bases',             emoji: '🧪', color: '#dc2626', bg: '#fff1f2', frase_inicio: '¿pH qué? ¡Demuéstralo!', frase_nivel: '¡NIVEL 5! 🔥 ¡Fuego!' },
-  { id: 6,  tema: 'Reacciones químicas',        emoji: '💥', color: '#ea580c', bg: '#fff7ed', frase_inicio: 'Las reacciones no mienten', frase_nivel: '¡Nivel 6! ¡Imparable!' },
-  { id: 7,  tema: 'Concentraciones',            emoji: '🧫', color: '#0369a1', bg: '#f0f9ff', frase_inicio: '¿Molar o molal? Eso te pregunto', frase_nivel: '¡NIVEL 7! ¡Qué bestia!' },
-  { id: 8,  tema: 'Estequiometría',             emoji: '⚖️', color: '#1d4ed8', bg: '#eff6ff', frase_inicio: 'Los números no perdonan...', frase_nivel: '¡Nivel 8! ¡La rompes!' },
-  { id: 9,  tema: 'Enlace químico',             emoji: '🔗', color: '#7e22ce', bg: '#faf5ff', frase_inicio: '¿Iónico o covalente? Piénsalo bien', frase_nivel: '¡NIVEL 9! ¡Sos un crack!' },
-  { id: 10, tema: 'Química orgánica básica',    emoji: '🌿', color: '#15803d', bg: '#f0fdf4', frase_inicio: '¡Mitad del camino! ¿Aguantas?', frase_nivel: '¡NIVEL 10! ¡Mitad! 🏅' },
-  { id: 11, tema: 'Separación de mezclas',      emoji: '🔬', color: '#0f766e', bg: '#f0fdfa', frase_inicio: 'Aquí solo sobreviven los mejores', frase_nivel: '¡Nivel 11! ¡Eres nivel PRO!' },
-  { id: 12, tema: 'Termodinámica básica',       emoji: '🌡️', color: '#b91c1c', bg: '#fff1f2', frase_inicio: '¡El calor no es broma!', frase_nivel: '¡NIVEL 12! ¡Legendario!' },
-  { id: 13, tema: 'Electroquímica',             emoji: '⚡', color: '#ca8a04', bg: '#fefce8', frase_inicio: '¿Oxidación y reducción? Dale.', frase_nivel: '¡NIVEL 13! ¡Monstruo!' },
-  { id: 14, tema: 'Cinética química',           emoji: '⏱️', color: '#4338ca', bg: '#eef2ff', frase_inicio: '¡Velocidad o muerte!', frase_nivel: '¡Nivel 14! ¡Increíble!' },
-  { id: 15, tema: 'Análisis químico',           emoji: '📊', color: '#0891b2', bg: '#ecfeff', frase_inicio: '¡Solo los elegidos llegan aquí!', frase_nivel: '¡NIVEL 15! ¡Top 1%!' },
-  { id: 16, tema: 'Química analítica avanzada', emoji: '🏆', color: '#be185d', bg: '#fdf2f8', frase_inicio: '¡Si llegas aquí, eres élite!', frase_nivel: '¡NIVEL 16! ¡Genio puro!' },
-  { id: 17, tema: 'Fisicoquímica',              emoji: '🌀', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: '¡La física y la química se abrazan!', frase_nivel: '¡NIVEL 17! ¡Eres un monstruo!' },
-  { id: 18, tema: 'Química de materiales',      emoji: '🔩', color: '#1e40af', bg: '#eff6ff', frase_inicio: '¡Casi nadie llega aquí, campeón!', frase_nivel: '¡NIVEL 18! ¡Leyenda viva!' },
-  { id: 19, tema: 'Bioquímica',                 emoji: '🧬', color: '#065f46', bg: '#ecfdf5', frase_inicio: '¡La química de la vida misma!', frase_nivel: '¡NIVEL 19! ¡Casi Dios!' },
-  { id: 20, tema: 'Nivel: Albert Einsteinium',  emoji: '⚡', color: '#b45309', bg: '#fefce8', frase_inicio: '¡NIVEL FINAL! ¡Aquí termina todo!', frase_nivel: '¡NIVEL 20! ¡ERES EL ELEGIDO!' },
+  { id: 1,  tema: 'La vida y los seres vivos',    emoji: '🌱', color: '#16a34a', bg: '#f0fdf4', frase_inicio: '¡Vamos calentando motores!', frase_nivel: '¡Arrancamos!' },
+  { id: 2,  tema: 'El cuerpo humano',             emoji: '🫀', color: '#0d9488', bg: '#f0fdfa', frase_inicio: '¿Conoces tu propio cuerpo?', frase_nivel: '¡Subiste de nivel! 🚀' },
+  { id: 3,  tema: 'Naturaleza y planeta Tierra',  emoji: '🌎', color: '#2563eb', bg: '#eff6ff', frase_inicio: '¡Vas bien, sigue así!', frase_nivel: '¡Nivel 3! ¡Se pone bueno!' },
+  { id: 4,  tema: 'Física: movimiento y fuerzas', emoji: '🚀', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: 'Aquí empieza lo serio...', frase_nivel: '¡Nivel 4! ¡Eso es!' },
+  { id: 5,  tema: 'Física: energía y luz',        emoji: '💡', color: '#dc2626', bg: '#fff1f2', frase_inicio: '¡Que se haga la luz!', frase_nivel: '¡NIVEL 5! 🔥 ¡Fuego!' },
+  { id: 6,  tema: 'Química básica',               emoji: '⚛️', color: '#ea580c', bg: '#fff7ed', frase_inicio: 'Los átomos no mienten', frase_nivel: '¡Nivel 6! ¡Imparable!' },
+  { id: 7,  tema: 'Mezclas y soluciones',         emoji: '🧫', color: '#0369a1', bg: '#f0f9ff', frase_inicio: '¿Soluto o solvente? Eso te pregunto', frase_nivel: '¡NIVEL 7! ¡Qué bestia!' },
+  { id: 8,  tema: 'Ácidos y bases',               emoji: '🧪', color: '#1d4ed8', bg: '#eff6ff', frase_inicio: '¿pH qué? ¡Demuéstralo!', frase_nivel: '¡Nivel 8! ¡La rompes!' },
+  { id: 9,  tema: 'Reacciones químicas',          emoji: '💥', color: '#7e22ce', bg: '#faf5ff', frase_inicio: 'Las reacciones no mienten', frase_nivel: '¡NIVEL 9! ¡Sos un crack!' },
+  { id: 10, tema: 'Química orgánica básica',      emoji: '🌿', color: '#15803d', bg: '#f0fdf4', frase_inicio: '¡Mitad del camino! ¿Aguantas?', frase_nivel: '¡NIVEL 10! ¡Mitad! 🏅' },
+  { id: 11, tema: 'Separación de mezclas',        emoji: '🔬', color: '#0f766e', bg: '#f0fdfa', frase_inicio: 'Aquí solo sobreviven los mejores', frase_nivel: '¡Nivel 11! ¡Eres nivel PRO!' },
+  { id: 12, tema: 'Termodinámica',                emoji: '🌡️', color: '#b91c1c', bg: '#fff1f2', frase_inicio: '¡El calor no es broma!', frase_nivel: '¡NIVEL 12! ¡Legendario!' },
+  { id: 13, tema: 'Electroquímica',               emoji: '⚡', color: '#ca8a04', bg: '#fefce8', frase_inicio: '¿Oxidación y reducción? Dale.', frase_nivel: '¡NIVEL 13! ¡Monstruo!' },
+  { id: 14, tema: 'Cinética química',             emoji: '⏱️', color: '#4338ca', bg: '#eef2ff', frase_inicio: '¡Velocidad o muerte!', frase_nivel: '¡Nivel 14! ¡Increíble!' },
+  { id: 15, tema: 'Análisis químico',             emoji: '📊', color: '#0891b2', bg: '#ecfeff', frase_inicio: '¡Solo los elegidos llegan aquí!', frase_nivel: '¡NIVEL 15! ¡Top 1%!' },
+  { id: 16, tema: 'Química analítica avanzada',   emoji: '🏆', color: '#be185d', bg: '#fdf2f8', frase_inicio: '¡Si llegas aquí, eres élite!', frase_nivel: '¡NIVEL 16! ¡Genio puro!' },
+  { id: 17, tema: 'Fisicoquímica',                emoji: '🌀', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: '¡La física y la química se abrazan!', frase_nivel: '¡NIVEL 17! ¡Eres un monstruo!' },
+  { id: 18, tema: 'Química de materiales',        emoji: '🔩', color: '#1e40af', bg: '#eff6ff', frase_inicio: '¡Casi nadie llega aquí, campeón!', frase_nivel: '¡NIVEL 18! ¡Leyenda viva!' },
+  { id: 19, tema: 'Bioquímica',                   emoji: '🧬', color: '#065f46', bg: '#ecfdf5', frase_inicio: '¡La química de la vida misma!', frase_nivel: '¡NIVEL 19! ¡Casi Dios!' },
+  { id: 20, tema: 'Albert Einsteinium (élite)',   emoji: '⚡', color: '#b45309', bg: '#fefce8', frase_inicio: '¡NIVEL FINAL! ¡Aquí termina todo!', frase_nivel: '¡NIVEL 20! ¡ERES EL ELEGIDO!' },
 ]
-
-// ─── BANCO DE PREGUNTAS POR NIVEL ─────────────────────────────────────────────
-const PREGUNTAS = {
-  1:  [ // La cocina del químico
-    { q: '¿Qué es una reacción química?', ops: ['Un cambio físico reversible', 'Una transformación que produce nuevas sustancias', 'Disolver sal en agua'], r: 1 },
-    { q: 'Al mezclar vinagre y bicarbonato...', ops: ['No pasa nada', 'Se produce una reacción química con gas', 'Se forma agua pura'], r: 1 },
-    { q: '¿Cuál es la fórmula del agua?', ops: ['HO', 'H₂O', 'H₃O'], r: 1 },
-    { q: 'El hielo al derretirse es un cambio...', ops: ['Químico', 'Físico', 'Nuclear'], r: 1 },
-    { q: 'El fuego es un ejemplo de...', ops: ['Cambio físico', 'Reacción química (combustión)', 'Mezcla homogénea'], r: 1 },
-    { q: '¿Qué es la materia?', ops: ['Todo lo que tiene masa y ocupa espacio', 'Solo los líquidos y sólidos', 'La energía del universo'], r: 0 },
-  ],
-  2:  [ // Tabla periódica básica
-    { q: '¿Cuál es el símbolo del oro?', ops: ['Go', 'Au', 'Or'], r: 1 },
-    { q: '¿Cuál es el símbolo del sodio?', ops: ['So', 'Sd', 'Na'], r: 2 },
-    { q: '¿Cuál es el gas más abundante en la atmósfera?', ops: ['Oxígeno', 'Nitrógeno', 'CO₂'], r: 1 },
-    { q: '¿Cuántos elementos tiene la tabla periódica?', ops: ['98', '118', '137'], r: 1 },
-    { q: 'El hierro tiene símbolo:', ops: ['Hr', 'Fe', 'Ir'], r: 1 },
-    { q: 'Los metales alcalinos están en el grupo:', ops: ['1', '7', '18'], r: 0 },
-  ],
-  3:  [ // Estados de la materia
-    { q: 'El paso de líquido a gas se llama:', ops: ['Fusión', 'Vaporización', 'Sublimación'], r: 1 },
-    { q: 'El paso de sólido a líquido se llama:', ops: ['Fusión', 'Solidificación', 'Condensación'], r: 0 },
-    { q: '¿Cuántos estados clásicos de la materia existen?', ops: ['2', '3', '4'], r: 1 },
-    { q: 'La sublimación ocurre cuando un sólido pasa a:', ops: ['Líquido', 'Gas directamente', 'Plasma'], r: 1 },
-    { q: 'En un gas, las moléculas están:', ops: ['Muy juntas y ordenadas', 'Separadas y en movimiento libre', 'Unidas pero en movimiento'], r: 1 },
-    { q: 'El punto de ebullición del agua es:', ops: ['80°C', '100°C', '120°C'], r: 1 },
-  ],
-  4:  [ // Mezclas y soluciones
-    { q: '¿Qué es una solución?', ops: ['Una mezcla heterogénea', 'Una mezcla homogénea de soluto y solvente', 'Un compuesto puro'], r: 1 },
-    { q: 'El soluto es:', ops: ['El componente en mayor cantidad', 'La sustancia que se disuelve', 'El solvente concentrado'], r: 1 },
-    { q: 'Una mezcla heterogénea se puede separar a simple vista:', ops: ['Nunca', 'Siempre', 'A veces'], r: 1 },
-    { q: 'La filtración sirve para separar:', ops: ['Dos líquidos miscibles', 'Un sólido de un líquido', 'Dos gases'], r: 1 },
-    { q: '¿Agua con sal es una mezcla...?', ops: ['Heterogénea', 'Homogénea', 'Compuesto puro'], r: 1 },
-    { q: 'Una emulsión es:', ops: ['Mezcla de dos gases', 'Dispersión de un líquido en otro', 'Solución sólida'], r: 1 },
-  ],
-  5:  [ // Ácidos y bases
-    { q: 'Una solución ácida tiene pH:', ops: ['Mayor a 7', 'Igual a 7', 'Menor a 7'], r: 2 },
-    { q: 'El agua pura tiene pH:', ops: ['5', '7', '9'], r: 1 },
-    { q: '¿Qué indica el pH?', ops: ['Presión hidrostática', 'Potencial de hidrógeno (acidez/basicidad)', 'Peso del hidrógeno'], r: 1 },
-    { q: 'El HCl es un ácido:', ops: ['Débil', 'Fuerte', 'Neutro'], r: 1 },
-    { q: 'Al mezclar ácido y base se produce:', ops: ['Solo agua', 'Una sal y agua (neutralización)', 'Un ácido más fuerte'], r: 1 },
-    { q: 'Una base en solución acuosa produce:', ops: ['H⁺', 'OH⁻', 'Cl⁻'], r: 1 },
-  ],
-  6:  [ // Reacciones químicas
-    { q: 'En una reacción de combustión siempre participa:', ops: ['Agua', 'Oxígeno', 'Nitrógeno'], r: 1 },
-    { q: 'Una reacción exotérmica:', ops: ['Absorbe calor', 'Libera calor', 'No cambia temperatura'], r: 1 },
-    { q: 'La Ley de Conservación de la Masa dice:', ops: ['La masa aumenta al reaccionar', 'La masa total se conserva', 'La masa desaparece'], r: 1 },
-    { q: 'Un catalizador:', ops: ['Se consume en la reacción', 'Acelera la reacción sin consumirse', 'Eleva la temperatura final'], r: 1 },
-    { q: 'Una reacción endotérmica:', ops: ['Libera calor', 'Absorbe calor del entorno', 'No requiere energía'], r: 1 },
-    { q: 'El reactivo limitante es:', ops: ['El que sobra', 'El que se agota primero', 'El producto principal'], r: 1 },
-  ],
-  7:  [ // Concentraciones
-    { q: 'La molaridad se mide en:', ops: ['g/L', 'mol/L', 'mg/mL'], r: 1 },
-    { q: '1 M de NaCl significa:', ops: ['1g de NaCl por litro', '1 mol de NaCl por litro', '1% de NaCl en peso'], r: 1 },
-    { q: 'La concentración ppm equivale a:', ops: ['Partes por millón', 'Presión por masa', 'Partes por mililitro'], r: 0 },
-    { q: 'Una dilución reduce:', ops: ['El volumen de la solución', 'La concentración del soluto', 'La masa del soluto'], r: 1 },
-    { q: 'En C₁V₁ = C₂V₂, esto representa:', ops: ['Ley de gases', 'Principio de dilución', 'Equilibrio ácido-base'], r: 1 },
-    { q: 'El porcentaje p/p mide:', ops: ['Masa de soluto por 100 mL de solución', 'Masa de soluto por 100 g de solución', 'Volumen de soluto por 100 g'], r: 1 },
-  ],
-  8:  [ // Estequiometría
-    { q: 'El número de Avogadro es:', ops: ['6.02 × 10²³', '3.14 × 10¹⁵', '1.67 × 10⁻²⁷'], r: 0 },
-    { q: 'Un mol de cualquier sustancia contiene:', ops: ['6.02 × 10²³ partículas', '1000 átomos', '1 g de masa'], r: 0 },
-    { q: 'La masa molar es:', ops: ['Masa de 1 átomo en gramos', 'Masa en gramos de 1 mol de sustancia', 'Número de moles por litro'], r: 1 },
-    { q: 'El rendimiento de una reacción mide:', ops: ['Velocidad de reacción', 'Fracción del producto teórico obtenido realmente', 'Temperatura máxima'], r: 1 },
-    { q: 'Para balancear una ecuación se conserva:', ops: ['Solo la masa', 'Masa y carga', 'Solo el número de moléculas'], r: 1 },
-    { q: 'El exceso en una reacción es:', ops: ['El reactivo que se agota', 'El reactivo que sobra después', 'El producto secundario'], r: 1 },
-  ],
-  9:  [ // Enlace químico
-    { q: 'El enlace iónico ocurre por:', ops: ['Compartición de electrones', 'Transferencia de electrones', 'Fuerzas de Van der Waals'], r: 1 },
-    { q: 'El enlace covalente ocurre por:', ops: ['Transferencia de electrones', 'Compartición de electrones', 'Atracción electrostática pura'], r: 1 },
-    { q: 'El NaCl es un ejemplo de enlace:', ops: ['Covalente polar', 'Iónico', 'Metálico'], r: 1 },
-    { q: 'Las fuerzas de Van der Waals son:', ops: ['Interacciones fuertes entre iones', 'Interacciones débiles entre moléculas neutras', 'Enlaces covalentes dobles'], r: 1 },
-    { q: 'El puente de hidrógeno se forma entre:', ops: ['Cualquier molécula polar', 'H unido a N, O o F con otro átomo electronegativo', 'Dos metales'], r: 1 },
-    { q: 'La electronegatividad mide:', ops: ['La masa del electrón', 'Atracción de un átomo por electrones en un enlace', 'Número de protones'], r: 1 },
-  ],
-  10: [ // Química orgánica básica
-    { q: 'Los compuestos orgánicos están basados en:', ops: ['Nitrógeno', 'Carbono', 'Oxígeno'], r: 1 },
-    { q: 'El grupo funcional -OH es característico de:', ops: ['Cetonas', 'Alcoholes', 'Éteres'], r: 1 },
-    { q: 'El metano (CH₄) es un:', ops: ['Alcohol', 'Alcano', 'Alqueno'], r: 1 },
-    { q: 'Un alqueno tiene:', ops: ['Solo enlaces simples C-C', 'Al menos un doble enlace C=C', 'Solo triples enlaces'], r: 1 },
-    { q: 'La saponificación produce:', ops: ['Ésteres', 'Jabón (sal de ácido graso) y glicerol', 'Ácidos fuertes'], r: 1 },
-    { q: 'El sufijo -ol en nomenclatura IUPAC indica:', ops: ['Aldehído', 'Alcohol', 'Ácido carboxílico'], r: 1 },
-  ],
-  11: [ // Separación de mezclas
-    { q: 'La destilación separa por diferencia de:', ops: ['Densidad', 'Punto de ebullición', 'Solubilidad'], r: 1 },
-    { q: 'La cromatografía separa por diferencia de:', ops: ['Tamaño molecular', 'Afinidad por fase estacionaria vs. móvil', 'Punto de fusión'], r: 1 },
-    { q: 'La filtración separa:', ops: ['Dos líquidos', 'Un sólido de un líquido', 'Dos gases'], r: 1 },
-    { q: 'La cristalización aprovecha diferencias de:', ops: ['Densidad', 'Solubilidad con la temperatura', 'Punto de ebullición'], r: 1 },
-    { q: 'La centrifugación separa por diferencia de:', ops: ['Punto de fusión', 'Densidad bajo fuerza centrífuga', 'Solubilidad'], r: 1 },
-    { q: 'La extracción líquido-líquido se basa en:', ops: ['Diferencia de ebullición', 'Diferente solubilidad en dos solventes inmiscibles', 'Diferencia de masa'], r: 1 },
-  ],
-  12: [ // Termodinámica básica
-    { q: 'La entalpía (ΔH) mide:', ops: ['Velocidad de reacción', 'Calor intercambiado a presión constante', 'Concentración del producto'], r: 1 },
-    { q: 'ΔH negativo indica una reacción:', ops: ['Endotérmica', 'Exotérmica', 'En equilibrio'], r: 1 },
-    { q: 'La entropía (S) mide:', ops: ['Energía total del sistema', 'Desorden o aleatoriedad del sistema', 'Temperatura de reacción'], r: 1 },
-    { q: 'La energía de Gibbs (ΔG) negativa indica:', ops: ['Reacción no espontánea', 'Reacción espontánea', 'Equilibrio perfecto'], r: 1 },
-    { q: 'La primera ley de la termodinámica dice:', ops: ['El calor siempre fluye al frío', 'La energía no se crea ni destruye', 'La entropía siempre aumenta'], r: 1 },
-    { q: 'La temperatura afecta la velocidad de reacción porque:', ops: ['Cambia el pH', 'Aumenta la energía cinética de las moléculas', 'Reduce la concentración'], r: 1 },
-  ],
-  13: [ // Electroquímica
-    { q: 'La oxidación implica:', ops: ['Ganancia de electrones', 'Pérdida de electrones', 'Ganancia de protones'], r: 1 },
-    { q: 'La reducción implica:', ops: ['Pérdida de electrones', 'Ganancia de electrones', 'Pérdida de masa'], r: 1 },
-    { q: 'En una celda galvánica, el ánodo es donde ocurre:', ops: ['Reducción', 'Oxidación', 'Neutralización'], r: 1 },
-    { q: 'La corrosión del hierro es un proceso de:', ops: ['Reducción pura', 'Oxidación (oxidación del Fe)', 'Neutralización'], r: 1 },
-    { q: 'La electrólisis usa energía eléctrica para:', ops: ['Generar calor', 'Provocar reacciones no espontáneas', 'Medir pH'], r: 1 },
-    { q: 'El potencial de reducción estándar mide:', ops: ['Velocidad de transferencia de electrones', 'Tendencia de una especie a ganar electrones', 'Concentración de iones'], r: 1 },
-  ],
-  14: [ // Cinética química
-    { q: 'La cinética química estudia:', ops: ['Energía de las reacciones', 'Velocidad y mecanismo de las reacciones', 'Equilibrio termodinámico'], r: 1 },
-    { q: 'La energía de activación es:', ops: ['Calor liberado en la reacción', 'Energía mínima para que ocurra la reacción', 'Temperatura final'], r: 1 },
-    { q: 'Un inhibidor:', ops: ['Acelera la reacción', 'Disminuye la velocidad de reacción', 'No cambia la velocidad'], r: 1 },
-    { q: 'La constante de velocidad k depende principalmente de:', ops: ['Concentración del reactivo', 'Temperatura', 'Presión del sistema'], r: 1 },
-    { q: 'Una reacción de orden cero:', ops: ['Depende mucho de la concentración', 'No depende de la concentración', 'Solo ocurre con catalizadores'], r: 1 },
-    { q: 'El tiempo de vida media en cinética es:', ops: ['Tiempo total de la reacción', 'Tiempo en que la concentración se reduce a la mitad', 'Periodo de inducción'], r: 1 },
-  ],
-  15: [ // Análisis químico
-    { q: 'La titulación determina:', ops: ['El pH de una solución', 'La concentración usando una solución de concentración conocida', 'La masa del soluto'], r: 1 },
-    { q: 'El punto de equivalencia en una titulación es cuando:', ops: ['El indicador cambia de color', 'Los moles de ácido y base se han neutralizado', 'La solución llega a pH 7 siempre'], r: 1 },
-    { q: 'La ley de Beer-Lambert relaciona:', ops: ['pH y temperatura', 'Absorbancia y concentración de una solución', 'Presión y volumen'], r: 1 },
-    { q: 'La espectroscopia UV-Vis mide:', ops: ['Masa molecular', 'Absorbancia de luz en el espectro UV y visible', 'Punto de ebullición'], r: 1 },
-    { q: 'Un indicador ácido-base:', ops: ['Neutraliza la solución', 'Cambia de color según el pH', 'Mide la temperatura'], r: 1 },
-    { q: 'La absorción atómica (AAS) se usa para:', ops: ['Separar mezclas', 'Cuantificar metales en solución', 'Medir viscosidad'], r: 1 },
-  ],
-  16: [ // Química analítica avanzada
-    { q: 'La cromatografía HPLC separa bajo:', ops: ['Temperatura elevada', 'Alta presión con fase estacionaria', 'Campo eléctrico'], r: 1 },
-    { q: 'La espectrometría de masas separa por:', ops: ['Solubilidad', 'Relación masa/carga (m/z)', 'Punto de ebullición'], r: 1 },
-    { q: 'La electroforesis separa por:', ops: ['Diferencia de densidad', 'Tamaño y carga bajo campo eléctrico', 'Afinidad a solventes'], r: 1 },
-    { q: 'El coeficiente de partición Kd mide:', ops: ['Velocidad de difusión', 'Distribución de un soluto entre dos fases', 'Viscosidad del solvente'], r: 1 },
-    { q: 'La espectroscopía IR identifica:', ops: ['Masa molecular', 'Grupos funcionales por absorción infrarroja', 'Número de isótopos'], r: 1 },
-    { q: 'La GC (cromatografía de gases) analiza:', ops: ['Solo compuestos iónicos', 'Compuestos volátiles', 'Proteínas y ADN'], r: 1 },
-  ],
-  17: [ // Fisicoquímica
-    { q: 'La constante de equilibrio Keq expresa:', ops: ['Velocidad de la reacción', 'Relación entre concentraciones de productos y reactivos en equilibrio', 'Temperatura de equilibrio'], r: 1 },
-    { q: 'El principio de Le Chatelier dice que:', ops: ['El equilibrio es permanente', 'Un sistema en equilibrio se opone a perturbaciones', 'Los gases siempre se expanden'], r: 1 },
-    { q: 'La tensión superficial se debe a:', ops: ['Diferencia de temperatura', 'Fuerzas de cohesión entre moléculas superficiales', 'Presión atmosférica'], r: 1 },
-    { q: 'La osmosis es el paso de:', ops: ['Soluto por membrana semipermeable', 'Solvente de zona diluida a concentrada por membrana semipermeable', 'Gas a través de membrana'], r: 1 },
-    { q: 'La viscosidad mide:', ops: ['Densidad del líquido', 'Resistencia a fluir', 'Tensión superficial'], r: 1 },
-    { q: 'El potencial químico determina:', ops: ['Temperatura de fusión', 'Dirección de flujo espontáneo de masa entre fases', 'Velocidad de difusión'], r: 1 },
-  ],
-  18: [ // Química de materiales
-    { q: 'Los polímeros son:', ops: ['Moléculas pequeñas y simples', 'Cadenas largas de unidades repetitivas (monómeros)', 'Sales inorgánicas'], r: 1 },
-    { q: 'Un material amorfo carece de:', ops: ['Masa definida', 'Estructura cristalina ordenada', 'Enlace químico'], r: 1 },
-    { q: 'La dureza de un material en la escala Mohs mide:', ops: ['Resistencia a la temperatura', 'Resistencia al rayado', 'Conductividad eléctrica'], r: 1 },
-    { q: 'Los nanomateriales tienen propiedades distintas por:', ops: ['Ser más pesados', 'Su tamaño extremadamente pequeño (1-100 nm)', 'Contener más electrones'], r: 1 },
-    { q: 'La corrosión galvánica ocurre entre:', ops: ['Dos metales iguales', 'Dos metales distintos en contacto con electrolito', 'Metales y plásticos'], r: 1 },
-    { q: 'Un semiconductor tiene conductividad:', ops: ['Igual al cobre', 'Intermedia entre conductor y aislante', 'Nula siempre'], r: 1 },
-  ],
-  19: [ // Bioquímica
-    { q: 'Las proteínas son polímeros de:', ops: ['Glucosa', 'Aminoácidos', 'Ácidos grasos'], r: 1 },
-    { q: 'La desnaturalización de una proteína implica:', ops: ['Síntesis de nuevas proteínas', 'Pérdida de estructura tridimensional sin romper secuencia', 'Digestión enzimática'], r: 1 },
-    { q: 'El ATP es:', ops: ['Un aminoácido esencial', 'La moneda energética de la célula', 'Un lípido estructural'], r: 1 },
-    { q: 'Las enzimas son catalizadores:', ops: ['Inorgánicos', 'Biológicos (generalmente proteínas)', 'Metálicos'], r: 1 },
-    { q: 'El ADN se compone de:', ops: ['Aminoácidos y lípidos', 'Nucleótidos con desoxirribosa', 'Glucosa y fósforo'], r: 1 },
-    { q: 'La glucólisis produce principalmente:', ops: ['Oxígeno', 'ATP y piruvato a partir de glucosa', 'Proteínas estructurales'], r: 1 },
-  ],
-  20: [ // Albert Einsteinium
-    { q: 'El potencial zeta mide:', ops: ['pH de una suspensión', 'Carga eléctrica superficial de partículas coloidales', 'Viscosidad del solvente'], r: 1 },
-    { q: 'La quiralidad en química se refiere a:', ops: ['Molécula con doble enlace', 'Molécula no superponible a su imagen especular', 'Tipo de reacción de sustitución'], r: 1 },
-    { q: 'La constante de acidez Ka mide:', ops: ['pH de un ácido fuerte', 'Grado de disociación de un ácido débil en agua', 'Temperatura de neutralización'], r: 1 },
-    { q: 'La RMN (resonancia magnética nuclear) identifica:', ops: ['Masa molecular exacta', 'Entorno químico de núcleos atómicos', 'Punto de ebullición'], r: 1 },
-    { q: 'La ecuación de Arrhenius k = A·e^(-Ea/RT) relaciona:', ops: ['Concentración y velocidad', 'Constante de velocidad y temperatura', 'Equilibrio y presión'], r: 1 },
-    { q: 'El coeficiente de actividad γ corrige:', ops: ['Diferencias de temperatura', 'Desviaciones del comportamiento ideal en soluciones reales', 'Errores de medición'], r: 1 },
-  ],
-}
 
 // ─── FRASES DE MOTIVACIÓN / BURLA ─────────────────────────────────────────────
 const FRASES_CORRECTA = ['¡Así se hace! 🔥', '¡Exacto! 💪', '¡Crack! ✅', '¡Brillante! ⚡', '¡Perfecto! 🎯', '¡Eso mismo! 🧪']
@@ -274,13 +110,33 @@ function PantallaInicio({ onStart }) {
   )
 }
 
+// ─── CARGA DE PREGUNTAS DESDE SUPABASE ────────────────────────────────────────
+// Trae las preguntas activas de todos los niveles en una sola consulta y las
+// agrupa por nivel. Se llama una vez al iniciar el juego.
+async function cargarPreguntasDesdeDB() {
+  const { data, error } = await supabase
+    .from('quiz_preguntas')
+    .select('nivel, pregunta, opciones, respuesta_correcta')
+    .eq('activa', true)
+  if (error) throw error
+  const porNivel = {}
+  for (const row of data) {
+    if (!porNivel[row.nivel]) porNivel[row.nivel] = []
+    porNivel[row.nivel].push({ q: row.pregunta, ops: row.opciones, r: row.respuesta_correcta })
+  }
+  return porNivel
+}
+
 // ─── JUEGO PRINCIPAL ──────────────────────────────────────────────────────────
 function JuegoPrincipal({ onGameOver }) {
   const TIEMPO_MAX = 30
+  const [cargando, setCargando] = useState(true)
+  const [errorCarga, setErrorCarga] = useState(null)
+  const bancoPreguntas = useRef({}) // { [nivel]: [{q, ops, r}, ...] }
   const [nivelIdx, setNivelIdx] = useState(0)          // 0-19
   const [tiempo, setTiempo] = useState(TIEMPO_MAX)
   const [correctasNivel, setCorrectasNivel] = useState(0) // correctas seguidas en nivel actual
-  const [preguntasNivel, setPreguntasNivel] = useState(() => shuffle(PREGUNTAS[1]))
+  const [preguntasNivel, setPreguntasNivel] = useState([])
   const [pregIdx, setPregIdx] = useState(0)
   const [seleccion, setSeleccion] = useState(null)
   const [feedback, setFeedback] = useState(null)       // {ok, frase}
@@ -292,12 +148,34 @@ function JuegoPrincipal({ onGameOver }) {
   const bloqueado = useRef(false)
   const gameOverRef = useRef(false)
 
-  const nivelDef = NIVELES[nivelIdx]
-  const pregunta = preguntasNivel[pregIdx % preguntasNivel.length]
-
-  // Cronómetro
+  // Carga inicial del banco de preguntas desde Supabase
   useEffect(() => {
-    if (gameOverRef.current) return
+    let cancelado = false
+    cargarPreguntasDesdeDB()
+      .then((banco) => {
+        if (cancelado) return
+        bancoPreguntas.current = banco
+        const preguntasNivel1 = banco[NIVELES[0].id]
+        if (!preguntasNivel1 || preguntasNivel1.length === 0) {
+          setErrorCarga('No hay preguntas disponibles para este nivel.')
+          return
+        }
+        setPreguntasNivel(shuffle(preguntasNivel1))
+        setCargando(false)
+      })
+      .catch((e) => {
+        console.error('Error cargando preguntas:', e)
+        if (!cancelado) setErrorCarga('No se pudieron cargar las preguntas. Revisa tu conexión.')
+      })
+    return () => { cancelado = true }
+  }, [])
+
+  const nivelDef = NIVELES[nivelIdx]
+  const pregunta = preguntasNivel.length > 0 ? preguntasNivel[pregIdx % preguntasNivel.length] : null
+
+  // Cronómetro (solo corre una vez cargadas las preguntas)
+  useEffect(() => {
+    if (cargando || errorCarga || gameOverRef.current) return
     const t = setInterval(() => {
       tiempoRef.current -= 1
       setTiempo(tiempoRef.current)
@@ -308,7 +186,7 @@ function JuegoPrincipal({ onGameOver }) {
       }
     }, 1000)
     return () => clearInterval(t)
-  }, [nivelIdx])
+  }, [nivelIdx, cargando, errorCarga])
 
   const subirNivel = useCallback((ptsActuales, rachaActual, statsActuales) => {
     const siguienteIdx = nivelIdx + 1
@@ -324,12 +202,12 @@ function JuegoPrincipal({ onGameOver }) {
     setTiempo(TIEMPO_MAX)
     setNivelIdx(siguienteIdx)
     setCorrectasNivel(0)
-    setPreguntasNivel(shuffle(PREGUNTAS[NIVELES[siguienteIdx].id]))
+    setPreguntasNivel(shuffle(bancoPreguntas.current[NIVELES[siguienteIdx].id] || []))
     setPregIdx(0)
   }, [nivelIdx, onGameOver])
 
   const responder = useCallback((opIdx) => {
-    if (bloqueado.current || gameOverRef.current) return
+    if (bloqueado.current || gameOverRef.current || !pregunta) return
     bloqueado.current = true
     const ok = opIdx === pregunta.r
     const tiempoRespuesta = TIEMPO_MAX - tiempoRef.current
@@ -363,6 +241,25 @@ function JuegoPrincipal({ onGameOver }) {
 
   const pctTiempo = (tiempo / TIEMPO_MAX) * 100
   const colorTiempo = tiempo > 15 ? nivelDef.color : tiempo > 8 ? '#f59e0b' : '#ef4444'
+
+  if (errorCarga) {
+    return (
+      <div className="flex flex-col items-center text-center px-4 py-10 gap-3">
+        <div className="text-4xl">⚠️</div>
+        <p className="text-sm font-semibold" style={{ color: '#c62828' }}>{errorCarga}</p>
+        <p className="text-xs" style={{ color: '#6b9fd4' }}>Intenta recargar la página.</p>
+      </div>
+    )
+  }
+
+  if (cargando || !pregunta) {
+    return (
+      <div className="flex flex-col items-center text-center px-4 py-10 gap-3">
+        <div className="text-4xl animate-bounce">🧪</div>
+        <p className="text-sm font-semibold" style={{ color: '#1e3a5f' }}>Cargando preguntas...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-3 px-3 py-4 relative">
