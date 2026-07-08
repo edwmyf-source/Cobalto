@@ -64,23 +64,37 @@ export const adminDeleteBanner = async (id) => {
   if (error) throw error
 }
 
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5 MB
+
+function validateImageFile(file) {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    throw new Error('Formato no permitido. Usa JPG, PNG, WEBP o GIF.')
+  }
+  if (file.size > MAX_IMAGE_SIZE) {
+    throw new Error('La imagen supera el tamaño máximo de 5 MB.')
+  }
+}
+
 export const uploadBannerImage = async (file) => {
+  validateImageFile(file)
   const ext = file.name.split('.').pop().toLowerCase()
   const path = `banners/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
   const { error } = await supabase.storage
     .from('post-media')
-    .upload(path, file, { cacheControl: '3600', upsert: false })
+    .upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type })
   if (error) throw error
   const { data } = supabase.storage.from('post-media').getPublicUrl(path)
   return data.publicUrl
 }
 
 export const uploadWidgetImage = async (file) => {
+  validateImageFile(file)
   const ext = file.name.split('.').pop().toLowerCase()
   const path = `widgets/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
   const { error } = await supabase.storage
     .from('post-media')
-    .upload(path, file, { cacheControl: '3600', upsert: false })
+    .upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type })
   if (error) throw error
   const { data } = supabase.storage.from('post-media').getPublicUrl(path)
   return data.publicUrl
