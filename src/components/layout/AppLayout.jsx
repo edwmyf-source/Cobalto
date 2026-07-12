@@ -71,10 +71,9 @@ export default function AppLayout() {
   ]
 
   const mobileNavItems = [
-    { id: '/herramientas', label: 'Herram.', icon: Calculator },
-    { id: '/feed',         label: 'Feed',    icon: LayoutList },
-    { id: '/chats',        label: 'Mensajes', icon: MessageSquare },
-    { id: '/notifications',label: 'Alertas',  icon: Bell, badge: unreadCount },
+    { id: '/feed',          label: 'Feed',     icon: LayoutList },
+    { id: '/chats',         label: 'Mensajes', icon: MessageSquare },
+    { id: '/notifications', label: 'Alertas',  icon: Bell, badge: unreadCount },
   ]
 
   return (
@@ -124,50 +123,64 @@ export default function AppLayout() {
           </div>
         )}
 
-        <div className="flex items-end px-2 pb-3 pt-1">
+        <div className="flex items-end justify-around px-2 pt-2 pb-2 relative">
+          {/* Feed + Mensajes (izquierda) */}
           {mobileNavItems.slice(0, 2).map(item => {
             const Icon = item.icon
             const active = currentTab === item.id
             return (
               <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-1 pt-1" aria-label={item.label}>
-                <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
-                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#7EB6FF' : 'transparent' }} />
-              </button>
-            )
-          })}
-          <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
-            className="flex-1 flex justify-center items-end pb-1">
-            <span className="w-[58px] h-[58px] rounded-full flex items-center justify-center -mb-1 active:scale-95 transition-all"
-              style={{ background: '#001A3D', boxShadow: '0 6px 20px rgba(0,26,61,0.5)', border: '3px solid rgba(255,255,255,0.15)' }}>
-              <Plus size={28} color="#fff" strokeWidth={2.5} />
-            </span>
-          </button>
-          {mobileNavItems.slice(2).map(item => {
-            const Icon = item.icon
-            const active = currentTab === item.id
-            return (
-              <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-1 pt-1 relative" aria-label={item.label}>
+                className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
                 <div className="relative">
-                  <Icon size={24} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.38)' }} />
+                  <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
                   {item.badge > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                       {item.badge > 99 ? '99+' : item.badge}
                     </span>
                   )}
                 </div>
-                <div className="w-1 h-1 rounded-full" style={{ background: active ? '#7EB6FF' : 'transparent' }} />
+                <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
               </button>
             )
           })}
+
+          {/* Botón + flotante gigante que sobresale del rectángulo */}
+          <div className="flex-1 flex justify-center">
+            <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
+              className="w-[68px] h-[68px] rounded-full flex items-center justify-center -mt-8 active:scale-95 transition-all"
+              style={{ background: '#FFB703', boxShadow: '0 8px 24px rgba(255,183,3,0.5), 0 2px 4px rgba(0,0,0,0.15)', border: '4px solid #001A3D' }}>
+              <Plus size={34} color="#001A3D" strokeWidth={3} />
+            </button>
+          </div>
+
+          {/* Alertas + Perfil (derecha) */}
+          {mobileNavItems.slice(2).map(item => {
+            const Icon = item.icon
+            const active = currentTab === item.id
+            return (
+              <button key={item.id} onClick={() => navigate(item.id)}
+                className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
+                <div className="relative">
+                  <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
+                  {item.badge > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
+              </button>
+            )
+          })}
+
+          {/* Perfil (avatar) */}
           <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center gap-1 pt-1" aria-label="Menú perfil">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-              style={{ background: profileMenuOpen ? '#001A3D' : '#001A3D', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
+            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label="Menú perfil">
+            <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+              style={{ background: profileMenuOpen ? '#7EB6FF' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#001A3D' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
               {initials}
             </div>
-            <div className="w-1 h-1 rounded-full" style={{ background: 'transparent' }} />
+            <span className="text-[9px] font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>Perfil</span>
           </button>
         </div>
       </div>

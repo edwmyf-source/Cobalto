@@ -25,7 +25,7 @@ function Pill({ label, active, onClick, accentColor }) {
 }
 
 export default function FilterBar({ filters, setFilters }) {
-  const [searchOpen, setSearchOpen] = useState(false)
+  // La barra de busqueda ahora esta siempre visible
 
   const set     = (k, v) => setFilters(f => ({ ...f, [k]: v }))
   const tab     = filters.tab || 'todo'
@@ -35,7 +35,7 @@ export default function FilterBar({ filters, setFilters }) {
   const setTab = (t) => {
     const tabDef = MARKETPLACE_TABS.find(x => x.value === t)
     setFilters({ tab: t, categories: tabDef?.categories || [], subcategory: tabDef?.subcategory || '' })
-    setSearchOpen(false)
+    
   }
 
   const setCat = (v) => setFilters(f => ({ ...f, category: f.category === v ? '' : v, subcategory: '' }))
@@ -45,14 +45,36 @@ export default function FilterBar({ filters, setFilters }) {
   return (
     <div className="rounded-2xl mb-2 overflow-hidden" style={{background:"#ffffff",border:"0.5px solid #F2F7FF"}}>
 
-      {/* Tabs + búsqueda */}
-      <div className="relative flex items-center px-3 pt-2 pb-0">
-        <div className="flex gap-1 mx-auto">
+      {/* Barra de búsqueda siempre visible, centrada */}
+      <div className="px-3 pt-2.5 pb-2">
+        <div className="relative max-w-xl mx-auto">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#7EB6FF' }} />
+          <input
+            value={filters.search || ''}
+            onChange={e => set('search', e.target.value)}
+            placeholder="Buscar en el feed..."
+            className="w-full pl-10 pr-9 py-2 rounded-full text-[13px] focus:outline-none transition-colors"
+            style={{ background: '#F2F7FF', border: '1px solid #F2F7FF', color: '#001A3D' }}
+            onFocus={e => e.currentTarget.style.borderColor = '#001A3D'}
+            onBlur={e => e.currentTarget.style.borderColor = '#F2F7FF'}
+          />
+          {filters.search && (
+            <button onClick={() => set('search', '')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70" aria-label="Limpiar búsqueda">
+              <X size={14} style={{ color: '#001A3D' }} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Tabs centrados */}
+      <div className="relative flex items-center justify-center px-3 pb-1" style={{ borderTop: '0.5px solid #F2F7FF' }}>
+        <div className="flex gap-1 pt-2 flex-wrap justify-center">
           {MARKETPLACE_TABS.map(t => (
             <button
               key={t.value}
               onClick={() => setTab(t.value)}
-              className="px-2 md:px-3 py-1.5 rounded-2xl text-[11px] md:text-[12px] font-bold transition-all"
+              className="px-3 md:px-4 py-1.5 rounded-2xl text-[11px] md:text-[12px] font-bold transition-all"
               style={{
                 background: tab === t.value ? t.color : 'transparent',
                 color: tab === t.value ? '#fff' : '#6b7280',
@@ -63,47 +85,16 @@ export default function FilterBar({ filters, setFilters }) {
             </button>
           ))}
         </div>
-        <div className="absolute right-3 top-2 flex items-center gap-2 pb-2">
+        {hasFilters && (
           <button
-            onClick={() => setSearchOpen(s => !s)}
-            className={`p-1.5 rounded-2xl transition-colors ${searchOpen ? 'text-brand-600' : 'hover:bg-slate-50 text-ink-400'}`}
-            style={searchOpen ? { color: accent } : {}}
+            onClick={() => setFilters({})}
+            className="absolute right-3 top-2.5 text-[11px] font-medium hover:underline"
+            style={{ color: accent }}
           >
-            <Search size={14} />
+            Limpiar
           </button>
-          {hasFilters && (
-            <button
-              onClick={() => { setFilters({}); setSearchOpen(false) }}
-              className="text-[11px] font-medium hover:underline"
-              style={{ color: accent }}
-            >
-              Limpiar
-            </button>
-          )}
-        </div>
+        )}
       </div>
-
-      {/* Buscador */}
-      {searchOpen && (
-        <div className="px-3 pb-2">
-          <div className="relative">
-            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-300" />
-            <input
-              value={filters.search || ''}
-              onChange={e => set('search', e.target.value)}
-              placeholder="Buscar en el feed..."
-              autoFocus
-              className="w-full pl-8 pr-7 py-2 rounded-2xl border border-ink-200 text-[12px] focus:outline-none bg-ink-50"
-              style={{ '--tw-ring-color': accent }}
-            />
-            {filters.search && (
-              <button onClick={() => set('search', '')} className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-300 hover:text-ink-500">
-                <X size={13} />
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* TIENDA — sin Buscan/Ofrecen */}
       {tab === 'tienda' && (
