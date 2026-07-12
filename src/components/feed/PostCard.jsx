@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, Share2, ThumbsUp } from 'lucide-react'
-import { timeAgo, publicName } from '../../lib/helpers'
+import { timeAgo, publicName, ptsEmoji } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
 import { blockUser } from '../../api/moderation'
@@ -179,7 +179,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       {/* Header */}
       <div className="flex items-start gap-2.5 mb-1.5">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={36} />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={25} />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-1">
@@ -188,9 +188,13 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
                 className="text-[15px] font-semibold leading-snug text-left hover:underline block truncate" style={{color:"#001A3D"}}>
                 {name}
               </button>
-              {prof.quimica_personaje && (
-                <span title={prof.quimica_nombre || ''} className="text-base leading-none flex-shrink-0 cursor-default">
-                  {prof.quimica_personaje}
+              {prof.quimica_pts != null ? (
+                <span title={prof.quimica_nombre || ''} className="text-[11px] leading-none flex-shrink-0 cursor-default tracking-tight">
+                  {ptsEmoji(prof.quimica_pts)}
+                </span>
+              ) : prof.quimica_personaje && (
+                <span title={prof.quimica_nombre || ''} className="text-[11px] leading-none flex-shrink-0 cursor-default">
+                  {ptsEmoji(0)}
                 </span>
               )}
             </div>

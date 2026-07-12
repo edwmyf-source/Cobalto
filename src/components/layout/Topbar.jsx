@@ -2,7 +2,7 @@ import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, Calculator, Flas
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import { signOut } from '../../api/auth'
-import { publicName } from '../../lib/helpers'
+import { publicName, ptsEmoji } from '../../lib/helpers'
 import { isAdmin } from '../../lib/constants'
 
 export default function Topbar({ profile, unreadCount = 0, session }) {
@@ -108,10 +108,10 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
               <div className="px-4 py-3 border-b" style={{ borderColor: '#F2F7FF' }}>
                 <p className="text-sm font-bold" style={{ color: '#001A3D' }}>{name}</p>
                 <p className="text-xs" style={{ color: '#7EB6FF' }}>{session?.user?.email}</p>
-                {profile?.quimica_personaje && (
+                {profile?.quimica_pts != null && (
                   <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF' }}>
-                    <span className="text-base">{profile.quimica_personaje}</span>
-                    <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre}</span>
+                    <span className="text-[12px]">{ptsEmoji(profile.quimica_pts)}</span>
+                    <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre} · pts</span>
                   </div>
                 )}
               </div>

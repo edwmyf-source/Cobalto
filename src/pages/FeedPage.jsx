@@ -20,7 +20,7 @@ import ErrorBoundary from '../components/shared/ErrorBoundary'
 import { TAB_COLOR } from '../lib/constants'
 import { getCommunityStats } from '../api/stats'
 import FeedWidgets from '../components/feed/FeedWidgets'
-import { publicName } from '../lib/helpers'
+import { publicName, ptsEmoji } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import { preloadedFeed } from '../lib/feedPreloader'
 import { registerCacheCleaner } from '../lib/cacheManager'
@@ -288,10 +288,10 @@ export default function FeedPage() {
               </div>
               <p className="font-bold text-sm leading-tight" style={{ color: '#001A3D' }}>{name}</p>
               {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: '#7EB6FF' }}>{profile.city}</p>}
-              {profile?.quimica_personaje && (
+              {profile?.quimica_pts != null && (
                 <div className="flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF' }}>
-                  <span className="text-base">{profile.quimica_personaje}</span>
-                  <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre}</span>
+                  <span className="text-[12px]">{ptsEmoji(profile.quimica_pts)}</span>
+                  <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre} · pts</span>
                 </div>
               )}
               <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '0.5px solid #F2F7FF' }}>
