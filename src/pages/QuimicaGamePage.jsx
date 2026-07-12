@@ -11,7 +11,7 @@ const PERSONAJES = [
   { id: 4,  min: 350,  emoji: '📚', nombre: 'Universitario Primer Año', desc: 'Sobrevivió química general. Casi.',    color: '#4a148c', bg: '#f3e5f5' },
   { id: 5,  min: 520,  emoji: '⚗️',  nombre: 'Practicante de Lab',     desc: 'Ya no rompe pipetas. Casi nunca.',     color: '#006064', bg: '#e0f7fa' },
   { id: 6,  min: 720,  emoji: '🔬', nombre: 'Técnico Analítico',       desc: 'Lee una ficha técnica y entiende todo.', color: '#e65100', bg: '#fff8e1' },
-  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista Senior',  desc: 'Sabe cuándo la reacción va mal.',      color: '#2F80ED', bg: '#F2F7FF' },
+  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista Senior',  desc: 'Sabe cuándo la reacción va mal.',      color: '#001A3D', bg: '#F2F7FF' },
   { id: 8,  min: 1250, emoji: '🧪', nombre: 'Formulador Experto',      desc: 'Huele el reactivo y ya sabe qué es.',  color: '#880e4f', bg: '#fce4ec' },
   { id: 9,  min: 1600, emoji: '👨‍🏫', nombre: 'Profe Labortosita',      desc: 'Explica lo mismo 40 veces. Con amor.', color: '#1b5e20', bg: '#e8f5e9' },
   { id: 10, min: 2000, emoji: '🧫', nombre: 'Investigador',             desc: 'Publica papers. Nadie los lee. Importan.', color: '#0d47a1', bg: '#e3f2fd' },
@@ -500,7 +500,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
           <div className="px-3 pb-4">
             <button onClick={onReiniciar} className="w-full py-3 rounded-xl text-white font-black text-sm active:scale-95 transition-all"
-              style={{ background: '#2F80ED', boxShadow: '0 4px 16px rgba(47,128,237,0.35)' }}>
+              style={{ background: '#001A3D', boxShadow: '0 4px 16px rgba(0,26,61,0.35)' }}>
               🔄 Jugar de nuevo
             </button>
           </div>

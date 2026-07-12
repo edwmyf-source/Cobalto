@@ -107,7 +107,7 @@ export default function AppLayout() {
                 <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
                   className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-blue-50"
                   style={{ color: '#001A3D' }}>
-                  <Icon size={16} style={{ color: '#2F80ED' }} />
+                  <Icon size={16} style={{ color: '#001A3D' }} />
                   {item.label}
                   <ChevronRight size={14} className="ml-auto" style={{ color: '#A7D8FF' }} />
                 </button>
@@ -139,7 +139,7 @@ export default function AppLayout() {
           <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
             className="flex-1 flex justify-center items-end pb-1">
             <span className="w-[58px] h-[58px] rounded-full flex items-center justify-center -mb-1 active:scale-95 transition-all"
-              style={{ background: '#2F80ED', boxShadow: '0 6px 20px rgba(47,128,237,0.5)', border: '3px solid rgba(255,255,255,0.15)' }}>
+              style={{ background: '#001A3D', boxShadow: '0 6px 20px rgba(0,26,61,0.5)', border: '3px solid rgba(255,255,255,0.15)' }}>
               <Plus size={28} color="#fff" strokeWidth={2.5} />
             </span>
           </button>
@@ -164,7 +164,7 @@ export default function AppLayout() {
           <button onClick={() => setProfileMenuOpen(o => !o)}
             className="flex-1 flex flex-col items-center gap-1 pt-1" aria-label="Menú perfil">
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-              style={{ background: profileMenuOpen ? '#001A3D' : '#2F80ED', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
+              style={{ background: profileMenuOpen ? '#001A3D' : '#001A3D', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
               {initials}
             </div>
             <div className="w-1 h-1 rounded-full" style={{ background: 'transparent' }} />

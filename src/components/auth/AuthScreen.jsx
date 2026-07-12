@@ -10,29 +10,29 @@ const ADVANTAGES = [
   { icon: Gift,           text: '100% gratis' },
   { icon: Rocket,         text: 'Registro en segundos' },
   { icon: EyeOff,         text: 'Identidad anónima opcional' },
-  { icon: Lock,           text: 'Teléfono y email nunca expuestos' },
-  { icon: MessageCircle,  text: 'Contacto siempre por chat interno' },
-  { icon: FlaskConical,   text: 'Categorías para industria y laboratorio' },
+  { icon: Lock,           text: 'Datos privados' },
+  { icon: MessageCircle,  text: 'Chat interno seguro' },
+  { icon: FlaskConical,   text: 'Enfoque en industria química' },
 ]
 
 // Barra superior fija estilo LinkedIn: logo a la izquierda, acciones a la derecha
 function TopBar({ onLogin, onSignup }) {
   return (
-    <header className="sticky top-0 z-40 w-full" style={{ background: '#ffffff', borderBottom: '1px solid #F2F7FF' }}>
-      <div className="max-w-5xl mx-auto h-14 flex items-center justify-between px-4">
+    <header className="w-full flex-shrink-0" style={{ background: '#ffffff', borderBottom: '1px solid #F2F7FF' }}>
+      <div className="max-w-6xl mx-auto h-12 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
-          <CobaltoMark size={32} rounded="rounded-lg" />
-          <span className="font-extrabold text-lg tracking-wide hidden sm:block" style={{ color: '#001A3D' }}>COBALTO</span>
+          <CobaltoMark size={28} rounded="rounded-lg" />
+          <span className="font-extrabold text-base tracking-wide hidden sm:block" style={{ color: '#001A3D' }}>COBALTO</span>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={onLogin}
-            className="px-4 py-2 rounded-full text-sm font-semibold transition-colors hover:bg-blue-50"
-            style={{ color: '#2F80ED', border: '1.5px solid #2F80ED', background: '#fff' }}>
+            className="px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold transition-colors hover:bg-blue-50"
+            style={{ color: '#001A3D', border: '1.5px solid #001A3D', background: '#fff' }}>
             Iniciar sesión
           </button>
           <button onClick={onSignup}
-            className="px-4 py-2 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ background: '#2F80ED' }}>
+            className="px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ background: '#001A3D' }}>
             Unirse ahora
           </button>
         </div>
@@ -41,68 +41,68 @@ function TopBar({ onLogin, onSignup }) {
   )
 }
 
-// Página promocional (landing) que se ve antes de entrar, al estilo LinkedIn
+// Landing compacto pensado para caber en una pantalla de PC (~700px de alto útil)
 function Landing({ stats, onSignup }) {
   return (
-    <div className="max-w-5xl mx-auto px-5 pb-16">
+    <div className="flex-1 min-h-0 max-w-6xl w-full mx-auto px-5 py-4 md:py-6 flex flex-col">
 
       {/* Hero */}
-      <section className="pt-10 pb-8 text-center md:text-left md:flex md:items-center md:gap-10">
+      <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <h1 className="text-[32px] md:text-[44px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
+          <h1 className="text-[26px] md:text-[38px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
             Punto de encuentro<br />
-            <span style={{ color: '#2F80ED' }}>de la industria química.</span>
+            <span style={{ color: '#7EB6FF' }}>de la industria química.</span>
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed" style={{ color: '#5c6376' }}>
+          <p className="mt-2 text-[13px] md:text-[14px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con laboratorios, proveedores y profesionales del sector químico en Colombia.
             Publica, cotiza y contacta — todo en un solo lugar.
           </p>
           <button onClick={onSignup}
-            className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-90"
-            style={{ background: '#2F80ED' }}>
+            className="mt-3 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-90"
+            style={{ background: '#001A3D' }}>
             Unirse ahora <ArrowRight size={16} />
           </button>
         </div>
 
         {/* Métricas de comunidad */}
-        <div className="mt-8 md:mt-0 grid grid-cols-2 gap-3 md:w-72 flex-shrink-0">
-          <div className="rounded-2xl p-4 text-center" style={{ background: '#001A3D' }}>
-            <div className="flex justify-center mb-1"><Handshake size={18} color="#7EB6FF" /></div>
-            <p className="text-2xl font-extrabold text-white leading-none">{stats.connections.toLocaleString('es-CO')}</p>
-            <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Conexiones</p>
+        <div className="mt-4 md:mt-0 grid grid-cols-2 gap-3 md:w-64 flex-shrink-0">
+          <div className="rounded-2xl p-3 text-center" style={{ background: '#001A3D' }}>
+            <div className="flex justify-center mb-1"><Handshake size={16} color="#7EB6FF" /></div>
+            <p className="text-xl font-extrabold text-white leading-none">{stats.connections.toLocaleString('es-CO')}</p>
+            <p className="text-[10px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Conexiones</p>
           </div>
-          <div className="rounded-2xl p-4 text-center" style={{ background: '#001A3D' }}>
-            <div className="flex justify-center mb-1"><Users size={18} color="#7EB6FF" /></div>
-            <p className="text-2xl font-extrabold text-white leading-none">{stats.requests.toLocaleString('es-CO')}</p>
-            <p className="text-[10px] mt-1.5 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Solicitudes</p>
+          <div className="rounded-2xl p-3 text-center" style={{ background: '#001A3D' }}>
+            <div className="flex justify-center mb-1"><Users size={16} color="#7EB6FF" /></div>
+            <p className="text-xl font-extrabold text-white leading-none">{stats.requests.toLocaleString('es-CO')}</p>
+            <p className="text-[10px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Solicitudes</p>
           </div>
         </div>
       </section>
 
       {/* Ventajas */}
-      <section className="py-8" style={{ borderTop: '1px solid #F2F7FF' }}>
-        <h2 className="text-xl font-extrabold mb-5 text-center md:text-left" style={{ color: '#001A3D' }}>
+      <section className="mt-4 md:mt-5 pt-3 md:pt-4" style={{ borderTop: '1px solid #F2F7FF' }}>
+        <h2 className="text-sm md:text-base font-extrabold mb-2 md:mb-3" style={{ color: '#001A3D' }}>
           Hecho para el sector químico
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {ADVANTAGES.map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-3 rounded-2xl px-4 py-3.5" style={{ background: '#F2F7FF' }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#001A3D' }}>
-                <Icon size={16} color="#7EB6FF" />
+            <div key={text} className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: '#F2F7FF' }}>
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#001A3D' }}>
+                <Icon size={13} color="#7EB6FF" />
               </div>
-              <span className="text-[13px] font-medium" style={{ color: '#001A3D' }}>{text}</span>
+              <span className="text-[11px] md:text-[12px] font-medium leading-tight" style={{ color: '#001A3D' }}>{text}</span>
             </div>
           ))}
         </div>
       </section>
 
       {/* CTA final */}
-      <section className="py-10 text-center rounded-3xl" style={{ background: '#001A3D' }}>
-        <h2 className="text-xl md:text-2xl font-extrabold text-white px-6">
+      <section className="mt-4 md:mt-5 py-4 text-center rounded-2xl" style={{ background: '#001A3D' }}>
+        <h2 className="text-sm md:text-base font-extrabold text-white px-4">
           Únete a la comunidad química de Colombia
         </h2>
         <button onClick={onSignup}
-          className="mt-5 px-6 py-3 rounded-full text-sm font-bold transition-opacity hover:opacity-90"
+          className="mt-2 px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-opacity hover:opacity-90"
           style={{ background: '#FFB703', color: '#001A3D' }}>
           Crear cuenta gratis
         </button>
@@ -120,18 +120,18 @@ export default function AuthScreen() {
   }, [])
 
   return (
-    <div className="min-h-screen" style={{ background: '#ffffff' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#ffffff' }}>
       <TopBar onLogin={() => setMode('login')} onSignup={() => setMode('signup')} />
 
       {mode === 'landing' ? (
         <Landing stats={stats} onSignup={() => setMode('signup')} />
       ) : (
-        <div className="flex items-start justify-center px-4 py-8">
-          <div className="w-full max-w-md rounded-3xl p-6 md:p-8 shadow-lg" style={{ background: '#fff', border: '1px solid #F2F7FF' }}>
+        <div className="flex-1 flex items-start md:items-center justify-center px-4 py-4 md:py-6">
+          <div className="w-full max-w-md rounded-3xl p-5 md:p-7 shadow-lg" style={{ background: '#fff', border: '1px solid #F2F7FF' }}>
             {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
             {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}
-            <button onClick={() => setMode('landing')} className="mt-4 text-xs font-semibold hover:underline" style={{ color: '#2F80ED' }}>
+            <button onClick={() => setMode('landing')} className="mt-3 text-xs font-semibold hover:underline" style={{ color: '#001A3D' }}>
               ← Volver al inicio
             </button>
           </div>

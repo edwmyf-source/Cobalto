@@ -239,7 +239,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           {!isMine && (
             <button onClick={() => onContact?.(post)} disabled={isContacting}
               className="flex flex-1 items-center justify-center gap-1.5 py-1 rounded-lg text-[11px] font-semibold transition-colors disabled:opacity-60 hover:bg-gray-50"
-              style={{ color: isContacting ? '#999' : '#2F80ED' }}>
+              style={{ color: isContacting ? '#999' : '#001A3D' }}>
               {isContacting
                 ? <><Loader2 size={14} className="animate-spin" /> Abriendo...</>
                 : <><Send size={14} /> Contactar</>}

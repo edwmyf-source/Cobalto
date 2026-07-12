@@ -82,6 +82,7 @@ export const updateProfile = async (uid, fields) => {
   }
   if (fields.segment) payload.segment = fields.segment
   if (fields.avatar_url !== undefined) payload.avatar_url = fields.avatar_url
+  if (fields.cover_url !== undefined) payload.cover_url = fields.cover_url
 
   const upd = await tryWithFallback(
     p => supabase.from('profiles').update(p).eq('id', uid).select().maybeSingle(),

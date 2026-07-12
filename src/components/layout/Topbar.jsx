@@ -92,7 +92,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
           <button onClick={() => setMenuOpen(o => !o)}
             className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors hover:bg-gray-50">
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-              style={{ background: '#2F80ED' }}>
+              style={{ background: '#001A3D' }}>
               {profile?.avatar_url
                 ? <img src={profile.avatar_url} className="w-7 h-7 rounded-full object-cover" alt={name} />
                 : initials}
@@ -119,7 +119,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
                 <button key={path} onClick={() => navigate(path)}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-blue-50"
                   style={{ color: '#001A3D' }}>
-                  <Icon size={15} style={{ color: '#2F80ED' }} />
+                  <Icon size={15} style={{ color: '#001A3D' }} />
                   {label}
                 </button>
               ))}
@@ -138,7 +138,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
         {/* Botón publicar */}
         <button onClick={() => navigate('/feed')}
           className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all flex-shrink-0 hover:bg-blue-50"
-          style={{ background: '#fff', border: '1.5px solid #2F80ED', color: '#2F80ED' }}>
+          style={{ background: '#fff', border: '1.5px solid #001A3D', color: '#001A3D' }}>
           <Pencil size={13} />
           Publicar
         </button>

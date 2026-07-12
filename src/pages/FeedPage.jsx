@@ -278,10 +278,10 @@ export default function FeedPage() {
 
           {/* Mini perfil */}
           <div className="bg-white rounded-xl overflow-hidden border border-ink-200 shadow-sm">
-            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #001A3D 0%, #2F80ED 100%)' }} />
+            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #001A3D 0%, #001A3D 100%)' }} />
             <div className="px-3 pb-3 -mt-6">
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
-                style={{ border: '3px solid white', background: '#2F80ED' }}>
+                style={{ border: '3px solid white', background: '#001A3D' }}>
                 {profile?.avatar_url
                   ? <img src={profile.avatar_url} className="w-12 h-12 object-cover" alt={name} />
                   : <span>{initials}</span>}
@@ -297,11 +297,11 @@ export default function FeedPage() {
               <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '0.5px solid #F2F7FF' }}>
                 <div className="flex justify-between">
                   <span className="text-[11px]" style={{ color: '#7EB6FF' }}>Publicaciones</span>
-                  <span className="text-[11px] font-bold" style={{ color: '#2F80ED' }}>{communityStats.requests || 0}</span>
+                  <span className="text-[11px] font-bold" style={{ color: '#001A3D' }}>{communityStats.requests || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[11px]" style={{ color: '#7EB6FF' }}>Activos hoy</span>
-                  <span className="text-[11px] font-bold" style={{ color: '#2F80ED' }}>{communityStats.activeThisWeek || 0}</span>
+                  <span className="text-[11px] font-bold" style={{ color: '#001A3D' }}>{communityStats.activeThisWeek || 0}</span>
                 </div>
               </div>
             </div>
@@ -318,7 +318,7 @@ export default function FeedPage() {
             <p className="text-[10px] mb-2" style={{ color: '#7EB6FF' }}>Tu rango aparece en tus posts</p>
             <button onClick={() => navigate('/quimica')}
               className="w-full py-1.5 rounded-lg text-[11px] font-bold text-white"
-              style={{ background: '#2F80ED' }}>
+              style={{ background: '#001A3D' }}>
               Jugar ahora →
             </button>
           </div>
@@ -334,7 +334,7 @@ export default function FeedPage() {
               ].map(ev => (
                 <div key={ev.name} className="flex gap-2 items-start">
                   <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#F2F7FF' }}>
-                    <p className="text-sm font-bold leading-none" style={{ color: '#2F80ED' }}>{ev.day}</p>
+                    <p className="text-sm font-bold leading-none" style={{ color: '#001A3D' }}>{ev.day}</p>
                     <p className="text-[8px] uppercase" style={{ color: '#7EB6FF' }}>{ev.mon}</p>
                   </div>
                   <div>
@@ -343,7 +343,7 @@ export default function FeedPage() {
                   </div>
                 </div>
               ))}
-              <button className="text-[10px] font-semibold mt-1" style={{ color: '#2F80ED' }}>Ver todos →</button>
+              <button className="text-[10px] font-semibold mt-1" style={{ color: '#001A3D' }}>Ver todos →</button>
             </div>
           </div>
 
@@ -362,7 +362,7 @@ export default function FeedPage() {
               {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
                 <button key={opt.value} onClick={() => setSort(opt.value)}
                   className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
-                  style={sort === opt.value ? { background: '#2F80ED' } : {}}>
+                  style={sort === opt.value ? { background: '#001A3D' } : {}}>
                   <Icon size={12} />{opt.label}
                 </button>
               )})}
@@ -371,7 +371,7 @@ export default function FeedPage() {
           {newPostsAvailable && (
             <button onClick={loadNewPosts}
               className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl"
-              style={{ background: '#2F80ED' }}>
+              style={{ background: '#001A3D' }}>
               <ArrowUp size={13} /> Nuevas publicaciones
             </button>
           )}
@@ -381,7 +381,7 @@ export default function FeedPage() {
             <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl border border-ink-200">
               <h3 className="font-medium text-base mb-1" style={{ color: '#001A3D' }}>Sin publicaciones</h3>
               <p className="text-xs mb-3" style={{ color: '#7EB6FF' }}>No hay publicaciones que coincidan.</p>
-              <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#2F80ED' }}>Crear publicación</button>
+              <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#001A3D' }}>Crear publicación</button>
             </div>
           ) : (
             <div className="rounded-xl overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>
@@ -416,7 +416,7 @@ export default function FeedPage() {
             {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
               <button key={opt.value} onClick={() => setSort(opt.value)}
                 className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
-                style={sort === opt.value ? { background: '#2F80ED' } : {}}>
+                style={sort === opt.value ? { background: '#001A3D' } : {}}>
                 <Icon size={12} />{opt.label}
               </button>
             )})}
@@ -425,7 +425,7 @@ export default function FeedPage() {
         {newPostsAvailable && (
           <button onClick={loadNewPosts}
             className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl mb-2.5 mx-2"
-            style={{ background: '#2F80ED', width: 'calc(100% - 16px)' }}>
+            style={{ background: '#001A3D', width: 'calc(100% - 16px)' }}>
             <ArrowUp size={13} /> Nuevas publicaciones
           </button>
         )}
@@ -435,7 +435,7 @@ export default function FeedPage() {
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <h3 className="font-medium text-base mb-1" style={{ color: '#001A3D' }}>Sin publicaciones</h3>
             <p className="text-xs mb-3" style={{ color: '#7EB6FF' }}>No hay publicaciones que coincidan.</p>
-            <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#2F80ED' }}>Crear publicación</button>
+            <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#001A3D' }}>Crear publicación</button>
           </div>
         ) : (
           <div className="overflow-hidden border border-ink-200" style={{ background: '#ffffff' }}>

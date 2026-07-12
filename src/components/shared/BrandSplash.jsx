@@ -62,11 +62,11 @@ export default function BrandSplash({ onDone }) {
         }
         .rh-ring {
           position:absolute; width:144px; height:144px; border-radius:50%;
-          border:1.5px dashed rgba(47,128,237,0.35);
+          border:1.5px dashed rgba(0,26,61,0.35);
           animation: rh-ring 800ms ease both;
         }
         .rh-mark {
-          width:100px; height:100px; background:#2F80ED; border-radius:26px;
+          width:100px; height:100px; background:#001A3D; border-radius:26px;
           display:flex; align-items:center; justify-content:center;
           animation: rh-pop 700ms cubic-bezier(.22,.9,.25,1.1) both;
           box-shadow: 0 0 0 8px rgba(0,26,61,0.25), 0 20px 60px rgba(0,26,61,0.5);
@@ -78,8 +78,8 @@ export default function BrandSplash({ onDone }) {
         }
         .rh-atom .dot {
           width:12px; height:12px; border-radius:50%;
-          background:rgba(47,128,237,0.9);
-          box-shadow:0 0 8px rgba(47,128,237,0.6);
+          background:rgba(0,26,61,0.9);
+          box-shadow:0 0 8px rgba(0,26,61,0.6);
         }
         .rh-atom:nth-child(2) { animation: orbit1 3.2s linear infinite; }
         .rh-atom:nth-child(3) { animation: orbit2 3.2s linear infinite; }
@@ -91,7 +91,7 @@ export default function BrandSplash({ onDone }) {
         }
         .rh-dots { display:flex; gap:8px; margin-top:20px; animation: rh-label 1100ms ease both; }
         .rh-dots span {
-          width:7px; height:7px; border-radius:50%; background:rgba(47,128,237,0.6);
+          width:7px; height:7px; border-radius:50%; background:rgba(0,26,61,0.6);
           display:block;
         }
         .rh-dots span:nth-child(1) { animation: dot-pulse 1.2s ease-in-out infinite 0s; }

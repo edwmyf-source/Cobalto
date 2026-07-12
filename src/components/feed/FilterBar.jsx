@@ -46,8 +46,8 @@ export default function FilterBar({ filters, setFilters }) {
     <div className="rounded-2xl mb-2 overflow-hidden" style={{background:"#ffffff",border:"0.5px solid #F2F7FF"}}>
 
       {/* Tabs + búsqueda */}
-      <div className="flex items-center justify-between px-3 pt-2 pb-0">
-        <div className="flex gap-1">
+      <div className="relative flex items-center px-3 pt-2 pb-0">
+        <div className="flex gap-1 mx-auto">
           {MARKETPLACE_TABS.map(t => (
             <button
               key={t.value}
@@ -63,7 +63,7 @@ export default function FilterBar({ filters, setFilters }) {
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-2 pb-2">
+        <div className="absolute right-3 top-2 flex items-center gap-2 pb-2">
           <button
             onClick={() => setSearchOpen(s => !s)}
             className={`p-1.5 rounded-2xl transition-colors ${searchOpen ? 'text-brand-600' : 'hover:bg-slate-50 text-ink-400'}`}
