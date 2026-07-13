@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, ThumbsUp } from 'lucide-react'
-import { timeAgo, publicName, ptsEmoji } from '../../lib/helpers'
+import { timeAgo, publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
 import { blockUser } from '../../api/moderation'
@@ -188,15 +188,6 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
                 className="text-[12px] font-semibold leading-snug text-left hover:underline block truncate" style={{color:"#001A3D"}}>
                 {name}
               </button>
-              {prof.quimica_pts != null ? (
-                <span title={prof.quimica_nombre || ''} className="text-[11px] leading-none flex-shrink-0 cursor-default tracking-tight">
-                  {ptsEmoji(prof.quimica_pts)}
-                </span>
-              ) : prof.quimica_personaje && (
-                <span title={prof.quimica_nombre || ''} className="text-[11px] leading-none flex-shrink-0 cursor-default">
-                  {ptsEmoji(0)}
-                </span>
-              )}
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
               {catLabel && (

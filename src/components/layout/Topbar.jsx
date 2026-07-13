@@ -2,7 +2,7 @@ import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, Calculator, Flas
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import { signOut } from '../../api/auth'
-import { publicName, ptsEmoji } from '../../lib/helpers'
+import { publicName } from '../../lib/helpers'
 import { isAdmin } from '../../lib/constants'
 
 export default function Topbar({ profile, unreadCount = 0, session }) {
@@ -108,12 +108,6 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
               <div className="px-4 py-3 border-b" style={{ borderColor: '#DDE7F4' }}>
                 <p className="text-sm font-bold" style={{ color: '#001A3D' }}>{name}</p>
                 <p className="text-xs" style={{ color: '#3A6FAE' }}>{session?.user?.email}</p>
-                {profile?.quimica_pts != null && (
-                  <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
-                    <span className="text-[12px]">{ptsEmoji(profile.quimica_pts)}</span>
-                    <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre} · pts</span>
-                  </div>
-                )}
               </div>
               {menuItems.map(({ label, Icon, path }) => (
                 <button key={path} onClick={() => navigate(path)}
