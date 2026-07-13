@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronLeft, ChevronRight, TrendingUp, ShieldAlert, CheckCircle, Trash2, Ban, Image, Plus, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown, TrendingUp, ShieldAlert, CheckCircle, Trash2, Ban, Image, Plus, X } from 'lucide-react'
 import { supabase } from '../api/supabase'
 import { adminGetUsers, adminGetPosts, adminGetBanners, adminUpsertBanner, adminDeleteBanner, uploadBannerImage, uploadWidgetImage } from '../api/admin'
 import { getAdminStats } from '../api/stats'
@@ -286,6 +286,19 @@ function BannersTab() {
     } catch {}
   }
 
+  const move = async (idx, dir) => {
+    const newBanners = [...banners]
+    const target = idx + dir
+    if (target < 0 || target >= newBanners.length) return
+    ;[newBanners[idx], newBanners[target]] = [newBanners[target], newBanners[idx]]
+    setBanners(newBanners)
+    try {
+      await Promise.all(newBanners.map((b, i) =>
+        adminUpsertBanner({ ...b, position: i + 1 })
+      ))
+    } catch { load() }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -321,6 +334,19 @@ function BannersTab() {
           {banners.map((banner, i) => (
             <div key={banner.id} className="bg-white border border-ink-300 rounded-2xl overflow-hidden flex items-center gap-3 p-2.5">
               <img src={banner.image_url} alt="" className="w-24 h-14 object-cover rounded-2xl flex-shrink-0 border border-ink-200" />
+              <div className="flex flex-col gap-1 flex-shrink-0">
+                <button onClick={() => move(i, -1)} disabled={i === 0}
+                  className="p-1 rounded-lg hover:bg-ink-50 disabled:opacity-20 transition-opacity"
+                  title="Subir">
+                  <ChevronUp size={14} className="text-ink-600" />
+                </button>
+                <span className="text-[10px] font-bold text-center text-ink-400">#{i + 1}</span>
+                <button onClick={() => move(i, 1)} disabled={i === banners.length - 1}
+                  className="p-1 rounded-lg hover:bg-ink-50 disabled:opacity-20 transition-opacity"
+                  title="Bajar">
+                  <ChevronDown size={14} className="text-ink-600" />
+                </button>
+              </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-ink-900">Banner #{i + 1}</p>
                 <p className="text-[10px] text-ink-400 truncate">{banner.image_url.split('/').pop()}</p>
