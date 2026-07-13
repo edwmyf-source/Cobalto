@@ -10,7 +10,7 @@ export default function BrandSplash({ onDone }) {
   useEffect(() => {
     let seen = false
     try { seen = sessionStorage.getItem(SPLASH_SEEN_KEY) === '1' } catch {}
-    const duration = seen ? 700 : 2400
+    const duration = seen ? 350 : 1200
     try { sessionStorage.setItem(SPLASH_SEEN_KEY, '1') } catch {}
     const t = setTimeout(() => {
       if (!doneRef.current) { doneRef.current = true; onDone() }

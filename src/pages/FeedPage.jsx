@@ -11,7 +11,6 @@ import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
 import PostCard from '../components/feed/PostCard'
 import PublishBox from '../components/feed/PublishBox'
-import InlinePublishBox from '../components/feed/InlinePublishBox'
 import FilterBar from '../components/feed/FilterBar'
 import PublishSuccessModal from '../components/feed/PublishSuccessModal'
 import BannerCarousel from '../components/feed/BannerCarousel'
@@ -345,7 +344,6 @@ export default function FeedPage() {
 
         {/* ── Columna central ── */}
         <div className="flex-1 min-w-0 space-y-3">
-          <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
           <BannerCarousel />
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
           <div className="flex items-center justify-between">
@@ -399,7 +397,6 @@ export default function FeedPage() {
 
       {/* ── MÓVIL: columna única ── */}
       <div className="md:hidden max-w-2xl mx-auto px-0">
-        <InlinePublishBox onOpen={() => setPublishOpen(true)} onPublished={handlePublished} />
         <BannerCarousel />
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
         <div className="flex items-center justify-between mb-2.5 px-2">
