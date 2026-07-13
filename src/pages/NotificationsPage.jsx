@@ -43,7 +43,7 @@ export default function NotificationsPage() {
     if (!n.post_id) return
     setOpening(n.id)
     try {
-      if (n.type === 'message') {
+      if (n.type === 'message' || n.title === 'message') {
         const conv = await getOrCreateConversation(session.user.id, n.from_user_id, n.post_id)
         navigate('/chats', { state: { convId: conv.id } })
       } else {

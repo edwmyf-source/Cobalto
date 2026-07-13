@@ -3,12 +3,17 @@ import { supabase } from './supabase'
 export const getNotifications = async (userId) => {
   const { data, error } = await supabase
     .from('notifications')
-    .select('*, from_profile:profiles!notifications_from_user_id_fkey(id, full_name, identity_mode, identity_number), post:posts(content)')
+    .select('*, from_profile:profiles!notifications_from_user_id_fkey(id, full_name, identity_mode, identity_number, avatar_url), post:posts(content)')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(50)
   if (error) throw error
-  return (data || []).map(n => ({ ...n, post_content: n.post?.content || null }))
+  return (data || []).map(n => ({
+    ...n,
+    type: n.title || 'reaction',
+    content: n.body || n.content || '',
+    post_content: n.post?.content || null,
+  }))
 }
 
 export const getUnreadCount = async (userId) => {
@@ -30,10 +35,12 @@ export const markAllRead = async (userId) => {
 }
 
 export const createNotification = async ({ user_id, from_user_id, type, content, post_id }) => {
-  // Don't notify yourself
   if (user_id === from_user_id) return
   const { error } = await supabase.from('notifications').insert({
-    user_id, from_user_id, type, content, post_id
+    user_id, from_user_id, post_id,
+    title: type || 'reaction',
+    body: content || '',
+    content: content || '',
   })
   if (error) console.warn('Notification error:', error)
 }
