@@ -10,13 +10,6 @@ import { publicName, timeAgo } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 
-const ICONS = {
-  reaction: Heart,
-  comment: MessageCircle,
-  message: MessageSquare,
-  mention: AtSign,
-}
-
 export default function NotificationsPage() {
   const { session } = useAuth()
   const navigate = useNavigate()
@@ -44,7 +37,6 @@ export default function NotificationsPage() {
     setNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
   }
 
-  // Llevar al usuario al contenido relacionado, no solo marcar leído
   const handleOpen = async (n) => {
     if (opening) return
     handleRead(n.id)
@@ -63,50 +55,111 @@ export default function NotificationsPage() {
 
   const unreadCount = notifs.filter(n => !n.read).length
 
+  // Agrupar por HOY / AYER / ESTA SEMANA / ANTES
+  const groupLabel = (dateStr) => {
+    const d = new Date(dateStr)
+    const now = new Date()
+    const diffDays = Math.floor((now - d) / 86400000)
+    if (diffDays === 0) return 'HOY'
+    if (diffDays === 1) return 'AYER'
+    if (diffDays < 7) return 'ESTA SEMANA'
+    return 'ANTES'
+  }
+
+  const groups = notifs.reduce((acc, n) => {
+    const lbl = groupLabel(n.created_at)
+    if (!acc[lbl]) acc[lbl] = []
+    acc[lbl].push(n)
+    return acc
+  }, {})
+
+  const ORDER = ['HOY', 'AYER', 'ESTA SEMANA', 'ANTES']
+
   return (
     <div className="page-enter max-w-2xl mx-auto">
+
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-medium text-base text-ink-900">Notificaciones</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="font-bold text-xl" style={{ color: '#001A3D' }}>Notificaciones</h2>
+          {unreadCount > 0 && (
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full" style={{ background: '#FFB703', color: '#001A3D' }}>
+              {unreadCount} nuevas
+            </span>
+          )}
+        </div>
         {unreadCount > 0 && (
           <button onClick={handleMarkAll}
-            className="flex items-center gap-1.5 text-xs text-brand-600 hover:underline font-medium">
-            <Check size={14} /> Marcar todas como leídas
+            className="flex items-center gap-1.5 text-xs font-medium hover:opacity-70"
+            style={{ color: '#5D8BC7' }}>
+            <Check size={14} /> Marcar leídas
           </button>
         )}
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><Spinner size={20} className="text-brand-600" /></div>
+        <div className="flex justify-center py-10"><Spinner size={20} /></div>
       ) : notifs.length === 0 ? (
-        <div className="bg-white border border-ink-300 rounded-2xl p-8 text-center">
-          <p className="text-sm text-ink-500">No tienes notificaciones aún.</p>
+        <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '1px solid #DDE7F4' }}>
+          <Bell size={32} className="mx-auto mb-3" style={{ color: '#CDDBEC' }} />
+          <p className="text-sm" style={{ color: '#5D8BC7' }}>No tienes notificaciones aún.</p>
         </div>
       ) : (
-        <div className="space-y-1">
-          {notifs.map(n => {
-            const fromProf = n.from_profile || {}
-            const fromName = publicName(fromProf)
-            return (
-              <button key={n.id} onClick={() => handleOpen(n)} disabled={opening === n.id}
-                className={`w-full text-left flex items-start gap-3 p-3 rounded-2xl transition-colors ${
-                  n.read ? 'bg-white' : 'bg-brand-500/5 border border-brand-500/10'
-                } hover:bg-slate-50`}>
-                <UserAvatar seed={fromProf.id || fromName} size={36} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] text-ink-900">
-                    <span className="font-medium">{fromName}</span>{' '}
-                    <span className="text-ink-500">{n.content}</span>
-                  </p>
-                  <span className="text-[11px] text-ink-400">{timeAgo(n.created_at)}</span>
-                </div>
-                {(() => {
-                  const Icon = ICONS[n.type] || Bell
-                  return <Icon size={16} className="flex-shrink-0 text-ink-400" />
-                })()}
-                {!n.read && <span className="w-2 h-2 rounded-full bg-brand-600 flex-shrink-0 mt-2" />}
-              </button>
-            )
-          })}
+        <div className="flex flex-col gap-0">
+          {ORDER.filter(lbl => groups[lbl]?.length).map(lbl => (
+            <div key={lbl}>
+              {/* Etiqueta de grupo */}
+              <p className="text-[11px] font-bold tracking-widest pb-2 pt-3" style={{ color: '#B8C9E0' }}>{lbl}</p>
+
+              <div className="flex flex-col gap-1.5">
+                {groups[lbl].map(n => {
+                  const fromProf = n.from_profile || {}
+                  const fromName = publicName(fromProf)
+                  const isUnread = !n.read
+                  const snippet = n.post_content
+                    ? `"${n.post_content.slice(0, 80)}${n.post_content.length > 80 ? '...' : ''}"`
+                    : null
+
+                  return (
+                    <button
+                      key={n.id}
+                      onClick={() => handleOpen(n)}
+                      disabled={opening === n.id}
+                      className="w-full text-left rounded-2xl overflow-hidden transition-opacity disabled:opacity-60"
+                      style={{
+                        background: '#ffffff',
+                        border: isUnread ? '1px solid #DDE7F4' : '1px solid #DDE7F4',
+                        borderLeft: isUnread ? '4px solid #001A3D' : '1px solid #DDE7F4',
+                      }}
+                    >
+                      <div className="flex items-center gap-3 p-3">
+                        <UserAvatar seed={fromProf.id || fromName} avatarUrl={fromProf.avatar_url} size={40} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[14px] leading-snug" style={{ color: '#001A3D' }}>
+                            <span className="font-semibold">{fromName}</span>{' '}
+                            <span style={{ color: '#5D8BC7' }}>{n.content}</span>
+                          </p>
+                          <p className="text-[11px] mt-0.5" style={{ color: '#B8C9E0' }}>{timeAgo(n.created_at)}</p>
+                        </div>
+                        {isUnread && (
+                          <div className="flex-shrink-0 w-2.5 h-2.5 rounded-full"
+                            style={{ background: '#FFB703', boxShadow: '0 0 6px rgba(255,183,3,0.6)' }} />
+                        )}
+                      </div>
+
+                      {/* Snippet de la publicación */}
+                      {snippet && (
+                        <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px] leading-snug"
+                          style={{ background: '#F2F7FF', borderLeft: '3px solid #CDDBEC', color: '#5D8BC7' }}>
+                          {snippet}
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -3,12 +3,12 @@ import { supabase } from './supabase'
 export const getNotifications = async (userId) => {
   const { data, error } = await supabase
     .from('notifications')
-    .select('*, from_profile:profiles!notifications_from_user_id_fkey(id, full_name, identity_mode, identity_number)')
+    .select('*, from_profile:profiles!notifications_from_user_id_fkey(id, full_name, identity_mode, identity_number), post:posts(content)')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(50)
   if (error) throw error
-  return data || []
+  return (data || []).map(n => ({ ...n, post_content: n.post?.content || null }))
 }
 
 export const getUnreadCount = async (userId) => {
