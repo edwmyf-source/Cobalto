@@ -185,7 +185,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           <div className="flex items-center justify-between gap-1">
             <div className="flex items-center gap-1.5 min-w-0">
               <button onClick={goToProfile}
-                className="text-[15px] font-semibold leading-snug text-left hover:underline block truncate" style={{color:"#001A3D"}}>
+                className="text-[12px] font-semibold leading-snug text-left hover:underline block truncate" style={{color:"#001A3D"}}>
                 {name}
               </button>
               {prof.quimica_pts != null ? (

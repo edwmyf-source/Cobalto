@@ -300,6 +300,34 @@ function JuegoPrincipal({ onGameOver }) {
         </div>
       </div>
 
+      {/* Barra de insignia: puntos 0 → 500 con animacion */}
+      <div className="mt-1">
+        <div className="flex items-center justify-between text-[9px] font-bold mb-1" style={{ color: '#1e3a5f' }}>
+          <span>INSIGNIA</span>
+          <span className="tabular-nums" style={{ color: '#001A3D' }}>{Math.min(puntos, 500)} / 500 pts</span>
+        </div>
+        <div className="relative h-2 rounded-full overflow-hidden" style={{ background: '#dbeafe' }}>
+          <div className="h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden"
+            style={{
+              width: `${Math.min(100, (puntos / 500) * 100)}%`,
+              background: 'linear-gradient(90deg,#001A3D,#2F80ED,#7EB6FF,#FFB703)',
+              backgroundSize: '200% 100%',
+              animation: 'insignia-shine 2.4s ease-in-out infinite',
+            }}>
+            <span style={{
+              position:'absolute', inset:0,
+              background:'linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)',
+              backgroundSize:'200% 100%',
+              animation:'insignia-shimmer 1.6s ease-in-out infinite',
+            }} />
+          </div>
+        </div>
+        <style>{`
+          @keyframes insignia-shine   { 0%,100% { background-position: 0% 50% } 50% { background-position: 100% 50% } }
+          @keyframes insignia-shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(200%) } }
+        `}</style>
+      </div>
+
       {/* Barra de tiempo */}
       <div>
         <div className="flex items-center gap-2 mb-1">
