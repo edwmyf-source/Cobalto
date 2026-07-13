@@ -11,7 +11,6 @@ const ChatsPage = lazy(() => import('./pages/ChatsPage'))
 const NotificationsPage = lazy(() => import('./pages/NotificationsPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
-const ContactPage = lazy(() => import('./pages/ContactPage'))
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'))
 const HerramientasPage = lazy(() => import('./pages/HerramientasPage'))
 const QuimicaGamePage = lazy(() => import('./pages/QuimicaGamePage'))
@@ -50,7 +49,6 @@ export const routes = [
       { path: 'notifications', element: <Page><NotificationsPage /></Page> },
       { path: 'profile', element: <Page><ProfilePage /></Page> },
       { path: 'u/:userId', element: <Page><UserProfilePage /></Page> },
-      { path: 'contact', element: <Page><ContactPage /></Page> },
       { path: 'herramientas', element: <Page><HerramientasPage /></Page> },
       { path: 'quimica', element: <Page><QuimicaGamePage /></Page> },
       {
