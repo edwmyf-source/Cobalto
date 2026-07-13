@@ -187,7 +187,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
     <div className="flex overflow-hidden rounded-xl" style={{ background:"#ffffff", border:'1px solid #CDDBEC' }} id={`post-${post.id}`}>
 
       {/* Barra lateral de categoria */}
-      <div className="flex-shrink-0" style={{ width: 5, background: catAccent }} />
+      <div className="flex-shrink-0" style={{ width: 5, background: '#001A3D' }} />
 
       {/* Contenido de la publicacion */}
       <div className="flex-1 min-w-0 px-3 pt-2.5 pb-2">
@@ -208,7 +208,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           <p className="text-[10px] leading-tight mt-px truncate" style={{ color: '#5D8BC7' }}>
             {prof.city && <>{prof.city} · </>}
             {timeAgo(post.created_at)}
-            {catLabel && <> · <span style={{ color: catAccent, fontWeight: 700 }}>{catLabel.toUpperCase()}</span></>}
+            {catLabel && <> · <span style={{ color: '#001A3D', fontWeight: 700 }}>{catLabel.toUpperCase()}</span></>}
           </p>
         </div>
       </div>
