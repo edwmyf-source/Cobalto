@@ -426,7 +426,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
       {/* Tira de evolución con tamaños crecientes */}
       <div>
-        <p className="text-[10px] font-bold mb-3 tracking-widest" style={{ color: '#7EB6FF' }}>TU EVOLUCIÓN</p>
+        <p className="text-[10px] font-bold mb-3 tracking-widest" style={{ color: '#3A6FAE' }}>TU EVOLUCIÓN</p>
         <div className="flex items-end justify-center gap-1 mb-2">
           {frames.map((f, i) => {
             const size = emojiSize(i)
@@ -456,7 +456,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
       {/* Card resultado — aparece después de la animación */}
       {showCard && (
-        <div className="w-full rounded-2xl overflow-hidden" style={{ background: '#fff', border: '0.5px solid #F2F7FF' }}>
+        <div className="w-full rounded-2xl overflow-hidden" style={{ background: '#fff', border: '1px solid #CDDBEC' }}>
           {/* Header del personaje */}
           <div className="py-5 px-4" style={{ background: per.bg || '#e8f5e9' }}>
             <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 8, filter: `drop-shadow(0 4px 16px ${per.color}40)` }}>
@@ -508,7 +508,7 @@ function PantallaFinal({ stats, onReiniciar }) {
           )}
 
           {/* Escala completa de personajes */}
-          <div className="mx-3 mb-3 rounded-xl p-3" style={{ background: '#f8f9ff', border: '0.5px solid #F2F7FF' }}>
+          <div className="mx-3 mb-3 rounded-xl p-3" style={{ background: '#f8f9ff', border: '1px solid #CDDBEC' }}>
             <div className="grid grid-cols-5 gap-1">
               {PERSONAJES.map(p => (
                 <div key={p.id} className="flex flex-col items-center p-1 rounded-lg transition-all"
@@ -576,7 +576,7 @@ export default function QuimicaGamePage() {
 
   return (
     <div className="max-w-lg mx-auto" style={{ paddingBottom: 100 }}>
-      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: '#ffffff', border: '0.5px solid #F2F7FF' }}>
+      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: '#ffffff', border: '1px solid #CDDBEC' }}>
         {pantalla === 'inicio' && <PantallaInicio onStart={iniciar} />}
         {pantalla === 'juego' && <JuegoPrincipal key={Date.now()} onGameOver={gameOver} />}
         {pantalla === 'final' && statsFinales && <PantallaFinal stats={statsFinales} onReiniciar={reiniciar} />}

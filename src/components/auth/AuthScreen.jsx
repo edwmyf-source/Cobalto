@@ -51,7 +51,7 @@ function Landing({ stats, onSignup }) {
         <div className="md:flex-1">
           <h1 className="text-[26px] md:text-[38px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
             Punto de encuentro<br />
-            <span style={{ color: '#7EB6FF' }}>de la industria química.</span>
+            <span style={{ color: '#3A6FAE' }}>de la industria química.</span>
           </h1>
           <p className="mt-2 text-[13px] md:text-[14px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con laboratorios, proveedores y profesionales del sector químico en Colombia.
@@ -86,7 +86,7 @@ function Landing({ stats, onSignup }) {
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {ADVANTAGES.map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: '#F2F7FF' }}>
+            <div key={text} className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
               <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#001A3D' }}>
                 <Icon size={13} color="#7EB6FF" />
               </div>
@@ -127,7 +127,7 @@ export default function AuthScreen() {
         <Landing stats={stats} onSignup={() => setMode('signup')} />
       ) : (
         <div className="flex-1 flex items-start md:items-center justify-center px-4 py-4 md:py-6">
-          <div className="w-full max-w-md rounded-3xl p-5 md:p-7 shadow-lg" style={{ background: '#fff', border: '1px solid #F2F7FF' }}>
+          <div className="w-full max-w-md rounded-3xl p-5 md:p-7 shadow-lg" style={{ background: '#fff', border: '1.5px solid #CDDBEC' }}>
             {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
             {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}

@@ -95,10 +95,10 @@ export default function AppLayout() {
 
         {profileMenuOpen && (
           <div ref={menuRef} className="absolute bottom-full right-2 mb-2 rounded-2xl overflow-hidden"
-            style={{ background: '#fff', border: '0.5px solid #F2F7FF', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
-            <div className="px-4 py-3 border-b" style={{ borderColor: '#F2F7FF' }}>
+            style={{ background: '#fff', border: '1px solid #CDDBEC', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
+            <div className="px-4 py-3 border-b" style={{ borderColor: '#DDE7F4' }}>
               <p className="text-sm font-semibold" style={{ color: '#001A3D' }}>{name}</p>
-              <p className="text-xs" style={{ color: '#7EB6FF' }}>{session?.user?.email}</p>
+              <p className="text-xs" style={{ color: '#3A6FAE' }}>{session?.user?.email}</p>
             </div>
             {profileMenuItems.map(item => {
               const Icon = item.icon
@@ -108,11 +108,11 @@ export default function AppLayout() {
                   style={{ color: '#001A3D' }}>
                   <Icon size={16} style={{ color: '#001A3D' }} />
                   {item.label}
-                  <ChevronRight size={14} className="ml-auto" style={{ color: '#A7D8FF' }} />
+                  <ChevronRight size={14} className="ml-auto" style={{ color: '#5D8BC7' }} />
                 </button>
               )
             })}
-            <div style={{ borderTop: '0.5px solid #F2F7FF' }}>
+            <div style={{ borderTop: '1px solid #DDE7F4' }}>
               <button onClick={() => signOut()}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-red-50"
                 style={{ color: '#dc2626' }}>

@@ -43,18 +43,18 @@ export default function FilterBar({ filters, setFilters }) {
   const tiendaCat = TIENDA_CATS.find(c => c.value === filters.category)
 
   return (
-    <div className="rounded-2xl mb-2 overflow-hidden" style={{background:"#ffffff",border:"0.5px solid #F2F7FF"}}>
+    <div className="rounded-2xl mb-2 overflow-hidden" style={{background:"#ffffff",border: '1px solid #CDDBEC'}}>
 
       {/* Barra de búsqueda siempre visible, centrada */}
       <div className="px-3 pt-2.5 pb-2">
         <div className="relative max-w-xl mx-auto">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#7EB6FF' }} />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#3A6FAE' }} />
           <input
             value={filters.search || ''}
             onChange={e => set('search', e.target.value)}
             placeholder="Buscar en el feed..."
             className="w-full pl-10 pr-9 py-2 rounded-full text-[13px] focus:outline-none transition-colors"
-            style={{ background: '#F2F7FF', border: '1px solid #F2F7FF', color: '#001A3D' }}
+            style={{ background: '#F2F7FF', border: '1.5px solid #CDDBEC', color: '#001A3D' }}
             onFocus={e => e.currentTarget.style.borderColor = '#001A3D'}
             onBlur={e => e.currentTarget.style.borderColor = '#F2F7FF'}
           />
@@ -68,7 +68,7 @@ export default function FilterBar({ filters, setFilters }) {
       </div>
 
       {/* Tabs centrados */}
-      <div className="relative flex items-center justify-center px-3 pb-1" style={{ borderTop: '0.5px solid #F2F7FF' }}>
+      <div className="relative flex items-center justify-center px-3 pb-1" style={{ borderTop: '1px solid #DDE7F4' }}>
         <div className="flex gap-1 pt-2 flex-wrap justify-center">
           {MARKETPLACE_TABS.map(t => (
             <button

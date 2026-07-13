@@ -53,9 +53,9 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
 
         {/* Buscador */}
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg flex-1 max-w-xs"
-          style={{ background: '#F2F7FF', border: '0.5px solid #F2F7FF' }}>
+          style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
           <Search size={14} color="#7EB6FF" />
-          <span className="text-xs" style={{ color: '#7EB6FF' }}>Buscar en Cobalto...</span>
+          <span className="text-xs" style={{ color: '#3A6FAE' }}>Buscar en Cobalto...</span>
         </div>
 
         <div className="flex-1" />
@@ -85,7 +85,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
         </nav>
 
         {/* Divider */}
-        <div className="w-px h-7 flex-shrink-0" style={{ background: '#F2F7FF' }} />
+        <div className="w-px h-7 flex-shrink-0" style={{ background: '#CDDBEC' }} />
 
         {/* Avatar + dropdown */}
         <div className="relative flex-shrink-0" ref={menuRef}>
@@ -97,19 +97,19 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
                 ? <img src={profile.avatar_url} className="w-7 h-7 rounded-full object-cover" alt={name} />
                 : initials}
             </div>
-            <span className="text-[10px] font-medium flex items-center gap-0.5" style={{ color: '#7EB6FF' }}>
+            <span className="text-[10px] font-medium flex items-center gap-0.5" style={{ color: '#3A6FAE' }}>
               Yo <ChevronDown size={10} />
             </span>
           </button>
 
           {menuOpen && (
             <div className="absolute right-0 top-full mt-1 rounded-xl overflow-hidden z-50"
-              style={{ background: '#fff', border: '0.5px solid #F2F7FF', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
-              <div className="px-4 py-3 border-b" style={{ borderColor: '#F2F7FF' }}>
+              style={{ background: '#fff', border: '1px solid #CDDBEC', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
+              <div className="px-4 py-3 border-b" style={{ borderColor: '#DDE7F4' }}>
                 <p className="text-sm font-bold" style={{ color: '#001A3D' }}>{name}</p>
-                <p className="text-xs" style={{ color: '#7EB6FF' }}>{session?.user?.email}</p>
+                <p className="text-xs" style={{ color: '#3A6FAE' }}>{session?.user?.email}</p>
                 {profile?.quimica_pts != null && (
-                  <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF' }}>
+                  <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
                     <span className="text-[12px]">{ptsEmoji(profile.quimica_pts)}</span>
                     <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre} · pts</span>
                   </div>
@@ -123,7 +123,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
                   {label}
                 </button>
               ))}
-              <div style={{ borderTop: '0.5px solid #F2F7FF' }}>
+              <div style={{ borderTop: '1px solid #DDE7F4' }}>
                 <button onClick={() => signOut()}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-red-50"
                   style={{ color: '#dc2626' }}>

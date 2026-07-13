@@ -287,20 +287,20 @@ export default function FeedPage() {
                   : <span>{initials}</span>}
               </div>
               <p className="font-bold text-sm leading-tight" style={{ color: '#001A3D' }}>{name}</p>
-              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: '#7EB6FF' }}>{profile.city}</p>}
+              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: '#3A6FAE' }}>{profile.city}</p>}
               {profile?.quimica_pts != null && (
-                <div className="flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF' }}>
+                <div className="flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
                   <span className="text-[12px]">{ptsEmoji(profile.quimica_pts)}</span>
                   <span className="text-[10px] font-semibold" style={{ color: '#5c6376' }}>{profile.quimica_nombre} · pts</span>
                 </div>
               )}
-              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '0.5px solid #F2F7FF' }}>
+              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '1px solid #DDE7F4' }}>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: '#7EB6FF' }}>Publicaciones</span>
+                  <span className="text-[11px]" style={{ color: '#3A6FAE' }}>Publicaciones</span>
                   <span className="text-[11px] font-bold" style={{ color: '#001A3D' }}>{communityStats.requests || 0}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: '#7EB6FF' }}>Activos hoy</span>
+                  <span className="text-[11px]" style={{ color: '#3A6FAE' }}>Activos hoy</span>
                   <span className="text-[11px] font-bold" style={{ color: '#001A3D' }}>{communityStats.activeThisWeek || 0}</span>
                 </div>
               </div>
@@ -315,7 +315,7 @@ export default function FeedPage() {
               ))}
             </div>
             <p className="text-[11px] font-bold mb-0.5" style={{ color: '#001A3D' }}>🏅 Gana tu insignia</p>
-            <p className="text-[10px] mb-2" style={{ color: '#7EB6FF' }}>Tu rango aparece en tus posts</p>
+            <p className="text-[10px] mb-2" style={{ color: '#3A6FAE' }}>Tu rango aparece en tus posts</p>
             <button onClick={() => navigate('/quimica')}
               className="w-full py-1.5 rounded-lg text-[11px] font-bold text-white"
               style={{ background: '#001A3D' }}>
@@ -333,13 +333,13 @@ export default function FeedPage() {
                 { day: '2',  mon: 'Ago', name: 'Taller reactivos lab', loc: 'Medellín · Cupos ltdos.' },
               ].map(ev => (
                 <div key={ev.name} className="flex gap-2 items-start">
-                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#F2F7FF' }}>
+                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
                     <p className="text-sm font-bold leading-none" style={{ color: '#001A3D' }}>{ev.day}</p>
-                    <p className="text-[8px] uppercase" style={{ color: '#7EB6FF' }}>{ev.mon}</p>
+                    <p className="text-[8px] uppercase" style={{ color: '#3A6FAE' }}>{ev.mon}</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-semibold leading-tight" style={{ color: '#001A3D' }}>{ev.name}</p>
-                    <p className="text-[9px]" style={{ color: '#7EB6FF' }}>{ev.loc}</p>
+                    <p className="text-[9px]" style={{ color: '#3A6FAE' }}>{ev.loc}</p>
                   </div>
                 </div>
               ))}
@@ -355,7 +355,7 @@ export default function FeedPage() {
           <BannerCarousel />
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
           <div className="flex items-center justify-between">
-            <span className="text-[11px]" style={{ color: '#7EB6FF' }}>
+            <span className="text-[11px]" style={{ color: '#3A6FAE' }}>
               {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
             </span>
             <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
@@ -380,7 +380,7 @@ export default function FeedPage() {
           ) : posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl border border-ink-200">
               <h3 className="font-medium text-base mb-1" style={{ color: '#001A3D' }}>Sin publicaciones</h3>
-              <p className="text-xs mb-3" style={{ color: '#7EB6FF' }}>No hay publicaciones que coincidan.</p>
+              <p className="text-xs mb-3" style={{ color: '#3A6FAE' }}>No hay publicaciones que coincidan.</p>
               <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#001A3D' }}>Crear publicación</button>
             </div>
           ) : (
@@ -409,7 +409,7 @@ export default function FeedPage() {
         <BannerCarousel />
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
         <div className="flex items-center justify-between mb-2.5 px-2">
-          <span className="text-[11px]" style={{ color: '#7EB6FF' }}>
+          <span className="text-[11px]" style={{ color: '#3A6FAE' }}>
             {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
           </span>
           <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
@@ -434,7 +434,7 @@ export default function FeedPage() {
         ) : posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <h3 className="font-medium text-base mb-1" style={{ color: '#001A3D' }}>Sin publicaciones</h3>
-            <p className="text-xs mb-3" style={{ color: '#7EB6FF' }}>No hay publicaciones que coincidan.</p>
+            <p className="text-xs mb-3" style={{ color: '#3A6FAE' }}>No hay publicaciones que coincidan.</p>
             <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#001A3D' }}>Crear publicación</button>
           </div>
         ) : (
