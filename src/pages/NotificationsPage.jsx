@@ -6,8 +6,32 @@ import { getOrCreateConversation } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
-import { timeAgo } from '../lib/helpers'
+import { timeAgo, publicName } from '../lib/helpers'
 import Spinner from '../components/shared/Spinner'
+
+// Etiqueta humana según el tipo/title de la notificacion
+const ACTION_LABEL = {
+  reaction:    'reaccionó a tu publicación',
+  like:        'reaccionó a tu publicación',
+  comment:     'comentó en tu publicación',
+  message:     'te envió un mensaje',
+  follow:      'empezó a seguirte',
+  mention:     'te mencionó',
+}
+
+const getActionLabel = (n) => {
+  const t = (n.title || '').toLowerCase()
+  return ACTION_LABEL[t] || ACTION_LABEL[n.type] || null
+}
+
+const getSenderName = (n) => {
+  const p = n.from_profile
+  if (!p) return null
+  return publicName(p)
+}
+
+const getInitials = (name) =>
+  (name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
 export default function NotificationsPage() {
   const { session } = useAuth()
@@ -20,7 +44,12 @@ export default function NotificationsPage() {
   useEffect(() => {
     let mounted = true
     getNotifications(session.user.id)
-      .then(data => { if (mounted) setNotifs(data) })
+      .then(data => {
+        if (!mounted) return
+        // Filtramos notificaciones del sistema antiguo (sin from_user_id = sin interaccion social)
+        const social = data.filter(n => n.from_user_id)
+        setNotifs(social)
+      })
       .catch(() => {})
       .finally(() => { if (mounted) setLoading(false) })
     return () => { mounted = false }
@@ -38,7 +67,7 @@ export default function NotificationsPage() {
     if (!n.post_id) return
     setOpening(n.id)
     try {
-      if (n.title === 'message') {
+      if ((n.title || '').toLowerCase() === 'message') {
         const conv = await getOrCreateConversation(session.user.id, n.from_user_id, n.post_id)
         navigate('/chats', { state: { convId: conv.id } })
       } else {
@@ -66,9 +95,6 @@ export default function NotificationsPage() {
   }, {})
 
   const ORDER = ['HOY', 'AYER', 'ESTA SEMANA', 'ANTES']
-
-  // Iniciales del remitente para avatar
-  const initials = (name) => (name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
 
   return (
     <div className="page-enter max-w-2xl mx-auto">
@@ -98,7 +124,12 @@ export default function NotificationsPage() {
       ) : notifs.length === 0 ? (
         <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '1px solid #DDE7F4' }}>
           <Bell size={32} className="mx-auto mb-3" style={{ color: '#CDDBEC' }} />
-          <p className="text-sm" style={{ color: '#5D8BC7' }}>No tienes notificaciones aún.</p>
+          <p className="text-sm font-medium" style={{ color: '#5D8BC7' }}>
+            Aún no tienes notificaciones de interacciones.
+          </p>
+          <p className="text-xs mt-1" style={{ color: '#B8C9E0' }}>
+            Cuando alguien reaccione, comente o te escriba, aparecerá aquí.
+          </p>
         </div>
       ) : (
         <div>
@@ -109,10 +140,13 @@ export default function NotificationsPage() {
 
               <div className="flex flex-col gap-2">
                 {groups[lbl].map(n => {
-                  const isUnread = !n.read
-                  const senderName = n.sender_name || n.from_user_name || n.title || 'Usuario'
-                  const action    = n.action_label || n.body || n.content || ''
-                  const snippet   = n.post_excerpt || n.post_body || n.excerpt || ''
+                  const isUnread   = !n.read
+                  const senderName = getSenderName(n)
+                  const action     = getActionLabel(n)
+                  const snippet    = n.post_content || n.post?.content || ''
+
+                  // Si no tenemos ni nombre ni accion reconocida, saltamos (son del sistema antiguo que pasaron el filtro)
+                  if (!senderName && !action) return null
 
                   return (
                     <button key={n.id} onClick={() => handleOpen(n)}
@@ -125,42 +159,39 @@ export default function NotificationsPage() {
                       }}>
 
                       <div className="flex items-center gap-3 px-3 py-3">
-                        {/* Avatar */}
+                        {/* Avatar con iniciales */}
                         <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-[13px] font-bold"
                           style={{ background: isUnread ? '#001A3D' : '#EDF3FB', color: isUnread ? '#fff' : '#5D8BC7' }}>
-                          {initials(senderName)}
+                          {getInitials(senderName)}
                         </div>
 
-                        {/* Texto */}
+                        {/* Nombre + accion + tiempo */}
                         <div className="flex-1 min-w-0">
                           <div className="text-[14px] leading-snug" style={{ color: '#001A3D' }}>
-                            <span className="font-semibold">{senderName}</span>
-                            {' '}<span style={{ color: '#5D8BC7', fontWeight: 400 }}>{action}</span>
+                            <span className="font-semibold">{senderName || 'Usuario'}</span>
+                            {action && (
+                              <span style={{ color: '#5D8BC7', fontWeight: 400 }}> {action}</span>
+                            )}
                           </div>
                           <div className="text-[11px] mt-0.5" style={{ color: '#B8C9E0' }}>
                             {timeAgo(n.created_at)}
                           </div>
                         </div>
 
-                        {/* Punto no leído — naranja cálido */}
+                        {/* Punto no leído naranja */}
                         {isUnread && (
                           <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                             style={{ background: '#FFB703', boxShadow: '0 0 8px rgba(255,183,3,0.65)' }} />
                         )}
                       </div>
 
-                      {/* Snippet de la publicación */}
-                      {snippet ? (
+                      {/* Snippet de la publicacion */}
+                      {snippet && (
                         <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px] leading-relaxed"
                           style={{ background: '#F2F7FF', borderLeft: '3px solid #CDDBEC', color: '#5D8BC7' }}>
-                          "{snippet}"
+                          "{snippet.slice(0, 120)}{snippet.length > 120 ? '...' : ''}"
                         </div>
-                      ) : n.post_id ? (
-                        <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px]"
-                          style={{ background: '#F2F7FF', borderLeft: '3px solid #CDDBEC', color: '#B8C9E0' }}>
-                          Ver publicación →
-                        </div>
-                      ) : null}
+                      )}
                     </button>
                   )
                 })}
