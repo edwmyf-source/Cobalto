@@ -124,27 +124,27 @@ export default function AppLayout() {
         )}
 
         <div className="flex items-end justify-around px-2 pt-2 pb-2 relative">
-          {/* Feed + Mensajes (izquierda) */}
-          {mobileNavItems.slice(0, 2).map(item => {
-            const Icon = item.icon
-            const active = currentTab === item.id
-            return (
-              <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
-                <div className="relative">
-                  <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
-                  {item.badge > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
-                      {item.badge > 99 ? '99+' : item.badge}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
-              </button>
-            )
-          })}
 
-          {/* Botón + flotante gigante que sobresale del rectángulo */}
+          {/* Perfil (izquierda del todo) */}
+          <button onClick={() => setProfileMenuOpen(o => !o)}
+            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label="Menú perfil">
+            <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold"
+              style={{ background: profileMenuOpen ? '#7EB6FF' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#001A3D' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
+              {initials}
+            </div>
+            <span className="text-[9px] font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>Perfil</span>
+          </button>
+
+          {/* Mensajes */}
+          {(() => { const item = { id:'/chats', label:'Mensajes', icon: MessageSquare }; const Icon = item.icon; const active = currentTab === item.id; return (
+            <button key={item.id} onClick={() => navigate(item.id)}
+              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label={item.label}>
+              <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
+              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
+            </button>
+          )})()}
+
+          {/* Botón + flotante */}
           <div className="flex-1 flex justify-center">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
               className="w-[68px] h-[68px] rounded-full flex items-center justify-center -mt-8 active:scale-95 transition-all"
@@ -153,35 +153,31 @@ export default function AppLayout() {
             </button>
           </div>
 
-          {/* Alertas + Perfil (derecha) */}
-          {mobileNavItems.slice(2).map(item => {
-            const Icon = item.icon
-            const active = currentTab === item.id
-            return (
-              <button key={item.id} onClick={() => navigate(item.id)}
-                className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
-                <div className="relative">
-                  <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
-                  {item.badge > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
-                      {item.badge > 99 ? '99+' : item.badge}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
-              </button>
-            )
-          })}
+          {/* Alertas */}
+          {(() => { const item = { id:'/notifications', label:'Alertas', icon: Bell, badge: unreadCount }; const Icon = item.icon; const active = currentTab === item.id; return (
+            <button key={item.id} onClick={() => navigate(item.id)}
+              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
+              <div className="relative">
+                <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
+                {item.badge > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                    {item.badge > 99 ? '99+' : item.badge}
+                  </span>
+                )}
+              </div>
+              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
+            </button>
+          )})()}
 
-          {/* Perfil (avatar) */}
-          <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label="Menú perfil">
-            <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold text-white"
-              style={{ background: profileMenuOpen ? '#7EB6FF' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#001A3D' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #7EB6FF' : 'none' }}>
-              {initials}
-            </div>
-            <span className="text-[9px] font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>Perfil</span>
-          </button>
+          {/* Feed (derecha del todo) */}
+          {(() => { const item = { id:'/feed', label:'Feed', icon: LayoutList }; const Icon = item.icon; const active = currentTab === item.id; return (
+            <button key={item.id} onClick={() => navigate(item.id)}
+              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label={item.label}>
+              <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
+              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
+            </button>
+          )})()}
+
         </div>
       </div>
 
