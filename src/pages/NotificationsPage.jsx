@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, MessageSquare, Heart, MessageCircle, Bell, AtSign } from 'lucide-react'
+import { Check, Bell } from 'lucide-react'
 import { getNotifications, markAsRead, markAllRead } from '../api/notifications'
 import { getOrCreateConversation } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
-import { publicName, timeAgo } from '../lib/helpers'
-import UserAvatar from '../components/shared/UserAvatar'
+import { timeAgo } from '../lib/helpers'
 import Spinner from '../components/shared/Spinner'
 
 export default function NotificationsPage() {
@@ -32,18 +31,14 @@ export default function NotificationsPage() {
     setNotifs(prev => prev.map(n => ({ ...n, read: true })))
   }
 
-  const handleRead = async (id) => {
-    await markAsRead(id)
-    setNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
-  }
-
   const handleOpen = async (n) => {
     if (opening) return
-    handleRead(n.id)
+    await markAsRead(n.id)
+    setNotifs(prev => prev.map(x => x.id === n.id ? { ...x, read: true } : x))
     if (!n.post_id) return
     setOpening(n.id)
     try {
-      if (n.type === 'message' || n.title === 'message') {
+      if (n.title === 'message') {
         const conv = await getOrCreateConversation(session.user.id, n.from_user_id, n.post_id)
         navigate('/chats', { state: { convId: conv.id } })
       } else {
@@ -55,14 +50,12 @@ export default function NotificationsPage() {
 
   const unreadCount = notifs.filter(n => !n.read).length
 
-  // Agrupar por HOY / AYER / ESTA SEMANA / ANTES
+  // Agrupar HOY / AYER / ESTA SEMANA / ANTES
   const groupLabel = (dateStr) => {
-    const d = new Date(dateStr)
-    const now = new Date()
-    const diffDays = Math.floor((now - d) / 86400000)
-    if (diffDays === 0) return 'HOY'
-    if (diffDays === 1) return 'AYER'
-    if (diffDays < 7) return 'ESTA SEMANA'
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 86400000)
+    if (diff === 0) return 'HOY'
+    if (diff === 1) return 'AYER'
+    if (diff < 7) return 'ESTA SEMANA'
     return 'ANTES'
   }
 
@@ -83,7 +76,8 @@ export default function NotificationsPage() {
         <div className="flex items-center gap-2">
           <h2 className="font-bold text-xl" style={{ color: '#001A3D' }}>Notificaciones</h2>
           {unreadCount > 0 && (
-            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full" style={{ background: '#FFB703', color: '#001A3D' }}>
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+              style={{ background: '#FFB703', color: '#001A3D' }}>
               {unreadCount} nuevas
             </span>
           )}
@@ -105,53 +99,49 @@ export default function NotificationsPage() {
           <p className="text-sm" style={{ color: '#5D8BC7' }}>No tienes notificaciones aún.</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-0">
+        <div>
           {ORDER.filter(lbl => groups[lbl]?.length).map(lbl => (
             <div key={lbl}>
-              {/* Etiqueta de grupo */}
-              <p className="text-[11px] font-bold tracking-widest pb-2 pt-3" style={{ color: '#B8C9E0' }}>{lbl}</p>
+              <p className="text-[11px] font-bold tracking-widest pb-2 pt-3"
+                style={{ color: '#B8C9E0' }}>{lbl}</p>
 
               <div className="flex flex-col gap-1.5">
                 {groups[lbl].map(n => {
-                  const fromProf = n.from_profile || {}
-                  const fromName = publicName(fromProf)
+                  const title = n.title || 'Notificación'
+                  const body  = n.body || n.content || ''
                   const isUnread = !n.read
-                  const snippet = n.post_content
-                    ? `"${n.post_content.slice(0, 80)}${n.post_content.length > 80 ? '...' : ''}"`
-                    : null
 
                   return (
-                    <button
-                      key={n.id}
-                      onClick={() => handleOpen(n)}
+                    <button key={n.id} onClick={() => handleOpen(n)}
                       disabled={opening === n.id}
-                      className="w-full text-left rounded-2xl overflow-hidden transition-opacity disabled:opacity-60"
+                      className="w-full text-left flex overflow-hidden rounded-2xl transition-opacity disabled:opacity-60 active:opacity-70"
                       style={{
                         background: '#ffffff',
-                        border: isUnread ? '1px solid #DDE7F4' : '1px solid #DDE7F4',
+                        border: '1px solid #DDE7F4',
                         borderLeft: isUnread ? '4px solid #001A3D' : '1px solid #DDE7F4',
-                      }}
-                    >
-                      <div className="flex items-center gap-3 p-3">
-                        <UserAvatar seed={fromProf.id || fromName} avatarUrl={fromProf.avatar_url} size={40} />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[14px] leading-snug" style={{ color: '#001A3D' }}>
-                            <span className="font-semibold">{fromName}</span>{' '}
-                            <span style={{ color: '#5D8BC7' }}>{n.content}</span>
-                          </p>
-                          <p className="text-[11px] mt-0.5" style={{ color: '#B8C9E0' }}>{timeAgo(n.created_at)}</p>
+                      }}>
+
+                      {/* Contenido */}
+                      <div className="flex-1 px-3 py-3">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="text-[11px] font-bold tracking-wide leading-none"
+                            style={{ color: '#001A3D', letterSpacing: '0.07em' }}>
+                            {title.toUpperCase()}
+                          </span>
+                          <span className="text-[10px] flex-shrink-0" style={{ color: '#B8C9E0' }}>
+                            {timeAgo(n.created_at)}
+                          </span>
                         </div>
-                        {isUnread && (
-                          <div className="flex-shrink-0 w-2.5 h-2.5 rounded-full"
-                            style={{ background: '#FFB703', boxShadow: '0 0 6px rgba(255,183,3,0.6)' }} />
-                        )}
+                        <p className="text-[13px] leading-snug" style={{ color: '#5D8BC7' }}>
+                          {body}
+                        </p>
                       </div>
 
-                      {/* Snippet de la publicación */}
-                      {snippet && (
-                        <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px] leading-snug"
-                          style={{ background: '#F2F7FF', borderLeft: '3px solid #CDDBEC', color: '#5D8BC7' }}>
-                          {snippet}
+                      {/* Punto no leído */}
+                      {isUnread && (
+                        <div className="flex items-center px-3">
+                          <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                            style={{ background: '#FFB703', boxShadow: '0 0 6px rgba(255,183,3,0.6)' }} />
                         </div>
                       )}
                     </button>
