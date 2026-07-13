@@ -52,7 +52,7 @@ function Section({ title, value, open, onToggle, children }) {
 }
 
 export default function FilterBar({ filters, setFilters }) {
-  const [openSec, setOpenSec] = useState('categoria') // categoria | subcategoria | ordenar | null
+  const [openSecs, setOpenSecs] = useState(new Set(['categoria']))
 
   const set    = (k, v) => setFilters(f => ({ ...f, [k]: v }))
   const tab    = filters.tab || 'todo'
@@ -64,7 +64,7 @@ export default function FilterBar({ filters, setFilters }) {
   }
   const setCat = (v) => setFilters(f => ({ ...f, category: f.category === v ? '' : v, subcategory: '' }))
   const setSub = (v) => set('subcategory', filters.subcategory === v ? '' : v)
-  const toggle = (s) => setOpenSec(o => o === s ? null : s)
+  const toggle = (s) => setOpenSecs(prev => { const n = new Set(prev); n.has(s) ? n.delete(s) : n.add(s); return n })
 
   const tiendaCat = TIENDA_CATS.find(c => c.value === filters.category)
   const tabLabel  = MARKETPLACE_TABS.find(t => t.value === tab)?.label || 'TODO'
@@ -120,13 +120,13 @@ export default function FilterBar({ filters, setFilters }) {
         <Section
           title="Categoría"
           value={tab !== 'todo' ? tabLabel : null}
-          open={openSec === 'categoria'}
+          open={openSecs.has('categoria')}
           onToggle={() => toggle('categoria')}
         >
           {MARKETPLACE_TABS.map(t => (
             <Pill key={t.value} label={t.label}
               active={tab === t.value}
-              onClick={() => { setTab(t.value); setOpenSec(t.value !== 'todo' ? 'subcategoria' : null) }} />
+              onClick={() => { setTab(t.value); if (t.value !== 'todo') setOpenSecs(prev => { const n = new Set(prev); n.add('subcategoria'); return n }) }} />
           ))}
         </Section>
 
@@ -135,13 +135,13 @@ export default function FilterBar({ filters, setFilters }) {
           <Section
             title="Subcategoría"
             value={filters.category ? TIENDA_CATS.find(c=>c.value===filters.category)?.label : null}
-            open={openSec === 'subcategoria'}
+            open={openSecs.has('subcategoria')}
             onToggle={() => toggle('subcategoria')}
           >
             {TIENDA_CATS.map(c => (
               <Pill key={c.value} label={c.label}
                 active={filters.category === c.value}
-                onClick={() => { setCat(c.value); setOpenSec('subcategoria') }} />
+                onClick={() => { setCat(c.value); setOpenSecs(prev => { const n = new Set(prev); n.add('subcategoria'); return n }) }} />
             ))}
             {tiendaCat && tiendaCat.subcategories.map(sub => (
               <Pill key={sub} label={sub}
@@ -155,13 +155,13 @@ export default function FilterBar({ filters, setFilters }) {
           <Section
             title="Subcategoría"
             value={filters.subcategory || null}
-            open={openSec === 'subcategoria'}
+            open={openSecs.has('subcategoria')}
             onToggle={() => toggle('subcategoria')}
           >
             {subOptions.map(sub => (
               <Pill key={sub} label={sub}
                 active={filters.subcategory === sub}
-                onClick={() => { setSub(sub); setOpenSec(null) }} />
+                onClick={() => setSub(sub)} />
             ))}
           </Section>
         )}
