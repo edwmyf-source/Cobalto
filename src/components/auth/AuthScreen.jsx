@@ -87,27 +87,30 @@ function Landing({ stats, onSignup }) {
         <div className="rounded-2xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #DDE7F4' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
-              { n: '01', title: '100% gratis',         sub: 'Sin costos ocultos ni suscripciones',   navy: true  },
-              { n: '02', title: 'Registro rápido',     sub: 'En segundos, sin formularios largos',   navy: true  },
-              { n: '03', title: 'Anónimo opcional',    sub: 'Publica sin revelar tu empresa',        navy: true  },
-              { n: '04', title: 'Datos privados',      sub: 'Teléfono y email nunca expuestos',      navy: false },
-              { n: '05', title: 'Chat seguro',         sub: 'Contacto siempre por chat interno',     navy: false },
-              { n: '06', title: 'Solo química',        sub: 'Industria y laboratorio',               navy: false },
+              { n: '01', title: '100% gratis',      sub: 'Sin costos ocultos',        navy: true  },
+              { n: '02', title: 'Registro rápido',  sub: 'En segundos',               navy: true  },
+              { n: '03', title: 'Anónimo',          sub: 'Opcional',                  navy: true  },
+              { n: '04', title: 'Privacidad',       sub: 'Datos protegidos',          navy: false },
+              { n: '05', title: 'Chat seguro',      sub: 'Sin exponer datos',         navy: false },
+              { n: '06', title: 'Solo química',     sub: 'Industria y lab',           navy: false },
             ].map((item, i) => {
               const isRight   = i % 2 === 1
               const isLastRow = i >= 4
               return (
                 <div key={item.n} style={{
-                  padding: '12px 14px',
+                  padding: '16px 18px',
                   borderBottom: isLastRow ? 'none' : '1px solid #F2F7FF',
                   borderRight:  isRight   ? 'none' : '1px solid #F2F7FF',
                 }}>
-                  <div className="text-[28px] font-black leading-none" style={{
+                  <div style={{
+                    fontSize: 42,
+                    fontWeight: 900,
+                    lineHeight: 1,
+                    letterSpacing: '-2px',
                     color: item.navy ? '#001A3D' : '#FFB703',
-                    letterSpacing: '-1px',
                   }}>{item.n}</div>
-                  <div className="text-[12px] font-bold mt-1.5 leading-tight" style={{ color: '#001A3D' }}>{item.title}</div>
-                  <div className="text-[10px] mt-0.5 leading-snug" style={{ color: '#5D8BC7' }}>{item.sub}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#001A3D', marginTop: 8, lineHeight: 1.2 }}>{item.title}</div>
+                  <div style={{ fontSize: 11, color: '#5D8BC7', marginTop: 3, lineHeight: 1.3 }}>{item.sub}</div>
                 </div>
               )
             })}
