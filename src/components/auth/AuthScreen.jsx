@@ -49,7 +49,7 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <div className="font-extrabold text-[30px] md:text-[34px] mb-2" style={{ color: '#001A3D', letterSpacing: '0.5em', paddingLeft: '0.5em' }}>
+          <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#001A3D', letterSpacing: '0.5em' }}>
             COBALTO
           </div>
           <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
