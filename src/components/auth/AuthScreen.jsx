@@ -55,9 +55,14 @@ function Landing({ stats, onSignup }) {
           </h1>
           <p className="mt-3 text-[19px] md:text-[20px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
-            <br />
-            Conecta, comparte y crece — todo en un solo lugar.
           </p>
+          <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#001A3D' }}>Conecta</span>
+            <span style={{ color: '#CDDBEC', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#3A6FAE' }}>Comparte</span>
+            <span style={{ color: '#CDDBEC', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#FFB703' }}>Crece</span>
+          </div>
           <button onClick={onSignup}
             className="mt-4 inline-flex items-center gap-2 px-[26px] py-[13px] rounded-full text-[17px] font-bold text-white transition-opacity hover:opacity-90"
             style={{ background: '#001A3D' }}>
