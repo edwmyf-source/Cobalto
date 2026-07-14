@@ -87,30 +87,33 @@ function Landing({ stats, onSignup }) {
         <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #DDE7F4' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
-              { n: '01', title: '100% gratis',      sub: 'Sin costos ocultos',        navy: true  },
-              { n: '02', title: 'Registro rápido',  sub: 'En segundos',               navy: true  },
-              { n: '03', title: 'Anónimo',          sub: 'Opcional',                  navy: true  },
-              { n: '04', title: 'Privacidad',       sub: 'Datos protegidos',          navy: false },
-              { n: '05', title: 'Chat seguro',      sub: 'Sin exponer datos',         navy: false },
-              { n: '06', title: 'Solo química',     sub: 'Industria y lab',           navy: false },
+              { n: '01', title: 'Gratis',       sub: 'Sin costos ocultos',        navy: true  },
+              { n: '02', title: 'Rápido',       sub: 'En segundos',               navy: true  },
+              { n: '03', title: 'Anónimo',      sub: 'Opcional',                  navy: true  },
+              { n: '04', title: 'Privado',      sub: 'Datos protegidos',          navy: false },
+              { n: '05', title: 'Chat seguro',  sub: 'Contacto interno',          navy: false },
+              { n: '06', title: 'Química',      sub: 'Industria y lab',           navy: false },
             ].map((item, i) => {
               const isRight   = i % 2 === 1
               const isLastRow = i >= 4
               return (
                 <div key={item.n} style={{
-                  padding: '8px 12px',
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '8px 10px',
                   borderBottom: isLastRow ? 'none' : '1px solid #F2F7FF',
                   borderRight:  isRight   ? 'none' : '1px solid #F2F7FF',
                 }}>
                   <div style={{
-                    fontSize: 24,
+                    fontSize: 19,
                     fontWeight: 900,
                     lineHeight: 1,
-                    letterSpacing: '-1px',
+                    flexShrink: 0,
                     color: item.navy ? '#001A3D' : '#FFB703',
                   }}>{item.n}</div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#001A3D', marginTop: 3, lineHeight: 1.15 }}>{item.title}</div>
-                  <div style={{ fontSize: 9.5, color: '#5D8BC7', marginTop: 1, lineHeight: 1.2 }}>{item.sub}</div>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: '#001A3D', lineHeight: 1.15 }}>{item.title}</div>
+                    <div style={{ fontSize: 7.5, color: '#5D8BC7', lineHeight: 1.15 }}>{item.sub}</div>
+                  </div>
                 </div>
               )
             })}
