@@ -19,19 +19,19 @@ const ADVANTAGES = [
 function TopBar({ onLogin, onSignup }) {
   return (
     <header className="w-full flex-shrink-0" style={{ background: '#ffffff', borderBottom: '1px solid #F2F7FF' }}>
-      <div className="max-w-6xl mx-auto h-12 flex items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <CobaltoMark size={28} rounded="rounded-lg" />
-          <span className="font-extrabold text-base tracking-wide hidden sm:block" style={{ color: '#001A3D' }}>COBALTO</span>
+      <div className="max-w-6xl mx-auto h-16 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2.5">
+          <CobaltoMark size={36} rounded="rounded-lg" />
+          <span className="font-extrabold text-lg tracking-wide hidden sm:block" style={{ color: '#001A3D' }}>COBALTO</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <button onClick={onLogin}
-            className="px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold transition-colors hover:bg-blue-50"
+            className="px-4 py-2 rounded-full text-sm md:text-base font-semibold transition-colors hover:bg-blue-50"
             style={{ color: '#001A3D', border: '1.5px solid #001A3D', background: '#fff' }}>
             Iniciar sesión
           </button>
           <button onClick={onSignup}
-            className="px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="px-4 py-2 rounded-full text-sm md:text-base font-semibold text-white transition-opacity hover:opacity-90"
             style={{ background: '#001A3D' }}>
             Unirse ahora
           </button>
@@ -49,18 +49,18 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <h1 className="text-[26px] md:text-[38px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
+          <h1 className="text-[34px] md:text-[49px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
             Punto de encuentro<br />
             <span style={{ color: '#3A6FAE' }}>de la industria química.</span>
           </h1>
-          <p className="mt-2 text-[13px] md:text-[14px] leading-snug" style={{ color: '#5c6376' }}>
+          <p className="mt-2.5 text-[17px] md:text-[18px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con laboratorios, proveedores y profesionales del sector químico en Colombia.
             Publica, cotiza y contacta — todo en un solo lugar.
           </p>
           <button onClick={onSignup}
-            className="mt-3 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-90"
+            className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full text-base font-bold text-white transition-opacity hover:opacity-90"
             style={{ background: '#001A3D' }}>
-            Unirse ahora <ArrowRight size={16} />
+            Unirse ahora <ArrowRight size={20} />
           </button>
         </div>
 
@@ -79,12 +79,12 @@ function Landing({ stats, onSignup }) {
         </div>
       </section>
 
-      {/* Ventajas — estilo editorial E1 */}
-      <section className="mt-4 pt-3" style={{ borderTop: '1px solid #F2F7FF' }}>
-        <h2 className="text-[11px] font-bold mb-3 tracking-widest" style={{ color: '#001A3D', letterSpacing: '0.18em' }}>
+      {/* Ventajas — estilo editorial E1 (compacto) */}
+      <section className="mt-2.5 pt-2" style={{ borderTop: '1px solid #F2F7FF' }}>
+        <h2 className="text-[10px] font-bold mb-1.5 tracking-widest" style={{ color: '#001A3D', letterSpacing: '0.16em' }}>
           ¿POR QUÉ COBALTO?
         </h2>
-        <div className="rounded-2xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #DDE7F4' }}>
+        <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #DDE7F4' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
               { n: '01', title: '100% gratis',      sub: 'Sin costos ocultos',        navy: true  },
@@ -98,25 +98,26 @@ function Landing({ stats, onSignup }) {
               const isLastRow = i >= 4
               return (
                 <div key={item.n} style={{
-                  padding: '16px 18px',
+                  padding: '8px 12px',
                   borderBottom: isLastRow ? 'none' : '1px solid #F2F7FF',
                   borderRight:  isRight   ? 'none' : '1px solid #F2F7FF',
                 }}>
                   <div style={{
-                    fontSize: 42,
+                    fontSize: 24,
                     fontWeight: 900,
                     lineHeight: 1,
-                    letterSpacing: '-2px',
+                    letterSpacing: '-1px',
                     color: item.navy ? '#001A3D' : '#FFB703',
                   }}>{item.n}</div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#001A3D', marginTop: 8, lineHeight: 1.2 }}>{item.title}</div>
-                  <div style={{ fontSize: 11, color: '#5D8BC7', marginTop: 3, lineHeight: 1.3 }}>{item.sub}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#001A3D', marginTop: 3, lineHeight: 1.15 }}>{item.title}</div>
+                  <div style={{ fontSize: 9.5, color: '#5D8BC7', marginTop: 1, lineHeight: 1.2 }}>{item.sub}</div>
                 </div>
               )
             })}
           </div>
         </div>
       </section>
+
 
       {/* CTA final */}
       <section className="mt-4 md:mt-5 py-4 text-center rounded-2xl" style={{ background: '#001A3D' }}>
