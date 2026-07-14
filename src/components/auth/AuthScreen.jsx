@@ -55,6 +55,7 @@ function Landing({ stats, onSignup }) {
           </h1>
           <p className="mt-3 text-[19px] md:text-[20px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
+            <br />
             Conecta, comparte y crece — todo en un solo lugar.
           </p>
           <button onClick={onSignup}
