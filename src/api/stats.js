@@ -3,20 +3,23 @@ import { supabase } from './supabase'
 export const getCommunityStats = async () => {
   try {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-    const [{ count: postsCount }, { count: reactionsCount }, { count: activeWeek }] = await Promise.all([
+    const [{ count: postsCount }, { count: reactionsCount }, { count: activeWeek }, { count: membersCount }] = await Promise.all([
       supabase.from('posts').select('id', { count: 'exact', head: true }),
       supabase.from('reactions').select('id', { count: 'exact', head: true }),
       supabase.from('profiles').select('id', { count: 'exact', head: true }).gte('updated_at', weekAgo),
+      supabase.from('profiles').select('id', { count: 'exact', head: true }),
     ])
 
     return {
       connections: reactionsCount || 0,
       requests: postsCount || 0,
+      posts: postsCount || 0,
+      members: membersCount || 0,
       activeThisWeek: activeWeek || 0,
     }
   } catch (e) {
     console.warn('Error fetching community stats:', e)
-    return { connections: 0, requests: 0, activeThisWeek: 0 }
+    return { connections: 0, requests: 0, posts: 0, members: 0, activeThisWeek: 0 }
   }
 }
 

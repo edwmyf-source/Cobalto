@@ -73,14 +73,14 @@ function Landing({ stats, onSignup }) {
         {/* Métricas de comunidad */}
         <div className="mt-4 md:mt-0 grid grid-cols-2 gap-3 md:w-[280px] flex-shrink-0">
           <div className="rounded-2xl p-3 text-center" style={{ background: '#001A3D' }}>
-            <div className="flex justify-center mb-1"><Handshake size={18} color="#7EB6FF" /></div>
-            <p className="text-2xl font-extrabold text-white leading-none">{stats.connections.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Conexiones</p>
+            <div className="flex justify-center mb-1"><Users size={18} color="#7EB6FF" /></div>
+            <p className="text-2xl font-extrabold text-white leading-none">{stats.members.toLocaleString('es-CO')}</p>
+            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Miembros</p>
           </div>
           <div className="rounded-2xl p-3 text-center" style={{ background: '#001A3D' }}>
-            <div className="flex justify-center mb-1"><Users size={18} color="#7EB6FF" /></div>
-            <p className="text-2xl font-extrabold text-white leading-none">{stats.requests.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Solicitudes</p>
+            <div className="flex justify-center mb-1"><FlaskConical size={18} color="#7EB6FF" /></div>
+            <p className="text-2xl font-extrabold text-white leading-none">{stats.posts.toLocaleString('es-CO')}</p>
+            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#7EB6FF' }}>Publicaciones</p>
           </div>
         </div>
       </section>
@@ -145,7 +145,7 @@ function Landing({ stats, onSignup }) {
 
 export default function AuthScreen() {
   const [mode, setMode] = useState('landing') // landing | login | signup | reset
-  const [stats, setStats] = useState({ connections: 0, requests: 0 })
+  const [stats, setStats] = useState({ members: 0, posts: 0 })
 
   useEffect(() => {
     getCommunityStats().then(setStats).catch(() => {})
