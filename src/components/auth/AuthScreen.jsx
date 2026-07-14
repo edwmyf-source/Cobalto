@@ -49,6 +49,9 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
+          <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#001A3D', letterSpacing: '0.5em', paddingLeft: '0.5em' }}>
+            COBALTO
+          </div>
           <h1 className="text-[37px] md:text-[54px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
             Punto de encuentro<br />
             <span style={{ color: '#3A6FAE' }}>de la industria química.</span>
