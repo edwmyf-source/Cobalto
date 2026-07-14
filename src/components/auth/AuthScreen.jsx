@@ -49,14 +49,14 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#001A3D', letterSpacing: '0.5em', paddingLeft: '0.5em' }}>
+          <div className="font-extrabold text-[30px] md:text-[34px] mb-2" style={{ color: '#001A3D', letterSpacing: '0.5em', paddingLeft: '0.5em' }}>
             COBALTO
           </div>
-          <h1 className="text-[37px] md:text-[54px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
+          <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#001A3D' }}>
             Punto de encuentro<br />
             <span style={{ color: '#3A6FAE' }}>de la industria química.</span>
           </h1>
-          <p className="mt-3 text-[19px] md:text-[20px] leading-snug" style={{ color: '#5c6376' }}>
+          <p className="mt-3 text-[16px] md:text-[17px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
           </p>
           <div className="mt-2.5 flex items-center gap-2 flex-wrap">
