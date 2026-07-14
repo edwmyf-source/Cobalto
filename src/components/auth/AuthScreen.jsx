@@ -79,20 +79,39 @@ function Landing({ stats, onSignup }) {
         </div>
       </section>
 
-      {/* Ventajas */}
-      <section className="mt-4 md:mt-5 pt-3 md:pt-4" style={{ borderTop: '1px solid #F2F7FF' }}>
-        <h2 className="text-sm md:text-base font-extrabold mb-2 md:mb-3" style={{ color: '#001A3D' }}>
-          Hecho para el sector químico
+      {/* Ventajas — estilo editorial E1 */}
+      <section className="mt-4 pt-3" style={{ borderTop: '1px solid #F2F7FF' }}>
+        <h2 className="text-[11px] font-bold mb-3 tracking-widest" style={{ color: '#001A3D', letterSpacing: '0.18em' }}>
+          ¿POR QUÉ COBALTO?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          {ADVANTAGES.map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: '#F2F7FF', border: '1px solid #CDDBEC' }}>
-              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#001A3D' }}>
-                <Icon size={13} color="#7EB6FF" />
-              </div>
-              <span className="text-[11px] md:text-[12px] font-medium leading-tight" style={{ color: '#001A3D' }}>{text}</span>
-            </div>
-          ))}
+        <div className="rounded-2xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #DDE7F4' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            {[
+              { n: '01', title: '100% gratis',         sub: 'Sin costos ocultos ni suscripciones',   navy: true  },
+              { n: '02', title: 'Registro rápido',     sub: 'En segundos, sin formularios largos',   navy: true  },
+              { n: '03', title: 'Anónimo opcional',    sub: 'Publica sin revelar tu empresa',        navy: true  },
+              { n: '04', title: 'Datos privados',      sub: 'Teléfono y email nunca expuestos',      navy: false },
+              { n: '05', title: 'Chat seguro',         sub: 'Contacto siempre por chat interno',     navy: false },
+              { n: '06', title: 'Solo química',        sub: 'Industria y laboratorio',               navy: false },
+            ].map((item, i) => {
+              const isRight   = i % 2 === 1
+              const isLastRow = i >= 4
+              return (
+                <div key={item.n} style={{
+                  padding: '12px 14px',
+                  borderBottom: isLastRow ? 'none' : '1px solid #F2F7FF',
+                  borderRight:  isRight   ? 'none' : '1px solid #F2F7FF',
+                }}>
+                  <div className="text-[28px] font-black leading-none" style={{
+                    color: item.navy ? '#001A3D' : '#FFB703',
+                    letterSpacing: '-1px',
+                  }}>{item.n}</div>
+                  <div className="text-[12px] font-bold mt-1.5 leading-tight" style={{ color: '#001A3D' }}>{item.title}</div>
+                  <div className="text-[10px] mt-0.5 leading-snug" style={{ color: '#5D8BC7' }}>{item.sub}</div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
 
