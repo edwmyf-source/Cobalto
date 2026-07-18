@@ -92,8 +92,8 @@ export default function AppLayout() {
       </div>
 
       {/* ── Nav móvil ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40"
-        style={{ background: '#134E4A', borderTop: '0.5px solid rgba(255,255,255,0.08)' }}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 rounded-t-3xl"
+        style={{ background: '#134E4A', boxShadow: '0 -2px 12px rgba(19,78,74,0.15)' }}>
 
         {profileMenuOpen && (
           <div ref={menuRef} className="absolute bottom-full right-2 mb-2 rounded-2xl overflow-hidden"
@@ -130,7 +130,7 @@ export default function AppLayout() {
           </div>
         )}
 
-        <div className="flex items-end justify-around px-2 pt-2 pb-2 relative">
+        <div className="flex items-end justify-around px-2 pt-3 pb-3 relative">
 
           {/* Feed (izquierda del todo) */}
           {(() => { const item = { id:'/feed', label:'Feed', icon: LayoutList }; const Icon = item.icon; const active = currentTab === item.id; return (
@@ -144,9 +144,9 @@ export default function AppLayout() {
           {/* Botón + flotante */}
           <div className="flex-1 flex justify-center">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
-              className="w-[68px] h-[68px] rounded-full flex items-center justify-center -mt-8 active:scale-95 transition-all"
-              style={{ background: '#D9A5AC', boxShadow: '0 8px 24px rgba(217,165,172,0.5), 0 2px 4px rgba(0,0,0,0.15)', border: '4px solid #134E4A' }}>
-              <Plus size={34} color="#134E4A" strokeWidth={3} />
+              className="w-[48px] h-[48px] rounded-full flex items-center justify-center -mt-5 active:scale-95 transition-all"
+              style={{ background: '#D9A5AC', boxShadow: '0 4px 12px rgba(19,78,74,0.25)', border: '2px solid #134E4A' }}>
+              <Plus size={24} color="#134E4A" strokeWidth={2.5} />
             </button>
           </div>
 
