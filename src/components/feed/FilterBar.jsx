@@ -84,8 +84,8 @@ export default function FilterBar({ filters, setFilters }) {
 
         {/* Header navy */}
         <div className="flex items-center justify-center relative px-3 py-2" style={{ background: '#134E4A' }}>
-          <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#5FA39D', letterSpacing: '0.15em' }}>
-            ⚙ FILTROS
+          <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#5FA39D', letterSpacing: '0.1em' }}>
+            ¿Qué quieres ver hoy?
           </span>
           {hasFilters && (
             <button
@@ -99,7 +99,7 @@ export default function FilterBar({ filters, setFilters }) {
 
         {/* Sección: Categoría */}
         <Section
-          title="Categoría"
+          title="¿Qué buscas?"
           value={tab !== 'todo' ? tabLabel : null}
           open={openSecs.has('categoria')}
           onToggle={() => toggle('categoria')}
@@ -114,7 +114,7 @@ export default function FilterBar({ filters, setFilters }) {
         {/* Sección: Subcategoría (solo si el tab tiene sub-opciones) */}
         {tab === 'tienda' && (
           <Section
-            title="Subcategoría"
+            title="Cuéntanos más"
             value={filters.category ? TIENDA_CATS.find(c=>c.value===filters.category)?.label : null}
             open={openSecs.has('subcategoria')}
             onToggle={() => toggle('subcategoria')}
@@ -134,7 +134,7 @@ export default function FilterBar({ filters, setFilters }) {
 
         {subOptions.length > 0 && tab !== 'tienda' && (
           <Section
-            title="Subcategoría"
+            title="Cuéntanos más"
             value={filters.subcategory || null}
             open={openSecs.has('subcategoria')}
             onToggle={() => toggle('subcategoria')}
@@ -155,7 +155,7 @@ export default function FilterBar({ filters, setFilters }) {
         <input
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
-          placeholder="Buscar en el feed..."
+          placeholder="Busca lo que necesitas..."
           className="w-full pl-10 pr-9 py-2 rounded-full text-[13px] focus:outline-none transition-colors"
           style={{ background: '#ffffff', border: '1.5px solid #C5D9D5', color: '#134E4A' }}
           onFocus={e => e.currentTarget.style.borderColor = '#134E4A'}

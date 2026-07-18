@@ -364,15 +364,15 @@ export default function FeedPage() {
             <button onClick={loadNewPosts}
               className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl"
               style={{ background: '#134E4A' }}>
-              <ArrowUp size={13} /> Nuevas publicaciones
+              <ArrowUp size={13} /> Hay novedades, mira
             </button>
           )}
           {loading ? (
             <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
           ) : posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl border border-ink-200">
-              <h3 className="font-medium text-base mb-1" style={{ color: '#134E4A' }}>Sin publicaciones</h3>
-              <p className="text-xs mb-3" style={{ color: '#1F6E68' }}>No hay publicaciones que coincidan.</p>
+              <h3 className="font-medium text-base mb-1" style={{ color: '#134E4A' }}>Aún no hay nada por aquí</h3>
+              <p className="text-xs mb-3" style={{ color: '#1F6E68' }}>Prueba con otro filtro o vuelve más tarde.</p>
               <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#134E4A' }}>Crear publicación</button>
             </div>
           ) : (
@@ -419,15 +419,15 @@ export default function FeedPage() {
           <button onClick={loadNewPosts}
             className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl mb-2.5 mx-2"
             style={{ background: '#134E4A', width: 'calc(100% - 16px)' }}>
-            <ArrowUp size={13} /> Nuevas publicaciones
+            <ArrowUp size={13} /> Hay novedades, mira
           </button>
         )}
         {loading ? (
           <div className="space-y-3 px-2">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
         ) : posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <h3 className="font-medium text-base mb-1" style={{ color: '#134E4A' }}>Sin publicaciones</h3>
-            <p className="text-xs mb-3" style={{ color: '#1F6E68' }}>No hay publicaciones que coincidan.</p>
+            <h3 className="font-medium text-base mb-1" style={{ color: '#134E4A' }}>Aún no hay nada por aquí</h3>
+            <p className="text-xs mb-3" style={{ color: '#1F6E68' }}>Prueba con otro filtro o vuelve más tarde.</p>
             <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#134E4A' }}>Crear publicación</button>
           </div>
         ) : (
