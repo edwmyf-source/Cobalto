@@ -12,7 +12,7 @@ function Pill({ label, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="px-3 py-1 rounded-full text-[11px] font-semibold border transition-all flex-shrink-0"
+      className="px-4 py-2 rounded-full text-[12px] font-semibold border transition-all flex-shrink-0"
       style={active
         ? { background: '#134E4A', color: '#ffffff', border: '1.5px solid #134E4A' }
         : { background: '#F3F6F5', color: '#3D7570', border: '1.5px solid #C5D9D5' }}
@@ -44,7 +44,7 @@ function Section({ title, value, open, onToggle, children }) {
         transition: 'grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-3 pb-3 pt-1 flex flex-wrap justify-center gap-1.5">
+          <div className="px-3 pb-3 pt-3 flex flex-wrap justify-center gap-2">
             {children}
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function FilterBar({ filters, setFilters }) {
       <div className="rounded-xl overflow-hidden mb-2" style={{ background: '#ffffff', border: '1.5px solid #C5D9D5' }}>
 
         {/* Header navy */}
-        <div className="flex items-center justify-center relative px-3 py-2" style={{ background: '#134E4A' }}>
+        <div className="flex items-center justify-center relative px-3 py-3.5" style={{ background: '#134E4A' }}>
           <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#5FA39D', letterSpacing: '0.1em' }}>
             ¿Qué quieres ver hoy?
           </span>
