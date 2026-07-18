@@ -27,10 +27,10 @@ function Section({ title, value, open, onToggle, children }) {
     <div style={{ borderBottom: '1px solid #D6E6E3' }}>
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-3 py-2.5"
+        className="w-full flex items-center justify-center relative px-3 py-2.5"
       >
         <span className="text-[11px] font-semibold" style={{ color: '#134E4A' }}>{title}</span>
-        <span className="flex items-center gap-1.5">
+        <span className="flex items-center gap-1.5 absolute right-3">
           {value && <span className="text-[10px] font-bold" style={{ color: '#1F6E68' }}>{value}</span>}
           <ChevronDown size={13}
             style={{ color: '#3D7570', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
@@ -42,7 +42,7 @@ function Section({ title, value, open, onToggle, children }) {
         transition: 'grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-3 pb-3 pt-1 flex flex-wrap gap-1.5">
+          <div className="px-3 pb-3 pt-1 flex flex-wrap justify-center gap-1.5">
             {children}
           </div>
         </div>
@@ -102,14 +102,14 @@ export default function FilterBar({ filters, setFilters }) {
       <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1.5px solid #C5D9D5' }}>
 
         {/* Header navy */}
-        <div className="flex items-center justify-between px-3 py-2" style={{ background: '#134E4A' }}>
+        <div className="flex items-center justify-center relative px-3 py-2" style={{ background: '#134E4A' }}>
           <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#5FA39D', letterSpacing: '0.15em' }}>
             ⚙ FILTROS
           </span>
           {hasFilters && (
             <button
               onClick={() => { setFilters({}); setOpenSec('categoria') }}
-              className="text-[10px] font-bold hover:opacity-80"
+              className="absolute right-3 text-[10px] font-bold hover:opacity-80"
               style={{ color: '#1F6E68' }}>
               Limpiar
             </button>
