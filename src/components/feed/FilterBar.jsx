@@ -25,17 +25,19 @@ function Pill({ label, active, onClick }) {
 function Section({ title, value, open, onToggle, children }) {
   return (
     <div style={{ borderBottom: '1px solid #D6E6E3' }}>
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-center relative px-3 py-2.5"
-      >
-        <span className="text-[11px] font-semibold" style={{ color: '#134E4A' }}>{title}</span>
-        <span className="flex items-center gap-1.5 absolute right-3">
-          {value && <span className="text-[10px] font-bold" style={{ color: '#1F6E68' }}>{value}</span>}
-          <ChevronDown size={13}
-            style={{ color: '#3D7570', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-        </span>
-      </button>
+      {title && (
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center justify-center relative px-3 py-2.5"
+        >
+          <span className="text-[11px] font-semibold" style={{ color: '#134E4A' }}>{title}</span>
+          <span className="flex items-center gap-1.5 absolute right-3">
+            {value && <span className="text-[10px] font-bold" style={{ color: '#1F6E68' }}>{value}</span>}
+            <ChevronDown size={13}
+              style={{ color: '#3D7570', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </span>
+        </button>
+      )}
       <div style={{
         display: 'grid',
         gridTemplateRows: open ? '1fr' : '0fr',
@@ -97,12 +99,11 @@ export default function FilterBar({ filters, setFilters }) {
           )}
         </div>
 
-        {/* Sección: Categoría */}
+        {/* Sección: Categoría (sin título propio, usa el del header) */}
         <Section
-          title="¿Qué buscas?"
-          value={tab !== 'todo' ? tabLabel : null}
-          open={openSecs.has('categoria')}
-          onToggle={() => toggle('categoria')}
+          value={null}
+          open={true}
+          onToggle={() => {}}
         >
           {MARKETPLACE_TABS.map(t => (
             <Pill key={t.value} label={t.label}
