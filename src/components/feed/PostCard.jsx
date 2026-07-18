@@ -232,6 +232,15 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           <MessageCircle size={18} />
           <span className="font-bold">{post.comment_count || 0}</span>
         </button>
+        {!isMine && (
+          <button onClick={() => onContact?.(post)} disabled={isContacting}
+            className="ml-auto flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-[14px] font-semibold transition-all active:scale-95 disabled:opacity-60"
+            style={{ background: '#F8FAFC', color: '#0F5C57' }}>
+            {isContacting
+              ? <Loader2 size={18} className="animate-spin" />
+              : <><Send size={16} /> Contactar</>}
+          </button>
+        )}
       </div>
 
       <CommentSection post={post} isOpen={showComments} />
