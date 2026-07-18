@@ -48,14 +48,14 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#134E4A' }}>
             <FlaskConical size={16} color="#5FA39D" />
           </div>
-          <span className="text-base font-bold hidden lg:block" style={{ color: '#134E4A', letterSpacing: '.5px' }}>Cobalto</span>
+          <span className="text-base font-bold hidden lg:block" style={{ color: '#134E4A', letterSpacing: '.5px' }}>CeQu.com</span>
         </button>
 
         {/* Buscador */}
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg flex-1 max-w-xs"
           style={{ background: '#F3F6F5', border: '1px solid #C5D9D5' }}>
           <Search size={14} color="#5FA39D" />
-          <span className="text-xs" style={{ color: '#1F6E68' }}>Buscar en Cobalto...</span>
+          <span className="text-xs" style={{ color: '#1F6E68' }}>Buscar en CeQu...</span>
         </div>
 
         <div className="flex-1" />

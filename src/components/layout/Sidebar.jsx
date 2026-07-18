@@ -6,7 +6,7 @@ import { getUpcomingEvents } from '../../api/posts'
 import { publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
-import CobaltoMark from '../shared/CobaltoMark'
+import CeQuMark from '../shared/CeQuMark'
 
 let _eventsCache = null
 let _eventsTs = 0
@@ -47,8 +47,8 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
 
       {/* Logo */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-2">
-        <CobaltoMark size={28} />
-        <span className="text-white font-bold text-lg tracking-tight">Cobalto</span>
+        <CeQuMark size={28} />
+        <span className="text-white font-bold text-lg tracking-tight">CeQu.com</span>
       </div>
 
       {/* Publicar */}
