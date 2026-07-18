@@ -64,6 +64,8 @@ export default function AppLayout() {
   useEffect(() => { setProfileMenuOpen(false) }, [location.pathname])
 
   const profileMenuItems = [
+    { label: 'Mensajes', icon: MessageSquare, path: '/chats' },
+    { label: 'Alertas',  icon: Bell,          path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
     { label: '¿Cuánto sabes?', icon: FlaskConical, path: '/quimica' },
     { label: 'Soporte', icon: HelpCircle, path: '/contact' },
@@ -108,6 +110,11 @@ export default function AppLayout() {
                   style={{ color: '#5C1A2E' }}>
                   <Icon size={16} style={{ color: '#5C1A2E' }} />
                   {item.label}
+                  {!!item.badge && (
+                    <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 rounded-full min-w-[18px] text-center leading-5">
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </span>
+                  )}
                   <ChevronRight size={14} className="ml-auto" style={{ color: '#B09499' }} />
                 </button>
               )
@@ -134,15 +141,6 @@ export default function AppLayout() {
             </button>
           )})()}
 
-          {/* Mensajes */}
-          {(() => { const item = { id:'/chats', label:'Mensajes', icon: MessageSquare }; const Icon = item.icon; const active = currentTab === item.id; return (
-            <button key={item.id} onClick={() => navigate(item.id)}
-              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label={item.label}>
-              <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
-              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
-            </button>
-          )})()}
-
           {/* Botón + flotante */}
           <div className="flex-1 flex justify-center">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
@@ -152,28 +150,19 @@ export default function AppLayout() {
             </button>
           </div>
 
-          {/* Alertas */}
-          {(() => { const item = { id:'/notifications', label:'Alertas', icon: Bell, badge: unreadCount }; const Icon = item.icon; const active = currentTab === item.id; return (
-            <button key={item.id} onClick={() => navigate(item.id)}
-              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label={item.label}>
-              <div className="relative">
-                <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
-                {item.badge > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
-                    {item.badge > 99 ? '99+' : item.badge}
-                  </span>
-                )}
-              </div>
-              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
-            </button>
-          )})()}
-
           {/* Perfil (derecha del todo) */}
           <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label="Menú perfil">
-            <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold"
-              style={{ background: profileMenuOpen ? '#8FAE8B' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#5C1A2E' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #8FAE8B' : 'none' }}>
-              {initials}
+            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label="Menú perfil">
+            <div className="relative">
+              <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold"
+                style={{ background: profileMenuOpen ? '#8FAE8B' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#5C1A2E' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #8FAE8B' : 'none' }}>
+                {initials}
+              </div>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </div>
             <span className="text-[9px] font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>Perfil</span>
           </button>
