@@ -133,11 +133,10 @@ export default function AppLayout() {
         <div className="flex items-end justify-around px-2 pt-3 pb-3 relative">
 
           {/* Feed (izquierda del todo) */}
-          {(() => { const item = { id:'/feed', label:'Feed', icon: LayoutList }; const Icon = item.icon; const active = currentTab === item.id; return (
+          {(() => { const item = { id:'/feed', label:'Feed' }; const active = currentTab === item.id; return (
             <button key={item.id} onClick={() => navigate(item.id)}
-              className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5" aria-label={item.label}>
-              <Icon size={22} style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }} />
-              <span className="text-[9px] font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>{item.label}</span>
+              className="flex-1 flex flex-col items-center justify-center pt-1 pb-0.5" aria-label={item.label}>
+              <span className="text-base font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.55)' }}>{item.label}</span>
             </button>
           )})()}
 
@@ -152,19 +151,15 @@ export default function AppLayout() {
 
           {/* Perfil (derecha del todo) */}
           <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center gap-0.5 pt-1 pb-0.5 relative" aria-label="Menú perfil">
+            className="flex-1 flex flex-col items-center justify-center pt-1 pb-0.5 relative" aria-label="Menú perfil">
             <div className="relative">
-              <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[9px] font-bold"
-                style={{ background: profileMenuOpen ? '#5FA39D' : 'rgba(255,255,255,0.15)', color: profileMenuOpen ? '#134E4A' : '#ffffff', boxShadow: profileMenuOpen ? '0 0 0 2px #5FA39D' : 'none' }}>
-                {initials}
-              </div>
+              <span className="text-base font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.55)' }}>Perfil</span>
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                <span className="absolute -top-1.5 -right-3 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
             </div>
-            <span className="text-[9px] font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.5)' }}>Perfil</span>
           </button>
 
         </div>
