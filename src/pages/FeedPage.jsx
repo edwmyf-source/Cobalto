@@ -380,7 +380,7 @@ export default function FeedPage() {
               {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
                 <div key={post.id}>
                   <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
-                  {idx < arr.length - 1 && <div style={{ height: '12px' }} />}
+                  {idx < arr.length - 1 && <div style={{ height: '20px' }} />}
                 </div>
               ))}
               <div ref={sentinel} />
@@ -396,19 +396,19 @@ export default function FeedPage() {
       </div>
 
       {/* ── MÓVIL: columna única ── */}
-      <div className="md:hidden max-w-2xl mx-auto px-0">
+      <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} /></ErrorBoundary>
         <BannerCarousel />
-        <div className="flex items-center justify-between mb-2.5 px-2">
-          <span className="text-[11px]" style={{ color: '#1F6E68' }}>
+        <div className="flex items-center justify-between mb-4 mt-1 px-1">
+          <span className="text-[14px] font-semibold" style={{ color: '#111827' }}>
             {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
           </span>
-          <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
+          <div className="flex bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
             {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
               <button key={opt.value} onClick={() => setSort(opt.value)}
-                className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
-                style={sort === opt.value ? { background: '#134E4A' } : {}}>
-                <Icon size={12} />{opt.label}
+                className={`flex items-center gap-1 px-3.5 py-2 text-[13px] font-semibold transition-colors ${sort === opt.value ? 'text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+                style={sort === opt.value ? { background: '#0F5C57' } : {}}>
+                <Icon size={14} />{opt.label}
               </button>
             )})}
           </div>
@@ -433,7 +433,7 @@ export default function FeedPage() {
             {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
               <div key={post.id}>
                 <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
-                {idx < arr.length - 1 && <div style={{ height: '12px' }} />}
+                {idx < arr.length - 1 && <div style={{ height: '20px' }} />}
               </div>
             ))}
             <div ref={sentinel} />

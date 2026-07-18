@@ -184,63 +184,61 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const goToProfile = () => navigate(`/u/${post.author_id}`)
 
   return (
-    <div className="flex overflow-hidden rounded-xl" style={{ background:"#ffffff", border:'1px solid #E8F1EF', boxShadow: '0 1px 3px rgba(19,78,74,0.06)' }} id={`post-${post.id}`}>
+    <div className="rounded-3xl overflow-hidden bg-white" style={{ boxShadow: '0 4px 24px rgba(17,24,39,0.05)' }} id={`post-${post.id}`}>
 
-      {/* Barra lateral de categoria */}
-      <div className="flex-shrink-0" style={{ width: 5, background: '#134E4A' }} />
-
-      {/* Contenido de la publicacion */}
-      <div className="flex-1 min-w-0 px-3 pt-2.5 pb-2">
+      <div className="px-5 pt-5 pb-4">
 
       {/* Header */}
-      <div className="flex items-start gap-2.5 mb-1.5">
+      <div className="flex items-center gap-3 mb-4">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={26} />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={44} />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-1">
-            <button onClick={goToProfile}
-              className="text-[12px] font-semibold leading-snug text-left hover:underline block truncate" style={{color:"#134E4A"}}>
-              {name}
-            </button>
-            {!isMine && <PostMenu post={post} onReport={() => setReportOpen(true)} />}
-          </div>
-          <p className="text-[10px] leading-tight mt-px truncate" style={{ color: '#3D7570' }}>
+          <button onClick={goToProfile}
+            className="text-[16px] font-bold leading-tight text-left hover:underline block truncate" style={{ color: '#111827', letterSpacing: '-0.01em' }}>
+            {name}
+          </button>
+          <p className="text-[13px] leading-tight mt-0.5 truncate" style={{ color: '#6B7280' }}>
             {prof.city && <>{prof.city} · </>}
             {timeAgo(post.created_at)}
-            {catLabel && <> · <span style={{ color: '#134E4A', fontWeight: 700 }}>{catLabel.toUpperCase()}</span></>}
           </p>
         </div>
+        {catLabel && (
+          <span className="flex-shrink-0 px-3 py-1 rounded-full text-[12px] font-bold" style={{ background: '#F5E6E9', color: '#B06B76' }}>
+            {catLabel}
+          </span>
+        )}
+        {!isMine && <PostMenu post={post} onReport={() => setReportOpen(true)} />}
       </div>
 
-      {/* Texto muro — un solo bloque, tipografía uniforme */}
-      <p className="text-[14px] leading-snug mb-1.5 whitespace-pre-wrap break-words line-clamp-5" style={{color:"#37474f"}}>
+      {/* Texto muro */}
+      <p className="text-[16px] leading-relaxed mb-4 whitespace-pre-wrap break-words line-clamp-5" style={{ color: '#374151' }}>
         {wallText}
       </p>
 
       <MediaGallery media={media} />
 
-      {/* Footer V6: pills con contador integrado + CTA primario a la derecha */}
-      <div className="pt-2 mt-1 flex items-center gap-2" style={{ borderTop: '1px solid #D6E6E3' }}>
+      {/* Footer premium */}
+      <div className="pt-4 flex items-center gap-2.5" style={{ borderTop: '1px solid #F3F4F6' }}>
         <button onClick={handleLike}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors"
-          style={{ background: liked ? '#134E4A' : '#F3F6F5', color: liked ? '#fff' : '#134E4A' }}>
-          <ThumbsUp size={12} fill={liked ? '#fff' : 'none'} />
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-[14px] font-semibold transition-all active:scale-95"
+          style={{ background: liked ? '#0F5C57' : '#F8FAFC', color: liked ? '#fff' : '#6B7280' }}>
+          <ThumbsUp size={18} fill={liked ? '#fff' : 'none'} />
           <span className="font-bold">{likeCount || 0}</span>
         </button>
         <button onClick={() => setShowComments(!showComments)}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors"
-          style={{ background: '#F3F6F5', color: '#134E4A' }}>
-          <MessageCircle size={12} />
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-[14px] font-semibold transition-all active:scale-95"
+          style={{ background: '#F8FAFC', color: '#6B7280' }}>
+          <MessageCircle size={18} />
           <span className="font-bold">{post.comment_count || 0}</span>
         </button>
         {!isMine && (
           <button onClick={() => onContact?.(post)} disabled={isContacting}
-            className="ml-auto flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold text-white transition-opacity disabled:opacity-60"
-            style={{ background: '#134E4A' }}>
+            className="ml-auto flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[14px] font-semibold text-white transition-all active:scale-95 disabled:opacity-60"
+            style={{ background: '#0F5C57', boxShadow: '0 8px 20px rgba(15,92,87,0.28)' }}>
             {isContacting
-              ? <><Loader2 size={12} className="animate-spin" /> ...</>
-              : <>Contactar <Send size={12} /></>}
+              ? <><Loader2 size={16} className="animate-spin" /> ...</>
+              : <>Contactar <Send size={16} /></>}
           </button>
         )}
       </div>

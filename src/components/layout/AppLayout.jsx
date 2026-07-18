@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -100,82 +100,88 @@ export default function AppLayout() {
         {/* Sidebar oculto — mantenemos para compatibilidad */}
       </div>
 
-      {/* ── Nav móvil ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 rounded-t-3xl"
-        style={{ background: '#134E4A', boxShadow: '0 -2px 12px rgba(19,78,74,0.15)' }}>
+      {/* ── Nav móvil flotante (glass) ── */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40" style={{ pointerEvents: 'none' }}>
 
         {profileMenuOpen && (
-          <div ref={menuRef} className="absolute bottom-full right-2 mb-2 rounded-2xl overflow-hidden"
-            style={{ background: '#fff', border: '1px solid #C5D9D5', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
-            <div className="px-4 py-3 border-b" style={{ borderColor: '#D6E6E3' }}>
-              <p className="text-sm font-semibold" style={{ color: '#134E4A' }}>{name}</p>
-              <p className="text-xs" style={{ color: '#1F6E68' }}>{session?.user?.email}</p>
+          <div ref={menuRef} className="absolute bottom-full right-4 mb-3 rounded-3xl overflow-hidden"
+            style={{ background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 16px 48px rgba(17,24,39,0.18)', minWidth: 230, pointerEvents: 'auto' }}>
+            <div className="px-5 py-4 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-[15px] font-bold" style={{ color: '#111827', letterSpacing: '-0.01em' }}>{name}</p>
+              <p className="text-[13px]" style={{ color: '#6B7280' }}>{session?.user?.email}</p>
             </div>
             {profileMenuItems.map(item => {
               const Icon = item.icon
               return (
                 <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-blue-50"
-                  style={{ color: '#134E4A' }}>
-                  <Icon size={16} style={{ color: '#134E4A' }} />
+                  className="w-full flex items-center gap-3.5 px-5 py-3.5 text-[15px] font-medium transition-colors hover:bg-gray-50"
+                  style={{ color: '#111827' }}>
+                  <span className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#F5E6E9' }}>
+                    <Icon size={18} style={{ color: '#B06B76' }} />
+                  </span>
                   {item.label}
                   {!!item.badge && (
                     <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 rounded-full min-w-[18px] text-center leading-5">
                       {item.badge > 99 ? '99+' : item.badge}
                     </span>
                   )}
-                  <ChevronRight size={14} className="ml-auto" style={{ color: '#3D7570' }} />
+                  <ChevronRight size={16} className="ml-auto" style={{ color: '#9CA3AF' }} />
                 </button>
               )
             })}
-            <div style={{ borderTop: '1px solid #D6E6E3' }}>
+            <div style={{ borderTop: '1px solid #E5E7EB' }}>
               <button onClick={() => signOut()}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-red-50"
-                style={{ color: '#dc2626' }}>
-                <LogOut size={16} />
+                className="w-full flex items-center gap-3.5 px-5 py-3.5 text-[15px] font-medium transition-colors hover:bg-red-50"
+                style={{ color: '#EF4444' }}>
+                <span className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FEE2E2' }}>
+                  <LogOut size={18} />
+                </span>
                 Cerrar sesión
               </button>
             </div>
           </div>
         )}
 
-        <div className="flex items-end justify-around px-2 pt-3 pb-3 relative">
+        <div className="mx-4 mb-6 h-[76px] rounded-[30px] flex items-center justify-around px-3"
+          style={{ background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', boxShadow: '0 12px 40px rgba(17,24,39,0.14)', border: '1px solid rgba(255,255,255,0.6)', pointerEvents: 'auto' }}>
 
-          {/* Feed (izquierda del todo) */}
-          {(() => { const item = { id:'/feed', label:'Feed' }; const active = currentTab === item.id; return (
-            <button key={item.id} onClick={() => navigate(item.id)}
-              className="flex-1 flex flex-col items-center justify-center pt-1 pb-0.5" aria-label={item.label}>
-              <span className="text-base font-semibold" style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.8)' }}>{item.label}</span>
+          {/* Inicio */}
+          {(() => { const active = currentTab === '/feed'; return (
+            <button onClick={() => navigate('/feed')}
+              className="flex flex-col items-center gap-1 flex-1 active:scale-95 transition-transform" aria-label="Inicio">
+              <Home size={22} style={{ color: active ? '#0F5C57' : '#6B7280' }} strokeWidth={active ? 2.4 : 2} />
+              <span className="text-[12px] font-semibold" style={{ color: active ? '#0F5C57' : '#6B7280' }}>Inicio</span>
             </button>
           )})()}
 
-          {/* Botón + flotante */}
-          <div className="flex-1 flex justify-center">
-            <button onClick={() => navigate('/feed?publish=1')} aria-label="Nueva publicación"
-              className="w-[48px] h-[48px] rounded-full flex items-center justify-center -mt-5 active:scale-95 transition-all"
-              style={{ background: '#D9A5AC', boxShadow: '0 4px 12px rgba(19,78,74,0.25)', border: '2px solid #134E4A' }}>
-              <Plus size={24} color="#134E4A" strokeWidth={2.5} />
+          {/* Publicar — círculo primario */}
+          <div className="flex-shrink-0 px-2">
+            <button onClick={() => navigate('/feed?publish=1')} aria-label="Publicar"
+              className="w-[58px] h-[58px] rounded-full flex items-center justify-center active:scale-95 transition-transform"
+              style={{ background: '#0F5C57', boxShadow: '0 10px 24px rgba(15,92,87,0.38)' }}>
+              <Plus size={28} color="#ffffff" strokeWidth={2.5} />
             </button>
           </div>
 
-          {/* Perfil (derecha del todo) */}
+          {/* Perfil */}
           <button onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex-1 flex flex-col items-center justify-center pt-1 pb-0.5 relative" aria-label="Menú perfil">
+            className="flex flex-col items-center gap-1 flex-1 relative active:scale-95 transition-transform" aria-label="Perfil">
             <div className="relative">
-              <span className="text-base font-semibold" style={{ color: profileMenuOpen ? '#ffffff' : 'rgba(255,255,255,0.8)' }}>Perfil</span>
+              <User size={22} style={{ color: profileMenuOpen ? '#0F5C57' : '#6B7280' }} strokeWidth={profileMenuOpen ? 2.4 : 2} />
               {unreadCount > 0 && (
-                <span className="absolute -top-1.5 -right-3 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
             </div>
+            <span className="text-[12px] font-semibold" style={{ color: profileMenuOpen ? '#0F5C57' : '#6B7280' }}>Perfil</span>
           </button>
 
         </div>
       </div>
 
       {/* ── Contenido principal ── */}
-      <main className="pt-12 md:pt-0 pb-28 md:pb-8" style={{ overflowX: 'clip' }}>
+      <main className="pt-12 md:pt-0 pb-32 md:pb-8" style={{ overflowX: 'clip' }}>
         <Outlet />
       </main>
     </div>
