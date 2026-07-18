@@ -10,7 +10,7 @@ export const getConversations = async (userId) => {
       *,
       user1:profiles!conversations_user1_id_fkey(${PROFILE_FIELDS}),
       user2:profiles!conversations_user2_id_fkey(${PROFILE_FIELDS}),
-      posts!conversations_post_id_fkey(title, category)
+      posts!conversations_post_id_fkey(id, title, content, category)
     `)
     .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
     .order('updated_at', { ascending: false })

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ArrowLeft, Send, Search } from 'lucide-react'
-import { useLocation } from 'react-router-dom'
+import { ArrowLeft, Send, Search, MessageSquareText } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { getConversations, getMessages, sendMessage } from '../api/messages'
 import { createNotification } from '../api/notifications'
 import { useAuth } from '../contexts/AuthContext'
@@ -8,6 +8,7 @@ import { useRealtime } from '../hooks/useRealtime'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
 import { publicName, timeAgo } from '../lib/helpers'
+import { CATEGORY_MAP } from '../lib/constants'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 
@@ -114,6 +115,7 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 /* ─── Hilo de mensajes estilo C6 (yo celeste, ellos blanco) ─── */
 function ChatThread({ conversation, userId, myProfile }) {
   const toast = useToast()
+  const navigate = useNavigate()
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
@@ -195,10 +197,24 @@ function ChatThread({ conversation, userId, myProfile }) {
 
       {/* Post de referencia */}
       {conversation.posts && (
-        <div className="px-4 py-2 flex-shrink-0 text-[11px]"
-          style={{ background: '#F3F6F5', borderBottom: '1px solid #D6E6E3', color: '#3D7570' }}>
-          📌 Sobre: <span className="font-medium" style={{ color: '#134E4A' }}>{conversation.posts.title}</span>
-        </div>
+        <button onClick={() => navigate('/feed', { state: { scrollToPostId: conversation.posts.id } })}
+          className="mx-4 mt-2 mb-1 flex-shrink-0 flex items-start gap-2.5 px-3.5 py-3 rounded-2xl text-left transition-all active:scale-[0.98] w-[calc(100%-2rem)]"
+          style={{ background: '#F8FAFC', border: '1px solid #E5E7EB' }}>
+          <span className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#0F5C57' }}>
+            <MessageSquareText size={16} color="#fff" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#B06B76' }}>
+                {CATEGORY_MAP[conversation.posts.category]?.label || conversation.posts.category}
+              </span>
+              <span className="text-[11px]" style={{ color: '#9CA3AF' }}>· Ver publicación</span>
+            </div>
+            <p className="text-[13px] font-semibold leading-snug line-clamp-2" style={{ color: '#111827' }}>
+              {[conversation.posts.title, conversation.posts.content].filter(Boolean).join(' — ').slice(0, 90)}
+            </p>
+          </div>
+        </button>
       )}
 
       {/* Mensajes */}
