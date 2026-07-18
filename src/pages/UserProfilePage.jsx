@@ -38,12 +38,6 @@ function MiniPostCard({ post, onContact, contactingId }) {
         <div className="flex items-center gap-3 text-[11px] text-ink-400">
           <span className="flex items-center gap-1"><MessageCircle size={12} />{post.comment_count || 0}</span>
         </div>
-        {!isMine && (
-          <button onClick={() => onContact?.(post)} disabled={isContacting}
-            className="flex items-center gap-1 text-[11px] bg-brand-600 hover:bg-brand-700 text-white font-medium px-2.5 py-1 rounded-lg disabled:opacity-60 transition-all">
-            {isContacting ? <><Loader2 size={11} className="animate-spin" /> Abriendo...</> : <><Send size={11} /> Contactar</>}
-          </button>
-        )}
       </div>
     </div>
   )
