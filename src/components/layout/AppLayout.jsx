@@ -175,7 +175,7 @@ export default function AppLayout() {
       </div>
 
       {/* ── Contenido principal ── */}
-      <main className="pt-12 md:pt-0 pb-28 md:pb-8 overflow-x-hidden">
+      <main className="pt-12 md:pt-0 pb-28 md:pb-8" style={{ overflowX: 'clip' }}>
         <Outlet />
       </main>
     </div>
