@@ -184,7 +184,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const goToProfile = () => navigate(`/u/${post.author_id}`)
 
   return (
-    <div className="flex overflow-hidden rounded-xl" style={{ background:"#ffffff", border:'1px solid #C5D9D5' }} id={`post-${post.id}`}>
+    <div className="flex overflow-hidden rounded-xl" style={{ background:"#ffffff", border:'1px solid #E8F1EF', boxShadow: '0 1px 3px rgba(19,78,74,0.06)' }} id={`post-${post.id}`}>
 
       {/* Barra lateral de categoria */}
       <div className="flex-shrink-0" style={{ width: 5, background: '#134E4A' }} />
