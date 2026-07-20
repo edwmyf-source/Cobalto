@@ -18,15 +18,15 @@ export const getConversations = async (userId) => {
   return data || []
 }
 
-// Get or create conversation between two users for a specific post
-export const getOrCreateConversation = async (user1Id, user2Id, postId) => {
+// Get or create conversation between two users, optionally tied to a post
+export const getOrCreateConversation = async (user1Id, user2Id, postId = null) => {
   // Check if exists
-  const { data: existing } = await supabase
+  let query = supabase
     .from('conversations')
     .select('*')
-    .eq('post_id', postId)
     .or(`and(user1_id.eq.${user1Id},user2_id.eq.${user2Id}),and(user1_id.eq.${user2Id},user2_id.eq.${user1Id})`)
-    .maybeSingle()
+  query = postId ? query.eq('post_id', postId) : query.is('post_id', null)
+  const { data: existing } = await query.maybeSingle()
 
   if (existing) return { ...existing, isNew: false }
 

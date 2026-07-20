@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home, Users } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -69,6 +69,7 @@ export default function AppLayout() {
 
   const profileMenuItems = [
     { label: 'Mensajes', icon: MessageSquare, path: '/chats' },
+    { label: 'Contactos', icon: Users, path: '/contacts' },
     { label: 'Alertas',  icon: Bell,          path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
     { label: '¿Cuánto sabes?', icon: FlaskConical, path: '/quimica' },
