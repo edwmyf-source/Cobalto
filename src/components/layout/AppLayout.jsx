@@ -17,6 +17,7 @@ export default function AppLayout() {
   const [unreadCount, setUnreadCount] = useState(0)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const menuRef = useRef(null)
+  const profileBtnRef = useRef(null)
 
   const currentTab = '/' + (location.pathname.split('/')[1] || 'feed')
   const lastFetchRef = useRef(0)
@@ -55,7 +56,10 @@ export default function AppLayout() {
   useEffect(() => {
     if (!profileMenuOpen) return
     const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) setProfileMenuOpen(false)
+      if (menuRef.current && !menuRef.current.contains(e.target) &&
+          profileBtnRef.current && !profileBtnRef.current.contains(e.target)) {
+        setProfileMenuOpen(false)
+      }
     }
     document.addEventListener('pointerdown', handler)
     return () => document.removeEventListener('pointerdown', handler)
@@ -90,9 +94,9 @@ export default function AppLayout() {
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center gap-2 px-4 h-12"
         style={{ background: '#ffffff', borderBottom: '1px solid #F5F8FD' }}>
         <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#0047AB' }}>
-          <span className="text-white font-bold leading-none" style={{ fontSize: 12 }}>CQ</span>
+          <span className="text-white font-bold leading-none" style={{ fontSize: 12 }}>Co</span>
         </div>
-        <span className="font-extrabold text-[15px]" style={{ color: '#0047AB' }}>CeQu.com</span>
+        <span className="font-extrabold text-[15px]" style={{ color: '#0047AB' }}>Cobalto</span>
       </div>
 
       {/* ── Sidebar — solo móvil ── */}
@@ -142,7 +146,7 @@ export default function AppLayout() {
           </div>
         )}
 
-        <div className="mx-4 mb-6 h-[76px] rounded-[30px] flex items-center justify-around px-3"
+        <div className="mx-4 mb-4 h-[72px] rounded-[28px] flex items-center justify-around px-3"
           style={{ background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', boxShadow: '0 12px 40px rgba(17,24,39,0.14)', border: '1px solid rgba(255,255,255,0.6)', pointerEvents: 'auto' }}>
 
           {/* Inicio */}
@@ -164,7 +168,7 @@ export default function AppLayout() {
           </div>
 
           {/* Perfil */}
-          <button onClick={() => setProfileMenuOpen(o => !o)}
+          <button ref={profileBtnRef} onClick={() => setProfileMenuOpen(o => !o)}
             className="flex flex-col items-center gap-1 flex-1 relative active:scale-95 transition-transform" aria-label="Perfil">
             <div className="relative">
               <User size={22} style={{ color: profileMenuOpen ? '#0047AB' : '#6B7280' }} strokeWidth={profileMenuOpen ? 2.4 : 2} />
@@ -181,7 +185,7 @@ export default function AppLayout() {
       </div>
 
       {/* ── Contenido principal ── */}
-      <main className="pt-12 md:pt-0 pb-32 md:pb-8" style={{ overflowX: 'clip' }}>
+      <main className="pt-12 md:pt-0 pb-24 md:pb-8" style={{ overflowX: 'clip' }}>
         <Outlet />
       </main>
     </div>

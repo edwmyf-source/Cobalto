@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Gift, Rocket, EyeOff, Lock, MessageCircle, FlaskConical, Users, Handshake, ArrowRight } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
-import CeQuMark from '../shared/CeQuMark'
+import CobaltoMark from '../shared/CobaltoMark'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
@@ -21,8 +21,8 @@ function TopBar({ onLogin, onSignup }) {
     <header className="w-full flex-shrink-0" style={{ background: '#ffffff', borderBottom: '1px solid #FFFFFF' }}>
       <div className="max-w-6xl mx-auto h-[70px] flex items-center justify-between px-4">
         <div className="flex items-center gap-2.5">
-          <CeQuMark size={40} rounded="rounded-lg" />
-          <span className="font-extrabold text-xl tracking-wide hidden sm:block" style={{ color: '#0047AB' }}>CeQu.com</span>
+          <CobaltoMark size={40} rounded="rounded-lg" />
+          <span className="font-extrabold text-xl tracking-wide hidden sm:block" style={{ color: '#0047AB' }}>Cobalto</span>
         </div>
         <div className="flex items-center gap-2.5">
           <button onClick={onLogin}
@@ -50,7 +50,7 @@ function Landing({ stats, onSignup }) {
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
           <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#0047AB', letterSpacing: '0.5em' }}>
-            CEQU
+            COBALTO
           </div>
           <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#0047AB' }}>
             Punto de encuentro<br />
@@ -91,7 +91,7 @@ function Landing({ stats, onSignup }) {
       {/* Ventajas — estilo H2 (+10% base, texto +20% adicional) */}
       <section className="mt-3 pt-2.5" style={{ borderTop: '1px solid #FFFFFF' }}>
         <h2 className="text-[13px] font-bold mb-2 tracking-widest" style={{ color: '#0047AB', letterSpacing: '0.16em' }}>
-          ¿POR QUÉ CEQU?
+          ¿POR QUÉ COBALTO?
         </h2>
         <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #D6E2F5' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>

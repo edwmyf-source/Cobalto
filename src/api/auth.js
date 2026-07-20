@@ -58,7 +58,7 @@ export const listMFAFactors = async () => {
 
 // Iniciar enroll de TOTP (devuelve QR + secret)
 export const enrollMFA = async () => {
-  const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp', issuer: 'CeQu' })
+  const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp', issuer: 'Cobalto' })
   if (error) throw error
   return data // { id, type, totp: { qr_code, secret, uri } }
 }

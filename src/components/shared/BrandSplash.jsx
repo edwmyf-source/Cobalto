@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 // El splash completo (2.4s) solo se muestra una vez por sesion del navegador.
 // En recargas (F5) dura 700ms — suficiente para tapar el arranque sin frenar al usuario.
-const SPLASH_SEEN_KEY = 'cequ-splash-seen'
+const SPLASH_SEEN_KEY = 'cobalto-splash-seen'
 
 export default function BrandSplash({ onDone }) {
   const doneRef = useRef(false)
@@ -112,11 +112,11 @@ export default function BrandSplash({ onDone }) {
         <div className="cbo-plane cbo-p1"><div className="cbo-e" /></div>
         <div className="cbo-plane cbo-p2"><div className="cbo-e" /></div>
         <div className="cbo-plane cbo-p3"><div className="cbo-e" /></div>
-        <div className="cbo-core">CQ</div>
+        <div className="cbo-core">Co</div>
       </div>
 
-      {/* CeQu.com con letras separadas */}
-      <div className="cbo-brand">CEQU</div>
+      {/* Cobalto con letras separadas */}
+      <div className="cbo-brand">COBALTO</div>
 
       {/* Cargando + puntitos */}
       <div className="cbo-load">

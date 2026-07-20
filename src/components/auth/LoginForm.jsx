@@ -8,7 +8,7 @@ const ERR_MAP = {
   'Email not confirmed': 'Confirma tu email antes de iniciar sesión.',
 }
 
-const LAST_EMAIL_KEY = 'cequ-last-email'
+const LAST_EMAIL_KEY = 'cobalto-last-email'
 
 export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
   const [mode, setMode]     = useState('password') // 'password' | 'magic'
