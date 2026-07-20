@@ -27,19 +27,19 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 
       {/* Header */}
       <div className="px-5 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #FFFFFF' }}>
-        <h2 className="text-[22px] font-bold" style={{ color: '#111111' }}>Mensajes</h2>
+        <h2 className="text-[22px] font-bold" style={{ color: '#0047AB' }}>Mensajes</h2>
       </div>
 
       {/* Buscador */}
       <div className="px-4 py-3 flex-shrink-0">
         <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#FFFFFF' }}>
-          <Search size={14} style={{ color: '#C4C4C4' }} />
+          <Search size={14} style={{ color: '#B8CBEF' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Buscar conversación..."
             className="flex-1 bg-transparent text-[13px] focus:outline-none"
-            style={{ color: '#111111' }}
+            style={{ color: '#0047AB' }}
           />
         </div>
       </div>
@@ -48,7 +48,7 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
       <div className="flex-1 overflow-y-auto">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-            <p className="text-sm" style={{ color: '#C4C4C4' }}>
+            <p className="text-sm" style={{ color: '#B8CBEF' }}>
               {search ? 'Sin resultados.' : 'Sin conversaciones aún. Contacta a alguien desde el feed.'}
             </p>
           </div>
@@ -62,15 +62,15 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
             return (
               <button key={conv.id} onClick={() => onSelect(conv)}
                 className="w-full text-left transition-colors"
-                style={{ background: active ? '#F3F3F3' : unread ? '#F7FAFF' : '#ffffff',
+                style={{ background: active ? '#F5F8FD' : unread ? '#F7FAFF' : '#ffffff',
                   borderBottom: '1px solid #FFFFFF' }}>
                 <div className="flex items-center gap-3.5 px-4 py-3.5">
 
                   {/* Avatar con indicador online */}
                   <div className="relative flex-shrink-0">
                     <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center text-[15px] font-bold text-white flex-shrink-0"
-                      style={{ background: active || unread ? '#111111' : '#D9D9D9',
-                        color: active || unread ? '#fff' : '#5A5A5A' }}>
+                      style={{ background: active || unread ? '#0047AB' : '#D6E2F5',
+                        color: active || unread ? '#fff' : '#3A5590' }}>
                       {name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}
                     </div>
                   </div>
@@ -79,23 +79,23 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
                       <span className="text-[15px] truncate"
-                        style={{ color: '#111111', fontWeight: unread ? 700 : 600 }}>
+                        style={{ color: '#0047AB', fontWeight: unread ? 700 : 600 }}>
                         {name}
                       </span>
                       <span className="text-[12px] flex-shrink-0 ml-2"
-                        style={{ color: unread ? '#2A2A2A' : '#C4C4C4', fontWeight: unread ? 600 : 400 }}>
+                        style={{ color: unread ? '#2C6BD4' : '#B8CBEF', fontWeight: unread ? 600 : 400 }}>
                         {timeAgo(conv.updated_at)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[13px] truncate"
-                        style={{ color: unread ? '#5A5A5A' : '#C4C4C4',
+                        style={{ color: unread ? '#3A5590' : '#B8CBEF',
                           fontWeight: unread ? 600 : 400 }}>
                         {conv.last_message || (conv.posts ? `Sobre: ${conv.posts.title}` : 'Nueva conversación')}
                       </span>
                       {unread && (
                         <div className="flex-shrink-0 min-w-[20px] h-[20px] rounded-full flex items-center justify-center text-[11px] font-bold px-1.5"
-                          style={{ background: '#2A2A2A', color: '#111111' }}>
+                          style={{ background: '#2C6BD4', color: '#0047AB' }}>
                           {conv.unread_count > 9 ? '9+' : conv.unread_count}
                         </div>
                       )}
@@ -184,14 +184,14 @@ function ChatThread({ conversation, userId, myProfile }) {
 
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0"
-        style={{ background: '#ffffff', borderBottom: '1px solid #EBEBEB' }}>
+        style={{ background: '#ffffff', borderBottom: '1px solid #D6E2F5' }}>
         <div className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold text-white flex-shrink-0"
-          style={{ background: '#111111' }}>
+          style={{ background: '#0047AB' }}>
           {otherName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[14px] font-semibold truncate" style={{ color: '#111111' }}>{otherName}</p>
-          {other?.city && <p className="text-[11px]" style={{ color: '#5A5A5A' }}>{other.city}</p>}
+          <p className="text-[14px] font-semibold truncate" style={{ color: '#0047AB' }}>{otherName}</p>
+          {other?.city && <p className="text-[11px]" style={{ color: '#3A5590' }}>{other.city}</p>}
         </div>
       </div>
 
@@ -200,12 +200,12 @@ function ChatThread({ conversation, userId, myProfile }) {
         <button onClick={() => navigate('/feed', { state: { scrollToPostId: conversation.posts.id } })}
           className="mx-4 mt-2 mb-1 flex-shrink-0 flex items-start gap-2.5 px-3.5 py-3 rounded-2xl text-left transition-all active:scale-[0.98] w-[calc(100%-2rem)]"
           style={{ background: '#F8FAFC', border: '1px solid #E5E7EB' }}>
-          <span className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#111111' }}>
+          <span className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#0047AB' }}>
             <MessageSquareText size={16} color="#fff" />
           </span>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#D62828' }}>
+              <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#0047AB' }}>
                 {CATEGORY_MAP[conversation.posts.category]?.label || conversation.posts.category}
               </span>
               <span className="text-[11px]" style={{ color: '#9CA3AF' }}>· Ver publicación</span>
@@ -222,16 +222,16 @@ function ChatThread({ conversation, userId, myProfile }) {
         {loading ? (
           <div className="flex justify-center py-6"><Spinner size={20} /></div>
         ) : messages.length === 0 ? (
-          <p className="text-center text-xs py-6" style={{ color: '#C4C4C4' }}>Inicia la conversación.</p>
+          <p className="text-center text-xs py-6" style={{ color: '#B8CBEF' }}>Inicia la conversación.</p>
         ) : (
           Object.entries(grouped).map(([day, msgs]) => (
             <div key={day}>
               {/* Separador de fecha */}
               <div className="flex items-center gap-2 my-4">
-                <div className="flex-1 h-px" style={{ background: '#EBEBEB' }} />
+                <div className="flex-1 h-px" style={{ background: '#D6E2F5' }} />
                 <span className="text-[10px] font-medium px-3 py-1 rounded-full capitalize"
-                  style={{ background: '#EBEBEB', color: '#5A5A5A' }}>{day}</span>
-                <div className="flex-1 h-px" style={{ background: '#EBEBEB' }} />
+                  style={{ background: '#D6E2F5', color: '#3A5590' }}>{day}</span>
+                <div className="flex-1 h-px" style={{ background: '#D6E2F5' }} />
               </div>
 
               <div className="flex flex-col gap-1.5">
@@ -245,7 +245,7 @@ function ChatThread({ conversation, userId, myProfile }) {
                       <div style={{ maxWidth: '75%' }}>
                         <div className="px-4 py-3 text-[15px] leading-relaxed whitespace-pre-wrap break-words"
                           style={{
-                            background: isMine ? '#111111' : '#ffffff',
+                            background: isMine ? '#0047AB' : '#ffffff',
                             color: isMine ? '#ffffff' : '#111827',
                             borderRadius: isMine
                               ? isLast ? '22px 22px 7px 22px' : '22px'
@@ -290,7 +290,7 @@ function ChatThread({ conversation, userId, myProfile }) {
         />
         <button onClick={handleSend} disabled={!text.trim() || sending}
           className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all active:scale-95 disabled:opacity-40"
-          style={{ background: '#111111', boxShadow: '0 6px 16px rgba(15,92,87,0.3)' }}>
+          style={{ background: '#0047AB', boxShadow: '0 6px 16px rgba(15,92,87,0.3)' }}>
           {sending ? <Spinner size={16} color="#fff" /> : <Send size={18} color="#fff" />}
         </button>
       </div>
@@ -337,11 +337,11 @@ export default function ChatsPage() {
 
   return (
     <div className="page-enter flex overflow-hidden rounded-2xl"
-      style={{ height: 'calc(100vh - 140px)', background: '#ffffff', border: '1px solid #EBEBEB' }}>
+      style={{ height: 'calc(100vh - 140px)', background: '#ffffff', border: '1px solid #D6E2F5' }}>
 
       {/* Bandeja */}
       <div className={`md:w-[300px] md:border-r flex-shrink-0 overflow-hidden flex flex-col ${active ? 'hidden md:flex' : 'w-full flex'}`}
-        style={{ borderColor: '#EBEBEB' }}>
+        style={{ borderColor: '#D6E2F5' }}>
         {loading ? (
           <div className="p-4 space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-16" />)}</div>
         ) : (
@@ -355,18 +355,18 @@ export default function ChatsPage() {
         {active ? (
           <>
             <div className="md:hidden flex items-center gap-2 px-4 py-3 flex-shrink-0"
-              style={{ borderBottom: '1px solid #EBEBEB', background: '#ffffff' }}>
+              style={{ borderBottom: '1px solid #D6E2F5', background: '#ffffff' }}>
               <button onClick={() => setActive(null)} className="p-1 rounded-lg"
-                style={{ color: '#111111' }}>
+                style={{ color: '#0047AB' }}>
                 <ArrowLeft size={20} />
               </button>
-              <p className="text-sm font-semibold truncate" style={{ color: '#111111' }}>Mensajes</p>
+              <p className="text-sm font-semibold truncate" style={{ color: '#0047AB' }}>Mensajes</p>
             </div>
             <ChatThread conversation={active} userId={session.user.id} myProfile={myProfile} />
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-            <p className="text-sm" style={{ color: '#C4C4C4' }}>Selecciona una conversación</p>
+            <p className="text-sm" style={{ color: '#B8CBEF' }}>Selecciona una conversación</p>
           </div>
         )}
       </div>

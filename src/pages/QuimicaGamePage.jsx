@@ -11,7 +11,7 @@ const PERSONAJES = [
   { id: 4,  min: 350,  emoji: '📚', nombre: 'Universitario Primer Año', desc: 'Sobrevivió química general. Casi.',    color: '#4a148c', bg: '#f3e5f5' },
   { id: 5,  min: 520,  emoji: '⚗️',  nombre: 'Practicante de Lab',     desc: 'Ya no rompe pipetas. Casi nunca.',     color: '#006064', bg: '#e0f7fa' },
   { id: 6,  min: 720,  emoji: '🔬', nombre: 'Técnico Analítico',       desc: 'Lee una ficha técnica y entiende todo.', color: '#e65100', bg: '#fff8e1' },
-  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista Senior',  desc: 'Sabe cuándo la reacción va mal.',      color: '#111111', bg: '#FFFFFF' },
+  { id: 7,  min: 960,  emoji: '👩‍🔬', nombre: 'Laboratorista Senior',  desc: 'Sabe cuándo la reacción va mal.',      color: '#0047AB', bg: '#FFFFFF' },
   { id: 8,  min: 1250, emoji: '🧪', nombre: 'Formulador Experto',      desc: 'Huele el reactivo y ya sabe qué es.',  color: '#880e4f', bg: '#fce4ec' },
   { id: 9,  min: 1600, emoji: '👨‍🏫', nombre: 'Profe Labortosita',      desc: 'Explica lo mismo 40 veces. Con amor.', color: '#1b5e20', bg: '#e8f5e9' },
   { id: 10, min: 2000, emoji: '🧫', nombre: 'Investigador',             desc: 'Publica papers. Nadie los lee. Importan.', color: '#0d47a1', bg: '#e3f2fd' },
@@ -40,12 +40,12 @@ function getPersonaje(pts) {
 const NIVELES = [
   { id: 1,  tema: 'La vida y los seres vivos',    emoji: '🌱', color: '#16a34a', bg: '#f0fdf4', frase_inicio: '¡Vamos calentando motores!', frase_nivel: '¡Arrancamos!' },
   { id: 2,  tema: 'El cuerpo humano',             emoji: '🫀', color: '#0d9488', bg: '#f0fdfa', frase_inicio: '¿Conoces tu propio cuerpo?', frase_nivel: '¡Subiste de nivel! 🚀' },
-  { id: 3,  tema: 'Naturaleza y planeta Tierra',  emoji: '🌎', color: '#D62828', bg: '#F3F3F3', frase_inicio: '¡Vas bien, sigue así!', frase_nivel: '¡Nivel 3! ¡Se pone bueno!' },
+  { id: 3,  tema: 'Naturaleza y planeta Tierra',  emoji: '🌎', color: '#0047AB', bg: '#F5F8FD', frase_inicio: '¡Vas bien, sigue así!', frase_nivel: '¡Nivel 3! ¡Se pone bueno!' },
   { id: 4,  tema: 'Física: movimiento y fuerzas', emoji: '🚀', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: 'Aquí empieza lo serio...', frase_nivel: '¡Nivel 4! ¡Eso es!' },
   { id: 5,  tema: 'Física: energía y luz',        emoji: '💡', color: '#dc2626', bg: '#fff1f2', frase_inicio: '¡Que se haga la luz!', frase_nivel: '¡NIVEL 5! 🔥 ¡Fuego!' },
   { id: 6,  tema: 'Química básica',               emoji: '⚛️', color: '#ea580c', bg: '#fff7ed', frase_inicio: 'Los átomos no mienten', frase_nivel: '¡Nivel 6! ¡Imparable!' },
   { id: 7,  tema: 'Mezclas y soluciones',         emoji: '🧫', color: '#0369a1', bg: '#f0f9ff', frase_inicio: '¿Soluto o solvente? Eso te pregunto', frase_nivel: '¡NIVEL 7! ¡Qué bestia!' },
-  { id: 8,  tema: 'Ácidos y bases',               emoji: '🧪', color: '#B01F1F', bg: '#F3F3F3', frase_inicio: '¿pH qué? ¡Demuéstralo!', frase_nivel: '¡Nivel 8! ¡La rompes!' },
+  { id: 8,  tema: 'Ácidos y bases',               emoji: '🧪', color: '#0047AB', bg: '#F5F8FD', frase_inicio: '¿pH qué? ¡Demuéstralo!', frase_nivel: '¡Nivel 8! ¡La rompes!' },
   { id: 9,  tema: 'Reacciones químicas',          emoji: '💥', color: '#7e22ce', bg: '#faf5ff', frase_inicio: 'Las reacciones no mienten', frase_nivel: '¡NIVEL 9! ¡Sos un crack!' },
   { id: 10, tema: 'Química orgánica básica',      emoji: '🌿', color: '#15803d', bg: '#f0fdf4', frase_inicio: '¡Mitad del camino! ¿Aguantas?', frase_nivel: '¡NIVEL 10! ¡Mitad! 🏅' },
   { id: 11, tema: 'Separación de mezclas',        emoji: '🔬', color: '#0f766e', bg: '#f0fdfa', frase_inicio: 'Aquí solo sobreviven los mejores', frase_nivel: '¡Nivel 11! ¡Eres nivel PRO!' },
@@ -55,7 +55,7 @@ const NIVELES = [
   { id: 15, tema: 'Análisis químico',             emoji: '📊', color: '#0891b2', bg: '#ecfeff', frase_inicio: '¡Solo los elegidos llegan aquí!', frase_nivel: '¡NIVEL 15! ¡Top 1%!' },
   { id: 16, tema: 'Química analítica avanzada',   emoji: '🏆', color: '#be185d', bg: '#fdf2f8', frase_inicio: '¡Si llegas aquí, eres élite!', frase_nivel: '¡NIVEL 16! ¡Genio puro!' },
   { id: 17, tema: 'Fisicoquímica',                emoji: '🌀', color: '#7c3aed', bg: '#f5f3ff', frase_inicio: '¡La física y la química se abrazan!', frase_nivel: '¡NIVEL 17! ¡Eres un monstruo!' },
-  { id: 18, tema: 'Química de materiales',        emoji: '🔩', color: '#1e40af', bg: '#F3F3F3', frase_inicio: '¡Casi nadie llega aquí, campeón!', frase_nivel: '¡NIVEL 18! ¡Leyenda viva!' },
+  { id: 18, tema: 'Química de materiales',        emoji: '🔩', color: '#1e40af', bg: '#F5F8FD', frase_inicio: '¡Casi nadie llega aquí, campeón!', frase_nivel: '¡NIVEL 18! ¡Leyenda viva!' },
   { id: 19, tema: 'Bioquímica',                   emoji: '🧬', color: '#065f46', bg: '#ecfdf5', frase_inicio: '¡La química de la vida misma!', frase_nivel: '¡NIVEL 19! ¡Casi Dios!' },
   { id: 20, tema: 'Albert Einsteinium (élite)',   emoji: '⚡', color: '#b45309', bg: '#fefce8', frase_inicio: '¡NIVEL FINAL! ¡Aquí termina todo!', frase_nivel: '¡NIVEL 20! ¡ERES EL ELEGIDO!' },
 ]
@@ -74,11 +74,11 @@ function PantallaInicio({ onStart }) {
     <div className="flex flex-col items-center text-center px-4 py-8 gap-5">
       <div className="text-7xl animate-bounce">🧪</div>
       <div>
-        <h1 className="text-2xl font-black mb-1" style={{ color: '#111111' }}>¿Cuánto sabes de química?</h1>
-        <p className="text-sm" style={{ color: '#8A8A8A' }}>20 niveles temáticos · 30 segundos cada uno · ¡3 correctas seguidas para subir!</p>
+        <h1 className="text-2xl font-black mb-1" style={{ color: '#0047AB' }}>¿Cuánto sabes de química?</h1>
+        <p className="text-sm" style={{ color: '#6B87B8' }}>20 niveles temáticos · 30 segundos cada uno · ¡3 correctas seguidas para subir!</p>
       </div>
-      <div className="w-full rounded-2xl p-4 text-left" style={{ background: '#F3F3F3', border: '1px solid #D9D9D9' }}>
-        <p className="text-xs font-bold mb-2" style={{ color: '#111111' }}>¿Cómo funciona?</p>
+      <div className="w-full rounded-2xl p-4 text-left" style={{ background: '#F5F8FD', border: '1px solid #D6E2F5' }}>
+        <p className="text-xs font-bold mb-2" style={{ color: '#0047AB' }}>¿Cómo funciona?</p>
         {[
           ['⏱️', '30 segundos por nivel — si se acaba, fin del juego'],
           ['✅', '3 respuestas correctas seguidas = siguiente nivel'],
@@ -87,23 +87,23 @@ function PantallaInicio({ onStart }) {
           ['🔥', 'Racha perfecta = multiplicador de puntos'],
         ].map(([ico, txt]) => (
           <div key={txt} className="flex items-start gap-2 mb-1.5">
-            <span>{ico}</span><p className="text-xs" style={{ color: '#8A8A8A' }}>{txt}</p>
+            <span>{ico}</span><p className="text-xs" style={{ color: '#6B87B8' }}>{txt}</p>
           </div>
         ))}
       </div>
-      <div className="w-full rounded-2xl p-3" style={{ background: 'rgba(255,255,255,0.7)', border: '0.5px solid #D9D9D9' }}>
-        <p className="text-xs font-bold mb-2" style={{ color: '#111111' }}>Evolución según puntos:</p>
+      <div className="w-full rounded-2xl p-3" style={{ background: 'rgba(255,255,255,0.7)', border: '0.5px solid #D6E2F5' }}>
+        <p className="text-xs font-bold mb-2" style={{ color: '#0047AB' }}>Evolución según puntos:</p>
         <div className="flex flex-wrap gap-1 justify-center">
           {PERSONAJES.map(p => (
             <div key={p.id} className="flex flex-col items-center" title={`${p.nombre} (${p.min} pts)`}>
               <span className="text-lg">{p.emoji}</span>
-              <span className="text-[7px]" style={{ color: '#C4C4C4' }}>{p.min}</span>
+              <span className="text-[7px]" style={{ color: '#B8CBEF' }}>{p.min}</span>
             </div>
           ))}
         </div>
       </div>
       <button onClick={onStart} className="w-full py-4 rounded-2xl text-white font-black text-lg active:scale-95 transition-all"
-        style={{ background: '#D62828', boxShadow: '0 6px 20px rgba(37,99,235,0.35)' }}>
+        style={{ background: '#0047AB', boxShadow: '0 6px 20px rgba(37,99,235,0.35)' }}>
         ¡Empezar! 🚀
       </button>
     </div>
@@ -256,7 +256,7 @@ function JuegoPrincipal({ onGameOver }) {
       <div className="flex flex-col items-center text-center px-4 py-10 gap-3">
         <div className="text-4xl">⚠️</div>
         <p className="text-sm font-semibold" style={{ color: '#c62828' }}>{errorCarga}</p>
-        <p className="text-xs" style={{ color: '#8A8A8A' }}>Intenta recargar la página.</p>
+        <p className="text-xs" style={{ color: '#6B87B8' }}>Intenta recargar la página.</p>
       </div>
     )
   }
@@ -265,7 +265,7 @@ function JuegoPrincipal({ onGameOver }) {
     return (
       <div className="flex flex-col items-center text-center px-4 py-10 gap-3">
         <div className="text-4xl animate-bounce">🧪</div>
-        <p className="text-sm font-semibold" style={{ color: '#111111' }}>Cargando preguntas...</p>
+        <p className="text-sm font-semibold" style={{ color: '#0047AB' }}>Cargando preguntas...</p>
       </div>
     )
   }
@@ -290,27 +290,27 @@ function JuegoPrincipal({ onGameOver }) {
         <div className="flex items-center gap-2">
           <span className="text-xl">{nivelDef.emoji}</span>
           <div>
-            <p className="text-[10px] font-bold leading-none" style={{ color: '#C4C4C4' }}>NIVEL {nivelIdx + 1}/20</p>
-            <p className="text-xs font-bold leading-tight" style={{ color: '#111111' }}>{nivelDef.tema}</p>
+            <p className="text-[10px] font-bold leading-none" style={{ color: '#B8CBEF' }}>NIVEL {nivelIdx + 1}/20</p>
+            <p className="text-xs font-bold leading-tight" style={{ color: '#0047AB' }}>{nivelDef.tema}</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="text-lg font-black tabular-nums leading-none" style={{ color: '#B01F1F' }}>{puntos}</p>
+          <p className="text-lg font-black tabular-nums leading-none" style={{ color: '#0047AB' }}>{puntos}</p>
           {racha >= 2 && <p className="text-[10px] font-bold" style={{ color: '#f59e0b' }}>{FRASES_RACHA[Math.min(racha - 2, 4)]}</p>}
         </div>
       </div>
 
       {/* Barra de insignia: puntos 0 → 500 con animacion */}
       <div className="mt-1">
-        <div className="flex items-center justify-between text-[9px] font-bold mb-1" style={{ color: '#111111' }}>
+        <div className="flex items-center justify-between text-[9px] font-bold mb-1" style={{ color: '#0047AB' }}>
           <span>INSIGNIA</span>
-          <span className="tabular-nums" style={{ color: '#111111' }}>{Math.min(puntos, 500)} / 500 pts</span>
+          <span className="tabular-nums" style={{ color: '#0047AB' }}>{Math.min(puntos, 500)} / 500 pts</span>
         </div>
-        <div className="relative h-2 rounded-full overflow-hidden" style={{ background: '#EBEBEB' }}>
+        <div className="relative h-2 rounded-full overflow-hidden" style={{ background: '#D6E2F5' }}>
           <div className="h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden"
             style={{
               width: `${Math.min(100, (puntos / 500) * 100)}%`,
-              background: 'linear-gradient(90deg,#111111,#2A2A2A,#8A8A8A,#2A2A2A)',
+              background: 'linear-gradient(90deg,#0047AB,#2C6BD4,#6B87B8,#2C6BD4)',
               backgroundSize: '200% 100%',
               animation: 'insignia-shine 2.4s ease-in-out infinite',
             }}>
@@ -332,23 +332,23 @@ function JuegoPrincipal({ onGameOver }) {
       <div>
         <div className="flex items-center gap-2 mb-1">
           <span className="text-base font-black tabular-nums w-6" style={{ color: colorTiempo }}>{tiempo}</span>
-          <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ background: '#EBEBEB' }}>
+          <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ background: '#D6E2F5' }}>
             <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${pctTiempo}%`, background: colorTiempo }} />
           </div>
         </div>
         {/* Progreso correctas en nivel */}
         <div className="flex gap-1.5 justify-center">
           {[0, 1, 2].map(i => (
-            <div key={i} className="w-8 h-1.5 rounded-full transition-all" style={{ background: i < correctasNivel ? nivelDef.color : '#EBEBEB' }} />
+            <div key={i} className="w-8 h-1.5 rounded-full transition-all" style={{ background: i < correctasNivel ? nivelDef.color : '#D6E2F5' }} />
           ))}
         </div>
-        <p className="text-center text-[10px] mt-0.5" style={{ color: '#C4C4C4' }}>{correctasNivel}/3 para subir de nivel</p>
+        <p className="text-center text-[10px] mt-0.5" style={{ color: '#B8CBEF' }}>{correctasNivel}/3 para subir de nivel</p>
       </div>
 
       {/* Pregunta */}
       <div className="rounded-2xl p-4 min-h-[80px] flex items-center justify-center"
         style={{ background: `${nivelDef.bg}`, border: `1.5px solid ${nivelDef.color}40`, backdropFilter: 'blur(8px)' }}>
-        <p className="text-[15px] font-semibold leading-snug text-center" style={{ color: '#111111' }}>{pregunta.q}</p>
+        <p className="text-[15px] font-semibold leading-snug text-center" style={{ color: '#0047AB' }}>{pregunta.q}</p>
       </div>
 
       {/* 3 Opciones coloridas */}
@@ -386,7 +386,7 @@ function JuegoPrincipal({ onGameOver }) {
         <div className="text-center py-1">
           <p className="text-sm font-black" style={{ color: feedback.ok ? '#16a34a' : '#dc2626' }}>{feedback.frase}</p>
           {feedback.ok && feedback.pts > 0 && (
-            <p className="text-xs font-bold" style={{ color: '#D62828' }}>+{feedback.pts} pts{feedback.multiplicador > 1 ? ` ×${feedback.multiplicador}` : ''}</p>
+            <p className="text-xs font-bold" style={{ color: '#0047AB' }}>+{feedback.pts} pts{feedback.multiplicador > 1 ? ` ×${feedback.multiplicador}` : ''}</p>
           )}
         </div>
       )}
@@ -426,7 +426,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
       {/* Tira de evolución con tamaños crecientes */}
       <div>
-        <p className="text-[10px] font-bold mb-3 tracking-widest" style={{ color: '#2A2A2A' }}>TU EVOLUCIÓN</p>
+        <p className="text-[10px] font-bold mb-3 tracking-widest" style={{ color: '#2C6BD4' }}>TU EVOLUCIÓN</p>
         <div className="flex items-end justify-center gap-1 mb-2">
           {frames.map((f, i) => {
             const size = emojiSize(i)
@@ -456,7 +456,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
       {/* Card resultado — aparece después de la animación */}
       {showCard && (
-        <div className="w-full rounded-2xl overflow-hidden" style={{ background: '#fff', border: '1px solid #D9D9D9' }}>
+        <div className="w-full rounded-2xl overflow-hidden" style={{ background: '#fff', border: '1px solid #D6E2F5' }}>
           {/* Header del personaje */}
           <div className="py-5 px-4" style={{ background: per.bg || '#e8f5e9' }}>
             <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 8, filter: `drop-shadow(0 4px 16px ${per.color}40)` }}>
@@ -508,7 +508,7 @@ function PantallaFinal({ stats, onReiniciar }) {
           )}
 
           {/* Escala completa de personajes */}
-          <div className="mx-3 mb-3 rounded-xl p-3" style={{ background: '#f8f9ff', border: '1px solid #D9D9D9' }}>
+          <div className="mx-3 mb-3 rounded-xl p-3" style={{ background: '#f8f9ff', border: '1px solid #D6E2F5' }}>
             <div className="grid grid-cols-5 gap-1">
               {PERSONAJES.map(p => (
                 <div key={p.id} className="flex flex-col items-center p-1 rounded-lg transition-all"
@@ -518,7 +518,7 @@ function PantallaFinal({ stats, onReiniciar }) {
                     opacity: puntos >= p.min ? 1 : 0.25
                   }}>
                   <span style={{ fontSize: 20 }}>{p.emoji}</span>
-                  <span className="text-[7px] leading-tight text-center mt-0.5" style={{ color: puntos >= p.min ? p.color : '#8A8A8A' }}>
+                  <span className="text-[7px] leading-tight text-center mt-0.5" style={{ color: puntos >= p.min ? p.color : '#6B87B8' }}>
                     {p.nombre.split(' ')[0]}
                   </span>
                 </div>
@@ -528,7 +528,7 @@ function PantallaFinal({ stats, onReiniciar }) {
 
           <div className="px-3 pb-4">
             <button onClick={onReiniciar} className="w-full py-3 rounded-xl text-white font-black text-sm active:scale-95 transition-all"
-              style={{ background: '#111111', boxShadow: '0 4px 16px rgba(0,26,61,0.35)' }}>
+              style={{ background: '#0047AB', boxShadow: '0 4px 16px rgba(0,26,61,0.35)' }}>
               🔄 Jugar de nuevo
             </button>
           </div>
@@ -576,7 +576,7 @@ export default function QuimicaGamePage() {
 
   return (
     <div className="max-w-lg mx-auto" style={{ paddingBottom: 100 }}>
-      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: '#ffffff', border: '1px solid #D9D9D9' }}>
+      <div className="rounded-2xl overflow-hidden shadow-sm mx-3 mt-3" style={{ background: '#ffffff', border: '1px solid #D6E2F5' }}>
         {pantalla === 'inicio' && <PantallaInicio onStart={iniciar} />}
         {pantalla === 'juego' && <JuegoPrincipal key={Date.now()} onGameOver={gameOver} />}
         {pantalla === 'final' && statsFinales && <PantallaFinal stats={statsFinales} onReiniciar={reiniciar} />}

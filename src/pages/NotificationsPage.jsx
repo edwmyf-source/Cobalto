@@ -102,10 +102,10 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="font-bold text-xl" style={{ color: '#111111' }}>Notificaciones</h2>
+          <h2 className="font-bold text-xl" style={{ color: '#0047AB' }}>Notificaciones</h2>
           {unreadCount > 0 && (
             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-              style={{ background: '#2A2A2A', color: '#111111' }}>
+              style={{ background: '#2C6BD4', color: '#0047AB' }}>
               {unreadCount} nuevas
             </span>
           )}
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
         {unreadCount > 0 && (
           <button onClick={handleMarkAll}
             className="flex items-center gap-1.5 text-xs font-medium hover:opacity-70"
-            style={{ color: '#5A5A5A' }}>
+            style={{ color: '#3A5590' }}>
             <Check size={14} /> Marcar leídas
           </button>
         )}
@@ -122,12 +122,12 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="flex justify-center py-10"><Spinner size={20} /></div>
       ) : notifs.length === 0 ? (
-        <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '1px solid #EBEBEB' }}>
-          <Bell size={32} className="mx-auto mb-3" style={{ color: '#D9D9D9' }} />
-          <p className="text-sm font-medium" style={{ color: '#5A5A5A' }}>
+        <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '1px solid #D6E2F5' }}>
+          <Bell size={32} className="mx-auto mb-3" style={{ color: '#D6E2F5' }} />
+          <p className="text-sm font-medium" style={{ color: '#3A5590' }}>
             Aún no tienes notificaciones de interacciones.
           </p>
-          <p className="text-xs mt-1" style={{ color: '#C4C4C4' }}>
+          <p className="text-xs mt-1" style={{ color: '#B8CBEF' }}>
             Cuando alguien reaccione, comente o te escriba, aparecerá aquí.
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function NotificationsPage() {
           {ORDER.filter(lbl => groups[lbl]?.length).map(lbl => (
             <div key={lbl}>
               <p className="text-[11px] font-bold tracking-widest pb-2 pt-3"
-                style={{ color: '#C4C4C4' }}>{lbl}</p>
+                style={{ color: '#B8CBEF' }}>{lbl}</p>
 
               <div className="flex flex-col gap-2">
                 {groups[lbl].map(n => {
@@ -154,26 +154,26 @@ export default function NotificationsPage() {
                       className="w-full text-left rounded-2xl transition-opacity disabled:opacity-60 active:opacity-70 overflow-hidden"
                       style={{
                         background: '#ffffff',
-                        border: '1px solid #EBEBEB',
-                        borderLeft: isUnread ? '4px solid #111111' : '1px solid #EBEBEB',
+                        border: '1px solid #D6E2F5',
+                        borderLeft: isUnread ? '4px solid #0047AB' : '1px solid #D6E2F5',
                       }}>
 
                       <div className="flex items-center gap-3 px-3 py-3">
                         {/* Avatar con iniciales */}
                         <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-[13px] font-bold"
-                          style={{ background: isUnread ? '#111111' : '#F3F3F3', color: isUnread ? '#fff' : '#5A5A5A' }}>
+                          style={{ background: isUnread ? '#0047AB' : '#F5F8FD', color: isUnread ? '#fff' : '#3A5590' }}>
                           {getInitials(senderName)}
                         </div>
 
                         {/* Nombre + accion + tiempo */}
                         <div className="flex-1 min-w-0">
-                          <div className="text-[14px] leading-snug" style={{ color: '#111111' }}>
+                          <div className="text-[14px] leading-snug" style={{ color: '#0047AB' }}>
                             <span className="font-semibold">{senderName || 'Usuario'}</span>
                             {action && (
-                              <span style={{ color: '#5A5A5A', fontWeight: 400 }}> {action}</span>
+                              <span style={{ color: '#3A5590', fontWeight: 400 }}> {action}</span>
                             )}
                           </div>
-                          <div className="text-[11px] mt-0.5" style={{ color: '#C4C4C4' }}>
+                          <div className="text-[11px] mt-0.5" style={{ color: '#B8CBEF' }}>
                             {timeAgo(n.created_at)}
                           </div>
                         </div>
@@ -181,14 +181,14 @@ export default function NotificationsPage() {
                         {/* Punto no leído naranja */}
                         {isUnread && (
                           <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                            style={{ background: '#2A2A2A', boxShadow: '0 0 8px rgba(255,183,3,0.65)' }} />
+                            style={{ background: '#2C6BD4', boxShadow: '0 0 8px rgba(255,183,3,0.65)' }} />
                         )}
                       </div>
 
                       {/* Snippet de la publicacion */}
                       {snippet && (
                         <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px] leading-relaxed"
-                          style={{ background: '#FFFFFF', borderLeft: '3px solid #D9D9D9', color: '#5A5A5A' }}>
+                          style={{ background: '#FFFFFF', borderLeft: '3px solid #D6E2F5', color: '#3A5590' }}>
                           "{snippet.slice(0, 120)}{snippet.length > 120 ? '...' : ''}"
                         </div>
                       )}

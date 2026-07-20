@@ -22,17 +22,17 @@ function TopBar({ onLogin, onSignup }) {
       <div className="max-w-6xl mx-auto h-[70px] flex items-center justify-between px-4">
         <div className="flex items-center gap-2.5">
           <CeQuMark size={40} rounded="rounded-lg" />
-          <span className="font-extrabold text-xl tracking-wide hidden sm:block" style={{ color: '#111111' }}>CeQu.com</span>
+          <span className="font-extrabold text-xl tracking-wide hidden sm:block" style={{ color: '#0047AB' }}>CeQu.com</span>
         </div>
         <div className="flex items-center gap-2.5">
           <button onClick={onLogin}
             className="px-[18px] py-2.5 rounded-full text-[15px] md:text-[17px] font-semibold transition-colors hover:bg-blue-50"
-            style={{ color: '#111111', border: '1.5px solid #111111', background: '#fff' }}>
+            style={{ color: '#0047AB', border: '1.5px solid #0047AB', background: '#fff' }}>
             Iniciar sesión
           </button>
           <button onClick={onSignup}
             className="px-[18px] py-2.5 rounded-full text-[15px] md:text-[17px] font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ background: '#111111' }}>
+            style={{ background: '#0047AB' }}>
             Unirse ahora
           </button>
         </div>
@@ -49,51 +49,51 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#111111', letterSpacing: '0.5em' }}>
+          <div className="font-extrabold text-[15px] md:text-[17px] mb-2" style={{ color: '#0047AB', letterSpacing: '0.5em' }}>
             CEQU
           </div>
-          <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#111111' }}>
+          <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#0047AB' }}>
             Punto de encuentro<br />
-            <span style={{ color: '#2A2A2A' }}>de la industria química.</span>
+            <span style={{ color: '#2C6BD4' }}>de la industria química.</span>
           </h1>
           <p className="mt-3 text-[16px] md:text-[17px] leading-snug" style={{ color: '#5c6376' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
           </p>
           <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#111111' }}>Conecta</span>
-            <span style={{ color: '#D9D9D9', fontSize: 16 }}>·</span>
-            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#2A2A2A' }}>Comparte</span>
-            <span style={{ color: '#D9D9D9', fontSize: 16 }}>·</span>
-            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#2A2A2A' }}>Crece</span>
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#0047AB' }}>Conecta</span>
+            <span style={{ color: '#D6E2F5', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#2C6BD4' }}>Comparte</span>
+            <span style={{ color: '#D6E2F5', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[17px] font-bold" style={{ color: '#2C6BD4' }}>Crece</span>
           </div>
           <button onClick={onSignup}
             className="mt-4 inline-flex items-center gap-2 px-[26px] py-[13px] rounded-full text-[17px] font-bold text-white transition-opacity hover:opacity-90"
-            style={{ background: '#111111' }}>
+            style={{ background: '#0047AB' }}>
             Unirse ahora <ArrowRight size={22} />
           </button>
         </div>
 
         {/* Métricas de comunidad */}
         <div className="mt-4 md:mt-0 grid grid-cols-2 gap-3 md:w-[280px] flex-shrink-0">
-          <div className="rounded-2xl p-3 text-center" style={{ background: '#111111' }}>
-            <div className="flex justify-center mb-1"><Users size={18} color="#8A8A8A" /></div>
+          <div className="rounded-2xl p-3 text-center" style={{ background: '#0047AB' }}>
+            <div className="flex justify-center mb-1"><Users size={18} color="#6B87B8" /></div>
             <p className="text-2xl font-extrabold text-white leading-none">{stats.members.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#8A8A8A' }}>Miembros</p>
+            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#6B87B8' }}>Miembros</p>
           </div>
-          <div className="rounded-2xl p-3 text-center" style={{ background: '#111111' }}>
-            <div className="flex justify-center mb-1"><FlaskConical size={18} color="#8A8A8A" /></div>
+          <div className="rounded-2xl p-3 text-center" style={{ background: '#0047AB' }}>
+            <div className="flex justify-center mb-1"><FlaskConical size={18} color="#6B87B8" /></div>
             <p className="text-2xl font-extrabold text-white leading-none">{stats.posts.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#8A8A8A' }}>Publicaciones</p>
+            <p className="text-[11px] mt-1 uppercase tracking-wider font-medium" style={{ color: '#6B87B8' }}>Publicaciones</p>
           </div>
         </div>
       </section>
 
       {/* Ventajas — estilo H2 (+10% base, texto +20% adicional) */}
       <section className="mt-3 pt-2.5" style={{ borderTop: '1px solid #FFFFFF' }}>
-        <h2 className="text-[13px] font-bold mb-2 tracking-widest" style={{ color: '#111111', letterSpacing: '0.16em' }}>
+        <h2 className="text-[13px] font-bold mb-2 tracking-widest" style={{ color: '#0047AB', letterSpacing: '0.16em' }}>
           ¿POR QUÉ CEQU?
         </h2>
-        <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #EBEBEB' }}>
+        <div className="rounded-xl overflow-hidden" style={{ background: '#ffffff', border: '1px solid #D6E2F5' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
               { n: '01', title: 'Gratis',       sub: 'Sin costos ocultos',        navy: true  },
@@ -117,11 +117,11 @@ function Landing({ stats, onSignup }) {
                     fontWeight: 900,
                     lineHeight: 1,
                     flexShrink: 0,
-                    color: item.navy ? '#111111' : '#2A2A2A',
+                    color: item.navy ? '#0047AB' : '#2C6BD4',
                   }}>{item.n}</div>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#111111', lineHeight: 1.15 }}>{item.title}</div>
-                    <div style={{ fontSize: 10, color: '#5A5A5A', lineHeight: 1.15 }}>{item.sub}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#0047AB', lineHeight: 1.15 }}>{item.title}</div>
+                    <div style={{ fontSize: 10, color: '#3A5590', lineHeight: 1.15 }}>{item.sub}</div>
                   </div>
                 </div>
               )
@@ -132,13 +132,13 @@ function Landing({ stats, onSignup }) {
 
 
       {/* CTA final */}
-      <section className="mt-4 md:mt-5 py-4 text-center rounded-2xl" style={{ background: '#111111' }}>
+      <section className="mt-4 md:mt-5 py-4 text-center rounded-2xl" style={{ background: '#0047AB' }}>
         <h2 className="text-sm md:text-base font-extrabold text-white px-4">
           Únete a la comunidad química de Colombia
         </h2>
         <button onClick={onSignup}
           className="mt-2 px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-opacity hover:opacity-90"
-          style={{ background: '#2A2A2A', color: '#111111' }}>
+          style={{ background: '#2C6BD4', color: '#0047AB' }}>
           Crear cuenta gratis
         </button>
       </section>
@@ -162,11 +162,11 @@ export default function AuthScreen() {
         <Landing stats={stats} onSignup={() => setMode('signup')} />
       ) : (
         <div className="flex-1 flex items-start md:items-center justify-center px-4 py-4 md:py-6">
-          <div className="w-full max-w-md rounded-3xl p-5 md:p-7 shadow-lg" style={{ background: '#fff', border: '1.5px solid #D9D9D9' }}>
+          <div className="w-full max-w-md rounded-3xl p-5 md:p-7 shadow-lg" style={{ background: '#fff', border: '1.5px solid #D6E2F5' }}>
             {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
             {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}
-            <button onClick={() => setMode('landing')} className="mt-3 text-xs font-semibold hover:underline" style={{ color: '#111111' }}>
+            <button onClick={() => setMode('landing')} className="mt-3 text-xs font-semibold hover:underline" style={{ color: '#0047AB' }}>
               ← Volver al inicio
             </button>
           </div>

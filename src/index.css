@@ -56,9 +56,9 @@ body {
 
 /* CEQU visual refresh */
 :root {
-  --cequ-primary: #111111;
-  --cequ-primary-2: #2A2A2A;
-  --cequ-accent: #D62828;
+  --cequ-primary: #0047AB;
+  --cequ-primary-2: #2C6BD4;
+  --cequ-accent: #0047AB;
   --cequ-bg: #F8FAF9;
   --cequ-card: rgba(255,255,255,.86);
 }

@@ -14,8 +14,8 @@ function Pill({ label, active, onClick }) {
       onClick={onClick}
       className="px-4 py-2 rounded-full text-[12px] font-semibold border transition-all flex-shrink-0"
       style={active
-        ? { background: '#111111', color: '#ffffff', border: '1.5px solid #111111' }
-        : { background: '#FFFFFF', color: '#5A5A5A', border: '1.5px solid #D9D9D9' }}
+        ? { background: '#0047AB', color: '#ffffff', border: '1.5px solid #0047AB' }
+        : { background: '#FFFFFF', color: '#3A5590', border: '1.5px solid #D6E2F5' }}
     >
       {label}
     </button>
@@ -24,17 +24,17 @@ function Pill({ label, active, onClick }) {
 
 function Section({ title, value, open, onToggle, children }) {
   return (
-    <div style={{ borderBottom: '1px solid #EBEBEB' }}>
+    <div style={{ borderBottom: '1px solid #D6E2F5' }}>
       {title && (
         <button
           onClick={onToggle}
           className="w-full flex items-center justify-center relative px-3 py-2.5"
         >
-          <span className="text-[11px] font-semibold" style={{ color: '#111111' }}>{title}</span>
+          <span className="text-[11px] font-semibold" style={{ color: '#0047AB' }}>{title}</span>
           <span className="flex items-center gap-1.5 absolute right-3">
-            {value && <span className="text-[10px] font-bold" style={{ color: '#2A2A2A' }}>{value}</span>}
+            {value && <span className="text-[10px] font-bold" style={{ color: '#2C6BD4' }}>{value}</span>}
             <ChevronDown size={13}
-              style={{ color: '#5A5A5A', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+              style={{ color: '#3A5590', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
           </span>
         </button>
       )}
@@ -82,18 +82,18 @@ export default function FilterBar({ filters, setFilters }) {
     <div className="mb-2 px-2">
 
       {/* Accordion D2 (Filtros) */}
-      <div className="rounded-xl overflow-hidden mb-2" style={{ background: '#ffffff', border: '1.5px solid #D9D9D9' }}>
+      <div className="rounded-xl overflow-hidden mb-2" style={{ background: '#ffffff', border: '1.5px solid #D6E2F5' }}>
 
         {/* Header navy */}
-        <div className="flex items-center justify-center relative px-3 py-3.5" style={{ background: '#111111' }}>
-          <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#8A8A8A', letterSpacing: '0.1em' }}>
+        <div className="flex items-center justify-center relative px-3 py-3.5" style={{ background: '#0047AB' }}>
+          <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: '#6B87B8', letterSpacing: '0.1em' }}>
             ¿Qué quieres ver hoy?
           </span>
           {hasFilters && (
             <button
               onClick={() => { setFilters({}); setOpenSec('categoria') }}
               className="absolute right-3 text-[10px] font-bold hover:opacity-80"
-              style={{ color: '#2A2A2A' }}>
+              style={{ color: '#2C6BD4' }}>
               Limpiar
             </button>
           )}
@@ -152,19 +152,19 @@ export default function FilterBar({ filters, setFilters }) {
 
       {/* Buscador */}
       <div className="relative">
-        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#8A8A8A' }} />
+        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#6B87B8' }} />
         <input
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
           placeholder="Busca lo que necesitas..."
           className="w-full pl-10 pr-9 py-2 rounded-full text-[13px] focus:outline-none transition-colors"
-          style={{ background: '#ffffff', border: '1.5px solid #D9D9D9', color: '#111111' }}
-          onFocus={e => e.currentTarget.style.borderColor = '#111111'}
-          onBlur={e => e.currentTarget.style.borderColor = '#D9D9D9'}
+          style={{ background: '#ffffff', border: '1.5px solid #D6E2F5', color: '#0047AB' }}
+          onFocus={e => e.currentTarget.style.borderColor = '#0047AB'}
+          onBlur={e => e.currentTarget.style.borderColor = '#D6E2F5'}
         />
         {filters.search && (
           <button onClick={() => set('search', '')} className="absolute right-3 top-1/2 -translate-y-1/2">
-            <X size={13} style={{ color: '#111111' }} />
+            <X size={13} style={{ color: '#0047AB' }} />
           </button>
         )}
       </div>

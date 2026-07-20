@@ -18,7 +18,7 @@ const RULES = [
 ]
 
 // Contraseñas comunes que rechazamos explícitamente
-const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','11111111','cequ123']
+const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','0047AB11','cequ123']
 
 export default function SignupForm({ onSwitchLogin }) {
   const [email, setEmail] = useState('')
@@ -35,8 +35,8 @@ export default function SignupForm({ onSwitchLogin }) {
 
   const barColor =
     strength <= 2 ? '#dc2626' :
-    strength <= 3 ? '#2A2A2A' :
-    strength === 4 ? '#2A2A2A' : '#16a34a'
+    strength <= 3 ? '#2C6BD4' :
+    strength === 4 ? '#2C6BD4' : '#16a34a'
   const barLabel =
     isCommon ? 'Muy común, elige otra' :
     strength <= 2 ? 'Débil' :
@@ -90,7 +90,7 @@ export default function SignupForm({ onSwitchLogin }) {
         {pass && (
           <div className="mt-2">
             <div className="flex items-center gap-2 mb-1.5">
-              <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#F3F3F3' }}>
+              <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#F5F8FD' }}>
                 <div className="h-full rounded-full transition-all duration-300"
                   style={{ width: `${(strength / RULES.length) * 100}%`, background: barColor }} />
               </div>
@@ -105,8 +105,8 @@ export default function SignupForm({ onSwitchLogin }) {
                   <div key={r.id} className="flex items-center gap-1.5">
                     {ok
                       ? <Check size={11} style={{ color: '#16a34a', flexShrink: 0 }} />
-                      : <X size={11} style={{ color: '#D9D9D9', flexShrink: 0 }} />}
-                    <span className="text-[10px]" style={{ color: ok ? '#16a34a' : '#5A5A5A' }}>{r.label}</span>
+                      : <X size={11} style={{ color: '#D6E2F5', flexShrink: 0 }} />}
+                    <span className="text-[10px]" style={{ color: ok ? '#16a34a' : '#3A5590' }}>{r.label}</span>
                   </div>
                 )
               })}
