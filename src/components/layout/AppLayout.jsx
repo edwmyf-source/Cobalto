@@ -145,7 +145,7 @@ export default function AppLayout() {
           </div>
         )}
 
-        <div className="mx-4 mb-4 h-[60px] rounded-[24px] flex items-center justify-around px-2"
+        <div className="mx-3.5 mb-3.5 h-[48px] rounded-[20px] flex items-center justify-around px-1.5"
           style={{ background: 'rgba(8,31,74,0.96)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
             boxShadow: '0 16px 40px rgba(8,31,74,0.4), inset 0 1px 0 rgba(255,255,255,0.1)', pointerEvents: 'auto' }}>
 
@@ -153,7 +153,7 @@ export default function AppLayout() {
           {(() => { const active = currentTab === '/feed'; return (
             <button onClick={() => navigate('/feed')}
               className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Feed">
-              <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
+              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
               {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
             </button>
           )})()}
@@ -163,7 +163,7 @@ export default function AppLayout() {
             <button onClick={() => navigate('/chats')}
               className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
               <div className="relative">
-                <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Mensajes</span>
+                <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Mensajes</span>
                 {unreadCount > 0 && (
                   <span className="absolute -top-2 -right-3 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                     {unreadCount > 99 ? '99+' : unreadCount}
@@ -177,10 +177,10 @@ export default function AppLayout() {
           {/* Publicar — círculo primario */}
           <div className="flex-shrink-0 px-2 flex items-center justify-center h-full">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Publicar"
-              className="w-[50px] h-[50px] rounded-full flex items-center justify-center active:scale-95 transition-transform"
+              className="w-[45px] h-[45px] rounded-full flex items-center justify-center active:scale-95 transition-transform"
               style={{ background: 'linear-gradient(135deg,#1A5AC8,#4C82F0)',
                 boxShadow: '0 8px 24px rgba(26,90,200,0.55), inset 0 1px 0 rgba(255,255,255,0.3)', border: '3px solid #E4EBF7' }}>
-              <Plus size={24} color="#ffffff" strokeWidth={2.5} />
+              <Plus size={22} color="#ffffff" strokeWidth={2.5} />
             </button>
           </div>
 
@@ -188,7 +188,7 @@ export default function AppLayout() {
           {(() => { const active = currentTab === '/contacts'; return (
             <button onClick={() => navigate('/contacts')}
               className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Personas">
-              <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Personas</span>
+              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Personas</span>
               {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
             </button>
           )})()}
@@ -196,7 +196,7 @@ export default function AppLayout() {
           {/* Perfil */}
           <button ref={profileBtnRef} onClick={() => setProfileMenuOpen(o => !o)}
             className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Perfil">
-            <span className="text-[10px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
+            <span className="text-[9px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
             {profileMenuOpen && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
           </button>
 
@@ -204,7 +204,7 @@ export default function AppLayout() {
       </div>
 
       {/* ── Contenido principal ── */}
-      <main className="pt-14 md:pt-0 pb-24 md:pb-8" style={{ overflowX: 'clip' }}>
+      <main className="pt-14 md:pt-0 pb-20 md:pb-8" style={{ overflowX: 'clip' }}>
         <Outlet />
       </main>
     </div>

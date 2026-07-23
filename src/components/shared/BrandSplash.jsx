@@ -116,7 +116,7 @@ export default function BrandSplash({ onDone }) {
       </div>
 
       {/* Cobalto con letras separadas */}
-      <div className="cbo-brand">Cobalto<i>.</i></div>
+      <div className="cbo-brand">Cobalto</div>
 
       {/* Cargando + puntitos */}
       <div className="cbo-load">
