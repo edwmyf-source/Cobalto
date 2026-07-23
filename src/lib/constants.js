@@ -4,6 +4,16 @@ export const ADMIN_EMAILS = ['edwmyf@gmail.com']
 // en el onboarding. Por ahora el campo se muestra pero es opcional.
 export const WHATSAPP_VERIFICATION_ENABLED = false
 
+// Registro/login por celular con código SMS. Requiere Twilio configurado en
+// Supabase (Authentication → Providers → Phone). Actívalo cuando esté listo:
+// solo cambia este valor a `true`, no hay que tocar nada más.
+export const PHONE_AUTH_ENABLED = false
+
+// Registro/login con código de 6 dígitos por correo. Requiere que la plantilla
+// "Magic Link" en Supabase incluya {{ .Token }} (Authentication → Email Templates).
+// Mientras esté en `false`, el registro usa correo + contraseña tradicional.
+export const EMAIL_CODE_AUTH_ENABLED = false
+
 export const isAdmin = (profile, email = '') =>
   profile?.role === 'admin' || ADMIN_EMAILS.includes(email) || ADMIN_EMAILS.includes(profile?.email)
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Mail, KeyRound, Phone, ArrowLeft } from 'lucide-react'
 import { signIn, signInWithMagicLink, sendPhoneCode, verifyPhoneCode, normalizePhone, sendEmailCode, verifyEmailCode } from '../../api/auth'
+import { PHONE_AUTH_ENABLED, EMAIL_CODE_AUTH_ENABLED } from '../../lib/constants'
 import Spinner from '../shared/Spinner'
 
 const ERR_MAP = {
@@ -183,18 +184,22 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
               ? <><KeyRound size={15} /> Entrar con contraseña</>
               : <><Mail size={15} /> Entrar solo con mi email</>}
           </button>
-          <button type="button"
-            onClick={() => { setMode('emailcode'); setCodeSent(false); setError('') }}
-            className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-            style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
-            <Mail size={15} /> Recibir código por correo
-          </button>
-          <button type="button"
-            onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
-            className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-            style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
-            <Phone size={15} /> Entrar con mi celular
-          </button>
+          {EMAIL_CODE_AUTH_ENABLED && (
+            <button type="button"
+              onClick={() => { setMode('emailcode'); setCodeSent(false); setError('') }}
+              className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
+              style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+              <Mail size={15} /> Recibir código por correo
+            </button>
+          )}
+          {PHONE_AUTH_ENABLED && (
+            <button type="button"
+              onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
+              className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
+              style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+              <Phone size={15} /> Entrar con mi celular
+            </button>
+          )}
         </div>
       )}
 
