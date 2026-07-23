@@ -45,7 +45,7 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
       </div>
 
       {/* Lista */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto px-2.5 py-1" style={{ background: '#F5F8FD' }}>
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
             <p className="text-sm" style={{ color: '#B8CBEF' }}>
@@ -61,9 +61,13 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 
             return (
               <button key={conv.id} onClick={() => onSelect(conv)}
-                className="w-full text-left transition-colors"
-                style={{ background: active ? '#F5F8FD' : unread ? '#F7FAFF' : '#ffffff',
-                  borderBottom: '1px solid #FFFFFF' }}>
+                className="w-full text-left transition-all block mb-2 rounded-xl active:scale-[0.98]"
+                style={{ background: '#ffffff',
+                  boxShadow: active
+                    ? '0 4px 14px rgba(0,71,171,0.16)'
+                    : unread
+                      ? '0 4px 14px rgba(0,71,171,0.12)'
+                      : '0 4px 14px rgba(0,71,171,0.09)' }}>
                 <div className="flex items-center gap-2 px-2.5 py-2">
 
                   {/* Avatar con indicador online */}
