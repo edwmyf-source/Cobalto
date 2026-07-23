@@ -70,7 +70,7 @@ function AppInner() {
     )
   }
 
-  const profileComplete = profile?.full_name && profile?.city
+  const profileComplete = profile?.full_name
   if (!profileComplete) return <ProfileSetup />
 
   return <RouterProvider router={router} />

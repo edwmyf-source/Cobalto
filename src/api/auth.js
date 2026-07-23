@@ -22,6 +22,28 @@ export const signInWithMagicLink = async (email) => {
   if (error) throw error
 }
 
+// ─── Registro / login por correo con código de 6 dígitos ─────────────────────
+// Requiere que la plantilla "Magic Link" en Supabase incluya {{ .Token }}
+// (Dashboard → Authentication → Email Templates).
+
+export const sendEmailCode = async (email) => {
+  const { error } = await supabase.auth.signInWithOtp({
+    email: String(email).trim().toLowerCase(),
+    options: { shouldCreateUser: true },
+  })
+  if (error) throw error
+}
+
+export const verifyEmailCode = async (email, code) => {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email: String(email).trim().toLowerCase(),
+    token: String(code).trim(),
+    type: 'email',
+  })
+  if (error) throw error
+  return data
+}
+
 // ─── Registro / login por celular (OTP vía SMS) ───────────────────────────────
 // Requiere que Twilio (u otro proveedor SMS) esté configurado en Supabase:
 // Dashboard → Authentication → Providers → Phone → habilitar y poner credenciales.

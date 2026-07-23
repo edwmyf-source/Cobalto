@@ -39,7 +39,7 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false)
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setSaved(false) }
-  const valid = form.full_name && form.company_name && form.phone && form.city
+  const valid = form.full_name && form.phone
 
   // Manejar selección de nueva foto
   const handleAvatarChange = async (e) => {
