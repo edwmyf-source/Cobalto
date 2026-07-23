@@ -74,23 +74,23 @@ export default function ContactsPage() {
       ) : users.length === 0 ? (
         <div className="text-center py-16 text-gray-400 text-[15px]">No se encontraron personas.</div>
       ) : (
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2">
           {users.map(user => {
             const isContacting = contactingId === user.id
             return (
-              <div key={user.id} className="flex items-center gap-3 bg-white rounded-2xl p-3.5"
-                style={{ boxShadow: '0 8px 24px rgba(0,71,171,0.12)' }}>
-                <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={44} />
+              <div key={user.id} className="flex items-center gap-2 bg-white rounded-xl px-2.5 py-2"
+                style={{ boxShadow: '0 4px 14px rgba(0,71,171,0.09)' }}>
+                <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={30} />
                 <div className="min-w-0 flex-1 cursor-pointer" onClick={() => navigate(`/u/${user.id}`)}>
-                  <p className="text-[15px] font-extrabold text-[#0A2A5C] truncate">{publicName(user)}</p>
-                  <p className="text-[13px] text-gray-500 truncate">
+                  <p className="text-[12.5px] font-extrabold text-[#0A2A5C] truncate">{publicName(user)}</p>
+                  <p className="text-[10.5px] text-gray-500 truncate">
                     {[user.company_name, user.city].filter(Boolean).join(' · ') || 'Sin más información'}
                   </p>
                 </div>
                 <button onClick={() => handleStartChat(user)} disabled={isContacting} aria-label="Enviar mensaje"
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all active:scale-95 disabled:opacity-60"
-                  style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }}>
-                  {isContacting ? <Loader2 size={18} className="animate-spin" /> : <MessageSquareText size={18} />}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all active:scale-95 disabled:opacity-60"
+                  style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 3px 8px rgba(0,71,171,0.22)' }}>
+                  {isContacting ? <Loader2 size={13} className="animate-spin" /> : <MessageSquareText size={13} />}
                 </button>
               </div>
             )
