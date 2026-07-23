@@ -27,18 +27,18 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 
       {/* Header */}
       <div className="px-5 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #FFFFFF' }}>
-        <h2 className="text-[22px] font-bold" style={{ color: '#0047AB' }}>Mensajes</h2>
+        <h2 className="text-[18px] font-bold" style={{ color: '#0047AB' }}>Mensajes</h2>
       </div>
 
       {/* Buscador */}
-      <div className="px-4 py-3 flex-shrink-0">
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#FFFFFF' }}>
-          <Search size={14} style={{ color: '#B8CBEF' }} />
+      <div className="px-4 py-2.5 flex-shrink-0">
+        <div className="flex items-center gap-2 px-3 py-[7px] rounded-xl" style={{ background: '#FFFFFF' }}>
+          <Search size={12} style={{ color: '#B8CBEF' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Buscar conversación..."
-            className="flex-1 bg-transparent text-[13px] focus:outline-none"
+            className="flex-1 bg-transparent text-[11.5px] focus:outline-none"
             style={{ color: '#0047AB' }}
           />
         </div>
@@ -64,11 +64,11 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
                 className="w-full text-left transition-colors"
                 style={{ background: active ? '#F5F8FD' : unread ? '#F7FAFF' : '#ffffff',
                   borderBottom: '1px solid #FFFFFF' }}>
-                <div className="flex items-center gap-3.5 px-4 py-3.5">
+                <div className="flex items-center gap-2 px-2.5 py-2">
 
                   {/* Avatar con indicador online */}
                   <div className="relative flex-shrink-0">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center text-[15px] font-bold text-white flex-shrink-0"
+                    <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0"
                       style={{ background: active || unread ? '#0047AB' : '#D6E2F5',
                         color: active || unread ? '#fff' : '#3A5590' }}>
                       {name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}
@@ -78,23 +78,23 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-[15px] truncate"
+                      <span className="text-[12.5px] truncate"
                         style={{ color: '#0047AB', fontWeight: unread ? 700 : 600 }}>
                         {name}
                       </span>
-                      <span className="text-[12px] flex-shrink-0 ml-2"
+                      <span className="text-[10px] flex-shrink-0 ml-2"
                         style={{ color: unread ? '#2C6BD4' : '#B8CBEF', fontWeight: unread ? 600 : 400 }}>
                         {timeAgo(conv.updated_at)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[13px] truncate"
+                      <span className="text-[10.5px] truncate"
                         style={{ color: unread ? '#3A5590' : '#B8CBEF',
                           fontWeight: unread ? 600 : 400 }}>
                         {conv.last_message || (conv.posts ? `Sobre: ${conv.posts.title}` : 'Nueva conversación')}
                       </span>
                       {unread && (
-                        <div className="flex-shrink-0 min-w-[20px] h-[20px] rounded-full flex items-center justify-center text-[11px] font-bold px-1.5"
+                        <div className="flex-shrink-0 min-w-[16px] h-[16px] rounded-full flex items-center justify-center text-[9px] font-bold px-1"
                           style={{ background: '#2C6BD4', color: '#0047AB' }}>
                           {conv.unread_count > 9 ? '9+' : conv.unread_count}
                         </div>

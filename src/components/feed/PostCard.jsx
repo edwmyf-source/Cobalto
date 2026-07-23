@@ -186,25 +186,25 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   return (
     <div className="rounded-[22px] overflow-hidden bg-white" style={{ boxShadow: '0 10px 30px rgba(0,71,171,0.14)' }} id={`post-${post.id}`}>
 
-      <div className="px-5 pt-5 pb-4">
+      <div className="px-4 pt-3.5 pb-3">
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-2.5 mb-2.5">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={44} className="!rounded-[16px]" />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={34} className="!rounded-[13px]" />
         </button>
         <div className="flex-1 min-w-0">
           <button onClick={goToProfile}
-            className="text-[15px] font-extrabold leading-tight text-left hover:underline block truncate" style={{ color: '#0A2A5C', letterSpacing: '-0.01em' }}>
+            className="text-[13.5px] font-extrabold leading-tight text-left hover:underline block truncate" style={{ color: '#0A2A5C', letterSpacing: '-0.01em' }}>
             {name}
           </button>
-          <p className="text-[12px] font-semibold leading-tight mt-0.5 truncate" style={{ color: '#8FA3C7' }}>
+          <p className="text-[11px] font-semibold leading-tight mt-0.5 truncate" style={{ color: '#8FA3C7' }}>
             {prof.city && <>{prof.city} · </>}
             {timeAgo(post.created_at)}
           </p>
         </div>
         {catLabel && (
-          <span className="flex-shrink-0 px-3 py-1.5 rounded-[10px] text-[12px] font-extrabold" style={{ background: '#EBF1FC', color: '#0047AB' }}>
+          <span className="flex-shrink-0 px-2.5 py-1 rounded-[9px] text-[11px] font-extrabold" style={{ background: '#EBF1FC', color: '#0047AB' }}>
             {catLabel}
           </span>
         )}
@@ -212,16 +212,16 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       </div>
 
       {/* Texto muro */}
-      <p className="text-[15px] leading-relaxed mb-4 whitespace-pre-wrap break-words line-clamp-5 font-medium" style={{ color: '#33456B' }}>
+      <p className="text-[14px] leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-5 font-medium" style={{ color: '#33456B' }}>
         {wallText}
       </p>
 
       <MediaGallery media={media} />
 
       {/* Footer — sin línea, separado por aire */}
-      <div className="pt-2 flex items-center gap-2">
+      <div className="pt-1.5 flex items-center gap-2">
         <button onClick={handleLike}
-          className="flex items-center gap-1.5 px-4 py-[10px] rounded-[13px] text-[13px] transition-all active:scale-95"
+          className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[12px] text-[12px] transition-all active:scale-95"
           style={liked
             ? { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }
             : { background: '#EBF1FC', color: '#0047AB' }}>
@@ -229,14 +229,14 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
           <span className="font-extrabold">{likeCount || 0}</span>
         </button>
         <button onClick={() => setShowComments(!showComments)}
-          className="flex items-center gap-1.5 px-4 py-[10px] rounded-[13px] text-[13px] transition-all active:scale-95"
+          className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[12px] text-[12px] transition-all active:scale-95"
           style={{ background: '#F4F7FD', color: '#5578AD' }}>
           <MessageCircle size={16} />
           <span className="font-extrabold">{post.comment_count || 0}</span>
         </button>
         {!isMine && (
           <button onClick={() => onContact?.(post)} disabled={isContacting} aria-label="Contactar"
-            className="ml-auto flex items-center gap-1.5 px-[18px] py-[10px] rounded-[13px] text-[13px] font-extrabold transition-all active:scale-95 disabled:opacity-60"
+            className="ml-auto flex items-center gap-1.5 px-[15px] py-[7px] rounded-[12px] text-[12px] font-extrabold transition-all active:scale-95 disabled:opacity-60"
             style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }}>
             {isContacting
               ? <Loader2 size={16} className="animate-spin" />
