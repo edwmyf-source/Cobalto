@@ -152,25 +152,25 @@ export default function AppLayout() {
           {/* Feed */}
           {(() => { const active = currentTab === '/feed'; return (
             <button onClick={() => navigate('/feed')}
-              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Feed">
-              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
-              {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
+              className="flex flex-col items-center justify-center gap-[2px] flex-1 h-full active:scale-95 transition-transform" aria-label="Feed">
+              <Home size={15} style={{ color: active ? '#7FB2FF' : '#5A6E94' }} strokeWidth={active ? 2.6 : 2.2} />
+              <span className="text-[7.5px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
             </button>
           )})()}
 
           {/* Mensajes */}
           {(() => { const active = currentTab === '/chats'; return (
             <button onClick={() => navigate('/chats')}
-              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
+              className="flex flex-col items-center justify-center gap-[2px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
               <div className="relative">
-                <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Mensajes</span>
+                <MessageSquare size={15} style={{ color: active ? '#7FB2FF' : '#5A6E94' }} strokeWidth={active ? 2.6 : 2.2} />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
+                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[7px] font-bold px-1 rounded-full min-w-[12px] text-center leading-3">
                     {unreadCount > 99 ? '99+' : unreadCount}
                   </span>
                 )}
               </div>
-              {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
+              <span className="text-[7.5px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Msj</span>
             </button>
           )})()}
 
@@ -187,17 +187,17 @@ export default function AppLayout() {
           {/* Personas */}
           {(() => { const active = currentTab === '/contacts'; return (
             <button onClick={() => navigate('/contacts')}
-              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Personas">
-              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Personas</span>
-              {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
+              className="flex flex-col items-center justify-center gap-[2px] flex-1 h-full active:scale-95 transition-transform" aria-label="Red">
+              <Users size={15} style={{ color: active ? '#7FB2FF' : '#5A6E94' }} strokeWidth={active ? 2.6 : 2.2} />
+              <span className="text-[7.5px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Red</span>
             </button>
           )})()}
 
           {/* Perfil */}
           <button ref={profileBtnRef} onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Perfil">
-            <span className="text-[9px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
-            {profileMenuOpen && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
+            className="flex flex-col items-center justify-center gap-[2px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Perfil">
+            <User size={15} style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }} strokeWidth={profileMenuOpen ? 2.6 : 2.2} />
+            <span className="text-[7.5px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
           </button>
 
         </div>
