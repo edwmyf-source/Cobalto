@@ -25,7 +25,7 @@ export default function BrandSplash({ onDone }) {
   return (
     <div onClick={skip} style={{
       position:'fixed', inset:0, zIndex:9999, cursor:'pointer', overflow:'hidden',
-      background:'#0047AB', display:'flex', flexDirection:'column',
+      background:'radial-gradient(circle at 30% -10%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)', display:'flex', flexDirection:'column',
       alignItems:'center', justifyContent:'center',
     }}>
       <style>{`
@@ -52,7 +52,7 @@ export default function BrandSplash({ onDone }) {
         .cbo-core {
           position:absolute; top:50%; left:50%;
           width:72px; height:72px; margin:-36px 0 0 -36px;
-          background:#0047AB;
+          background:rgba(255,255,255,0.12);
           border:2px solid #6B87B8;
           border-radius:50%;
           display:flex; align-items:center; justify-content:center;
@@ -82,13 +82,13 @@ export default function BrandSplash({ onDone }) {
         .cbo-p3 .cbo-e::before { background:linear-gradient(90deg, transparent, #B8CBEF); }
 
         .cbo-brand {
-          color:#fff; font-weight:800; font-size:26px;
-          letter-spacing:0.5em;
-          font-family: system-ui, -apple-system, sans-serif;
-          margin-top:28px;
-          padding-left:0.5em; /* balancea el letter-spacing para que quede centrado */
+          color:#fff; font-weight:800; font-size:38px;
+          letter-spacing:-0.03em;
+          font-family: Manrope, system-ui, -apple-system, sans-serif;
+          margin-top:30px;
           animation: cbo-brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;
         }
+        .cbo-brand i { color:#7FB2FF; font-style:normal; }
 
         .cbo-load {
           display:flex; align-items:center; gap:6px;
@@ -116,7 +116,7 @@ export default function BrandSplash({ onDone }) {
       </div>
 
       {/* Cobalto con letras separadas */}
-      <div className="cbo-brand">COBALTO</div>
+      <div className="cbo-brand">Cobalto<i>.</i></div>
 
       {/* Cargando + puntitos */}
       <div className="cbo-load">

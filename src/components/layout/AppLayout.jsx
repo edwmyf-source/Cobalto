@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home, Users, Search } from 'lucide-react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
@@ -13,7 +13,6 @@ import { publicName } from '../../lib/helpers'
 export default function AppLayout() {
   const { session, profile } = useAuth()
   const location = useLocation()
-  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const [unreadCount, setUnreadCount] = useState(0)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
@@ -94,7 +93,7 @@ export default function AppLayout() {
       {/* ── Topbar móvil fija ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center px-[18px] h-14"
         style={{ background: 'radial-gradient(circle at 30% -40%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)' }}>
-        <span className="font-extrabold text-[21px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
+        <span className="font-extrabold text-[23px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
           Cobalto<span style={{ color: '#7FB2FF' }}>.</span>
         </span>
       </div>
@@ -153,8 +152,8 @@ export default function AppLayout() {
           {/* Feed */}
           {(() => { const active = currentTab === '/feed'; return (
             <button onClick={() => navigate('/feed')}
-              className="flex flex-col items-center gap-[3px] flex-1 active:scale-95 transition-transform" aria-label="Feed">
-              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
+              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Feed">
+              <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Feed</span>
               {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
             </button>
           )})()}
@@ -162,9 +161,9 @@ export default function AppLayout() {
           {/* Mensajes */}
           {(() => { const active = currentTab === '/chats'; return (
             <button onClick={() => navigate('/chats')}
-              className="flex flex-col items-center gap-[3px] flex-1 relative active:scale-95 transition-transform" aria-label="Mensajes">
+              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
               <div className="relative">
-                <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Mensajes</span>
+                <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Mensajes</span>
                 {unreadCount > 0 && (
                   <span className="absolute -top-2 -right-3 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full min-w-[14px] text-center leading-4">
                     {unreadCount > 99 ? '99+' : unreadCount}
@@ -176,37 +175,28 @@ export default function AppLayout() {
           )})()}
 
           {/* Publicar — círculo primario */}
-          <div className="flex-shrink-0 px-1" style={{ marginTop: -22 }}>
+          <div className="flex-shrink-0 px-2 flex items-center justify-center h-full">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Publicar"
-              className="w-[46px] h-[46px] rounded-full flex items-center justify-center active:scale-95 transition-transform"
+              className="w-[50px] h-[50px] rounded-full flex items-center justify-center active:scale-95 transition-transform"
               style={{ background: 'linear-gradient(135deg,#1A5AC8,#4C82F0)',
                 boxShadow: '0 8px 24px rgba(26,90,200,0.55), inset 0 1px 0 rgba(255,255,255,0.3)', border: '3px solid #E4EBF7' }}>
               <Plus size={24} color="#ffffff" strokeWidth={2.5} />
             </button>
           </div>
 
-          {/* Buscar */}
-          {(() => { const active = currentTab === '/feed' && searchParams.get('buscar') === '1'; return (
-            <button onClick={() => navigate('/feed?buscar=1')}
-              className="flex flex-col items-center gap-[3px] flex-1 active:scale-95 transition-transform" aria-label="Buscar">
-              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Buscar</span>
-              {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
-            </button>
-          )})()}
-
           {/* Personas */}
           {(() => { const active = currentTab === '/contacts'; return (
             <button onClick={() => navigate('/contacts')}
-              className="flex flex-col items-center gap-[3px] flex-1 active:scale-95 transition-transform" aria-label="Personas">
-              <span className="text-[9px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Personas</span>
+              className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full active:scale-95 transition-transform" aria-label="Personas">
+              <span className="text-[10px] font-extrabold" style={{ color: active ? '#7FB2FF' : '#5A6E94' }}>Personas</span>
               {active && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
             </button>
           )})()}
 
           {/* Perfil */}
           <button ref={profileBtnRef} onClick={() => setProfileMenuOpen(o => !o)}
-            className="flex flex-col items-center gap-[3px] flex-1 relative active:scale-95 transition-transform" aria-label="Perfil">
-            <span className="text-[9px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
+            className="flex flex-col items-center justify-center gap-[3px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Perfil">
+            <span className="text-[10px] font-extrabold" style={{ color: profileMenuOpen ? '#7FB2FF' : '#5A6E94' }}>Perfil</span>
             {profileMenuOpen && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#7FB2FF', boxShadow: '0 0 8px rgba(127,178,255,0.9)' }} />}
           </button>
 

@@ -104,13 +104,13 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
 
       {/* Buscador — flotando sobre el borde del navy */}
       <div className="relative z-[5] px-2" style={{ marginTop: -24 }}>
-        <Search size={16} className="absolute left-[28px] top-1/2 -translate-y-1/2" style={{ color: '#8FA3C7' }} />
+        <Search size={17} className="absolute left-[30px] top-1/2 -translate-y-1/2" style={{ color: '#8FA3C7' }} />
         <input
           ref={searchRef}
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
           placeholder="Buscar en Cobalto..."
-          className="w-full pl-[42px] pr-10 py-[13px] rounded-[16px] text-[13px] font-semibold focus:outline-none transition-shadow"
+          className="w-full pl-[46px] pr-10 py-[15px] rounded-[17px] text-[14px] font-semibold focus:outline-none transition-shadow"
           style={{ background: '#ffffff', border: 'none', color: '#0A2A5C',
             boxShadow: '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9)' }}
           onFocus={e => e.currentTarget.style.boxShadow = '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 3px rgba(26,90,200,0.18)'}
