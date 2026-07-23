@@ -275,7 +275,6 @@ export default function FeedPage() {
 
   const activeTab  = filters.tab || 'todo'
   const tabStyle   = TAB_COLOR[activeTab] || TAB_COLOR.todo
-  const accentColor = tabStyle.color
   const feedBg     = tabStyle.bg
 
   const name = publicName(profile)
@@ -394,7 +393,7 @@ export default function FeedPage() {
             <div className="space-y-0">
               {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
                 <div key={post.id}>
-                  <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                  <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} />
                   {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
                 </div>
               ))}
@@ -447,7 +446,7 @@ export default function FeedPage() {
           <div className="space-y-0">
             {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
               <div key={post.id}>
-                <PostCard post={post} onContact={handleContact} accentColor={accentColor} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} />
                 {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
               </div>
             ))}

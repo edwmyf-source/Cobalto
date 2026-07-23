@@ -105,7 +105,7 @@ function PostMenu({ post, onReport }) {
   )
 }
 
-export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [], accentColor = '#7c3aed' }) {
+export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [] }) {
   const { session } = useAuth()
   const navigate = useNavigate()
   const userId = session?.user?.id
@@ -161,16 +161,6 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const catObj    = CATEGORY_MAP[post.category]
   const catLabel  = catObj?.label || post.category
   const isContacting = contactingId === post.id
-
-  // Mapea categoria del post al color de su tab (borde lateral V6)
-  const CAT_TO_TAB = { productos:'tienda', servicios:'tienda', empleos:'vacantes', informacion:'novedades' }
-  const tabKey = CAT_TO_TAB[post.category] || 'todo'
-  const catAccent = {
-    todo:      '#7c3aed',
-    novedades: '#16a34a',
-    tienda:    '#0369a1',
-    vacantes:  '#ea580c',
-  }[tabKey]
 
   let media = []
   if (post.media) {

@@ -34,7 +34,6 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
   const menuItems = [
     { label: 'Mi perfil',     Icon: User,         path: session?.user?.id ? `/u/${session.user.id}` : '/profile' },
     { label: '¿Cuánto sabes?', Icon: FlaskConical, path: '/quimica' },
-    { label: 'Soporte',       Icon: HelpCircle,    path: '/contact' },
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', Icon: Lock, path: '/admin' }] : []),
   ]
 

@@ -22,7 +22,7 @@ function MiniPostCard({ post, onContact, contactingId }) {
   const isContacting = contactingId === post.id
 
   return (
-    <div className="rounded-[18px] overflow-hidden bg-white" style={{ boxShadow: '0 8px 24px rgba(0,71,171,0.09)' }}>
+    <div className="rounded-[22px] overflow-hidden bg-white" style={{ boxShadow: '0 10px 30px rgba(0,71,171,0.14)' }}>
       <div className="px-4 pt-3.5 pb-3">
         <div className="flex items-center gap-2 mb-2">
           {catLabel && (

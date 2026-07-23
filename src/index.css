@@ -56,11 +56,11 @@ body {
 
 /* CEQU visual refresh */
 :root {
-  --cequ-primary: #0047AB;
-  --cequ-primary-2: #2C6BD4;
-  --cequ-accent: #0047AB;
-  --cequ-bg: #E4EBF7;
-  --cequ-card: #ffffff;
+  --cobalto-primary: #0047AB;
+  --cobalto-primary-2: #2C6BD4;
+  --cobalto-accent: #0047AB;
+  --cobalto-bg: #E4EBF7;
+  --cobalto-card: #ffffff;
 }
 
 body {
@@ -93,6 +93,6 @@ input, textarea, select {
 
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: var(--cequ-accent) !important;
+  border-color: var(--cobalto-accent) !important;
   box-shadow: 0 0 0 4px rgba(0,71,171,.14);
 }

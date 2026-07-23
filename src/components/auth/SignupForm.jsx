@@ -18,7 +18,7 @@ const RULES = [
 ]
 
 // Contraseñas comunes que rechazamos explícitamente
-const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','0047AB11','cequ123']
+const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','cobalto11','cobalto123']
 
 export default function SignupForm({ onSwitchLogin }) {
   const [email, setEmail] = useState('')

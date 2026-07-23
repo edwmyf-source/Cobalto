@@ -37,7 +37,6 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
     { path: myId ? `/u/${myId}` : '/profile', label: 'Mi perfil', icon: User, match: '/u/' },
     { path: '/herramientas',  label: 'Herramientas',   icon: Wrench },
     { path: '/quimica',       label: '¿Cuánto sabes?', icon: FlaskConical },
-    { path: '/contact',       label: 'Soporte',        icon: HelpCircle },
   ]
   if (isAdmin(profile, session?.user?.email)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
 

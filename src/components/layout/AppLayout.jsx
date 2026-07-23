@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home, Users, Search } from 'lucide-react'
-import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
 import { isAdmin } from '../../lib/constants'
@@ -72,7 +71,6 @@ export default function AppLayout() {
     { label: 'Alertas',  icon: Bell,          path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
     { label: '¿Cuánto sabes?', icon: FlaskConical, path: '/quimica' },
-    { label: 'Soporte', icon: HelpCircle, path: '/contact' },
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
   ]
 
@@ -96,11 +94,6 @@ export default function AppLayout() {
         <span className="font-extrabold text-[23px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
           Cobalto<span style={{ color: '#7FB2FF' }}>.</span>
         </span>
-      </div>
-
-      {/* ── Sidebar — solo móvil ── */}
-      <div className="hidden">
-        {/* Sidebar oculto — mantenemos para compatibilidad */}
       </div>
 
       {/* ── Nav móvil flotante (glass) ── */}
