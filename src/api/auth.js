@@ -22,6 +22,37 @@ export const signInWithMagicLink = async (email) => {
   if (error) throw error
 }
 
+// ─── Registro / login por celular (OTP vía SMS) ───────────────────────────────
+// Requiere que Twilio (u otro proveedor SMS) esté configurado en Supabase:
+// Dashboard → Authentication → Providers → Phone → habilitar y poner credenciales.
+
+// Normaliza a formato E.164. Colombia (+57) por defecto si no trae indicativo.
+export const normalizePhone = (raw, defaultCountry = '57') => {
+  const digits = String(raw || '').replace(/[^\d+]/g, '')
+  if (digits.startsWith('+')) return digits
+  const clean = digits.replace(/^0+/, '')
+  if (clean.startsWith(defaultCountry) && clean.length > 10) return `+${clean}`
+  return `+${defaultCountry}${clean}`
+}
+
+// Envía el código SMS. Sirve tanto para registro como para login:
+// si el número no existe, Supabase crea el usuario automáticamente.
+export const sendPhoneCode = async (phone) => {
+  const { error } = await supabase.auth.signInWithOtp({ phone: normalizePhone(phone) })
+  if (error) throw error
+}
+
+// Verifica el código recibido por SMS y abre sesión.
+export const verifyPhoneCode = async (phone, code) => {
+  const { data, error } = await supabase.auth.verifyOtp({
+    phone: normalizePhone(phone),
+    token: String(code).trim(),
+    type: 'sms',
+  })
+  if (error) throw error
+  return data
+}
+
 export const signOut = async () => {
   clearAllCaches()
   return supabase?.auth.signOut()
