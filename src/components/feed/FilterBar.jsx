@@ -12,10 +12,11 @@ function Pill({ label, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="px-4 py-2 rounded-[12px] text-[12px] font-bold transition-all flex-shrink-0"
+      className="px-[15px] py-[7px] rounded-[11px] text-[10px] font-extrabold transition-all flex-shrink-0"
       style={active
-        ? { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#ffffff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }
-        : { background: '#FFFFFF', color: '#5578AD', boxShadow: '0 3px 10px rgba(0,71,171,0.06)' }}
+        ? { background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', color: '#ffffff',
+            boxShadow: '0 5px 14px rgba(11,46,104,0.35), inset 0 1px 0 rgba(255,255,255,0.2)' }
+        : { background: '#FFFFFF', color: '#33456B', boxShadow: '0 3px 10px rgba(8,31,74,0.08)' }}
     >
       {label}
     </button>
@@ -87,10 +88,35 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
     : []
 
   return (
-    <div className="mb-2 px-2">
+    <div className="mb-2">
+
+      {/* Extensión navy del header — el buscador flota sobre su borde */}
+      <div className="-mx-4 md:hidden" style={{ height: 44, marginTop: -1,
+        background: 'radial-gradient(circle at 30% -180%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)' }} />
+
+      {/* Buscador — flotando sobre el borde del navy */}
+      <div className="relative z-[5] px-2" style={{ marginTop: -24 }}>
+        <Search size={13} className="absolute left-[26px] top-1/2 -translate-y-1/2" style={{ color: '#8FA3C7' }} />
+        <input
+          ref={searchRef}
+          value={filters.search || ''}
+          onChange={e => set('search', e.target.value)}
+          placeholder="Buscar en Cobalto..."
+          className="w-full pl-[38px] pr-9 py-3 rounded-[16px] text-[11px] font-semibold focus:outline-none transition-shadow"
+          style={{ background: '#ffffff', border: 'none', color: '#0A2A5C',
+            boxShadow: '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9)' }}
+          onFocus={e => e.currentTarget.style.boxShadow = '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 3px rgba(26,90,200,0.18)'}
+          onBlur={e => e.currentTarget.style.boxShadow = '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9)'}
+        />
+        {filters.search && (
+          <button onClick={() => set('search', '')} className="absolute right-5 top-1/2 -translate-y-1/2">
+            <X size={13} style={{ color: '#0047AB' }} />
+          </button>
+        )}
+      </div>
 
       {/* Accordion D2 (Filtros) */}
-      <div className="rounded-[18px] overflow-hidden mb-2.5" style={{ background: '#ffffff', boxShadow: '0 6px 20px rgba(0,71,171,0.08)' }}>
+      <div className="rounded-[18px] overflow-hidden mb-2.5 mt-[13px] mx-2" style={{ background: '#ffffff', boxShadow: '0 6px 20px rgba(0,71,171,0.08)' }}>
 
         {/* Header con gradiente */}
         <div className="flex items-center justify-center relative px-3 py-3.5" style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)' }}>
@@ -158,25 +184,6 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
 
       </div>
 
-      {/* Buscador */}
-      <div className="relative">
-        <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: '#8FA3C7' }} />
-        <input
-          ref={searchRef}
-          value={filters.search || ''}
-          onChange={e => set('search', e.target.value)}
-          placeholder="Busca productos, servicios, personas..."
-          className="w-full pl-11 pr-9 py-3 rounded-[16px] text-[13px] font-medium focus:outline-none transition-shadow"
-          style={{ background: '#ffffff', border: 'none', color: '#0A2A5C', boxShadow: '0 6px 20px rgba(0,71,171,0.08)' }}
-          onFocus={e => e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,71,171,0.08), 0 0 0 3px rgba(0,71,171,0.15)'}
-          onBlur={e => e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,71,171,0.08)'}
-        />
-        {filters.search && (
-          <button onClick={() => set('search', '')} className="absolute right-3 top-1/2 -translate-y-1/2">
-            <X size={13} style={{ color: '#0047AB' }} />
-          </button>
-        )}
-      </div>
     </div>
   )
 }
