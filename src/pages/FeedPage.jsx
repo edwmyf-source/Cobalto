@@ -412,12 +412,6 @@ export default function FeedPage() {
 
       {/* ── MÓVIL: columna única ── */}
       <div className="md:hidden max-w-2xl mx-auto px-4">
-        <div className="pt-2 pb-3 px-1">
-          <p className="text-[13px] font-medium" style={{ color: '#8FA3C7' }}>
-            Hola {name.split(' ')[0]} — <span className="font-extrabold" style={{ color: '#0A2A5C' }}>{loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} novedades`}</span> hoy
-          </p>
-        </div>
-        <div className="text-[10px] font-extrabold px-2 pb-1.5" style={{ color: '#5578AD', letterSpacing: '0.12em' }}>FILTROS</div>
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
         <div className="flex items-center justify-between mb-3 mt-2 px-2">
