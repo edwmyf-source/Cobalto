@@ -27,25 +27,25 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 
       {/* Header */}
       <div className="px-5 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #FFFFFF' }}>
-        <h2 className="text-[18px] font-bold" style={{ color: '#0047AB' }}>Mensajes</h2>
+        <h2 className="text-[18px] font-extrabold text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>Mensajes</h2>
       </div>
 
       {/* Buscador */}
       <div className="px-4 py-2.5 flex-shrink-0">
         <div className="flex items-center gap-2 px-3 py-[7px] rounded-xl" style={{ background: '#FFFFFF' }}>
-          <Search size={12} style={{ color: '#B8CBEF' }} />
+          <Search size={12} color="#9CA3AF" />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Buscar conversación..."
             className="flex-1 bg-transparent text-[11.5px] focus:outline-none"
-            style={{ color: '#0047AB' }}
+            style={{ color: '#0A2A5C' }}
           />
         </div>
       </div>
 
       {/* Lista */}
-      <div className="flex-1 overflow-y-auto px-2.5 py-1" style={{ background: '#F5F8FD' }}>
+      <div className="flex-1 overflow-y-auto px-2.5 py-1" style={{ background: '#ffffff' }}>
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
             <p className="text-sm" style={{ color: '#B8CBEF' }}>
@@ -61,45 +61,34 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
 
             return (
               <button key={conv.id} onClick={() => onSelect(conv)}
-                className="w-full text-left transition-all block mb-2 rounded-xl active:scale-[0.98]"
-                style={{ background: '#ffffff',
-                  boxShadow: active
-                    ? '0 4px 14px rgba(0,71,171,0.16)'
-                    : unread
-                      ? '0 4px 14px rgba(0,71,171,0.12)'
-                      : '0 4px 14px rgba(0,71,171,0.09)' }}>
+                className="w-full text-left transition-all block mb-2 rounded-xl active:scale-95"
+                style={{ background: '#ffffff', boxShadow: '0 4px 14px rgba(0,71,171,0.09)' }}>
                 <div className="flex items-center gap-2 px-2.5 py-2">
 
-                  {/* Avatar con indicador online */}
-                  <div className="relative flex-shrink-0">
-                    <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0"
-                      style={{ background: active || unread ? '#0047AB' : '#D6E2F5',
-                        color: active || unread ? '#fff' : '#3A5590' }}>
-                      {name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}
-                    </div>
+                  {/* Avatar — mismo componente que Contactos */}
+                  <div className="relative flex-shrink-0" style={{
+                    boxShadow: (active || unread) ? '0 0 0 2px #0047AB' : 'none', borderRadius: '9999px' }}>
+                    <UserAvatar seed={other?.id || name} avatarUrl={other?.avatar_url} size={30} />
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-[12.5px] truncate"
-                        style={{ color: '#0047AB', fontWeight: unread ? 700 : 600 }}>
+                      <span className="text-[12.5px] font-extrabold truncate"
+                        style={{ color: '#0A2A5C' }}>
                         {name}
                       </span>
-                      <span className="text-[10px] flex-shrink-0 ml-2"
-                        style={{ color: unread ? '#2C6BD4' : '#B8CBEF', fontWeight: unread ? 600 : 400 }}>
+                      <span className="text-[10px] flex-shrink-0 ml-2 text-gray-400">
                         {timeAgo(conv.updated_at)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10.5px] truncate"
-                        style={{ color: unread ? '#3A5590' : '#B8CBEF',
-                          fontWeight: unread ? 600 : 400 }}>
+                      <span className={`text-[10.5px] truncate ${unread ? 'font-bold text-[#0A2A5C]' : 'text-gray-500'}`}>
                         {conv.last_message || (conv.posts ? `Sobre: ${conv.posts.title}` : 'Nueva conversación')}
                       </span>
                       {unread && (
                         <div className="flex-shrink-0 min-w-[16px] h-[16px] rounded-full flex items-center justify-center text-[9px] font-bold px-1"
-                          style={{ background: '#2C6BD4', color: '#0047AB' }}>
+                          style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff' }}>
                           {conv.unread_count > 9 ? '9+' : conv.unread_count}
                         </div>
                       )}
