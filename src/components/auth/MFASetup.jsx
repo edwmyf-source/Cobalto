@@ -39,7 +39,7 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-3 py-3 rounded-2xl border border-ink-300 text-center text-2xl font-mono tracking-[0.4em] focus:outline-none focus:border-brand-600'
+  const inputCls = 'w-full px-3 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 
   return (
     <form onSubmit={submit} className="space-y-5">
@@ -48,7 +48,7 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
           <ShieldCheck size={24} className="text-brand-600" />
         </div>
         <h2 className="font-medium text-lg text-ink-900 tracking-tight">Verificación en dos pasos</h2>
-        <p className="text-xs text-ink-500 max-w-xs">
+        <p className="text-[12px] font-medium text-[#8FA3C7] max-w-xs">
           Abre Google Authenticator o Authy e ingresa el código de 6 dígitos de <strong>Cobalto</strong>.
         </p>
       </div>
@@ -68,18 +68,19 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
         />
       </div>
 
-      {error && <p className="text-xs text-danger-500 text-center">{error}</p>}
+      {error && <p className="text-[12px] font-semibold text-red-500 text-center">{error}</p>}
 
       <button
         type="submit"
         disabled={loading || code.length !== 6 || !challengeId}
-        className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-medium py-2.5 rounded-2xl disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-[14px] disabled:opacity-50 transition-all active:scale-95"
+        style={{ background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 8px 20px rgba(11,46,104,0.3), inset 0 1px 0 rgba(255,255,255,0.2)' }}
       >
         {loading ? <Spinner size={16} /> : 'Verificar'}
       </button>
 
       <div className="text-center">
-        <button type="button" onClick={onCancel} className="text-xs text-ink-500 hover:underline">
+        <button type="button" onClick={onCancel} className="text-[12px] font-bold text-[#8FA3C7] hover:underline">
           Cancelar e iniciar sesión con otra cuenta
         </button>
       </div>
