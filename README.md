@@ -1,10 +1,10 @@
-# ⚛️ Litio — Guía de inicio rápido
+# ⚛️ Cobalto — Guía de inicio rápido
 
 ## Para ejecutar en tu máquina (desarrollo)
 
 ### 1. Descomprime el archivo
 ```bash
-unzip litio-app.zip
+unzip cobalto-app.zip
 cd compact
 ```
 
@@ -82,7 +82,7 @@ Si no ves errores rojos en la consola (F12), funciona.
    git init
    git add .
    git commit -m "Initial commit"
-   git remote add origin https://github.com/TU_USER/litio.git
+   git remote add origin https://github.com/TU_USER/cobalto.git
    git push -u origin main
    ```
    *(El `.env` no se sube — ya está en `.gitignore`.)*
@@ -91,7 +91,7 @@ Si no ves errores rojos en la consola (F12), funciona.
    - https://vercel.com/dashboard → "Add New Project" → selecciona el repo
    - Framework preset: Vite (debería detectarlo solo)
    - Agrega las env vars `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (las mismas de tu `.env`)
-   - Deploy. En 2-3 minutos tienes una URL tipo `litio.vercel.app`
+   - Deploy. En 2-3 minutos tienes una URL tipo `cobalto.vercel.app`
 
 3. **Prueba esa URL en producción** antes de conectar el dominio — repite las pruebas básicas de arriba.
 
@@ -99,16 +99,16 @@ Si no ves errores rojos en la consola (F12), funciona.
 
 ---
 
-## 🌐 Conectar el dominio litio.app
+## 🌐 Conectar el dominio cobalto.app
 
 Cuando compres el dominio:
 
 1. En el dashboard de Vercel → tu proyecto → **Settings → Domains**
-2. Escribe `litio.app` → Add
+2. Escribe `cobalto.app` → Add
 3. Vercel te muestra los registros DNS que debes crear donde compraste el dominio (normalmente un registro `A` apuntando a `76.76.21.21` y/o un `CNAME` para `www`)
 4. Entra al panel DNS de tu proveedor (Namecheap, GoDaddy, Google Domains, etc.) y crea esos registros exactamente como Vercel los indica
 5. La propagación tarda entre minutos y un par de horas. Vercel emite el certificado SSL automáticamente — no tienes que hacer nada manual ahí
-6. Repite en **Supabase → Authentication → URL Configuration**: agrega `https://litio.app` en "Site URL" y en "Redirect URLs" (si no lo haces, los links de confirmación de email y reset de contraseña seguirán apuntando a la URL vieja de `vercel.app`)
+6. Repite en **Supabase → Authentication → URL Configuration**: agrega `https://cobalto.app` en "Site URL" y en "Redirect URLs" (si no lo haces, los links de confirmación de email y reset de contraseña seguirán apuntando a la URL vieja de `vercel.app`)
 
 ---
 

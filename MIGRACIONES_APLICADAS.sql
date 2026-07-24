@@ -1,5 +1,5 @@
 -- ============================================================
--- LITIO — MIGRACIONES APLICADAS (ejecutar en Supabase SQL Editor)
+-- COBALTO — MIGRACIONES APLICADAS (ejecutar en Supabase SQL Editor)
 -- ============================================================
 -- Este archivo reúne TODOS los ajustes de base de datos que se
 -- hicieron para que la app funcione correctamente. Si recreas la
@@ -94,7 +94,7 @@ INSERT INTO profiles (id, full_name, company_name, city, email_domain, identity_
 VALUES (
   '359ebe0a-e3d3-4400-ada2-0789612df659',
   'EDWARD ANDRES ALFONSO SUAREZ',
-  'Admin LITIO', 'Bogotá D.C.', '@gmail.com', 'real', '58166', 'admin', now()
+  'Admin Cobalto', 'Bogotá D.C.', '@gmail.com', 'real', '58166', 'admin', now()
 )
 ON CONFLICT (id) DO UPDATE SET role = 'admin';
 

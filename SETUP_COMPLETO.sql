@@ -1,5 +1,5 @@
 -- ============================================================
--- LITIO v10 — SETUP COMPLETO DESDE CERO
+-- COBALTO — SETUP COMPLETO DESDE CERO
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 -- ⚠️  Diseñado para base de datos NUEVA, pero es idempotente:
 --     re-ejecutarlo sobre una BD existente la actualiza de forma segura.

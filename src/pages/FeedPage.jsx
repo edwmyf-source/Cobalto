@@ -291,7 +291,7 @@ export default function FeedPage() {
 
           {/* Mini perfil */}
           <div className="bg-white rounded-xl overflow-hidden border border-ink-200 shadow-sm">
-            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #0047AB 0%, #0047AB 100%)' }} />
+            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #0B2E68 0%, #1A5AC8 100%)' }} />
             <div className="px-3 pb-3 -mt-6">
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
                 style={{ border: '3px solid white', background: '#0047AB' }}>

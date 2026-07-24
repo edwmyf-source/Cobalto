@@ -8,7 +8,7 @@ const AuthCtx = createContext(null)
 // ── Cache de perfil en localStorage ──────────────────────────────────────────
 // Al recargar la página, el perfil aparece AL INSTANTE desde aquí, sin esperar
 // la red. Esto elimina el bug de "pide datos de nuevo al actualizar".
-const PROFILE_KEY = 'rodio-profile'
+const PROFILE_KEY = 'cobalto-profile'
 
 function loadCachedProfile(uid) {
   try {

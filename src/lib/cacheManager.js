@@ -16,6 +16,6 @@ export function clearAllCaches() {
   }
   // Limpiar también claves conocidas de localStorage
   try {
-    localStorage.removeItem('rodio-profile')
+    localStorage.removeItem('cobalto-profile')
   } catch {}
 }

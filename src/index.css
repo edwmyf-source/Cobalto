@@ -54,7 +54,7 @@ body {
 .scroll-x-safe::-webkit-scrollbar { display: none; }
 
 
-/* CEQU visual refresh */
+/* Cobalto visual refresh */
 :root {
   --cobalto-primary: #0047AB;
   --cobalto-primary-2: #2C6BD4;

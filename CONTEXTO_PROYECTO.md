@@ -1,10 +1,10 @@
-# Rodio — Contexto del proyecto
+# Cobalto — Contexto del proyecto
 
 Red social B2B para el sector químico colombiano. React + Vite + Tailwind, backend en Supabase (DB, Auth, Storage, Realtime), deploy en Vercel.
 
 ## ⚠️ Seguridad — leer primero
 
-Este archivo **NO contiene contraseñas ni tokens**, a propósito. La versión anterior de este documento (`RODIO_CONTEXTO.md`) sí tenía un token de GitHub en texto plano, y ese token circuló por varios chats con Claude — debe darse por comprometido.
+Este archivo **NO contiene contraseñas ni tokens**, a propósito. La versión anterior de este documento (`CONTEXTO_ANTERIOR.md`) sí tenía un token de GitHub en texto plano, y ese token circuló por varios chats con Claude — debe darse por comprometido.
 
 Antes de seguir editando, haz esto:
 1. Ve a GitHub → Settings → Developer settings → Personal access tokens → revoca cualquier token viejo relacionado con este proyecto.
@@ -16,8 +16,8 @@ Antes de seguir editando, haz esto:
 
 | Recurso | Dónde está | Notas |
 |---|---|---|
-| Repositorio | `https://github.com/edwmyf-source/LITIO.git`, rama `main` | Clona con tu propio token, no reutilices el expuesto anteriormente |
-| Hosting | Vercel, proyecto asociado a `rodio-theta.vercel.app` | Auto-deploy en cada push a `main` |
+| Repositorio | `https://github.com/edwmyf-source/COBALTO.git`, rama `main` | Clona con tu propio token, no reutilices el expuesto anteriormente |
+| Hosting | Vercel, proyecto asociado a `cobalto-theta.vercel.app` | Auto-deploy en cada push a `main` |
 | Base de datos | Supabase, project ref `oazbsvkysymahdudiodi` | Acceso vía dashboard de Supabase o MCP de Supabase en Claude |
 | Variables de entorno | `.env` local (no incluido, ver `.env.example`) | `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` |
 

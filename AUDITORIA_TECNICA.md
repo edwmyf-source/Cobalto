@@ -1,4 +1,4 @@
-# Auditoría técnica — Rodio
+# Auditoría técnica — Cobalto
 
 Revisión de seguridad, rendimiento, código y UX. Fecha: julio 2026.
 Alcance: base de datos Supabase (`oazbsvkysymahdudiodi`), frontend React, configuración de despliegue.

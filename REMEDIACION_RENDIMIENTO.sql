@@ -1,5 +1,5 @@
 -- ============================================================================
--- REMEDIACIÓN DE RENDIMIENTO — Rodio
+-- REMEDIACIÓN DE RENDIMIENTO — Cobalto
 -- Aplicar en el SQL Editor de Supabase. Léelo completo antes de ejecutar.
 -- Los CREATE INDEX usan CONCURRENTLY para no bloquear la tabla en producción.
 -- (CONCURRENTLY no puede correr dentro de una transacción; ejecuta línea a línea

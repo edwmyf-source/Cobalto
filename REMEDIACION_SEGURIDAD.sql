@@ -1,5 +1,5 @@
 -- ============================================================================
--- REMEDIACIÓN DE SEGURIDAD — Rodio
+-- REMEDIACIÓN DE SEGURIDAD — Cobalto
 -- Aplicar en el SQL Editor de Supabase. Léelo completo antes de ejecutar.
 -- Recomendado: probar en staging o hacer backup antes.
 -- ============================================================================
