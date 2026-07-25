@@ -8,6 +8,7 @@ import { getUnreadCount } from '../../api/notifications'
 import { useRealtime } from '../../hooks/useRealtime'
 import { signOut } from '../../api/auth'
 import { publicName } from '../../lib/helpers'
+import useHideOnScroll from '../../lib/useHideOnScroll'
 
 export default function AppLayout() {
   const { session, profile } = useAuth()
@@ -17,6 +18,7 @@ export default function AppLayout() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const profileBtnRef = useRef(null)
+  const navVisible = useHideOnScroll({ disabled: profileMenuOpen, resetKey: location.pathname })
 
   const currentTab = '/' + (location.pathname.split('/')[1] || 'feed')
   const lastFetchRef = useRef(0)
@@ -97,7 +99,10 @@ export default function AppLayout() {
       </div>
 
       {/* ── Nav móvil flotante (glass) ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40" style={{ pointerEvents: 'none' }}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40"
+        style={{ pointerEvents: 'none',
+          transform: navVisible ? 'translateY(0)' : 'translateY(120%)',
+          transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)' }}>
 
         {profileMenuOpen && (
           <div ref={menuRef} className="absolute bottom-full right-4 mb-3 rounded-3xl overflow-hidden"
