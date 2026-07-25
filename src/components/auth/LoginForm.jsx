@@ -65,24 +65,24 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-4 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+  const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 
   if (sent) {
     return (
       <div className="space-y-4 text-center py-4">
-        <div className="w-12 h-12 rounded-full mx-auto flex items-center justify-center" style={{ background: '#EBF1FC' }}>
-          <Mail size={22} style={{ color: '#0047AB' }} />
+        <div className="w-12 h-12 rounded-full mx-auto flex items-center justify-center" style={{ background: 'var(--accent-soft)' }}>
+          <Mail size={22} style={{ color: 'var(--accent-deep)' }} />
         </div>
         <div>
-          <h2 className="font-extrabold text-[20px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>Revisa tu correo</h2>
-          <p className="text-[12px] mt-1.5 font-medium text-[#8FA3C7] leading-relaxed">
+          <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>Revisa tu correo</h2>
+          <p className="text-[12px] mt-1.5 font-medium text-[var(--text-tertiary)] leading-relaxed">
             Enviamos un enlace de acceso a<br />
-            <span className="font-semibold" style={{ color: '#0047AB' }}>{email}</span>
+            <span className="font-semibold" style={{ color: 'var(--accent-deep)' }}>{email}</span>
           </p>
-          <p className="text-[11px] mt-2 text-[#8FA3C7]">Tócalo desde este mismo dispositivo para entrar.</p>
+          <p className="text-[12px] mt-2 text-[var(--text-tertiary)]">Tócalo desde este mismo dispositivo para entrar.</p>
         </div>
         <button type="button" onClick={() => { setSent(false); setMode('password') }}
-          className="text-[12px] font-bold hover:underline text-[#0047AB]">
+          className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
           ← Usar contraseña
         </button>
       </div>
@@ -92,32 +92,32 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div>
-        <h2 className="font-extrabold text-[20px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>Iniciar sesión</h2>
-        <p className="text-[12px] mt-1 font-medium text-[#8FA3C7]">Bienvenido de vuelta</p>
+        <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>Iniciar sesión</h2>
+        <p className="text-[12px] mt-1 font-medium text-[var(--text-tertiary)]">Bienvenido de vuelta</p>
       </div>
 
       {codeSent ? (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Código de 6 dígitos</label>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
           <input type="text" value={code} inputMode="numeric" autoComplete="one-time-code" required autoFocus
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
-            className="w-full px-3 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors" />
-          <p className="text-[11px] mt-1.5 text-[#8FA3C7]">
+            className="w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors" />
+          <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">
             Enviado a {mode === 'phone' ? normalizePhone(phone) : email}
           </p>
         </div>
       ) : mode === 'phone' ? (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Número de celular</label>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Número de celular</label>
           <input type="tel" value={phone} inputMode="tel" autoComplete="tel" required
             onChange={e => setPhone(e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 16))}
             placeholder="300 123 4567" className={inputCls} />
-          <p className="text-[11px] mt-1.5 text-[#8FA3C7]">Colombia (+57) por defecto.</p>
+          <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Colombia (+57) por defecto.</p>
         </div>
       ) : (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Email</label>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
             placeholder="tu@empresa.com" className={inputCls} autoComplete="email" />
         </div>
@@ -125,10 +125,10 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
 
       {mode === 'password' && !codeSent && (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Contraseña</label>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Contraseña</label>
           <input type="password" value={pass} onChange={e => setPass(e.target.value)} required
             placeholder="••••••••" className={inputCls} autoComplete="current-password" />
-          <button type="button" onClick={onSwitchReset} className="text-[12px] font-bold hover:underline mt-2 inline-block text-[#0047AB]">
+          <button type="button" onClick={onSwitchReset} className="text-[12px] font-bold hover:underline mt-2 inline-block text-[var(--accent-deep)]">
             ¿Olvidaste tu contraseña?
           </button>
         </div>
@@ -137,8 +137,8 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
       {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
 
       <button type="submit" disabled={loading || (codeSent ? code.length < 6 : mode === 'phone' ? phone.replace(/\D/g,'').length < 10 : !email)}
-        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-[14px] disabled:opacity-50 transition-all active:scale-95"
-        style={{ background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 8px 20px rgba(11,46,104,0.3), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-50 transition-all active:scale-95"
+        style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
         {loading ? <Spinner size={16} />
           : codeSent ? 'Verificar y entrar'
           : mode === 'phone' ? 'Enviarme el código'
@@ -148,38 +148,38 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
 
       {/* Cambiar entre contraseña y enlace mágico */}
       <div className="relative flex items-center gap-3 py-1">
-        <div className="flex-1 h-px" style={{ background: '#DDE7FA' }} />
-        <span className="text-[10px] font-medium" style={{ color: '#8FA3C7' }}>o</span>
-        <div className="flex-1 h-px" style={{ background: '#DDE7FA' }} />
+        <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+        <span className="text-[12px] font-medium" style={{ color: 'var(--text-tertiary)' }}>o</span>
+        <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
       </div>
 
       {codeSent ? (
         <button type="button"
           onClick={() => { setCodeSent(false); setCode(''); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-          style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+          style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <ArrowLeft size={15} /> {mode === 'phone' ? 'Cambiar número' : 'Cambiar correo'}
         </button>
       ) : mode === 'phone' ? (
         <button type="button"
           onClick={() => { setMode('password'); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-          style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+          style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <ArrowLeft size={15} /> Entrar con correo
         </button>
       ) : mode === 'emailcode' ? (
         <button type="button"
           onClick={() => { setMode('password'); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-          style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+          style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <KeyRound size={15} /> Entrar con contraseña
         </button>
       ) : (
         <div className="space-y-2">
           <button type="button"
             onClick={() => { setMode(m => m === 'magic' ? 'password' : 'magic'); setError('') }}
-            className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-            style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+            className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+            style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
             {mode === 'magic'
               ? <><KeyRound size={15} /> Entrar con contraseña</>
               : <><Mail size={15} /> Entrar solo con mi email</>}
@@ -187,25 +187,25 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
           {EMAIL_CODE_AUTH_ENABLED && (
             <button type="button"
               onClick={() => { setMode('emailcode'); setCodeSent(false); setError('') }}
-              className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-              style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+              style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
               <Mail size={15} /> Recibir código por correo
             </button>
           )}
           {PHONE_AUTH_ENABLED && (
             <button type="button"
               onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
-              className="w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95"
-              style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }}>
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95"
+              style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
               <Phone size={15} /> Entrar con mi celular
             </button>
           )}
         </div>
       )}
 
-      <div className="text-center text-[12px] pt-4 font-medium text-[#8FA3C7]" style={{ borderTop: '1px solid #EBF1FC' }}>
+      <div className="text-center text-[12px] pt-4 font-medium text-[var(--text-tertiary)]" style={{ borderTop: '1px solid var(--accent-soft)' }}>
         ¿Sin cuenta?{' '}
-        <button type="button" onClick={onSwitchSignup} className="font-bold hover:underline text-[#0047AB]">
+        <button type="button" onClick={onSwitchSignup} className="font-bold hover:underline text-[var(--accent-deep)]">
           Crear cuenta
         </button>
       </div>

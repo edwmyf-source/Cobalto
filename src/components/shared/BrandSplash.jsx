@@ -88,7 +88,7 @@ export default function BrandSplash({ onDone }) {
           margin-top:30px;
           animation: cbo-brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;
         }
-        .cbo-brand i { color:#7FB2FF; font-style:normal; }
+        .cbo-brand i { color:#9CBEEE; font-style:normal; }
 
         .cbo-load {
           display:flex; align-items:center; gap:6px;

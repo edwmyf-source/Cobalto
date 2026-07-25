@@ -1,4 +1,5 @@
 import { Search, X, ChevronDown } from 'lucide-react'
+import { Chip, Panel } from '../ui'
 import { useState, useRef, useEffect } from 'react'
 import {
   MARKETPLACE_TABS,
@@ -8,25 +9,12 @@ import {
   TAB_COLOR,
 } from '../../lib/constants'
 
-// size="lg" = categoría principal (nivel 1) · size="sm" = subfiltro (nivel 2)
+// Nivel 1 = categoría principal · Nivel 2 = subfiltro
 function Pill({ label, active, onClick, size = 'sm' }) {
-  const lg = size === 'lg'
   return (
-    <button
-      onClick={onClick}
-      aria-pressed={active}
-      className={`transition-all flex-shrink-0 font-extrabold ${
-        lg ? 'px-[18px] py-[6px] rounded-[13px] text-[13px]' : 'px-[12px] py-[3px] rounded-[9px] text-[11px]'}`}
-      style={active
-        ? { background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', color: '#ffffff',
-            boxShadow: lg
-              ? '0 6px 16px rgba(11,46,104,0.35), inset 0 1px 0 rgba(255,255,255,0.2)'
-              : '0 4px 12px rgba(11,46,104,0.28), inset 0 1px 0 rgba(255,255,255,0.18)' }
-        : { background: '#FFFFFF', color: '#5578AD',
-            boxShadow: 'inset 0 0 0 1.5px #DDE7FA' }}
-    >
+    <Chip active={active} onClick={onClick} size={size === 'lg' ? 'md' : 'sm'}>
       {label}
-    </button>
+    </Chip>
   )
 }
 
@@ -36,14 +24,14 @@ function Section({ title, value, open, onToggle, children }) {
       {title && (
         <button
           onClick={onToggle}
-          className="w-full flex items-center justify-between px-4 pt-[7px] pb-[2px]"
+          className="w-full flex items-center justify-between px-4 pt-4 pb-2"
+          aria-expanded={open}
         >
-          <span className="text-[10px] font-extrabold uppercase"
-            style={{ color: '#8FA3C7', letterSpacing: '0.12em' }}>{title}</span>
-          <span className="flex items-center gap-1.5">
-            {value && <span className="text-[11px] font-bold" style={{ color: '#1A5AC8' }}>{value}</span>}
-            <ChevronDown size={14}
-              style={{ color: '#8FA3C7', transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
+          <span className="flex items-center gap-2">
+            {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
+            <ChevronDown size={16} strokeWidth={2}
+              style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
           </span>
         </button>
       )}
@@ -53,7 +41,7 @@ function Section({ title, value, open, onToggle, children }) {
         transition: 'grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-4 pb-[7px] pt-[5px] flex flex-wrap gap-1.5">
+          <div className="px-4 pb-4 pt-1 flex flex-wrap gap-2">
             {children}
           </div>
         </div>
@@ -96,42 +84,44 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
     : []
 
   return (
-    <div className="mb-2">
+    <div className="mb-4">
 
-      {/* Extensión navy del header — el buscador flota sobre su borde */}
-      <div className="-mx-4 md:hidden" style={{ height: 44, marginTop: -1,
-        background: 'radial-gradient(circle at 30% -180%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)' }} />
-
-      {/* Buscador — flotando sobre el borde del navy */}
-      <div className="relative z-[5] px-2" style={{ marginTop: -24 }}>
-        <Search size={15} className="absolute left-[28px] top-1/2 -translate-y-1/2" style={{ color: '#8FA3C7' }} />
+      {/* Buscador: campo de 48px, foco con anillo suave */}
+      <div className="relative mb-4">
+        <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+          style={{ color: 'var(--text-tertiary)' }} />
         <input
           ref={searchRef}
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
-          placeholder="Buscar en Cobalto..."
-          className="w-full pl-[42px] pr-9 py-[13px] rounded-[15px] text-[13px] font-semibold focus:outline-none transition-shadow"
-          style={{ background: '#ffffff', border: 'none', color: '#0A2A5C',
-            boxShadow: '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9)' }}
-          onFocus={e => e.currentTarget.style.boxShadow = '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 3px rgba(26,90,200,0.18)'}
-          onBlur={e => e.currentTarget.style.boxShadow = '0 12px 32px rgba(8,31,74,0.26), inset 0 1px 0 rgba(255,255,255,0.9)'}
+          placeholder="Buscar productos, empresas u oportunidades"
+          aria-label="Buscar en Cobalto"
+          className="w-full h-[48px] pl-12 pr-11 rounded-input t-body-sm transition-all duration-[160ms] ease-premium"
+          style={{ background: 'var(--surface)', color: 'var(--text-primary)',
+            boxShadow: 'inset 0 0 0 1px var(--border)' }}
+          onFocus={e => e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--border-focus), 0 0 0 3px var(--accent-soft)'}
+          onBlur={e => e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--border)'}
         />
         {filters.search && (
-          <button onClick={() => set('search', '')} className="absolute right-5 top-1/2 -translate-y-1/2">
-            <X size={15} style={{ color: '#0047AB' }} />
+          <button onClick={() => set('search', '')} aria-label="Limpiar búsqueda"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full transition-colors"
+            style={{ color: 'var(--text-tertiary)' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+            <X size={15} strokeWidth={2.2} />
           </button>
         )}
       </div>
 
-      {/* Accordion D2 (Filtros) */}
-      <div className="rounded-[18px] overflow-hidden mb-2 mt-[9px] mx-2" style={{ background: '#ffffff', boxShadow: '0 6px 20px rgba(0,71,171,0.08)' }}>
+      {/* Panel de filtros */}
+      <Panel className="overflow-hidden mb-4">
 
         {hasFilters && (
-          <div className="flex justify-end px-3 pt-2 pb-0.5">
+          <div className="flex justify-end px-4 pt-4 pb-0">
             <button
               onClick={() => { setFilters({}); setOpenSec('categoria') }}
-              className="text-[12px] font-bold hover:opacity-80"
-              style={{ color: '#0047AB' }}>
+              className="t-body-sm font-medium transition-opacity duration-[160ms] hover:opacity-70"
+              style={{ color: 'var(--accent)' }}>
               Limpiar filtros
             </button>
           </div>
@@ -186,7 +176,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           </Section>
         )}
 
-      </div>
+      </Panel>
 
     </div>
   )

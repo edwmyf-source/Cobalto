@@ -20,18 +20,18 @@ function TopBar({ onLogin, onSignup }) {
     <header className="w-full flex-shrink-0"
       style={{ background: 'radial-gradient(circle at 30% -40%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)' }}>
       <div className="max-w-6xl mx-auto h-[70px] flex items-center justify-between px-4">
-        <span className="font-extrabold text-[23px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
-          Cobalto<span style={{ color: '#7FB2FF' }}>.</span>
+        <span className="font-extrabold text-[24px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
+          Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
         </span>
         <div className="flex items-center gap-2.5">
           <button onClick={onLogin}
-            className="px-[18px] py-2.5 rounded-[13px] text-[14px] font-extrabold transition-all"
+            className="px-[18px] py-2.5 rounded-input text-[14px] font-extrabold transition-all"
             style={{ color: '#ffffff', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.22)' }}>
             Iniciar sesión
           </button>
           <button onClick={onSignup}
-            className="px-[18px] py-2.5 rounded-[13px] text-[14px] font-extrabold transition-all"
-            style={{ background: '#ffffff', color: '#0B2E68' }}>
+            className="px-[18px] py-2.5 rounded-input text-[14px] font-extrabold transition-all"
+            style={{ background: '#ffffff', color: 'var(--accent-deep)' }}>
             Unirse ahora
           </button>
         </div>
@@ -48,50 +48,50 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <h1 className="text-[31px] md:text-[46px] font-extrabold leading-tight" style={{ color: '#0A2A5C', letterSpacing: '-0.03em' }}>
+          <h1 className="text-[32px] md:text-[32px] font-extrabold leading-tight" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
             Punto de encuentro<br />
-            <span style={{ color: '#1A5AC8' }}>de la industria química.</span>
+            <span style={{ color: 'var(--accent)' }}>de la industria química.</span>
           </h1>
-          <p className="mt-3 text-[16px] md:text-[17px] leading-snug font-medium" style={{ color: '#33456B' }}>
+          <p className="mt-3 text-[16px] md:text-[16px] leading-snug font-medium" style={{ color: 'var(--text-secondary)' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
           </p>
           <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-            <span className="text-[16px] md:text-[17px] font-extrabold" style={{ color: '#0047AB' }}>Conecta</span>
-            <span style={{ color: '#8FA3C7', fontSize: 16 }}>·</span>
-            <span className="text-[16px] md:text-[17px] font-extrabold" style={{ color: '#1A5AC8' }}>Comparte</span>
-            <span style={{ color: '#8FA3C7', fontSize: 16 }}>·</span>
-            <span className="text-[16px] md:text-[17px] font-extrabold" style={{ color: '#4C82F0' }}>Crece</span>
+            <span className="text-[16px] md:text-[16px] font-extrabold" style={{ color: 'var(--accent-deep)' }}>Conecta</span>
+            <span style={{ color: 'var(--text-tertiary)', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[16px] font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
+            <span style={{ color: 'var(--text-tertiary)', fontSize: 16 }}>·</span>
+            <span className="text-[16px] md:text-[16px] font-extrabold" style={{ color: '#4C82F0' }}>Crece</span>
           </div>
           <button onClick={onSignup}
-            className="mt-4 inline-flex items-center gap-2 px-[26px] py-[13px] rounded-[15px] text-[17px] font-extrabold text-white transition-all active:scale-95"
-            style={{ background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 8px 24px rgba(11,46,104,0.35), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+            className="mt-4 inline-flex items-center gap-2 px-[26px] py-[13px] rounded-input text-[16px] font-extrabold text-white transition-all active:scale-95"
+            style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
             Unirse ahora <ArrowRight size={22} />
           </button>
         </div>
 
         {/* Métricas de comunidad */}
         <div className="mt-4 md:mt-0 grid grid-cols-2 gap-3 md:w-[280px] flex-shrink-0">
-          <div className="rounded-[18px] p-3.5 text-center"
-            style={{ background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 10px 28px rgba(11,46,104,0.28), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
+          <div className="rounded-card p-3.5 text-center"
+            style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
             <div className="flex justify-center mb-1"><Users size={18} color="#7FB2FF" /></div>
             <p className="text-2xl font-extrabold text-white leading-none">{stats.members.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-extrabold" style={{ color: '#7FB2FF' }}>Miembros</p>
+            <p className="text-[12px] mt-1 uppercase tracking-wider font-extrabold" style={{ color: '#9CBEEE' }}>Miembros</p>
           </div>
-          <div className="rounded-[18px] p-3.5 text-center"
-            style={{ background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 10px 28px rgba(11,46,104,0.28), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
+          <div className="rounded-card p-3.5 text-center"
+            style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
             <div className="flex justify-center mb-1"><FlaskConical size={18} color="#7FB2FF" /></div>
             <p className="text-2xl font-extrabold text-white leading-none">{stats.posts.toLocaleString('es-CO')}</p>
-            <p className="text-[11px] mt-1 uppercase tracking-wider font-extrabold" style={{ color: '#7FB2FF' }}>Publicaciones</p>
+            <p className="text-[12px] mt-1 uppercase tracking-wider font-extrabold" style={{ color: '#9CBEEE' }}>Publicaciones</p>
           </div>
         </div>
       </section>
 
       {/* Ventajas — estilo H2 (+10% base, texto +20% adicional) */}
       <section className="mt-4">
-        <h2 className="text-[10px] font-extrabold uppercase mb-2.5" style={{ color: '#5578AD', letterSpacing: '0.12em' }}>
+        <h2 className="text-[12px] font-extrabold uppercase mb-2.5" style={{ color: 'var(--text-secondary)', letterSpacing: '0.12em' }}>
           ¿Por qué Cobalto?
         </h2>
-        <div className="rounded-[18px] overflow-hidden" style={{ background: '#ffffff', boxShadow: '0 8px 24px rgba(0,71,171,0.09)' }}>
+        <div className="rounded-card overflow-hidden" style={{ background: '#ffffff', boxShadow: 'var(--shadow-card)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
               { n: '01', title: 'Gratis',       sub: 'Sin costos ocultos',        navy: true  },
@@ -107,19 +107,19 @@ function Landing({ stats, onSignup }) {
                 <div key={item.n} style={{
                   display: 'flex', alignItems: 'center', gap: 9,
                   padding: '9px 11px',
-                  borderBottom: isLastRow ? 'none' : '1px solid #EBF1FC',
-                  borderRight:  isRight   ? 'none' : '1px solid #EBF1FC',
+                  borderBottom: isLastRow ? 'none' : '1px solid var(--accent-soft)',
+                  borderRight:  isRight   ? 'none' : '1px solid var(--accent-soft)',
                 }}>
                   <div style={{
                     fontSize: 25,
                     fontWeight: 900,
                     lineHeight: 1,
                     flexShrink: 0,
-                    color: item.navy ? '#0047AB' : '#4C82F0',
+                    color: item.navy ? 'var(--accent-deep)' : '#4C82F0',
                   }}>{item.n}</div>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 800, color: '#0A2A5C', lineHeight: 1.15 }}>{item.title}</div>
-                    <div style={{ fontSize: 10, color: '#8FA3C7', fontWeight: 600, lineHeight: 1.15 }}>{item.sub}</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.15 }}>{item.title}</div>
+                    <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, lineHeight: 1.15 }}>{item.sub}</div>
                   </div>
                 </div>
               )
@@ -130,15 +130,15 @@ function Landing({ stats, onSignup }) {
 
 
       {/* CTA final */}
-      <section className="mt-4 md:mt-5 py-5 text-center rounded-[20px]"
+      <section className="mt-4 md:mt-5 py-5 text-center rounded-panel"
         style={{ background: 'radial-gradient(circle at 30% -60%, #1A5AC8 0%, #0B2E68 55%, #081F4A 100%)',
-          boxShadow: '0 12px 32px rgba(11,46,104,0.3)' }}>
+          boxShadow: 'var(--shadow-raised)' }}>
         <h2 className="text-sm md:text-base font-extrabold text-white px-4">
           Únete a la comunidad química de Colombia
         </h2>
         <button onClick={onSignup}
-          className="mt-3 px-6 py-2.5 rounded-[13px] text-[13px] md:text-sm font-extrabold transition-all active:scale-95"
-          style={{ background: '#ffffff', color: '#0B2E68' }}>
+          className="mt-3 px-6 py-2.5 rounded-input text-[14px] md:text-sm font-extrabold transition-all active:scale-95"
+          style={{ background: '#ffffff', color: 'var(--accent-deep)' }}>
           Crear cuenta gratis
         </button>
       </section>
@@ -155,18 +155,18 @@ export default function AuthScreen() {
   }, [])
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#E4EBF7' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-app)' }}>
       <TopBar onLogin={() => setMode('login')} onSignup={() => setMode('signup')} />
 
       {mode === 'landing' ? (
         <Landing stats={stats} onSignup={() => setMode('signup')} />
       ) : (
         <div className="flex-1 flex items-start md:items-center justify-center px-4 py-4 md:py-6">
-          <div className="w-full max-w-md rounded-[22px] p-5 md:p-7" style={{ background: '#fff', boxShadow: '0 16px 44px rgba(8,31,74,0.16)' }}>
+          <div className="w-full max-w-md rounded-modal p-5 md:p-7" style={{ background: '#fff', boxShadow: 'var(--shadow-modal)' }}>
             {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
             {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}
-            <button onClick={() => setMode('landing')} className="mt-4 text-[12px] font-bold hover:underline" style={{ color: '#0047AB' }}>
+            <button onClick={() => setMode('landing')} className="mt-4 text-[12px] font-bold hover:underline" style={{ color: 'var(--accent-deep)' }}>
               ← Volver al inicio
             </button>
           </div>

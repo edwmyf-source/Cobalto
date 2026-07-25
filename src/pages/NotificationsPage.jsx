@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, Bell } from 'lucide-react'
+import { Bell } from 'lucide-react'
 import { getNotifications, markAsRead, markAllRead } from '../api/notifications'
 import { getOrCreateConversation } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
@@ -8,6 +8,8 @@ import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
 import { timeAgo, publicName } from '../lib/helpers'
 import Spinner from '../components/shared/Spinner'
+import { Card, Badge, EmptyState } from '../components/ui'
+import UserAvatar from '../components/shared/UserAvatar'
 
 // Etiqueta humana según el tipo/title de la notificacion
 const ACTION_LABEL = {
@@ -97,46 +99,45 @@ export default function NotificationsPage() {
   const ORDER = ['HOY', 'AYER', 'ESTA SEMANA', 'ANTES']
 
   return (
-    <div className="page-enter max-w-2xl mx-auto">
+    <div className="page-enter max-w-2xl mx-auto p-6">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <h2 className="font-bold text-xl" style={{ color: '#0047AB' }}>Notificaciones</h2>
-          {unreadCount > 0 && (
-            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-              style={{ background: '#2C6BD4', color: '#0047AB' }}>
-              {unreadCount} nuevas
-            </span>
-          )}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <h1 className="t-h2" style={{ color: 'var(--text-primary)' }}>Notificaciones</h1>
+          {unreadCount > 0 && <Badge tone="brand">{unreadCount} nuevas</Badge>}
         </div>
         {unreadCount > 0 && (
           <button onClick={handleMarkAll}
-            className="flex items-center gap-1.5 text-xs font-medium hover:opacity-70"
-            style={{ color: '#3A5590' }}>
-            <Check size={14} /> Marcar leídas
+            className="t-body-sm font-medium transition-opacity duration-[160ms] hover:opacity-70"
+            style={{ color: 'var(--accent)' }}>
+            Marcar leídas
           </button>
         )}
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><Spinner size={20} /></div>
-      ) : notifs.length === 0 ? (
-        <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '1px solid #D6E2F5' }}>
-          <Bell size={32} className="mx-auto mb-3" style={{ color: '#D6E2F5' }} />
-          <p className="text-sm font-medium" style={{ color: '#3A5590' }}>
-            Aún no tienes notificaciones de interacciones.
-          </p>
-          <p className="text-xs mt-1" style={{ color: '#B8CBEF' }}>
-            Cuando alguien reaccione, comente o te escriba, aparecerá aquí.
-          </p>
+        <div className="flex flex-col gap-2">
+          {[1,2,3].map(i => (
+            <Card key={i} className="flex items-center gap-3 p-4">
+              <div className="skeleton" style={{ width: 38, height: 38, borderRadius: 999 }} />
+              <div className="flex-1">
+                <div className="skeleton" style={{ width: '55%', height: 12 }} />
+                <div className="skeleton mt-2" style={{ width: '25%', height: 10 }} />
+              </div>
+            </Card>
+          ))}
         </div>
+      ) : notifs.length === 0 ? (
+        <Card>
+          <EmptyState icon={Bell} title="Sin notificaciones todavía"
+            description="Cuando alguien reaccione, comente o te escriba, aparecerá aquí." />
+        </Card>
       ) : (
         <div>
           {ORDER.filter(lbl => groups[lbl]?.length).map(lbl => (
-            <div key={lbl}>
-              <p className="text-[11px] font-bold tracking-widest pb-2 pt-3"
-                style={{ color: '#B8CBEF' }}>{lbl}</p>
+            <div key={lbl} className="mb-6">
+              <p className="t-eyebrow mb-3" style={{ color: 'var(--text-tertiary)' }}>{lbl}</p>
 
               <div className="flex flex-col gap-2">
                 {groups[lbl].map(n => {
@@ -145,51 +146,40 @@ export default function NotificationsPage() {
                   const action     = getActionLabel(n)
                   const snippet    = n.post_content || n.post?.content || ''
 
-                  // Si no tenemos ni nombre ni accion reconocida, saltamos (son del sistema antiguo que pasaron el filtro)
                   if (!senderName && !action) return null
 
                   return (
                     <button key={n.id} onClick={() => handleOpen(n)}
                       disabled={opening === n.id}
-                      className="w-full text-left rounded-2xl transition-opacity disabled:opacity-60 active:opacity-70 overflow-hidden"
+                      className="w-full text-left rounded-card transition-all duration-[160ms] ease-premium disabled:opacity-60 active:scale-[0.99] overflow-hidden"
                       style={{
-                        background: '#ffffff',
-                        border: '1px solid #D6E2F5',
-                        borderLeft: isUnread ? '4px solid #0047AB' : '1px solid #D6E2F5',
+                        background: isUnread ? 'var(--accent-softer)' : 'var(--surface)',
+                        border: `1px solid ${isUnread ? 'var(--accent-soft)' : 'var(--border-soft)'}`,
                       }}>
 
-                      <div className="flex items-center gap-3 px-3 py-3">
-                        {/* Avatar con iniciales */}
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-[13px] font-bold"
-                          style={{ background: isUnread ? '#0047AB' : '#F5F8FD', color: isUnread ? '#fff' : '#3A5590' }}>
-                          {getInitials(senderName)}
-                        </div>
+                      <div className="flex items-center gap-3 px-4 py-3">
+                        <UserAvatar seed={n.from_user_id || senderName || '?'}
+                          avatarUrl={n.from_profile?.avatar_url} size={38} />
 
-                        {/* Nombre + accion + tiempo */}
                         <div className="flex-1 min-w-0">
-                          <div className="text-[14px] leading-snug" style={{ color: '#0047AB' }}>
+                          <p className="t-body-sm leading-snug" style={{ color: 'var(--text-primary)' }}>
                             <span className="font-semibold">{senderName || 'Usuario'}</span>
-                            {action && (
-                              <span style={{ color: '#3A5590', fontWeight: 400 }}> {action}</span>
-                            )}
-                          </div>
-                          <div className="text-[11px] mt-0.5" style={{ color: '#B8CBEF' }}>
+                            {action && <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}> {action}</span>}
+                          </p>
+                          <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
                             {timeAgo(n.created_at)}
-                          </div>
+                          </p>
                         </div>
 
-                        {/* Punto no leído naranja */}
                         {isUnread && (
-                          <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                            style={{ background: '#2C6BD4', boxShadow: '0 0 8px rgba(255,183,3,0.65)' }} />
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }} />
                         )}
                       </div>
 
-                      {/* Snippet de la publicacion */}
                       {snippet && (
-                        <div className="mx-3 mb-3 px-3 py-2 rounded-lg text-[12px] leading-relaxed"
-                          style={{ background: '#FFFFFF', borderLeft: '3px solid #D6E2F5', color: '#3A5590' }}>
-                          "{snippet.slice(0, 120)}{snippet.length > 120 ? '...' : ''}"
+                        <div className="mx-4 mb-3 px-3 py-2.5 rounded-input t-caption leading-relaxed"
+                          style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', color: 'var(--text-secondary)' }}>
+                          {snippet.slice(0, 120)}{snippet.length > 120 ? '…' : ''}
                         </div>
                       )}
                     </button>

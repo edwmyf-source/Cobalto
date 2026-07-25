@@ -9,10 +9,10 @@ import UserAvatar from '../shared/UserAvatar'
 import PrivacyBadge from '../shared/PrivacyBadge'
 import Spinner from '../shared/Spinner'
 
-const inputCls = 'w-full px-4 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
-const labelCls = 'text-[12px] font-bold text-[#0A2A5C]'
-const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-[14px] disabled:opacity-40 transition-all active:scale-95'
-const primaryStyle = { background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 8px 20px rgba(11,46,104,0.3), inset 0 1px 0 rgba(255,255,255,0.2)' }
+const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+const labelCls = 'text-[12px] font-bold text-[var(--text-primary)]'
+const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95'
+const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
 
 export default function ProfileSetup() {
   const { session, profile, setProfile } = useAuth()
@@ -105,7 +105,7 @@ export default function ProfileSetup() {
         )}
         <div>
           <p className="text-[12px] font-bold text-ink-900">{label}</p>
-          <p className={`text-[11px] text-ink-500 mt-0.5 font-medium ${anon ? 'font-mono' : ''}`}>{preview}</p>
+          <p className={`text-[12px] text-ink-500 mt-0.5 font-medium ${anon ? 'font-mono' : ''}`}>{preview}</p>
         </div>
       </label>
     )
@@ -115,34 +115,34 @@ export default function ProfileSetup() {
     <div className="flex items-center gap-2 mb-4">
       {[1, 2].map(n => (
         <div key={n} className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-extrabold transition-all"
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-extrabold transition-all"
             style={step >= n
-              ? { background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', color: '#fff' }
-              : { background: '#EBF1FC', color: '#8FA3C7' }}>
+              ? { background: 'var(--accent-deep)', color: '#fff' }
+              : { background: 'var(--accent-soft)', color: 'var(--text-tertiary)' }}>
             {step > n ? <Check size={12} strokeWidth={3} /> : n}
           </div>
-          {n === 1 && <div className="w-8 h-[2px] rounded-full" style={{ background: step > 1 ? '#1A5AC8' : '#EBF1FC' }} />}
+          {n === 1 && <div className="w-8 h-[2px] rounded-full" style={{ background: step > 1 ? 'var(--accent)' : 'var(--accent-soft)' }} />}
         </div>
       ))}
-      <span className="ml-1 text-[11px] font-bold text-[#8FA3C7]">
+      <span className="ml-1 text-[12px] font-bold text-[var(--text-tertiary)]">
         {step === 1 ? 'Tus datos' : 'Tu contraseña'}
       </span>
     </div>
   )
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto" style={{ background: '#E4EBF7', WebkitOverflowScrolling: 'touch' }}>
+    <div className="fixed inset-0 z-50 overflow-y-auto" style={{ background: 'var(--bg-app)', WebkitOverflowScrolling: 'touch' }}>
       <div className="min-h-full flex items-start justify-center p-4 py-8">
-        <div className="bg-white rounded-[22px] w-full max-w-md p-7" style={{ boxShadow: '0 16px 44px rgba(8,31,74,0.16)' }}>
+        <div className="bg-white rounded-modal w-full max-w-md p-7" style={{ boxShadow: 'var(--shadow-modal)' }}>
 
-          <span className="font-extrabold text-[21px] block mb-4" style={{ color: '#0A2A5C', letterSpacing: '-0.03em' }}>
-            Cobalto<span style={{ color: '#1A5AC8' }}>.</span>
+          <span className="font-extrabold text-[20px] block mb-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+            Cobalto<span style={{ color: 'var(--accent)' }}>.</span>
           </span>
 
-          <h2 className="font-extrabold text-[20px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>
+          <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>
             Crea tu cuenta en 2 pasos
           </h2>
-          <p className="text-[12px] mt-1 mb-4 font-medium text-[#8FA3C7]">
+          <p className="text-[12px] mt-1 mb-4 font-medium text-[var(--text-tertiary)]">
             Solo nosotros sabemos quién eres. La comunidad no.
           </p>
 
@@ -151,9 +151,9 @@ export default function ProfileSetup() {
           {/* ═════════ PASO 1: NOMBRE + CELULAR + IDENTIDAD ═════════ */}
           {step === 1 && (
             <form onSubmit={goNext} className="space-y-4">
-              <div className="rounded-[14px] p-3 flex gap-2.5 items-start" style={{ background: '#F0FDF4' }}>
+              <div className="rounded-btn p-3 flex gap-2.5 items-start" style={{ background: '#F0FDF4' }}>
                 <Lock size={15} className="text-green-700 mt-0.5 flex-shrink-0" />
-                <p className="text-[11px] leading-relaxed text-green-800">
+                <p className="text-[12px] leading-relaxed text-green-800">
                   Tu nombre y celular son <strong>100% privados</strong>. Nadie en la comunidad los verá.
                 </p>
               </div>
@@ -179,15 +179,15 @@ export default function ProfileSetup() {
                 </div>
               )}
 
-              <div className="rounded-[14px] p-3.5" style={{ background: '#F4F7FD' }}>
+              <div className="rounded-btn p-3.5" style={{ background: 'var(--accent-softer)' }}>
                 <div className="flex items-center gap-1.5 mb-0.5">
-                  <Eye size={13} style={{ color: '#0047AB' }} />
-                  <span className="text-[12px] font-bold text-[#0A2A5C]">¿Cómo te identifica la comunidad?</span>
+                  <Eye size={13} style={{ color: 'var(--accent-deep)' }} />
+                  <span className="text-[12px] font-bold text-[var(--text-primary)]">¿Cómo te identifica la comunidad?</span>
                 </div>
-                <p className="text-[11px] mb-3 text-[#8FA3C7]">Lo único público. Puedes cambiarlo cuando quieras.</p>
+                <p className="text-[12px] mb-3 text-[var(--text-tertiary)]">Lo único público. Puedes cambiarlo cuando quieras.</p>
                 <div className="flex gap-2.5">
                   <IdentityCard mode="anon" anon label="Anónimo" preview={`Usuario-${form.identity_number}`} />
-                  <IdentityCard mode="real" icon={<Check size={17} style={{ color: '#0047AB' }} />}
+                  <IdentityCard mode="real" icon={<Check size={17} style={{ color: 'var(--accent-deep)' }} />}
                     label="Mi nombre" preview={form.full_name || 'Tu nombre'} />
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function ProfileSetup() {
                 Continuar <ArrowRight size={16} />
               </button>
               <button type="button" onClick={signOut}
-                className="w-full text-center text-[12px] font-bold text-[#8FA3C7] hover:underline py-1">
+                className="w-full text-center text-[12px] font-bold text-[var(--text-tertiary)] hover:underline py-1">
                 Cerrar sesión
               </button>
             </form>
@@ -224,12 +224,12 @@ export default function ProfileSetup() {
                   onChange={e => set('password2', e.target.value)}
                   placeholder="Escríbela de nuevo" className={inputCls} />
                 {passFilled && form.password2.length > 0 && (
-                  <p className="text-[11px] mt-1.5 font-bold" style={{ color: passMatch ? '#16a34a' : '#dc2626' }}>
+                  <p className="text-[12px] mt-1.5 font-bold" style={{ color: passMatch ? '#16a34a' : '#dc2626' }}>
                     {passMatch ? '✓ Las contraseñas coinciden' : 'No coinciden'}
                   </p>
                 )}
                 {!needsPassword && (
-                  <p className="text-[11px] mt-1.5 text-[#8FA3C7]">Opcional: solo si quieres establecer una nueva.</p>
+                  <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Opcional: solo si quieres establecer una nueva.</p>
                 )}
               </div>
 
@@ -239,7 +239,7 @@ export default function ProfileSetup() {
                 {loading ? <Spinner size={16} /> : 'Entrar a Cobalto'}
               </button>
               <button type="button" onClick={() => { setStep(1); setError('') }}
-                className="w-full flex items-center justify-center gap-1.5 text-[12px] font-bold text-[#0047AB] hover:underline py-1">
+                className="w-full flex items-center justify-center gap-1.5 text-[12px] font-bold text-[var(--accent-deep)] hover:underline py-1">
                 <ArrowLeft size={13} /> Volver
               </button>
             </form>

@@ -24,17 +24,17 @@ const RULES = [
 ]
 const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','cobalto11','cobalto123']
 
-const inputCls = 'w-full px-4 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
-const codeCls = 'w-full px-3 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
-const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-[14px] disabled:opacity-40 transition-all active:scale-95'
-const primaryStyle = { background: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', boxShadow: '0 8px 20px rgba(11,46,104,0.3), inset 0 1px 0 rgba(255,255,255,0.2)' }
-const ghostBtn = 'w-full flex items-center justify-center gap-2 text-[13px] font-bold py-3 rounded-[14px] transition-all active:scale-95'
-const ghostStyle = { boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#0047AB', background: '#fff' }
+const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+const codeCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95'
+const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
+const ghostBtn = 'w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95'
+const ghostStyle = { boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }
 
 const Header = ({ title, sub }) => (
   <div>
-    <h2 className="font-extrabold text-[20px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>{title}</h2>
-    {sub && <p className="text-[12px] mt-1 font-medium text-[#8FA3C7]">{sub}</p>}
+    <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{title}</h2>
+    {sub && <p className="text-[12px] mt-1 font-medium text-[var(--text-tertiary)]">{sub}</p>}
   </div>
 )
 
@@ -110,9 +110,9 @@ export default function SignupForm({ onSwitchLogin }) {
               <Phone size={16} /> Con mi celular
             </button>
             <div className="relative flex items-center gap-3 py-1">
-              <div className="flex-1 h-px" style={{ background: '#DDE7FA' }} />
-              <span className="text-[10px] font-medium" style={{ color: '#8FA3C7' }}>o</span>
-              <div className="flex-1 h-px" style={{ background: '#DDE7FA' }} />
+              <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+              <span className="text-[12px] font-medium" style={{ color: 'var(--text-tertiary)' }}>o</span>
+              <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
             </div>
           </>
         )}
@@ -121,9 +121,9 @@ export default function SignupForm({ onSwitchLogin }) {
           style={PHONE_AUTH_ENABLED ? ghostStyle : primaryStyle}>
           <Mail size={15} /> Con mi correo
         </button>
-        <div className="text-center text-[12px] pt-4 font-medium text-[#8FA3C7]" style={{ borderTop: '1px solid #EBF1FC' }}>
+        <div className="text-center text-[12px] pt-4 font-medium text-[var(--text-tertiary)]" style={{ borderTop: '1px solid var(--accent-soft)' }}>
           ¿Ya tienes cuenta?{' '}
-          <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[#0047AB]">
+          <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[var(--accent-deep)]">
             Iniciar sesión
           </button>
         </div>
@@ -141,7 +141,7 @@ export default function SignupForm({ onSwitchLogin }) {
 
       {!codeSent ? (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">
             {isPhone ? 'Número de celular' : 'Correo electrónico'}
           </label>
           {isPhone ? (
@@ -153,16 +153,16 @@ export default function SignupForm({ onSwitchLogin }) {
               onChange={e => setContact(e.target.value)}
               placeholder="tu@empresa.com" className={inputCls} />
           )}
-          {isPhone && <p className="text-[11px] mt-1.5 text-[#8FA3C7]">Colombia (+57) por defecto.</p>}
+          {isPhone && <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Colombia (+57) por defecto.</p>}
         </div>
       ) : (
         <div>
-          <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Código de 6 dígitos</label>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
           <input type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus value={code}
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000" className={codeCls} />
           <button type="button" onClick={sendCode} disabled={loading}
-            className="text-[12px] font-bold hover:underline mt-2 inline-block text-[#0047AB]">
+            className="text-[12px] font-bold hover:underline mt-2 inline-block text-[var(--accent-deep)]">
             Reenviar código
           </button>
         </div>
@@ -179,10 +179,10 @@ export default function SignupForm({ onSwitchLogin }) {
       <div className="flex items-center justify-between pt-2">
         <button type="button"
           onClick={() => { codeSent ? (setCodeSent(false), setCode('')) : setMethod(null); reset() }}
-          className="flex items-center gap-1 text-[12px] font-bold hover:underline text-[#0047AB]">
+          className="flex items-center gap-1 text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
           <ArrowLeft size={13} /> Volver
         </button>
-        <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[#0047AB]">
+        <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
           Ya tengo cuenta
         </button>
       </div>
@@ -203,7 +203,7 @@ function ClassicEmailSignup({ onSwitchLogin }) {
   const isCommon = COMMON.includes(pass.toLowerCase())
   const strong   = passed.length === RULES.length && !isCommon
   const strength = isCommon ? 0 : passed.length
-  const barColor = strength <= 2 ? '#dc2626' : strength <= 4 ? '#2C6BD4' : '#16a34a'
+  const barColor = strength <= 2 ? '#dc2626' : strength <= 4 ? 'var(--accent)' : '#16a34a'
   const barLabel = isCommon ? 'Muy común, elige otra'
     : strength <= 2 ? 'Débil' : strength <= 3 ? 'Media' : strength === 4 ? 'Buena' : 'Fuerte'
 
@@ -232,23 +232,23 @@ function ClassicEmailSignup({ onSwitchLogin }) {
       <Header title="Crear cuenta" sub="Con tu correo electrónico" />
 
       <div>
-        <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Email</label>
+        <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
           placeholder="tu@empresa.com" className={inputCls} autoComplete="email" />
       </div>
 
       <div>
-        <label className="block text-[12px] font-bold text-[#0A2A5C] mb-1.5">Contraseña</label>
+        <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Contraseña</label>
         <input type="password" value={pass} required autoComplete="new-password"
           onChange={e => { setPass(e.target.value); if (!touched) setTouched(true) }}
           placeholder="••••••••" className={inputCls} />
 
         {touched && pass.length > 0 && (
           <div className="mt-2">
-            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#EBF1FC' }}>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--accent-soft)' }}>
               <div className="h-full transition-all" style={{ width: `${(strength / RULES.length) * 100}%`, background: barColor }} />
             </div>
-            <p className="text-[10px] mt-1 font-bold" style={{ color: barColor }}>{barLabel}</p>
+            <p className="text-[12px] mt-1 font-bold" style={{ color: barColor }}>{barLabel}</p>
             <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 mt-1.5">
               {RULES.map(r => {
                 const ok = r.test(pass)
@@ -256,7 +256,7 @@ function ClassicEmailSignup({ onSwitchLogin }) {
                   <div key={r.id} className="flex items-center gap-1">
                     {ok ? <Check size={11} style={{ color: '#16a34a', flexShrink: 0 }} />
                         : <X size={11} style={{ color: '#C9D9F2', flexShrink: 0 }} />}
-                    <span className="text-[10px]" style={{ color: ok ? '#16a34a' : '#8FA3C7' }}>{r.label}</span>
+                    <span className="text-[12px]" style={{ color: ok ? '#16a34a' : 'var(--text-tertiary)' }}>{r.label}</span>
                   </div>
                 )
               })}
@@ -272,9 +272,9 @@ function ClassicEmailSignup({ onSwitchLogin }) {
         {loading ? <Spinner size={16} /> : 'Crear cuenta'}
       </button>
 
-      <div className="text-center text-[12px] pt-2 font-medium text-[#8FA3C7]">
+      <div className="text-center text-[12px] pt-2 font-medium text-[var(--text-tertiary)]">
         ¿Ya tienes cuenta?{' '}
-        <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[#0047AB]">
+        <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[var(--accent-deep)]">
           Iniciar sesión
         </button>
       </div>

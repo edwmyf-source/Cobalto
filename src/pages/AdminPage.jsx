@@ -379,7 +379,7 @@ function BannersTab() {
   )
 }
 
-const WIDGET_FORM_DEFAULT = { titulo: '', imagen_url: '', imagen_emoji: '🧪', imagen_gradient: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', btn_url: '', btn_texto: 'Más información', btn_color: '#FFFFFF', btn_text_color: '#0047AB', orden: 0, activo: true }
+const WIDGET_FORM_DEFAULT = { titulo: '', imagen_url: '', imagen_emoji: '🧪', imagen_gradient: 'linear-gradient(135deg,#0B2E68,#1A5AC8)', btn_url: '', btn_texto: 'Más información', btn_color: '#FFFFFF', btn_text_color: '#0B2E68', orden: 0, activo: true }
 
 function WidgetsTab() {
   const [widgets, setWidgets] = useState([])
@@ -530,7 +530,7 @@ function WidgetsTab() {
               {GRADIENTS.map(g => (
                 <button key={g} onClick={() => setForm(f => ({...f, imagen_gradient: g}))}
                   className="w-8 h-8 rounded-lg border-2 transition-all"
-                  style={{ background: g, borderColor: form.imagen_gradient === g ? '#0047AB' : 'transparent' }} />
+                  style={{ background: g, borderColor: form.imagen_gradient === g ? 'var(--accent-deep)' : 'transparent' }} />
               ))}
             </div>
           </div>
@@ -555,7 +555,7 @@ function WidgetsTab() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" id="wactivo" checked={form.activo} onChange={e => setForm(f => ({...f, activo: e.target.checked}))} style={{ accentColor: '#0047AB' }} />
+            <input type="checkbox" id="wactivo" checked={form.activo} onChange={e => setForm(f => ({...f, activo: e.target.checked}))} style={{ accentColor: 'var(--accent-deep)' }} />
             <label htmlFor="wactivo" className="text-xs text-ink-600">Publicar (visible para todos los usuarios)</label>
           </div>
           <div className="flex gap-2 pt-1">
@@ -567,7 +567,7 @@ function WidgetsTab() {
             )}
             <button onClick={save} disabled={saving || !form.titulo || !form.btn_url}
               className="px-5 py-2 rounded-xl text-xs font-bold text-white disabled:opacity-50"
-              style={{ background: '#0047AB' }}>
+              style={{ background: 'var(--accent-deep)' }}>
               {saving ? 'Guardando...' : editId ? 'Guardar cambios' : 'Crear widget'}
             </button>
           </div>

@@ -39,7 +39,7 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-3 py-3 rounded-[14px] border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+  const inputCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 
   return (
     <form onSubmit={submit} className="space-y-5">
@@ -73,7 +73,7 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
       <button
         type="submit"
         disabled={loading || code.length !== 6 || !challengeId}
-        className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-medium py-2.5 rounded-2xl disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-medium py-2.5 rounded-2xl disabled:opacity-50"
       >
         {loading ? <Spinner size={16} /> : 'Verificar'}
       </button>

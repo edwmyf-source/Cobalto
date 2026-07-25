@@ -11,9 +11,9 @@ import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 import MFASetup from '../components/auth/MFASetup'
 
-const inputCls = 'w-full px-4 h-14 rounded-[18px] text-[16px] focus:outline-none transition-all'
-const inputStyle = { background: '#ffffff', border: 'none', boxShadow: '0 4px 14px rgba(0,71,171,0.07)', color: '#0A2A5C', fontWeight: 500 }
-const labelCls = 'text-[14px] font-bold text-[#0A2A5C] mb-1.5 block'
+const inputCls = 'w-full px-4 h-14 rounded-card text-[16px] focus:outline-none transition-all'
+const inputStyle = { background: '#ffffff', border: 'none', boxShadow: '0 4px 14px rgba(0,71,171,0.07)', color: 'var(--text-primary)', fontWeight: 500 }
+const labelCls = 'text-[14px] font-bold text-[var(--text-primary)] mb-1.5 block'
 
 export default function ProfilePage() {
   const { session, profile, setProfile } = useAuth()
@@ -136,7 +136,7 @@ export default function ProfilePage() {
         className="flex items-center gap-1.5 text-[14px] font-medium text-gray-500 hover:text-gray-900 mb-4 transition-colors">
         <ArrowLeft size={16} /> Ver mi perfil público
       </button>
-      <h2 className="font-extrabold text-[28px] text-[#0A2A5C] mb-1" style={{ letterSpacing: '-0.03em' }}>Configuración</h2>
+      <h2 className="font-extrabold text-[28px] text-[var(--text-primary)] mb-1" style={{ letterSpacing: '-0.03em' }}>Configuración</h2>
       <p className="text-[15px] text-gray-500 mb-6">Actualiza tus datos cuando quieras.</p>
 
       {/* Card pública actual — con foto */}

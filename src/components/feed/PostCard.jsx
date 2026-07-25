@@ -9,6 +9,7 @@ import { toggleReaction, getReactionsForPost } from '../../api/reactions'
 import { deletePost } from '../../api/posts'
 import { createNotification } from '../../api/notifications'
 import { useToast } from '../shared/Toast'
+import { Button, Card, Badge } from '../ui'
 import UserAvatar from '../shared/UserAvatar'
 import CommentSection from './CommentSection'
 import ReportModal from './ReportModal'
@@ -84,29 +85,42 @@ function PostMenu({ post, onReport, isMine = false, onDelete }) {
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen(o => !o)} aria-label="Más opciones"
-        className="p-1 rounded-lg hover:bg-slate-50 text-ink-400 hover:text-ink-600 transition-colors">
-        <MoreHorizontal size={14} />
+      <button onClick={() => setOpen(o => !o)} aria-label="Más opciones" aria-expanded={open}
+        className="w-8 h-8 flex items-center justify-center rounded-input transition-colors duration-[160ms]"
+        style={{ color: 'var(--text-tertiary)' }}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+        <MoreHorizontal size={18} strokeWidth={2} />
       </button>
       {open && (
-        <div className="absolute right-0 top-6 z-20 bg-white rounded-xl py-1 w-48"
-          style={{ boxShadow: '0 10px 30px rgba(8,31,74,0.18)', border: '1px solid #EBF1FC' }}>
+        <div className="absolute right-0 top-10 z-20 rounded-input py-2 w-52 modal-enter"
+          style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-dropdown)', border: '1px solid var(--border-soft)' }}
+          role="menu">
           {isMine ? (
-            <button onClick={() => { setOpen(false); onDelete?.() }}
-              className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-semibold text-red-600 hover:bg-red-50">
-              <Trash2 size={13} />
+            <button onClick={() => { setOpen(false); onDelete?.() }} role="menuitem"
+              className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
+              style={{ color: 'var(--error)' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--error-bg)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+              <Trash2 size={16} strokeWidth={2} />
               Eliminar publicación
             </button>
           ) : (
             <>
-              <button onClick={() => { setOpen(false); onReport() }}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-medium text-[#33456B] hover:bg-ink-50">
-                <Flag size={13} style={{ color: '#8FA3C7' }} />
+              <button onClick={() => { setOpen(false); onReport() }} role="menuitem"
+                className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                <Flag size={16} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
                 Reportar publicación
               </button>
-              <button onClick={handleBlock}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-medium text-[#33456B] hover:bg-ink-50">
-                <UserX size={13} style={{ color: '#8FA3C7' }} />
+              <button onClick={handleBlock} role="menuitem"
+                className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                <UserX size={16} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
                 Bloquear usuario
               </button>
             </>
@@ -203,66 +217,64 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const goToProfile = () => navigate(`/u/${post.author_id}`)
 
   return (
-    <div className="rounded-[22px] overflow-hidden bg-white" style={{ boxShadow: '0 10px 30px rgba(0,71,171,0.14)' }} id={`post-${post.id}`}>
-
-      <div className="px-4 pt-3.5 pb-3">
+    <Card id={`post-${post.id}`} className="overflow-hidden">
+      <div className="p-6">
 
       {/* Header */}
-      <div className="flex items-center gap-2.5 mb-2.5">
+      <div className="flex items-center gap-3 mb-4">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={34} className="!rounded-[13px]" />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={40} className="!rounded-input" />
         </button>
         <div className="flex-1 min-w-0">
           <button onClick={goToProfile}
-            className="text-[13.5px] font-extrabold leading-tight text-left hover:underline block truncate" style={{ color: '#0A2A5C', letterSpacing: '-0.01em' }}>
+            className="t-body-sm font-semibold text-left hover:underline block truncate"
+            style={{ color: 'var(--text-primary)' }}>
             {name}
           </button>
-          <p className="text-[11px] font-semibold leading-tight mt-0.5 truncate" style={{ color: '#8FA3C7' }}>
+          <p className="t-caption truncate mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
             {prof.city && <>{prof.city} · </>}
             {timeAgo(post.created_at)}
           </p>
         </div>
-        {catLabel && (
-          <span className="flex-shrink-0 px-2.5 py-1 rounded-[9px] text-[11px] font-extrabold" style={{ background: '#EBF1FC', color: '#0047AB' }}>
-            {catLabel}
-          </span>
-        )}
+        {catLabel && <Badge tone="brand" className="flex-shrink-0">{catLabel}</Badge>}
         <PostMenu post={post} isMine={isMine}
           onReport={() => setReportOpen(true)}
           onDelete={() => setConfirmDelete(true)} />
       </div>
 
       {/* Texto muro */}
-      <p className="text-[14px] leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-5 font-medium" style={{ color: '#33456B' }}>
+      <p className="t-body mb-4 whitespace-pre-wrap break-words line-clamp-5"
+        style={{ color: 'var(--text-secondary)' }}>
         {wallText}
       </p>
 
       <MediaGallery media={media} />
 
       {/* Footer — sin línea, separado por aire */}
-      <div className="pt-1.5 flex items-center gap-2">
-        <button onClick={handleLike}
-          className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[12px] text-[12px] transition-all active:scale-95"
+      <div className="flex items-center gap-2 pt-4 mt-4" style={{ borderTop: '1px solid var(--border-soft)' }}>
+        <button onClick={handleLike} aria-pressed={liked}
+          className="inline-flex items-center gap-2 h-[40px] px-4 rounded-btn text-[14px] font-medium
+            transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
           style={liked
-            ? { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }
-            : { background: '#EBF1FC', color: '#0047AB' }}>
-          <ThumbsUp size={16} fill={liked ? '#fff' : 'none'} />
-          <span className="font-extrabold">{likeCount || 0}</span>
+            ? { background: 'var(--accent-soft)', color: 'var(--accent-deep)' }
+            : { background: 'transparent', color: 'var(--text-secondary)' }}>
+          <ThumbsUp size={16} strokeWidth={2} fill={liked ? 'var(--accent-deep)' : 'none'} />
+          {likeCount || 0}
         </button>
-        <button onClick={() => setShowComments(!showComments)}
-          className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[12px] text-[12px] transition-all active:scale-95"
-          style={{ background: '#F4F7FD', color: '#5578AD' }}>
-          <MessageCircle size={16} />
-          <span className="font-extrabold">{post.comment_count || 0}</span>
+
+        <button onClick={() => setShowComments(!showComments)} aria-expanded={showComments}
+          className="inline-flex items-center gap-2 h-[40px] px-4 rounded-btn text-[14px] font-medium
+            transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
+          style={{ background: 'transparent', color: 'var(--text-secondary)' }}>
+          <MessageCircle size={16} strokeWidth={2} />
+          {post.comment_count || 0}
         </button>
+
         {!isMine && (
-          <button onClick={() => onContact?.(post)} disabled={isContacting} aria-label="Contactar"
-            className="ml-auto flex items-center gap-1.5 px-[15px] py-[7px] rounded-[12px] text-[12px] font-extrabold transition-all active:scale-95 disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 4px 12px rgba(0,71,171,0.25)' }}>
-            {isContacting
-              ? <Loader2 size={16} className="animate-spin" />
-              : <>Contactar</>}
-          </button>
+          <Button size="sm" onClick={() => onContact?.(post)} loading={isContacting}
+            className="ml-auto">
+            Contactar
+          </Button>
         )}
       </div>
 
@@ -271,40 +283,38 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
       {/* Confirmación de borrado — acción irreversible */}
       {confirmDelete && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-5"
-          style={{ background: 'rgba(8,31,74,0.45)', backdropFilter: 'blur(3px)' }}
-          onClick={() => !deleting && setConfirmDelete(false)}>
-          <div className="bg-white rounded-[20px] w-full max-w-[340px] p-5"
-            style={{ boxShadow: '0 20px 50px rgba(8,31,74,0.3)' }}
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6"
+          style={{ background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)' }}
+          onClick={() => !deleting && setConfirmDelete(false)}
+          role="dialog" aria-modal="true" aria-labelledby="del-title">
+          <div className="modal-enter rounded-modal w-full max-w-[380px] p-6"
+            style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}
             onClick={e => e.stopPropagation()}>
-            <div className="w-11 h-11 rounded-[14px] flex items-center justify-center mb-3"
-              style={{ background: '#FEE2E2' }}>
-              <Trash2 size={20} style={{ color: '#dc2626' }} />
+            <div className="w-11 h-11 rounded-input flex items-center justify-center mb-4"
+              style={{ background: 'var(--error-bg)' }}>
+              <Trash2 size={20} strokeWidth={1.9} style={{ color: 'var(--error)' }} />
             </div>
-            <h3 className="font-extrabold text-[16px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>
-              ¿Eliminar esta publicación?
+            <h3 id="del-title" className="t-h4" style={{ color: 'var(--text-primary)' }}>
+              Eliminar publicación
             </h3>
-            <p className="text-[12px] mt-1.5 font-medium leading-relaxed" style={{ color: '#8FA3C7' }}>
-              Se borrarán también sus comentarios y reacciones. Esta acción no se puede deshacer.
-              Los chats que hayas iniciado desde ella se conservan.
+            <p className="t-body-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
+              Se borran también sus comentarios y reacciones, y no se puede deshacer.
+              Los chats que iniciaste desde ella se conservan.
             </p>
-            <div className="flex gap-2 mt-4">
-              <button onClick={() => setConfirmDelete(false)} disabled={deleting}
-                className="flex-1 py-2.5 rounded-[13px] text-[13px] font-bold transition-all active:scale-95 disabled:opacity-50"
-                style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#33456B', background: '#fff' }}>
+            <div className="flex gap-3 mt-6">
+              <Button variant="secondary" size="sm" fullWidth
+                onClick={() => setConfirmDelete(false)} disabled={deleting}>
                 Cancelar
-              </button>
-              <button onClick={handleDelete} disabled={deleting}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[13px] text-[13px] font-extrabold text-white transition-all active:scale-95 disabled:opacity-60"
-                style={{ background: 'linear-gradient(135deg,#b91c1c,#dc2626)', boxShadow: '0 6px 16px rgba(220,38,38,0.3)' }}>
-                {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
-                {deleting ? 'Borrando...' : 'Eliminar'}
-              </button>
+              </Button>
+              <Button variant="destructive" size="sm" fullWidth
+                onClick={handleDelete} loading={deleting}>
+                {deleting ? 'Eliminando' : 'Eliminar'}
+              </Button>
             </div>
           </div>
         </div>
       )}
       </div>
-    </div>
+    </Card>
   )
 })

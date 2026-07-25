@@ -2,97 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ════════════════════════════════════════════════════════════════════════
+   TOKENS DEL SISTEMA DE DISEÑO
+   Fuente única de verdad. Cambiar aquí cambia toda la app.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Fondos ── */
+  --bg-app:        #F5F7FA;
+  --bg-subtle:     #EEF1F6;
+  --surface:       #FFFFFF;
+  --surface-raised:#FAFBFD;
+
+  /* ── Texto ── */
+  --text-primary:   #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary:  #94A3B8;
+  --text-inverse:   #FFFFFF;
+
+  /* ── Bordes ── */
+  --border:        #E3E8EF;
+  --border-soft:   #EDF1F7;
+  --border-focus:  #1A5AC8;
+
+  /* ── Acento (Cobalto) ── */
+  --accent-deep:   #0B2E68;
+  --accent:        #1A5AC8;
+  --accent-hover:  #17509F;
+  --accent-soft:   #E4EDFB;
+  --accent-softer: #F1F6FE;
+
+  /* ── Estados ── */
+  --success:     #2E7D32;
+  --success-bg:  #EDF7EE;
+  --warning:     #C58B1A;
+  --warning-bg:  #FCF6E8;
+  --error:       #C24141;
+  --error-bg:    #FBEDED;
+  --info:        #2563EB;
+  --info-bg:     #EBF2FE;
+
+  /* ── Radios ── */
+  --r-input:  12px;
+  --r-btn:    14px;
+  --r-card:   20px;
+  --r-panel:  24px;
+  --r-modal:  28px;
+  --r-pill:   999px;
+
+  /* ── Sombras: muy suaves, jerarquía real ── */
+  --shadow-card:     0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.03);
+  --shadow-card-hover:0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
+  --shadow-raised:   0 4px 16px rgba(15,23,42,0.07), 0 1px 3px rgba(15,23,42,0.04);
+  --shadow-dropdown: 0 8px 28px rgba(15,23,42,0.10), 0 2px 6px rgba(15,23,42,0.05);
+  --shadow-modal:    0 24px 60px rgba(15,23,42,0.16), 0 4px 12px rgba(15,23,42,0.06);
+
+  /* ── Movimiento ── */
+  --t-hover: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-base:  200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-modal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   BASE
+   ════════════════════════════════════════════════════════════════════════ */
 html, body, #root { overflow-x: clip; width: 100%; max-width: 100vw; }
 * { box-sizing: border-box; }
 
 body {
-  background: #FFFFFF;
+  background: var(--bg-app);
+  color: var(--text-primary);
   min-height: 100vh;
+  font-family: Manrope, Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* Foco visible sólo por teclado: accesible sin ensuciar el clic con el ratón. */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Números tabulares en métricas: no bailan al actualizarse. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   ESCALA TIPOGRÁFICA — 5 tamaños, según especificación
+   ════════════════════════════════════════════════════════════════════════ */
+.t-h1      { font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.025em; }
+.t-h2      { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em; }
+.t-h3      { font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.015em; }
+.t-h4      { font-size: 18px; line-height: 26px; font-weight: 500; letter-spacing: -0.01em; }
+.t-body    { font-size: 16px; line-height: 24px; font-weight: 400; }
+.t-body-sm { font-size: 14px; line-height: 20px; font-weight: 400; }
+.t-caption { font-size: 12px; line-height: 16px; font-weight: 400; }
+.t-label   { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.02em; }
+.t-eyebrow { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   SKELETON LOADERS
+   ════════════════════════════════════════════════════════════════════════ */
 @keyframes shimmer {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 .skeleton {
-  background: #FFFFFF;
-  border-radius: 1rem;
   position: relative;
   overflow: hidden;
+  background: var(--bg-subtle);
+  border-radius: var(--r-input);
 }
 .skeleton::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%);
-  animation: shimmer 1.2s ease-in-out infinite;
-  will-change: transform;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+  animation: shimmer 1.4s infinite;
 }
 
-@keyframes page-fade-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes page-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes slide-left {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-.page-enter    { animation: page-fade-up  220ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-.panel-enter   { animation: page-fade-in  180ms ease both; }
-.slide-in-left { animation: slide-left    200ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-
+/* ════════════════════════════════════════════════════════════════════════
+   UTILIDADES
+   ════════════════════════════════════════════════════════════════════════ */
 .scroll-x-safe {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 .scroll-x-safe::-webkit-scrollbar { display: none; }
 
-
-/* Cobalto visual refresh */
-:root {
-  --cobalto-primary: #0047AB;
-  --cobalto-primary-2: #2C6BD4;
-  --cobalto-accent: #0047AB;
-  --cobalto-bg: #E4EBF7;
-  --cobalto-card: #ffffff;
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.page-enter { animation: fadeInUp var(--t-base) both; }
 
-body {
-  background: #E4EBF7;
-  color: #33456B;
-  font-family: Manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.97) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
+.modal-enter { animation: modalIn var(--t-modal) both; }
 
-button, a, input, textarea {
-  transition: all .18s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-.shadow, .shadow-sm, .shadow-md, .shadow-lg {
-  box-shadow: 0 8px 28px rgba(0, 71, 171, .09) !important;
-}
-
-/* tarjetas tipo plataforma B2B — flotan con sombra azulada, sin bordes */
-.bg-white {
-  background-color: #ffffff;
-}
-
-input, textarea, select {
-  border-color: #DDE7FA !important;
-  background: #ffffff;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: var(--cobalto-accent) !important;
-  box-shadow: 0 0 0 4px rgba(0,71,171,.14);
+/* Respeta la preferencia del sistema de reducir movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

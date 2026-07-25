@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Sparkles, Clock, ArrowUp } from 'lucide-react'
+import { Sparkles, Clock, ArrowUp, FileText } from 'lucide-react'
 import { listPosts } from '../api/posts'
 import { getOrCreateConversation, sendMessage } from '../api/messages'
 import { createNotification } from '../api/notifications'
@@ -15,6 +15,7 @@ import FilterBar from '../components/feed/FilterBar'
 import PublishSuccessModal from '../components/feed/PublishSuccessModal'
 import BannerCarousel from '../components/feed/BannerCarousel'
 import Spinner from '../components/shared/Spinner'
+import { Button, Panel, SkeletonPostCard, EmptyState, SectionLabel } from '../components/ui'
 import ErrorBoundary from '../components/shared/ErrorBoundary'
 import { TAB_COLOR } from '../lib/constants'
 import { getCommunityStats } from '../api/stats'
@@ -299,21 +300,21 @@ export default function FeedPage() {
             <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #0B2E68 0%, #1A5AC8 100%)' }} />
             <div className="px-3 pb-3 -mt-6">
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
-                style={{ border: '3px solid white', background: '#0047AB' }}>
+                style={{ border: '3px solid white', background: 'var(--accent-deep)' }}>
                 {profile?.avatar_url
                   ? <img src={profile.avatar_url} className="w-12 h-12 object-cover" alt={name} />
                   : <span>{initials}</span>}
               </div>
-              <p className="font-bold text-sm leading-tight" style={{ color: '#0047AB' }}>{name}</p>
-              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: '#2C6BD4' }}>{profile.city}</p>}
-              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '1px solid #D6E2F5' }}>
+              <p className="font-bold text-sm leading-tight" style={{ color: 'var(--accent-deep)' }}>{name}</p>
+              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: 'var(--accent)' }}>{profile.city}</p>}
+              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '1px solid var(--border)' }}>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: '#2C6BD4' }}>Publicaciones</span>
-                  <span className="text-[11px] font-bold" style={{ color: '#0047AB' }}>{communityStats.requests || 0}</span>
+                  <span className="text-[11px]" style={{ color: 'var(--accent)' }}>Publicaciones</span>
+                  <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>{communityStats.requests || 0}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: '#2C6BD4' }}>Activos hoy</span>
-                  <span className="text-[11px] font-bold" style={{ color: '#0047AB' }}>{communityStats.activeThisWeek || 0}</span>
+                  <span className="text-[11px]" style={{ color: 'var(--accent)' }}>Activos hoy</span>
+                  <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>{communityStats.activeThisWeek || 0}</span>
                 </div>
               </div>
             </div>
@@ -326,18 +327,18 @@ export default function FeedPage() {
                 <span key={e} style={{ fontSize: 10 + i*3, opacity: i === a.length-2 ? 1 : 0.35 + i*0.1 }}>{e}</span>
               ))}
             </div>
-            <p className="text-[11px] font-bold mb-0.5" style={{ color: '#0047AB' }}>🏅 Gana tu insignia</p>
-            <p className="text-[10px] mb-2" style={{ color: '#2C6BD4' }}>Tu rango aparece en tus posts</p>
+            <p className="text-[11px] font-bold mb-0.5" style={{ color: 'var(--accent-deep)' }}>🏅 Gana tu insignia</p>
+            <p className="text-[10px] mb-2" style={{ color: 'var(--accent)' }}>Tu rango aparece en tus posts</p>
             <button onClick={() => navigate('/quimica')}
               className="w-full py-1.5 rounded-lg text-[11px] font-bold text-white"
-              style={{ background: '#0047AB' }}>
+              style={{ background: 'var(--accent-deep)' }}>
               Jugar ahora →
             </button>
           </div>
 
           {/* Próximos eventos */}
           <div className="bg-white rounded-xl border border-ink-200 shadow-sm">
-            <p className="text-[11px] font-bold px-3 pt-3 pb-1" style={{ color: '#0047AB' }}>📅 Próximos eventos</p>
+            <p className="text-[11px] font-bold px-3 pt-3 pb-1" style={{ color: 'var(--accent-deep)' }}>📅 Próximos eventos</p>
             <div className="px-3 pb-3 space-y-2">
               {[
                 { day: '12', mon: 'Jul', name: 'Expoquímica Bogotá', loc: 'Corferias · Presencial' },
@@ -345,17 +346,17 @@ export default function FeedPage() {
                 { day: '2',  mon: 'Ago', name: 'Taller reactivos lab', loc: 'Medellín · Cupos ltdos.' },
               ].map(ev => (
                 <div key={ev.name} className="flex gap-2 items-start">
-                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#FFFFFF', border: '1px solid #D6E2F5' }}>
-                    <p className="text-sm font-bold leading-none" style={{ color: '#0047AB' }}>{ev.day}</p>
-                    <p className="text-[8px] uppercase" style={{ color: '#2C6BD4' }}>{ev.mon}</p>
+                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#FFFFFF', border: '1px solid var(--border)' }}>
+                    <p className="text-sm font-bold leading-none" style={{ color: 'var(--accent-deep)' }}>{ev.day}</p>
+                    <p className="text-[8px] uppercase" style={{ color: 'var(--accent)' }}>{ev.mon}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-semibold leading-tight" style={{ color: '#0047AB' }}>{ev.name}</p>
-                    <p className="text-[9px]" style={{ color: '#2C6BD4' }}>{ev.loc}</p>
+                    <p className="text-[10px] font-semibold leading-tight" style={{ color: 'var(--accent-deep)' }}>{ev.name}</p>
+                    <p className="text-[9px]" style={{ color: 'var(--accent)' }}>{ev.loc}</p>
                   </div>
                 </div>
               ))}
-              <button className="text-[10px] font-semibold mt-1" style={{ color: '#0047AB' }}>Ver todos →</button>
+              <button className="text-[10px] font-semibold mt-1" style={{ color: 'var(--accent-deep)' }}>Ver todos →</button>
             </div>
           </div>
 
@@ -366,14 +367,14 @@ export default function FeedPage() {
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
           <BannerCarousel />
           <div className="flex items-center justify-between">
-            <span className="text-[11px]" style={{ color: '#2C6BD4' }}>
+            <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
               {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
             </span>
             <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
               {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
                 <button key={opt.value} onClick={() => setSort(opt.value)}
                   className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
-                  style={sort === opt.value ? { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)' } : {}}>
+                  style={sort === opt.value ? { background: 'var(--accent-deep)' } : {}}>
                   <Icon size={12} />{opt.label}
                 </button>
               )})}
@@ -382,24 +383,25 @@ export default function FeedPage() {
           {newPostsAvailable && (
             <button onClick={loadNewPosts}
               className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl"
-              style={{ background: '#0047AB' }}>
+              style={{ background: 'var(--accent-deep)' }}>
               <ArrowUp size={13} /> Hay novedades, mira
             </button>
           )}
           {loading ? (
-            <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
+            <div className="space-y-4">{[1,2,3].map(i => <SkeletonPostCard key={i} />)}</div>
           ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl border border-ink-200">
-              <h3 className="font-medium text-base mb-1" style={{ color: '#0047AB' }}>Aún no hay nada por aquí</h3>
-              <p className="text-xs mb-3" style={{ color: '#2C6BD4' }}>Prueba con otro filtro o vuelve más tarde.</p>
-              <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#0047AB' }}>Crear publicación</button>
-            </div>
+            <Panel>
+              <EmptyState icon={FileText}
+                title="Todavía no hay publicaciones"
+                description="Cambia los filtros para ver más, o abre la conversación publicando algo tú."
+                action={<Button onClick={() => setPublishOpen(true)}>Crear publicación</Button>} />
+            </Panel>
           ) : (
             <div className="space-y-0">
               {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
                 <div key={post.id}>
                   <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
-                  {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
+                  {idx < arr.length - 1 && <div style={{ height: '16px' }} />}
                 </div>
               ))}
               <div ref={sentinel} />
@@ -418,41 +420,44 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
-        <div className="flex items-center justify-between mb-3 mt-2 px-2">
-          <span className="text-[10px] font-extrabold" style={{ color: '#5578AD', letterSpacing: '0.12em' }}>
-            {loading ? 'PUBLICACIONES' : `PUBLICACIONES · ${posts.filter(p => !blockedUsers.includes(p.author_id)).length}`}
+        <div className="flex items-center justify-between mb-4 mt-2">
+          <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
+            {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}
           </span>
-          <div className="flex bg-white rounded-2xl overflow-hidden" style={{ boxShadow: '0 4px 14px rgba(0,71,171,0.1)' }}>
-            {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
-              <button key={opt.value} onClick={() => setSort(opt.value)}
-                className={`flex items-center gap-1 px-3.5 py-[7px] text-[12px] font-bold transition-colors ${sort === opt.value ? 'text-white' : 'text-gray-500 hover:bg-gray-50'}`}
-                style={sort === opt.value ? { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)' } : {}}>
-                <Icon size={14} />{opt.label}
+          <div className="flex rounded-input overflow-hidden p-0.5" style={{ background: 'var(--bg-subtle)' }} role="tablist">
+            {SORT_OPTIONS.map(opt => { const Icon = opt.icon; const on = sort === opt.value; return (
+              <button key={opt.value} onClick={() => setSort(opt.value)} role="tab" aria-selected={on}
+                className="flex items-center gap-1.5 px-3 h-[32px] rounded-input text-[13px] font-medium transition-all duration-[160ms] ease-premium"
+                style={on
+                  ? { background: 'var(--surface)', color: 'var(--text-primary)', boxShadow: 'var(--shadow-card)' }
+                  : { background: 'transparent', color: 'var(--text-tertiary)' }}>
+                <Icon size={14} strokeWidth={2} />{opt.label}
               </button>
             )})}
           </div>
         </div>
         {newPostsAvailable && (
           <button onClick={loadNewPosts}
-            className="w-full flex items-center justify-center gap-1.5 text-white text-xs font-medium py-2 rounded-xl mb-2.5 mx-2"
-            style={{ background: '#0047AB', width: 'calc(100% - 16px)' }}>
+            className="w-full flex items-center justify-center gap-2 h-[40px] rounded-btn t-body-sm font-medium mb-4 transition-all duration-[160ms] active:scale-[0.99]"
+            style={{ background: 'var(--accent-soft)', color: 'var(--accent-deep)' }}>
             <ArrowUp size={13} /> Hay novedades, mira
           </button>
         )}
         {loading ? (
-          <div className="space-y-3 px-2">{[1,2,3].map(i => <div key={i} className="skeleton h-[200px]" />)}</div>
+          <div className="space-y-4">{[1,2,3].map(i => <SkeletonPostCard key={i} />)}</div>
         ) : posts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <h3 className="font-medium text-base mb-1" style={{ color: '#0047AB' }}>Aún no hay nada por aquí</h3>
-            <p className="text-xs mb-3" style={{ color: '#2C6BD4' }}>Prueba con otro filtro o vuelve más tarde.</p>
-            <button onClick={() => setPublishOpen(true)} className="text-white text-xs font-medium px-4 py-2 rounded-xl" style={{ background: '#0047AB' }}>Crear publicación</button>
-          </div>
+          <Panel>
+            <EmptyState icon={FileText}
+              title="Todavía no hay publicaciones"
+              description="Cambia los filtros para ver más, o abre la conversación publicando algo tú."
+              action={<Button onClick={() => setPublishOpen(true)}>Crear publicación</Button>} />
+          </Panel>
         ) : (
           <div className="space-y-0">
             {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
               <div key={post.id}>
                 <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
-                {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
+                {idx < arr.length - 1 && <div style={{ height: '16px' }} />}
               </div>
             ))}
             <div ref={sentinel} />

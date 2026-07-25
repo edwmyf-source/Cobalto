@@ -39,35 +39,35 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
   }
 
   return (
-    <div className="rounded-[22px] overflow-hidden bg-white" style={{ boxShadow: '0 10px 30px rgba(0,71,171,0.14)' }}>
+    <div className="rounded-card overflow-hidden bg-white" style={{ boxShadow: 'var(--shadow-card)' }}>
       <div className="px-4 pt-3.5 pb-3">
         <div className="flex items-center gap-2 mb-2">
           {catLabel && (
-            <span className="flex-shrink-0 px-2.5 py-1 rounded-[9px] text-[11px] font-extrabold" style={{ background: '#EBF1FC', color: '#0047AB' }}>
+            <span className="flex-shrink-0 px-2.5 py-1 rounded-input text-[11px] font-extrabold" style={{ background: 'var(--accent-soft)', color: 'var(--accent-deep)' }}>
               {catLabel}
             </span>
           )}
-          <span className="text-[10px] font-semibold ml-auto" style={{ color: '#8FA3C7' }}>{timeAgo(post.created_at)}</span>
+          <span className="text-[10px] font-semibold ml-auto" style={{ color: 'var(--text-tertiary)' }}>{timeAgo(post.created_at)}</span>
         </div>
-        <p className="text-[13px] leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-4 font-medium" style={{ color: '#33456B' }}>
+        <p className="text-[13px] leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-4 font-medium" style={{ color: 'var(--text-secondary)' }}>
           {wallText}
         </p>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-[9px]" style={{ background: '#F4F7FD', color: '#5578AD' }}>
+          <span className="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-input" style={{ background: 'var(--accent-softer)', color: 'var(--text-secondary)' }}>
             <MessageCircle size={12} />{post.comment_count || 0}
           </span>
 
           {isMine && (
             confirming ? (
               <div className="ml-auto flex items-center gap-1.5">
-                <span className="text-[10px] font-bold" style={{ color: '#8FA3C7' }}>¿Eliminar?</span>
+                <span className="text-[10px] font-bold" style={{ color: 'var(--text-tertiary)' }}>¿Eliminar?</span>
                 <button onClick={() => setConfirming(false)} disabled={deleting}
-                  className="text-[11px] font-bold px-2 py-1 rounded-[8px] disabled:opacity-50"
-                  style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#33456B' }}>
+                  className="text-[11px] font-bold px-2 py-1 rounded-input disabled:opacity-50"
+                  style={{ boxShadow: 'inset 0 0 0 1.5px var(--border)', color: 'var(--text-secondary)' }}>
                   No
                 </button>
                 <button onClick={remove} disabled={deleting}
-                  className="flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-[8px] text-white disabled:opacity-60"
+                  className="flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-input text-white disabled:opacity-60"
                   style={{ background: 'linear-gradient(135deg,#b91c1c,#dc2626)' }}>
                   {deleting ? <Loader2 size={11} className="animate-spin" /> : null}
                   Sí
@@ -75,8 +75,8 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
               </div>
             ) : (
               <button onClick={() => setConfirming(true)} aria-label="Eliminar publicación"
-                className="ml-auto flex items-center justify-center w-7 h-7 rounded-[9px] transition-colors hover:bg-red-50"
-                style={{ color: '#B8CBEF' }}>
+                className="ml-auto flex items-center justify-center w-7 h-7 rounded-input transition-colors hover:bg-red-50"
+                style={{ color: 'var(--text-tertiary)' }}>
                 <Trash2 size={13} />
               </button>
             )
@@ -238,7 +238,7 @@ export default function UserProfilePage() {
         <div className="relative" style={{ height: 150 }}>
           {coverUrl
             ? <img src={coverUrl} alt="" className="w-full h-full object-cover" />
-            : <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #0047AB 0%, #2C6BD4 70%, #4C82F0 100%)' }} />
+            : <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 70%, #4C82F0 100%)' }} />
           }
           {uploadingCover && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -264,16 +264,16 @@ export default function UserProfilePage() {
           <div className="flex items-end justify-between -mt-12 mb-4">
             <div className="relative flex-shrink-0">
               <div
-                className="border-4 border-white rounded-[28px] overflow-hidden"
+                className="border-4 border-white rounded-modal overflow-hidden"
                 onClick={isOwnProfile ? () => avatarInputRef.current?.click() : undefined}
                 style={isOwnProfile ? { cursor: 'pointer' } : {}}>
                 {uploadingAvatar ? (
                   <div style={{ width: 92, height: 92 }}
-                    className="rounded-[24px] bg-gray-100 flex items-center justify-center">
-                    <Loader2 size={24} className="animate-spin" style={{ color: '#0047AB' }} />
+                    className="rounded-panel bg-gray-100 flex items-center justify-center">
+                    <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent-deep)' }} />
                   </div>
                 ) : (
-                  <UserAvatar seed={profile.id} avatarUrl={profile.avatar_url} size={92} className="!rounded-[24px]" />
+                  <UserAvatar seed={profile.id} avatarUrl={profile.avatar_url} size={92} className="!rounded-panel" />
                 )}
               </div>
               {isOwnProfile && (
@@ -281,7 +281,7 @@ export default function UserProfilePage() {
                   onClick={() => avatarInputRef.current?.click()}
                   disabled={uploadingAvatar}
                   className="absolute bottom-1 right-1 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center transition-colors disabled:opacity-50"
-                  style={{ background: 'linear-gradient(135deg,#0047AB,#2C6BD4)' }}
+                  style={{ background: 'var(--accent-deep)' }}
                   aria-label="Cambiar foto de perfil">
                   <Camera size={14} className="text-white" />
                 </button>
@@ -301,8 +301,8 @@ export default function UserProfilePage() {
               <button onClick={handleFollow} disabled={loadingFollow}
                 className="flex items-center gap-1.5 text-[14px] font-semibold px-6 h-11 rounded-2xl transition-all disabled:opacity-60 active:scale-95"
                 style={isFollowing
-                  ? { border: '1px solid #0047AB', color: '#0047AB', background: '#fff' }
-                  : { background: 'linear-gradient(135deg,#0047AB,#2C6BD4)', color: '#fff', boxShadow: '0 8px 20px rgba(0,71,171,0.3)' }}>
+                  ? { border: '1px solid var(--accent-deep)', color: 'var(--accent-deep)', background: '#fff' }
+                  : { background: 'var(--accent-deep)', color: '#fff', boxShadow: '0 8px 20px rgba(0,71,171,0.3)' }}>
                 {loadingFollow
                   ? <Spinner size={15} />
                   : isFollowing
@@ -313,7 +313,7 @@ export default function UserProfilePage() {
             )}
           </div>
 
-          <p className="text-[22px] font-extrabold text-[#0A2A5C] leading-tight" style={{ letterSpacing: '-0.02em' }}>{displayName}</p>
+          <p className="text-[22px] font-extrabold text-[var(--text-primary)] leading-tight" style={{ letterSpacing: '-0.02em' }}>{displayName}</p>
           {profile.company_name && <p className="text-[15px] text-gray-500 mt-0.5">{profile.company_name}</p>}
           {profile.city && (
             <p className="flex items-center gap-1 text-[14px] text-gray-400 mt-1.5">
@@ -323,23 +323,23 @@ export default function UserProfilePage() {
 
           {/* Stat cards */}
           <div className="grid grid-cols-3 gap-3 mt-5">
-            <div className="rounded-2xl py-4 text-center" style={{ background: '#F4F7FD' }}>
-              <div className="text-[22px] font-extrabold text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>{posts.length}</div>
+            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
+              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{posts.length}</div>
               <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Publicaciones</div>
             </div>
-            <div className="rounded-2xl py-4 text-center" style={{ background: '#F4F7FD' }}>
-              <div className="text-[22px] font-extrabold text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>{counts.followers}</div>
+            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
+              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{counts.followers}</div>
               <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Seguidores</div>
             </div>
-            <div className="rounded-2xl py-4 text-center" style={{ background: '#F4F7FD' }}>
-              <div className="text-[22px] font-extrabold text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>{counts.following}</div>
+            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
+              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{counts.following}</div>
               <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Siguiendo</div>
             </div>
           </div>
         </div>
       </div>
 
-      <h3 className="text-[10px] font-extrabold uppercase mb-3 px-2" style={{ color: '#5578AD', letterSpacing: '0.12em' }}>Publicaciones</h3>
+      <h3 className="text-[10px] font-extrabold uppercase mb-3 px-2" style={{ color: 'var(--text-secondary)', letterSpacing: '0.12em' }}>Publicaciones</h3>
       {posts.length === 0 ? (
         <div className="text-center py-12 text-gray-400 text-[15px]">Sin publicaciones aún.</div>
       ) : (
