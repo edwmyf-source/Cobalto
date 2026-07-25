@@ -75,6 +75,40 @@ export const verifyPhoneCode = async (phone, code) => {
   return data
 }
 
+// ─── Registro exprés: solo nombre + celular ───────────────────────────────────
+// Mientras no haya proveedor SMS configurado (PHONE_AUTH_ENABLED=false), esta es
+// la vía de entrada. Como Supabase Auth siempre necesita un identificador
+// (email o phone) para crear la cuenta, se genera un correo "sintético" e
+// invisible a partir del número normalizado: la persona nunca lo ve ni lo usa.
+//
+// Esto también resuelve la deduplicación: como profiles_private está protegida
+// por RLS (solo el dueño puede leerla), el cliente no puede consultar si un
+// número ya está registrado. Pero Supabase sí rechaza un signUp con un email que
+// ya existe, así que dos personas no pueden "compartir" el mismo celular.
+//
+// Cuando actives PHONE_AUTH_ENABLED, este correo sintético deja de usarse para
+// cuentas nuevas (pasan a autenticarse por OTP real), sin afectar a quienes ya
+// se registraron por esta vía.
+const phoneToSyntheticEmail = (phone) =>
+  `${normalizePhone(phone).replace('+', '')}@phone.cobalto.app`
+
+export const signUpWithPhoneOnly = async (phone) => {
+  const email = phoneToSyntheticEmail(phone)
+  // Contraseña aleatoria: nadie la necesita para entrar mientras siga
+  // ingresando por celular; si más adelante quiere usar contraseña, la define
+  // desde Mi perfil (updatePassword).
+  const password = crypto.randomUUID()
+  const { data, error } = await supabase.auth.signUp({ email, password })
+  if (error) {
+    if (error.message?.includes('already registered')) {
+      throw new Error('Ese número ya tiene una cuenta. Intenta iniciar sesión.')
+    }
+    throw error
+  }
+  return data
+}
+
+
 export const signOut = async () => {
   clearAllCaches()
   return supabase?.auth.signOut()

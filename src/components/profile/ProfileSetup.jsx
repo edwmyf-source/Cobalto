@@ -17,13 +17,22 @@ const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shado
 export default function ProfileSetup() {
   const { session, profile, setProfile } = useAuth()
   const userId = session?.user?.id || ''
-  const userEmail = session?.user?.email || ''
-  const userPhone = session?.user?.phone || ''
+  const rawEmail = session?.user?.email || ''
+  // El registro exprés por celular usa un correo sintético invisible
+  // (numero@phone.cobalto.app) solo para que Supabase pueda crear la cuenta.
+  // Nunca debe tratarse como el email real de la persona.
+  const isSyntheticEmail = rawEmail.endsWith('@phone.cobalto.app')
+  const userEmail = isSyntheticEmail ? '' : rawEmail
+  const userPhone = session?.user?.phone || (isSyntheticEmail ? rawEmail.split('@')[0].replace(/^(\d)/, '+$1') : '')
   const defaultNumber = useMemo(() => generateIdentityNumber(userId), [userId])
+
+  const pendingName = (() => {
+    try { return sessionStorage.getItem('cobalto-pending-name') || '' } catch { return '' }
+  })()
 
   const [step, setStep] = useState(1)
   const [form, setForm] = useState({
-    full_name: profile?.full_name || '',
+    full_name: profile?.full_name || pendingName || '',
     phone: profile?.phone || userPhone || '',
     identity_mode: profile?.identity_mode || 'anon',
     identity_number: profile?.identity_number || defaultNumber,
@@ -77,6 +86,7 @@ export default function ProfileSetup() {
       }
       const p = await updateProfile(userId, payload)
       setProfile(p)
+      try { sessionStorage.removeItem('cobalto-pending-name') } catch {}
     } catch (err) {
       setError(safeErrorMessage(err))
     } finally {

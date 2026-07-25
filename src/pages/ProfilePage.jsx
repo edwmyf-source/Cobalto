@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, User, Check, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/profiles'
+import { updatePassword } from '../api/auth'
 import { useAuth } from '../contexts/AuthContext'
 import { DEPARTAMENTOS, isAdmin } from '../lib/constants'
 import { safeErrorMessage } from '../lib/errors'
@@ -19,7 +20,11 @@ export default function ProfilePage() {
   const { session, profile, setProfile } = useAuth()
   const navigate = useNavigate()
   const userId = session?.user?.id || ''
-  const userEmail = session?.user?.email || ''
+  const rawEmail = session?.user?.email || ''
+  // Ver nota en ProfileSetup.jsx: el registro exprés por celular usa un correo
+  // sintético invisible que nunca debe tratarse como el email real.
+  const isSyntheticEmail = rawEmail.endsWith('@phone.cobalto.app')
+  const userEmail = isSyntheticEmail ? '' : rawEmail
   const defaultNumber = useMemo(() => generateIdentityNumber(userId), [userId])
   const avatarInputRef = useRef(null)
 
@@ -65,8 +70,7 @@ export default function ProfilePage() {
         city: form.city,
         identity_mode: form.identity_mode,
         identity_number: form.identity_number,
-        email_domain: null,
-        email: userEmail,
+        ...(userEmail ? { email: userEmail, email_domain: null } : {}),
         avatar_url: url,
       })
       setProfile(p)
@@ -90,8 +94,7 @@ export default function ProfilePage() {
         city: form.city,
         identity_mode: form.identity_mode,
         identity_number: form.identity_number,
-        email_domain: null,
-        email: userEmail,
+        ...(userEmail ? { email: userEmail, email_domain: null } : {}),
         avatar_url: avatarUrl || null,
       })
       setProfile(p)
@@ -189,7 +192,9 @@ export default function ProfilePage() {
           </div>
           <div>
             <div className="flex items-center justify-between mb-1"><label className={labelCls}>Email</label><PrivacyBadge variant="private" /></div>
-            <input type="email" value={userEmail} disabled className={inputCls} style={{ ...inputStyle, background: '#F3F4F6', color: '#9CA3AF' }} />
+            <input type="email" value={isSyntheticEmail ? '' : userEmail} disabled
+              placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
+              className={inputCls} style={{ ...inputStyle, background: '#F3F4F6', color: '#9CA3AF' }} />
             <p className="text-[11px] text-ink-500 mt-1">Tu email es 100% privado y nunca será visible.</p>
           </div>
           <div>
@@ -263,6 +268,12 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {isSyntheticEmail && (
+        <div className="mt-4">
+          <SecureAccountSection userId={userId} />
+        </div>
+      )}
+
       {isAdmin(profile, session?.user?.email) && (
         <div className="mt-4">
           <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mb-2">Seguridad</p>
@@ -270,5 +281,76 @@ export default function ProfilePage() {
         </div>
       )}
     </div>
+  )
+}
+
+// ── Asegura tu cuenta: para quien se registró exprés (solo nombre + celular) ──
+// Sin esto, si pierde el dispositivo o cierra sesión no tiene forma de volver a
+// entrar, porque la cuenta se creó con una contraseña aleatoria que nadie conoce.
+function SecureAccountSection({ userId }) {
+  const [pass, setPass] = useState('')
+  const [pass2, setPass2] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [done, setDone] = useState(false)
+
+  const passValid = pass.trim().length >= 6 && pass === pass2
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!passValid) { setError('Escribe la misma contraseña dos veces, mínimo 6 caracteres.'); return }
+    setLoading(true)
+    try {
+      await updatePassword(pass.trim())
+      setDone(true)
+    } catch (err) {
+      setError(safeErrorMessage(err))
+    }
+    setLoading(false)
+  }
+
+  if (done) {
+    return (
+      <div className="rounded-panel p-5" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--accent-soft)' }}>
+        <div className="flex items-center gap-2">
+          <Check size={18} style={{ color: '#16a34a' }} />
+          <p className="t-body-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Contraseña guardada</p>
+        </div>
+        <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>
+          Ya puedes entrar con tu celular y esta contraseña desde cualquier dispositivo.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={submit} className="rounded-panel p-5" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--accent-soft)' }}>
+      <div className="flex items-center gap-2 mb-1">
+        <Lock size={16} style={{ color: 'var(--accent-deep)' }} />
+        <p className="t-body-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Asegura tu cuenta</p>
+      </div>
+      <p className="t-caption mb-4" style={{ color: 'var(--text-tertiary)' }}>
+        Creaste tu cuenta solo con tu celular. Agrega una contraseña para poder entrar
+        también desde otro dispositivo si pierdes el acceso a este.
+      </p>
+
+      <div className="space-y-3">
+        <input type="password" value={pass} onChange={e => setPass(e.target.value)}
+          placeholder="Nueva contraseña" autoComplete="new-password"
+          className={inputCls} style={inputStyle} />
+        <input type="password" value={pass2} onChange={e => setPass2(e.target.value)}
+          placeholder="Repítela" autoComplete="new-password"
+          className={inputCls} style={inputStyle} />
+      </div>
+
+      {error && <p className="t-caption font-semibold mt-2" style={{ color: '#dc2626' }}>{error}</p>}
+
+      <button type="submit" disabled={loading || !passValid}
+        className="mt-4 w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95"
+        style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+        {loading ? <Loader2 size={16} className="animate-spin" /> : 'Guardar contraseña'}
+      </button>
+    </form>
   )
 }

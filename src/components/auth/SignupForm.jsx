@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Phone, Mail, ArrowLeft, Check, X } from 'lucide-react'
-import { signUp, sendPhoneCode, verifyPhoneCode, normalizePhone, sendEmailCode, verifyEmailCode } from '../../api/auth'
+import { Mail, Check, X } from 'lucide-react'
+import { signUp, signUpWithPhoneOnly, sendPhoneCode, verifyPhoneCode, normalizePhone, sendEmailCode, verifyEmailCode } from '../../api/auth'
 import { PHONE_AUTH_ENABLED, EMAIL_CODE_AUTH_ENABLED } from '../../lib/constants'
 import Spinner from '../shared/Spinner'
 
@@ -39,16 +39,128 @@ const Header = ({ title, sub }) => (
 )
 
 export default function SignupForm({ onSwitchLogin }) {
+  const [wantsEmail, setWantsEmail] = useState(false)
+
   // ══════════════════════════════════════════════════════════════════════════
-  // Mientras PHONE_AUTH_ENABLED y EMAIL_CODE_AUTH_ENABLED estén en false
-  // (pendiente configurar Twilio / plantilla de correo en Supabase), el
-  // registro usa el flujo tradicional de correo + contraseña.
+  // Vía por defecto: nombre + celular, sin verificación por ahora.
+  // Cuando PHONE_AUTH_ENABLED esté activo, este mismo formulario pedirá además
+  // el código de 6 dígitos por SMS antes de crear la cuenta.
   // ══════════════════════════════════════════════════════════════════════════
-  if (!PHONE_AUTH_ENABLED && !EMAIL_CODE_AUTH_ENABLED) {
-    return <ClassicEmailSignup onSwitchLogin={onSwitchLogin} />
+  if (!wantsEmail) {
+    return <QuickPhoneSignup onSwitchLogin={onSwitchLogin} onWantsEmail={() => setWantsEmail(true)} />
   }
 
-  const [method, setMethod] = useState(null)   // null | 'phone' | 'email'
+  // Vía secundaria: correo, para quien la prefiera.
+  if (!EMAIL_CODE_AUTH_ENABLED) {
+    return <ClassicEmailSignup onSwitchLogin={onSwitchLogin} onBack={() => setWantsEmail(false)} />
+  }
+  return <EmailCodeSignup onSwitchLogin={onSwitchLogin} onBack={() => setWantsEmail(false)} />
+}
+
+// ── Registro exprés: nombre + celular. Nada más. ───────────────────────────────
+function QuickPhoneSignup({ onSwitchLogin, onWantsEmail }) {
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [code, setCode] = useState('')
+  const [codeSent, setCodeSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [info, setInfo] = useState('')
+
+  const nameValid  = fullName.trim().length >= 2
+  const phoneValid = phone.replace(/\D/g, '').length >= 10
+  const formValid  = nameValid && phoneValid
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!formValid) { setError('Escribe tu nombre y un celular válido.'); return }
+    setLoading(true)
+    try {
+      if (PHONE_AUTH_ENABLED) {
+        // Con Twilio activo: primero se verifica el número con un código.
+        if (!codeSent) {
+          await sendPhoneCode(phone)
+          setInfo(`Código enviado por SMS a ${normalizePhone(phone)}`)
+          setCodeSent(true)
+          setLoading(false)
+          return
+        }
+        if (code.trim().length < 6) { setError('Ingresa el código de 6 dígitos.'); setLoading(false); return }
+        await verifyPhoneCode(phone, code)
+        // El nombre se completa después, ya con sesión abierta, en ProfileSetup
+        // (ahí guardamos full_name junto con el resto del perfil).
+        sessionStorage.setItem('cobalto-pending-name', fullName.trim())
+      } else {
+        // Sin verificación: se crea la cuenta directo con el número.
+        await signUpWithPhoneOnly(phone)
+        sessionStorage.setItem('cobalto-pending-name', fullName.trim())
+      }
+    } catch (err) {
+      setError(ERR_MAP[err.message] || err.message)
+      setLoading(false)
+      return
+    }
+    setLoading(false)
+  }
+
+  return (
+    <form onSubmit={submit} className="space-y-4">
+      <Header title="Crear cuenta"
+        sub={codeSent ? 'Te enviamos un código por SMS' : 'Solo tu nombre y celular'} />
+
+      {!codeSent ? (
+        <>
+          <div>
+            <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Nombre completo</label>
+            <input type="text" autoComplete="name" autoFocus value={fullName}
+              onChange={e => setFullName(e.target.value)}
+              placeholder="Tu nombre" className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Número de celular</label>
+            <input type="tel" inputMode="tel" autoComplete="tel" value={phone}
+              onChange={e => setPhone(e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 16))}
+              placeholder="300 123 4567" className={inputCls} />
+            <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Colombia (+57) por defecto.</p>
+          </div>
+        </>
+      ) : (
+        <div>
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
+          <input type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus value={code}
+            onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            placeholder="000000" className={codeCls} />
+          <button type="button" onClick={() => { setCodeSent(false); setCode(''); setError(''); setInfo('') }}
+            className="text-[12px] font-bold hover:underline mt-2 inline-block text-[var(--accent-deep)]">
+            Cambiar número
+          </button>
+        </div>
+      )}
+
+      {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
+      {info && !error && <p className="text-[12px] font-semibold text-green-600">{info}</p>}
+
+      <button type="submit" disabled={loading || !formValid || (codeSent && code.length < 6)}
+        className={primaryBtn} style={primaryStyle}>
+        {loading ? <Spinner size={16} /> : codeSent ? 'Verificar y entrar' : 'Crear cuenta'}
+      </button>
+
+      <div className="flex items-center justify-between pt-2">
+        <button type="button" onClick={onWantsEmail}
+          className="flex items-center gap-1.5 text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+          <Mail size={13} /> Prefiero registrarme con correo
+        </button>
+        <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+          Ya tengo cuenta
+        </button>
+      </div>
+    </form>
+  )
+}
+
+// ── Registro por correo con código (cuando EMAIL_CODE_AUTH_ENABLED esté activo) ──
+function EmailCodeSignup({ onSwitchLogin, onBack }) {
   const [contact, setContact] = useState('')
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
@@ -56,29 +168,17 @@ export default function SignupForm({ onSwitchLogin }) {
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
 
-  const isPhone = method === 'phone'
-  const contactValid = isPhone
-    ? contact.replace(/\D/g, '').length >= 10
-    : /\S+@\S+\.\S+/.test(contact)
-
+  const contactValid = /\S+@\S+\.\S+/.test(contact)
   const reset = () => { setError(''); setInfo('') }
 
   const sendCode = async (e) => {
     e?.preventDefault()
     reset()
-    if (!contactValid) {
-      setError(isPhone ? 'Ingresa un celular válido.' : 'Ingresa un correo válido.')
-      return
-    }
+    if (!contactValid) { setError('Ingresa un correo válido.'); return }
     setLoading(true)
     try {
-      if (isPhone) {
-        await sendPhoneCode(contact)
-        setInfo(`Código enviado por SMS a ${normalizePhone(contact)}`)
-      } else {
-        await sendEmailCode(contact)
-        setInfo(`Código enviado a ${contact.trim().toLowerCase()}`)
-      }
+      await sendEmailCode(contact)
+      setInfo(`Código enviado a ${contact.trim().toLowerCase()}`)
       setCodeSent(true)
     } catch (err) {
       setError(ERR_MAP[err.message] || err.message)
@@ -92,68 +192,24 @@ export default function SignupForm({ onSwitchLogin }) {
     if (code.trim().length < 6) { setError('Ingresa el código de 6 dígitos.'); return }
     setLoading(true)
     try {
-      if (isPhone) await verifyPhoneCode(contact, code)
-      else await verifyEmailCode(contact, code)
+      await verifyEmailCode(contact, code)
     } catch (err) {
       setError(ERR_MAP[err.message] || err.message)
     }
     setLoading(false)
   }
 
-  if (!method) {
-    return (
-      <div className="space-y-4">
-        <Header title="Crear cuenta" sub="Te enviaremos un código para verificarte" />
-        {PHONE_AUTH_ENABLED && (
-          <>
-            <button type="button" onClick={() => { setMethod('phone'); reset() }} className={primaryBtn} style={primaryStyle}>
-              <Phone size={16} /> Con mi celular
-            </button>
-            <div className="relative flex items-center gap-3 py-1">
-              <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-              <span className="text-[12px] font-medium" style={{ color: 'var(--text-tertiary)' }}>o</span>
-              <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-            </div>
-          </>
-        )}
-        <button type="button" onClick={() => { setMethod('email'); reset() }}
-          className={PHONE_AUTH_ENABLED ? ghostBtn : primaryBtn}
-          style={PHONE_AUTH_ENABLED ? ghostStyle : primaryStyle}>
-          <Mail size={15} /> Con mi correo
-        </button>
-        <div className="text-center text-[12px] pt-4 font-medium text-[var(--text-tertiary)]" style={{ borderTop: '1px solid var(--accent-soft)' }}>
-          ¿Ya tienes cuenta?{' '}
-          <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[var(--accent-deep)]">
-            Iniciar sesión
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <form onSubmit={codeSent ? verify : sendCode} className="space-y-4">
-      <Header
-        title={codeSent ? 'Ingresa el código' : (isPhone ? 'Tu celular' : 'Tu correo')}
-        sub={codeSent
-          ? (isPhone ? 'Te lo enviamos por SMS' : 'Revisa tu bandeja de entrada')
-          : 'Te enviaremos un código de 6 dígitos'} />
+      <Header title={codeSent ? 'Ingresa el código' : 'Tu correo'}
+        sub={codeSent ? 'Revisa tu bandeja de entrada' : 'Te enviaremos un código de 6 dígitos'} />
 
       {!codeSent ? (
         <div>
-          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">
-            {isPhone ? 'Número de celular' : 'Correo electrónico'}
-          </label>
-          {isPhone ? (
-            <input type="tel" inputMode="tel" autoComplete="tel" autoFocus value={contact}
-              onChange={e => setContact(e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 16))}
-              placeholder="300 123 4567" className={inputCls} />
-          ) : (
-            <input type="email" autoComplete="email" autoFocus value={contact}
-              onChange={e => setContact(e.target.value)}
-              placeholder="tu@empresa.com" className={inputCls} />
-          )}
-          {isPhone && <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Colombia (+57) por defecto.</p>}
+          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Correo electrónico</label>
+          <input type="email" autoComplete="email" autoFocus value={contact}
+            onChange={e => setContact(e.target.value)}
+            placeholder="tu@empresa.com" className={inputCls} />
         </div>
       ) : (
         <div>
@@ -177,10 +233,9 @@ export default function SignupForm({ onSwitchLogin }) {
       </button>
 
       <div className="flex items-center justify-between pt-2">
-        <button type="button"
-          onClick={() => { codeSent ? (setCodeSent(false), setCode('')) : setMethod(null); reset() }}
-          className="flex items-center gap-1 text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
-          <ArrowLeft size={13} /> Volver
+        <button type="button" onClick={onBack}
+          className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+          Volver
         </button>
         <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
           Ya tengo cuenta
@@ -190,8 +245,8 @@ export default function SignupForm({ onSwitchLogin }) {
   )
 }
 
-// ── Registro tradicional: correo + contraseña (sin depender de Twilio/plantillas) ──
-function ClassicEmailSignup({ onSwitchLogin }) {
+// ── Registro tradicional: correo + contraseña ──────────────────────────────────
+function ClassicEmailSignup({ onSwitchLogin, onBack }) {
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [touched, setTouched] = useState(false)
@@ -272,10 +327,13 @@ function ClassicEmailSignup({ onSwitchLogin }) {
         {loading ? <Spinner size={16} /> : 'Crear cuenta'}
       </button>
 
-      <div className="text-center text-[12px] pt-2 font-medium text-[var(--text-tertiary)]">
-        ¿Ya tienes cuenta?{' '}
-        <button type="button" onClick={onSwitchLogin} className="font-bold hover:underline text-[var(--accent-deep)]">
-          Iniciar sesión
+      <div className="flex items-center justify-between pt-2">
+        <button type="button" onClick={onBack}
+          className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+          Volver
+        </button>
+        <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+          Ya tengo cuenta
         </button>
       </div>
     </form>

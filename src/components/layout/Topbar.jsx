@@ -106,7 +106,9 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
               style={{ background: '#fff', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(13,27,62,0.18)', minWidth: 200 }}>
               <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
                 <p className="text-sm font-bold" style={{ color: 'var(--accent-deep)' }}>{name}</p>
-                <p className="text-xs" style={{ color: 'var(--accent)' }}>{session?.user?.email}</p>
+                <p className="text-xs" style={{ color: 'var(--accent)' }}>
+                  {session?.user?.email?.endsWith('@phone.cobalto.app') ? profile?.phone : session?.user?.email}
+                </p>
               </div>
               {menuItems.map(({ label, Icon, path }) => (
                 <button key={path} onClick={() => navigate(path)}
