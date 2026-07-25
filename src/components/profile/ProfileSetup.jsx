@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Lock, Eye, Check, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Lock, Check, ArrowRight, ArrowLeft } from 'lucide-react'
 import { updateProfile } from '../../api/profiles'
 import { updatePassword, signOut } from '../../api/auth'
 import { useAuth } from '../../contexts/AuthContext'
@@ -34,7 +34,7 @@ export default function ProfileSetup() {
   const [form, setForm] = useState({
     full_name: profile?.full_name || pendingName || '',
     phone: profile?.phone || userPhone || '',
-    identity_mode: profile?.identity_mode || 'anon',
+    identity_mode: profile?.identity_mode || 'real',
     identity_number: profile?.identity_number || defaultNumber,
     password: '',
     password2: '',
@@ -92,33 +92,6 @@ export default function ProfileSetup() {
     } finally {
       setLoading(false)
     }
-  }
-
-  const IdentityCard = ({ mode, icon, label, preview, anon }) => {
-    const active = form.identity_mode === mode
-    return (
-      <label
-        onClick={() => set('identity_mode', mode)}
-        className={`flex-1 flex flex-col items-center text-center gap-2 p-3.5 px-2.5 bg-white rounded-2xl cursor-pointer relative ${
-          active ? 'border-[1.5px] border-brand-600' : 'border border-ink-200'
-        }`}
-      >
-        {active && (
-          <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-brand-600 flex items-center justify-center">
-            <Check size={9} strokeWidth={3} className="text-white" />
-          </span>
-        )}
-        {anon ? (
-          <UserAvatar seed={userId + '-anon'} size={38} />
-        ) : (
-          <div className="w-[38px] h-[38px] rounded-full bg-ink-100 flex items-center justify-center">{icon}</div>
-        )}
-        <div>
-          <p className="text-[12px] font-bold text-ink-900">{label}</p>
-          <p className={`text-[12px] text-ink-500 mt-0.5 font-medium ${anon ? 'font-mono' : ''}`}>{preview}</p>
-        </div>
-      </label>
-    )
   }
 
   const StepDots = () => (
@@ -188,19 +161,6 @@ export default function ProfileSetup() {
                     placeholder="300 123 4567" className={inputCls} />
                 </div>
               )}
-
-              <div className="rounded-btn p-3.5" style={{ background: 'var(--accent-softer)' }}>
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <Eye size={13} style={{ color: 'var(--accent-deep)' }} />
-                  <span className="text-[12px] font-bold text-[var(--text-primary)]">¿Cómo te identifica la comunidad?</span>
-                </div>
-                <p className="text-[12px] mb-3 text-[var(--text-tertiary)]">Lo único público. Puedes cambiarlo cuando quieras.</p>
-                <div className="flex gap-2.5">
-                  <IdentityCard mode="anon" anon label="Anónimo" preview={`Usuario-${form.identity_number}`} />
-                  <IdentityCard mode="real" icon={<Check size={17} style={{ color: 'var(--accent-deep)' }} />}
-                    label="Mi nombre" preview={form.full_name || 'Tu nombre'} />
-                </div>
-              </div>
 
               {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
 

@@ -148,9 +148,10 @@ export default function AppLayout() {
           </div>
         )}
 
-        <div className="h-[64px] flex items-center justify-around px-2"
-          style={{ background: 'rgba(255,255,255,0.94)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            borderTop: '1px solid var(--border)', paddingBottom: 'env(safe-area-inset-bottom)', pointerEvents: 'auto' }}>
+        <div className="flex items-center justify-around px-2"
+          style={{ height: 64, paddingBottom: 'env(safe-area-inset-bottom)', boxSizing: 'content-box',
+            background: 'rgba(255,255,255,0.94)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            borderTop: '1px solid var(--border)', pointerEvents: 'auto' }}>
 
           {/* Feed */}
           {(() => { const active = currentTab === '/feed'; return (

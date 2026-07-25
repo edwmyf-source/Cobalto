@@ -284,6 +284,7 @@ export default function FeedPage() {
   const feedBg     = tabStyle.bg
 
   const name = publicName(profile)
+  const firstName = (profile?.full_name || name).trim().split(' ')[0]
   const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
   return (
@@ -420,6 +421,9 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
+        <p className="t-body-sm mt-3 mb-1" style={{ color: 'var(--text-secondary)' }}>
+          Hola, <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{firstName}</span> — bienvenido
+        </p>
         <div className="flex items-center justify-between mb-4 mt-2">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
             {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}

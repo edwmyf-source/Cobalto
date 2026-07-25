@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Eye, User, Check, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
+import { Check, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/profiles'
 import { updatePassword } from '../api/auth'
 import { useAuth } from '../contexts/AuthContext'
@@ -33,7 +33,7 @@ export default function ProfilePage() {
     company_name: profile?.company_name || '',
     phone: profile?.phone || '',
     city: profile?.city || '',
-    identity_mode: profile?.identity_mode || 'anon',
+    identity_mode: 'real',
     identity_number: profile?.identity_number || defaultNumber,
   })
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || null)
@@ -108,30 +108,6 @@ export default function ProfilePage() {
     : `Usuario-${form.identity_number}`
 
   const displayAvatar = avatarPreview || avatarUrl
-
-  const IdentityCard = ({ mode, icon, label, preview, anon }) => {
-    const active = form.identity_mode === mode
-    return (
-      <div onClick={() => set('identity_mode', mode)}
-        className={`flex-1 flex flex-col items-center text-center gap-2 p-3.5 px-2.5 bg-white rounded-2xl cursor-pointer relative ${
-          active ? 'border-[1.5px] border-brand-600' : 'border border-ink-300'
-        }`}>
-        {active && (
-          <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-brand-600 flex items-center justify-center">
-            <Check size={9} strokeWidth={3} className="text-white" />
-          </span>
-        )}
-        {anon
-          ? <UserAvatar seed={userId + '-anon'} avatarUrl={displayAvatar} size={38} />
-          : <div className="w-[38px] h-[38px] rounded-full bg-ink-100 flex items-center justify-center">{icon}</div>
-        }
-        <div>
-          <p className="text-xs font-medium text-ink-900">{label}</p>
-          <p className={`text-[11px] text-ink-900 mt-0.5 font-medium ${anon ? 'font-mono' : ''}`}>{preview}</p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="page-enter max-w-lg mx-auto px-1">
@@ -211,20 +187,6 @@ export default function ProfilePage() {
         </div>
 
         <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mt-3">Identidad pública</p>
-
-        <div className="bg-brand-500/5 border border-brand-500/20 rounded-2xl p-3">
-          <div className="flex items-start gap-2 mb-3">
-            <Eye size={15} className="text-brand-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="text-xs font-medium text-ink-900">¿Cómo te identifica la comunidad?</p>
-              <p className="text-[10px] text-ink-500 mt-0.5">Lo único público. Puedes cambiarlo cuando quieras.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <IdentityCard mode="anon" label="Anónimo" preview={`Usuario-${form.identity_number}`} anon />
-            <IdentityCard mode="real" icon={<User size={22} className="text-ink-500" />} label="Mi nombre" preview={form.full_name || 'Tu nombre'} />
-          </div>
-        </div>
 
         {error && <p className="text-xs text-danger-500">{error}</p>}
         {saved && <p className="text-xs text-success-500">Perfil guardado.</p>}
