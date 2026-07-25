@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, ThumbsUp, MessageSquareText } from 'lucide-react'
+import { MessageCircle, Loader2, FileText, MoreHorizontal, Flag, UserX, Send, ThumbsUp, MessageSquareText, Trash2 } from 'lucide-react'
 import { timeAgo, publicName } from '../../lib/helpers'
 import { CATEGORY_MAP } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
 import { blockUser } from '../../api/moderation'
 import { toggleReaction, getReactionsForPost } from '../../api/reactions'
+import { deletePost } from '../../api/posts'
 import { createNotification } from '../../api/notifications'
 import { useToast } from '../shared/Toast'
 import UserAvatar from '../shared/UserAvatar'
@@ -60,7 +61,7 @@ function MediaGallery({ media }) {
   )
 }
 
-function PostMenu({ post, onReport }) {
+function PostMenu({ post, onReport, isMine = false, onDelete }) {
   const { session } = useAuth()
   const toast = useToast()
   const [open, setOpen] = useState(false)
@@ -88,29 +89,43 @@ function PostMenu({ post, onReport }) {
         <MoreHorizontal size={14} />
       </button>
       {open && (
-        <div className="absolute right-0 top-6 z-20 bg-white border border-ink-200 rounded-xl shadow-lg py-1 w-44">
-          <button onClick={() => { setOpen(false); onReport() }}
-            className="w-full flex items-center gap-2 px-3 py-2 text-[11px] text-ink-700 hover:bg-ink-50 hover:text-danger-600">
-            <Flag size={12} className="text-ink-400" />
-            Reportar publicación
-          </button>
-          <button onClick={handleBlock}
-            className="w-full flex items-center gap-2 px-3 py-2 text-[11px] text-ink-700 hover:bg-ink-50 hover:text-danger-600">
-            <UserX size={12} className="text-ink-400" />
-            Bloquear usuario
-          </button>
+        <div className="absolute right-0 top-6 z-20 bg-white rounded-xl py-1 w-48"
+          style={{ boxShadow: '0 10px 30px rgba(8,31,74,0.18)', border: '1px solid #EBF1FC' }}>
+          {isMine ? (
+            <button onClick={() => { setOpen(false); onDelete?.() }}
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-semibold text-red-600 hover:bg-red-50">
+              <Trash2 size={13} />
+              Eliminar publicación
+            </button>
+          ) : (
+            <>
+              <button onClick={() => { setOpen(false); onReport() }}
+                className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-medium text-[#33456B] hover:bg-ink-50">
+                <Flag size={13} style={{ color: '#8FA3C7' }} />
+                Reportar publicación
+              </button>
+              <button onClick={handleBlock}
+                className="w-full flex items-center gap-2 px-3 py-2.5 text-[12px] font-medium text-[#33456B] hover:bg-ink-50">
+                <UserX size={13} style={{ color: '#8FA3C7' }} />
+                Bloquear usuario
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
   )
 }
 
-export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [] }) {
+export default memo(function PostCard({ post, onContact, contactingId, blockedUsers = [], onDeleted }) {
   const { session } = useAuth()
   const navigate = useNavigate()
+  const toast = useToast()
   const userId = session?.user?.id
   const [showComments, setShowComments] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
   const likeInitialized = useRef(false)
@@ -131,6 +146,20 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       }).catch(() => {})
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDelete = async () => {
+    if (deleting) return
+    setDeleting(true)
+    try {
+      await deletePost(post)
+      toast('Publicación eliminada.', 'success')
+      setConfirmDelete(false)
+      onDeleted?.(post.id)
+    } catch (err) {
+      toast(err?.message || 'No se pudo eliminar la publicación.', 'error')
+      setDeleting(false)
+    }
+  }
 
   const handleLike = async () => {
     const wasLiked = liked
@@ -198,7 +227,9 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
             {catLabel}
           </span>
         )}
-        {!isMine && <PostMenu post={post} onReport={() => setReportOpen(true)} />}
+        <PostMenu post={post} isMine={isMine}
+          onReport={() => setReportOpen(true)}
+          onDelete={() => setConfirmDelete(true)} />
       </div>
 
       {/* Texto muro */}
@@ -237,6 +268,42 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
       <CommentSection post={post} isOpen={showComments} />
       <ReportModal post={post} open={reportOpen} onClose={() => setReportOpen(false)} />
+
+      {/* Confirmación de borrado — acción irreversible */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-5"
+          style={{ background: 'rgba(8,31,74,0.45)', backdropFilter: 'blur(3px)' }}
+          onClick={() => !deleting && setConfirmDelete(false)}>
+          <div className="bg-white rounded-[20px] w-full max-w-[340px] p-5"
+            style={{ boxShadow: '0 20px 50px rgba(8,31,74,0.3)' }}
+            onClick={e => e.stopPropagation()}>
+            <div className="w-11 h-11 rounded-[14px] flex items-center justify-center mb-3"
+              style={{ background: '#FEE2E2' }}>
+              <Trash2 size={20} style={{ color: '#dc2626' }} />
+            </div>
+            <h3 className="font-extrabold text-[16px] text-[#0A2A5C]" style={{ letterSpacing: '-0.02em' }}>
+              ¿Eliminar esta publicación?
+            </h3>
+            <p className="text-[12px] mt-1.5 font-medium leading-relaxed" style={{ color: '#8FA3C7' }}>
+              Se borrarán también sus comentarios y reacciones. Esta acción no se puede deshacer.
+              Los chats que hayas iniciado desde ella se conservan.
+            </p>
+            <div className="flex gap-2 mt-4">
+              <button onClick={() => setConfirmDelete(false)} disabled={deleting}
+                className="flex-1 py-2.5 rounded-[13px] text-[13px] font-bold transition-all active:scale-95 disabled:opacity-50"
+                style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#33456B', background: '#fff' }}>
+                Cancelar
+              </button>
+              <button onClick={handleDelete} disabled={deleting}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[13px] text-[13px] font-extrabold text-white transition-all active:scale-95 disabled:opacity-60"
+                style={{ background: 'linear-gradient(135deg,#b91c1c,#dc2626)', boxShadow: '0 6px 16px rgba(220,38,38,0.3)' }}>
+                {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                {deleting ? 'Borrando...' : 'Eliminar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   )

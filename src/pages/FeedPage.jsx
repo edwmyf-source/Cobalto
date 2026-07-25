@@ -242,6 +242,11 @@ export default function FeedPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Quita la publicación borrada de la lista, sin recargar el feed.
+  const handlePostDeleted = useCallback((deletedId) => {
+    setPosts(prev => prev.filter(p => p.id !== deletedId))
+  }, [])
+
   const handleContact = useCallback(async (post) => {
     if (contactingPost) return
     setContactingPost(post.id)
@@ -393,7 +398,7 @@ export default function FeedPage() {
             <div className="space-y-0">
               {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
                 <div key={post.id}>
-                  <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                  <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
                   {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
                 </div>
               ))}
@@ -446,7 +451,7 @@ export default function FeedPage() {
           <div className="space-y-0">
             {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
               <div key={post.id}>
-                <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} />
+                <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
                 {idx < arr.length - 1 && <div style={{ height: '14px' }} />}
               </div>
             ))}

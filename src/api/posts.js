@@ -216,3 +216,34 @@ export const getPostById = async (id) => {
   if (error) throw error
   return data
 }
+
+/**
+ * Elimina una publicación propia.
+ *
+ * La RLS de Supabase ya restringe el borrado al autor (o staff), así que aunque
+ * alguien manipulara el cliente no podría borrar publicaciones ajenas.
+ *
+ * En la base de datos: los comentarios y reacciones se eliminan en cascada, pero
+ * las conversaciones y notificaciones solo pierden la referencia (ON DELETE SET
+ * NULL), de modo que nadie pierde sus chats por borrar un post.
+ *
+ * Orden intencional: primero la fila, después los archivos. Si la limpieza de
+ * archivos falla quedan huérfanos (inofensivos); al revés se verían imágenes
+ * roras en una publicación aún visible.
+ */
+export const deletePost = async (post) => {
+  const { error } = await supabase.from('posts').delete().eq('id', post.id)
+  if (error) throw error
+
+  // Limpieza de archivos: best-effort, no debe romper el borrado ya efectuado.
+  try {
+    let media = post.media
+    if (typeof media === 'string') media = JSON.parse(media)
+    const paths = (media || []).map(m => m?.path).filter(Boolean)
+    if (paths.length > 0) {
+      await supabase.storage.from('post-media').remove(paths)
+    }
+  } catch (err) {
+    console.warn('No se pudieron borrar los archivos del post:', err?.message)
+  }
+}

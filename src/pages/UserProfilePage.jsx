@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, MapPin, UserPlus, UserCheck, MessageCircle, Send, Loader2, Settings, Camera } from 'lucide-react'
+import { ArrowLeft, MapPin, UserPlus, UserCheck, MessageCircle, Send, Loader2, Settings, Camera, Trash2 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { getPublicProfile, uploadAvatar, uploadCover, updateProfile } from '../api/profiles'
-import { getPostsByUser } from '../api/posts'
+import { getPostsByUser, deletePost } from '../api/posts'
 import { followUser, unfollowUser, checkIsFollowing, getFollowCounts } from '../api/follows'
 import { getOrCreateConversation } from '../api/messages'
 import { createNotification } from '../api/notifications'
@@ -14,12 +14,29 @@ import Spinner from '../components/shared/Spinner'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
 
-function MiniPostCard({ post, onContact, contactingId }) {
+function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
   const { session } = useAuth()
+  const toast = useToast()
   const isMine = post.author_id === session?.user?.id
   const catLabel = CATEGORY_MAP[post.category]?.label || post.category
   const wallText = [post.title, post.content].filter(Boolean).join('\n\n')
   const isContacting = contactingId === post.id
+  const [confirming, setConfirming] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  const remove = async () => {
+    if (deleting) return
+    setDeleting(true)
+    try {
+      await deletePost(post)
+      toast('Publicación eliminada.', 'success')
+      onDeleted?.(post.id)
+    } catch (err) {
+      toast(err?.message || 'No se pudo eliminar.', 'error')
+      setDeleting(false)
+      setConfirming(false)
+    }
+  }
 
   return (
     <div className="rounded-[22px] overflow-hidden bg-white" style={{ boxShadow: '0 10px 30px rgba(0,71,171,0.14)' }}>
@@ -39,6 +56,31 @@ function MiniPostCard({ post, onContact, contactingId }) {
           <span className="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-[9px]" style={{ background: '#F4F7FD', color: '#5578AD' }}>
             <MessageCircle size={12} />{post.comment_count || 0}
           </span>
+
+          {isMine && (
+            confirming ? (
+              <div className="ml-auto flex items-center gap-1.5">
+                <span className="text-[10px] font-bold" style={{ color: '#8FA3C7' }}>¿Eliminar?</span>
+                <button onClick={() => setConfirming(false)} disabled={deleting}
+                  className="text-[11px] font-bold px-2 py-1 rounded-[8px] disabled:opacity-50"
+                  style={{ boxShadow: 'inset 0 0 0 1.5px #DDE7FA', color: '#33456B' }}>
+                  No
+                </button>
+                <button onClick={remove} disabled={deleting}
+                  className="flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-[8px] text-white disabled:opacity-60"
+                  style={{ background: 'linear-gradient(135deg,#b91c1c,#dc2626)' }}>
+                  {deleting ? <Loader2 size={11} className="animate-spin" /> : null}
+                  Sí
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setConfirming(true)} aria-label="Eliminar publicación"
+                className="ml-auto flex items-center justify-center w-7 h-7 rounded-[9px] transition-colors hover:bg-red-50"
+                style={{ color: '#B8CBEF' }}>
+                <Trash2 size={13} />
+              </button>
+            )
+          )}
         </div>
       </div>
     </div>
@@ -303,7 +345,8 @@ export default function UserProfilePage() {
       ) : (
         <div className="space-y-2">
           {posts.map(post => (
-            <MiniPostCard key={post.id} post={post} onContact={handleContact} contactingId={contactingPost} />
+            <MiniPostCard key={post.id} post={post} onContact={handleContact} contactingId={contactingPost}
+              onDeleted={(id) => setPosts(prev => prev.filter(p => p.id !== id))} />
           ))}
         </div>
       )}
