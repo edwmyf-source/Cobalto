@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
+import { Check, X, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/profiles'
 import { updatePassword } from '../api/auth'
 import { useAuth } from '../contexts/AuthContext'
@@ -249,6 +249,14 @@ export default function ProfilePage() {
 // ── Asegura tu cuenta: para quien se registró exprés (solo nombre + celular) ──
 // Sin esto, si pierde el dispositivo o cierra sesión no tiene forma de volver a
 // entrar, porque la cuenta se creó con una contraseña aleatoria que nadie conoce.
+// Mayúscula, minúscula, número y longitud mínima — igual que en el registro.
+const PASS_RULES = [
+  { id: 'len',   label: 'Mínimo 6 caracteres', test: p => p.length >= 6 },
+  { id: 'upper', label: 'Una mayúscula',       test: p => /[A-Z]/.test(p) },
+  { id: 'lower', label: 'Una minúscula',       test: p => /[a-z]/.test(p) },
+  { id: 'num',   label: 'Un número',           test: p => /[0-9]/.test(p) },
+]
+
 function SecureAccountSection({ userId }) {
   const [pass, setPass] = useState('')
   const [pass2, setPass2] = useState('')
@@ -256,12 +264,14 @@ function SecureAccountSection({ userId }) {
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
 
-  const passValid = pass.trim().length >= 6 && pass === pass2
+  const passStrength = PASS_RULES.filter(r => r.test(pass)).length
+  const passStrong = passStrength === PASS_RULES.length
+  const passValid = passStrong && pass === pass2
 
   const submit = async (e) => {
     e.preventDefault()
     setError('')
-    if (!passValid) { setError('Escribe la misma contraseña dos veces, mínimo 6 caracteres.'); return }
+    if (!passValid) { setError('La contraseña debe tener mayúscula, minúscula, número y coincidir en ambos campos.'); return }
     setLoading(true)
     try {
       await updatePassword(pass.trim())
@@ -301,6 +311,49 @@ function SecureAccountSection({ userId }) {
         <input type="password" value={pass} onChange={e => setPass(e.target.value)}
           placeholder="Nueva contraseña" autoComplete="new-password"
           className={inputCls} style={inputStyle} />
+
+        {pass.length > 0 && (() => {
+          const level = passStrength <= 2 ? 'low' : passStrength === 3 ? 'mid' : 'high'
+          const meta = {
+            low:  { label: 'Seguridad baja',  color: '#dc2626' },
+            mid:  { label: 'Seguridad media', color: '#d97706' },
+            high: { label: 'Seguridad alta',  color: '#16a34a' },
+          }[level]
+          return (
+            <div>
+              <div className="flex gap-1.5">
+                {[0, 1, 2].map(i => {
+                  const on = (level === 'low' && i === 0) || (level === 'mid' && i <= 1) || (level === 'high')
+                  return (
+                    <div key={i} className="h-1.5 flex-1 rounded-full overflow-hidden" style={{ background: 'var(--accent-soft)' }}>
+                      <div className="h-full rounded-full transition-all duration-500 ease-out"
+                        style={{ width: on ? '100%' : '0%', background: meta.color }} />
+                    </div>
+                  )
+                })}
+              </div>
+              <p key={level} className="text-[12px] mt-1.5 font-bold" style={{ color: meta.color, animation: 'fadeInUp 220ms ease-out' }}>
+                {meta.label}
+              </p>
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">
+                {PASS_RULES.map(r => {
+                  const ok = r.test(pass)
+                  return (
+                    <div key={r.id} className="flex items-center gap-1.5 transition-all duration-300" style={{ opacity: ok ? 1 : 0.55 }}>
+                      <span className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 transition-all duration-300"
+                        style={{ background: ok ? '#DCFCE7' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
+                        {ok ? <Check size={10} strokeWidth={3} style={{ color: '#16a34a' }} />
+                            : <X size={9} strokeWidth={2.5} style={{ color: 'var(--text-tertiary)' }} />}
+                      </span>
+                      <span className="text-[11px] font-medium" style={{ color: ok ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>{r.label}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })()}
+
         <input type="password" value={pass2} onChange={e => setPass2(e.target.value)}
           placeholder="Repítela" autoComplete="new-password"
           className={inputCls} style={inputStyle} />

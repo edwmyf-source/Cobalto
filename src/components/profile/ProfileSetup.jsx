@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Lock, Check, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Lock, Check, X, ArrowRight, ArrowLeft } from 'lucide-react'
 import { updateProfile } from '../../api/profiles'
 import { updatePassword, signOut } from '../../api/auth'
 import { useAuth } from '../../contexts/AuthContext'
@@ -13,6 +13,14 @@ const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 t
 const labelCls = 'text-[12px] font-bold text-[var(--text-primary)]'
 const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95'
 const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
+
+// Reglas de seguridad de la contraseña: mayúscula, minúscula, número y longitud.
+const PASS_RULES = [
+  { id: 'len',   label: 'Mínimo 6 caracteres', test: p => p.length >= 6 },
+  { id: 'upper', label: 'Una mayúscula',       test: p => /[A-Z]/.test(p) },
+  { id: 'lower', label: 'Una minúscula',       test: p => /[a-z]/.test(p) },
+  { id: 'num',   label: 'Un número',           test: p => /[0-9]/.test(p) },
+]
 
 export default function ProfileSetup() {
   const { session, profile, setProfile } = useAuth()
@@ -58,7 +66,9 @@ export default function ProfileSetup() {
   // La contraseña es obligatoria solo si aún no tiene uno (registro por SMS).
   const needsPassword = !userEmail
   const passFilled = form.password.trim().length > 0
-  const passLongEnough = form.password.trim().length >= 6
+  const passRulesPassed = PASS_RULES.filter(r => r.test(form.password))
+  const passStrength = passRulesPassed.length // 0 a 4
+  const passLongEnough = passStrength === PASS_RULES.length
   const passMatch = form.password === form.password2
   const passValid = needsPassword
     ? (passLongEnough && passMatch)
@@ -78,7 +88,7 @@ export default function ProfileSetup() {
     e.preventDefault()
     if (!step2Valid || loading) return
     if (passFilled && !passMatch) { setError('Las contraseñas no coinciden.'); return }
-    if (passFilled && !passLongEnough) { setError('La contraseña debe tener al menos 6 caracteres.'); return }
+    if (passFilled && !passLongEnough) { setError('La contraseña debe tener mayúscula, minúscula, número y mínimo 6 caracteres.'); return }
     setLoading(true)
     setError('')
     try {
@@ -190,8 +200,56 @@ export default function ProfileSetup() {
                 </div>
                 <input type="password" value={form.password} autoComplete="new-password"
                   onChange={e => set('password', e.target.value)}
-                  placeholder={needsPassword ? 'Mínimo 6 caracteres' : 'Déjalo vacío para no cambiarla'}
+                  placeholder={needsPassword ? 'Mayúscula, minúscula y número' : 'Déjalo vacío para no cambiarla'}
                   className={inputCls} />
+
+                {passFilled && (() => {
+                  const level = passStrength <= 2 ? 'low' : passStrength === 3 ? 'mid' : 'high'
+                  const meta = {
+                    low:  { label: 'Seguridad baja',  color: '#dc2626', bg: '#FEE2E2' },
+                    mid:  { label: 'Seguridad media',  color: '#d97706', bg: '#FEF3C7' },
+                    high: { label: 'Seguridad alta',   color: '#16a34a', bg: '#DCFCE7' },
+                  }[level]
+                  return (
+                    <div className="mt-2.5">
+                      {/* Barra de tres segmentos, cada uno se enciende con una animacion suave */}
+                      <div className="flex gap-1.5">
+                        {[0, 1, 2].map(i => {
+                          const on = (level === 'low' && i === 0) || (level === 'mid' && i <= 1) || (level === 'high')
+                          return (
+                            <div key={i} className="h-1.5 flex-1 rounded-full overflow-hidden" style={{ background: 'var(--accent-soft)' }}>
+                              <div className="h-full rounded-full transition-all duration-500 ease-out"
+                                style={{ width: on ? '100%' : '0%', background: meta.color }} />
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <p key={level} className="text-[12px] mt-1.5 font-bold transition-all duration-300"
+                        style={{ color: meta.color, animation: 'fadeInUp 220ms ease-out' }}>
+                        {meta.label}
+                      </p>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">
+                        {PASS_RULES.map(r => {
+                          const ok = r.test(form.password)
+                          return (
+                            <div key={r.id} className="flex items-center gap-1.5 transition-all duration-300"
+                              style={{ opacity: ok ? 1 : 0.55 }}>
+                              <span className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 transition-all duration-300"
+                                style={{ background: ok ? '#DCFCE7' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
+                                {ok
+                                  ? <Check size={10} strokeWidth={3} style={{ color: '#16a34a' }} />
+                                  : <X size={9} strokeWidth={2.5} style={{ color: 'var(--text-tertiary)' }} />}
+                              </span>
+                              <span className="text-[11px] font-medium" style={{ color: ok ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>
+                                {r.label}
+                              </span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })()}
               </div>
 
               <div>
