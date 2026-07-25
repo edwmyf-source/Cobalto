@@ -218,12 +218,12 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
   return (
     <Card id={`post-${post.id}`} className="overflow-hidden">
-      <div className="p-6">
+      <div className="px-4 py-2.5">
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-2.5 mb-2">
         <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={40} className="!rounded-input" />
+          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={32} className="!rounded-input" />
         </button>
         <div className="flex-1 min-w-0">
           <button onClick={goToProfile}
@@ -231,7 +231,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
             style={{ color: 'var(--text-primary)' }}>
             {name}
           </button>
-          <p className="t-caption truncate mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
+          <p className="t-caption truncate" style={{ color: 'var(--text-tertiary)' }}>
             {prof.city && <>{prof.city} · </>}
             {timeAgo(post.created_at)}
           </p>
@@ -243,7 +243,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       </div>
 
       {/* Texto muro */}
-      <p className="t-body mb-4 whitespace-pre-wrap break-words line-clamp-5"
+      <p className="t-body-sm mb-3 whitespace-pre-wrap break-words line-clamp-3"
         style={{ color: 'var(--text-secondary)' }}>
         {wallText}
       </p>
@@ -251,9 +251,9 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       <MediaGallery media={media} />
 
       {/* Footer — sin línea, separado por aire */}
-      <div className="flex items-center gap-2 pt-4 mt-4" style={{ borderTop: '1px solid var(--border-soft)' }}>
+      <div className="flex items-center gap-1 pt-2.5 mt-2.5" style={{ borderTop: '1px solid var(--border-soft)' }}>
         <button onClick={handleLike} aria-pressed={liked}
-          className="inline-flex items-center gap-2 h-[40px] px-4 rounded-btn text-[14px] font-medium
+          className="inline-flex items-center gap-1.5 h-[30px] px-3 rounded-btn text-[14px] font-medium
             transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
           style={liked
             ? { background: 'var(--accent-soft)', color: 'var(--accent-deep)' }
@@ -263,7 +263,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
         </button>
 
         <button onClick={() => setShowComments(!showComments)} aria-expanded={showComments}
-          className="inline-flex items-center gap-2 h-[40px] px-4 rounded-btn text-[14px] font-medium
+          className="inline-flex items-center gap-1.5 h-[30px] px-3 rounded-btn text-[14px] font-medium
             transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
           style={{ background: 'transparent', color: 'var(--text-secondary)' }}>
           <MessageCircle size={16} strokeWidth={2} />
@@ -272,7 +272,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
         {!isMine && (
           <Button size="sm" onClick={() => onContact?.(post)} loading={isContacting}
-            className="ml-auto">
+            className="ml-auto !h-[30px] !px-4">
             Contactar
           </Button>
         )}

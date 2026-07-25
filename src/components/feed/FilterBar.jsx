@@ -24,15 +24,13 @@ function Section({ title, value, open, onToggle, children }) {
       {title && (
         <button
           onClick={onToggle}
-          className="w-full flex items-center justify-between px-4 pt-4 pb-2"
+          className="w-full flex items-center justify-center gap-2 px-4 pt-4 pb-2"
           aria-expanded={open}
         >
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
-          <span className="flex items-center gap-2">
-            {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
-            <ChevronDown size={16} strokeWidth={2}
-              style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-          </span>
+          {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
+          <ChevronDown size={16} strokeWidth={2}
+            style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
         </button>
       )}
       <div style={{
@@ -41,7 +39,7 @@ function Section({ title, value, open, onToggle, children }) {
         transition: 'grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-4 pb-4 pt-1 flex flex-wrap gap-2">
+          <div className="px-4 pb-4 pt-1 flex flex-wrap justify-center gap-2">
             {children}
           </div>
         </div>
@@ -86,21 +84,24 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
   return (
     <div className="mb-4">
 
-      {/* Buscador: campo de 48px, foco con anillo suave */}
-      <div className="relative mb-4">
+      {/* Franja navy que continúa la cabecera: el buscador flota sobre su borde */}
+      <div className="-mx-4 md:hidden" style={{ height: 40, marginTop: -1, background: 'var(--accent-deep)' }} />
+
+      {/* Buscador flotante */}
+      <div className="relative mb-4 z-[5]" style={{ marginTop: -24 }}>
         <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
           style={{ color: 'var(--text-tertiary)' }} />
         <input
           ref={searchRef}
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
-          placeholder="Buscar productos, empresas u oportunidades"
+          placeholder="Buscar en Cobalto"
           aria-label="Buscar en Cobalto"
           className="w-full h-[48px] pl-12 pr-11 rounded-input t-body-sm transition-all duration-[160ms] ease-premium"
           style={{ background: 'var(--surface)', color: 'var(--text-primary)',
-            boxShadow: 'inset 0 0 0 1px var(--border)' }}
-          onFocus={e => e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--border-focus), 0 0 0 3px var(--accent-soft)'}
-          onBlur={e => e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--border)'}
+            boxShadow: 'var(--shadow-raised)' }}
+          onFocus={e => e.currentTarget.style.boxShadow = 'var(--shadow-raised), 0 0 0 3px var(--accent-soft)'}
+          onBlur={e => e.currentTarget.style.boxShadow = 'var(--shadow-raised)'}
         />
         {filters.search && (
           <button onClick={() => set('search', '')} aria-label="Limpiar búsqueda"
@@ -117,7 +118,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
       <Panel className="overflow-hidden mb-4">
 
         {hasFilters && (
-          <div className="flex justify-end px-4 pt-4 pb-0">
+          <div className="flex justify-center px-4 pt-4 pb-0">
             <button
               onClick={() => { setFilters({}); setOpenSec('categoria') }}
               className="t-body-sm font-medium transition-opacity duration-[160ms] hover:opacity-70"
