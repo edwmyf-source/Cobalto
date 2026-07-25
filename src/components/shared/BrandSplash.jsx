@@ -1,16 +1,19 @@
 import { useEffect, useRef } from 'react'
 
-// El splash dura 1 segundo, tanto en la primera visita como en recargas.
+// Primera vez por sesión del navegador: 2.5s. En recargas siguientes: 400ms.
 const SPLASH_SEEN_KEY = 'cobalto-splash-seen'
 
 export default function BrandSplash({ onDone }) {
   const doneRef = useRef(false)
 
   useEffect(() => {
+    let seen = false
+    try { seen = sessionStorage.getItem(SPLASH_SEEN_KEY) === '1' } catch {}
+    const duration = seen ? 400 : 2500
     try { sessionStorage.setItem(SPLASH_SEEN_KEY, '1') } catch {}
     const t = setTimeout(() => {
       if (!doneRef.current) { doneRef.current = true; onDone() }
-    }, 1000)
+    }, duration)
     return () => clearTimeout(t)
   }, [onDone])
 
