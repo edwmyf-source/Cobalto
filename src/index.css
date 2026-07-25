@@ -91,6 +91,21 @@ body {
 .tnum { font-variant-numeric: tabular-nums; }
 
 /* ════════════════════════════════════════════════════════════════════════
+   ANTI-ZOOM EN MÓVIL
+   iOS y Android hacen zoom automático al enfocar un campo con fuente menor
+   a 16px, y luego la página queda "acercada". Forzar 16px en los campos solo
+   en pantallas táctiles evita ese salto, sin bloquear el zoom manual del
+   usuario (que sería un problema de accesibilidad).
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
    ESCALA TIPOGRÁFICA — 5 tamaños, según especificación
    ════════════════════════════════════════════════════════════════════════ */
 .t-h1      { font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.025em; }

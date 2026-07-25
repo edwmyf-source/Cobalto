@@ -162,7 +162,7 @@ export default function PublishBox({ onClose, onPublished }) {
     }
   }
 
-  const inputCls = 'w-full px-3 py-2 rounded-2xl border border-ink-300 text-[13px] focus:outline-none focus:border-brand-600 bg-white'
+  const inputCls = 'w-full px-3 py-2.5 rounded-2xl border border-ink-300 text-[16px] focus:outline-none focus:border-brand-600 bg-white'
 
   return (
     <div className="bg-white border border-ink-300 rounded-2xl p-4 mb-3">
@@ -244,7 +244,7 @@ export default function PublishBox({ onClose, onPublished }) {
               value={form.event_date}
               min={new Date().toISOString().slice(0, 10)}
               onChange={e => set('event_date', e.target.value)}
-              className="w-full px-3 py-2 rounded-2xl border border-ink-300 text-[13px] focus:outline-none focus:border-brand-600 bg-white" />
+              className="w-full px-3 py-2.5 rounded-2xl border border-ink-300 text-[16px] focus:outline-none focus:border-brand-600 bg-white" />
             <p className="text-[10.5px] text-ink-400 mt-1">Aparecerá en "Próximos eventos" para que la comunidad sepa qué viene.</p>
           </div>
         )}

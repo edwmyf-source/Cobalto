@@ -18,26 +18,37 @@ export default function PublishSuccessModal({ open, onClose, onViewMyRequest }) 
   const formattedCount = count !== null ? count.toLocaleString('es-CO') : '—'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={onClose}>
-      <div className="bg-white rounded-3xl w-full max-w-sm p-7 text-center" onClick={(e) => e.stopPropagation()}>
-        <div className="rounded-full bg-success-50 inline-flex items-center justify-center mb-3.5"
-          style={{ width: 52, height: 52 }}>
-          <Check size={26} className="text-success-700" />
+    // Anclado ARRIBA (no centrado): en pantallas altas o con el teclado abierto,
+    // un modal centrado queda por debajo del pliegue y parece "perdido abajo".
+    <div className="fixed inset-0 z-[80] flex items-start justify-center px-4 overflow-y-auto"
+      style={{ paddingTop: 'calc(env(safe-area-inset-top) + 72px)', paddingBottom: 24,
+        background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="pub-ok-title">
+      <div className="modal-enter rounded-modal w-full max-w-sm p-6 text-center"
+        style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}
+        onClick={(e) => e.stopPropagation()}>
+        <div className="rounded-full inline-flex items-center justify-center mb-4"
+          style={{ width: 52, height: 52, background: 'var(--success-bg)' }}>
+          <Check size={26} strokeWidth={2.2} style={{ color: 'var(--success)' }} />
         </div>
 
-        <h2 className="font-medium text-base tracking-tight text-ink-900 mb-1.5">¡Publicación realizada!</h2>
+        <h2 id="pub-ok-title" className="t-h4 mb-1.5" style={{ color: 'var(--text-primary)' }}>
+          ¡Publicación realizada!
+        </h2>
 
-        <p className="text-[13px] text-ink-500 mb-5 leading-relaxed">
-          <strong className="text-ink-900 font-medium">{formattedCount} personas</strong> ya pueden ver tu publicación.
+        <p className="t-body-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+          <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{formattedCount} personas</strong> ya pueden ver tu publicación.
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button onClick={onViewMyRequest}
-            className="flex-1 bg-white text-ink-900 border border-ink-300 py-2 rounded-2xl text-xs font-medium hover:bg-slate-50">
+            className="flex-1 h-[44px] rounded-btn text-[14px] font-semibold transition-all duration-[160ms] active:scale-[0.98]"
+            style={{ background: 'var(--surface)', color: 'var(--text-primary)', boxShadow: 'inset 0 0 0 1px var(--border)' }}>
             Ver mi publicación
           </button>
           <button onClick={onClose}
-            className="flex-1 bg-brand-600 hover:bg-brand-700 text-white py-2 rounded-2xl text-xs font-medium">
+            className="flex-1 h-[44px] rounded-btn text-[14px] font-semibold text-white transition-all duration-[160ms] active:scale-[0.98]"
+            style={{ background: 'var(--accent-deep)' }}>
             Volver al feed
           </button>
         </div>

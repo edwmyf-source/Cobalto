@@ -85,7 +85,7 @@ export default function FeedPage() {
   const [loadingMore,    setLoadingMore   ] = useState(false)
   const [hasMore,        setHasMore       ] = useState(true)
   const [filters,        setFilters       ] = useState({})
-  const [sort,           setSort          ] = useState('smart')
+  const [sort,           setSort          ] = useState('recent')
   const [publishOpen,    setPublishOpen   ] = useState(false)
   const [successOpen,    setSuccessOpen   ] = useState(false)
   const [lastPublishedId,setLastPublishedId] = useState(null)
@@ -230,6 +230,9 @@ export default function FeedPage() {
     setLastPublishedId(newPost?.id || null)
     setPublishOpen(false)
     setSuccessOpen(true)
+    // Al publicar siempre se vuelve a "Reciente": si el usuario estaba en
+    // "Relevante", su publicación podría no quedar arriba y parecería perdida.
+    setSort('recent')
     // Optimista: el post aparece YA en el feed, sin esperar el refetch de red
     if (newPost?.id) {
       const optimistic = {
@@ -471,7 +474,12 @@ export default function FeedPage() {
       </div>
 
       {publishOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 bg-black/40"
+        <div className="fixed inset-0 z-50 flex items-start justify-center px-4 overflow-y-auto"
+          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 64px)', paddingBottom: 24,
+            background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)',
+            // Con el teclado abierto el viewport se encoge: overscroll-contain
+            // evita que el scroll se propague al feed de atrás.
+            overscrollBehavior: 'contain' }}
           onClick={() => setPublishOpen(false)}>
           <div className="w-full max-w-xl" onClick={e => e.stopPropagation()}>
             <PublishBox onClose={() => setPublishOpen(false)} onPublished={handlePublished} />
