@@ -39,7 +39,7 @@ function Section({ title, value, open, onToggle, children }) {
         transition: 'grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-4 pb-4 pt-1 flex flex-wrap justify-center gap-2">
+          <div className="px-4 pb-4 pt-1 flex flex-wrap items-center justify-center gap-2">
             {children}
           </div>
         </div>
