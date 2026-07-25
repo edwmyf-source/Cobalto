@@ -30,10 +30,16 @@ export default function ProfileSetup() {
     try { return sessionStorage.getItem('cobalto-pending-name') || '' } catch { return '' }
   })()
 
-  const [step, setStep] = useState(1)
+  const initialFullName = profile?.full_name || pendingName || ''
+  const initialPhone = profile?.phone || userPhone || ''
+  // Si el registro exprés (nombre + celular) ya dejó ambos datos listos, no
+  // tiene sentido mostrar un Paso 1 vacío — se salta directo a la contraseña.
+  const canSkipStep1 = initialFullName.trim().length >= 2 && initialPhone.replace(/\D/g, '').length >= 10
+
+  const [step, setStep] = useState(canSkipStep1 ? 2 : 1)
   const [form, setForm] = useState({
-    full_name: profile?.full_name || pendingName || '',
-    phone: profile?.phone || userPhone || '',
+    full_name: initialFullName,
+    phone: initialPhone,
     identity_mode: profile?.identity_mode || 'real',
     identity_number: profile?.identity_number || defaultNumber,
     password: '',
@@ -208,10 +214,17 @@ export default function ProfileSetup() {
               <button type="submit" disabled={!step2Valid || loading} className={primaryBtn} style={primaryStyle}>
                 {loading ? <Spinner size={16} /> : 'Entrar a Cobalto'}
               </button>
-              <button type="button" onClick={() => { setStep(1); setError('') }}
-                className="w-full flex items-center justify-center gap-1.5 text-[12px] font-bold text-[var(--accent-deep)] hover:underline py-1">
-                <ArrowLeft size={13} /> Volver
-              </button>
+              {!canSkipStep1 ? (
+                <button type="button" onClick={() => { setStep(1); setError('') }}
+                  className="w-full flex items-center justify-center gap-1.5 text-[12px] font-bold text-[var(--accent-deep)] hover:underline py-1">
+                  <ArrowLeft size={13} /> Volver
+                </button>
+              ) : (
+                <button type="button" onClick={signOut}
+                  className="w-full text-center text-[12px] font-bold text-[var(--text-tertiary)] hover:underline py-1">
+                  Cerrar sesión
+                </button>
+              )}
             </form>
           )}
 
