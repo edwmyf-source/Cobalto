@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Mail, Send, Copy, Check, MessageSquareText, Clock, MapPin } from 'lucide-react'
+import { ArrowLeft, Mail, Send, Copy, Check, MessageSquareText, Clock, MapPin, Megaphone, Sparkles } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/shared/Toast'
 import { Card, Panel, Button } from '../components/ui'
@@ -18,7 +18,6 @@ const ASUNTOS = [
   'Tengo una duda',
   'Reportar un problema',
   'Sugerencia',
-  'Quiero anunciarme',
   'Otro',
 ]
 
@@ -30,6 +29,18 @@ export default function ContactoPage() {
   const [asunto, setAsunto] = useState(ASUNTOS[0])
   const [mensaje, setMensaje] = useState('')
   const [copied, setCopied] = useState(false)
+  const textareaRef = useRef(null)
+
+  const ANUNCIO_ASUNTO = 'Quiero anunciarme'
+
+  const irAAnunciarme = () => {
+    setAsunto(ANUNCIO_ASUNTO)
+    if (!mensaje.trim()) {
+      setMensaje('Hola, me interesa anunciar mi empresa/producto en Cobalto. Cuéntenme las opciones disponibles y sus tarifas.')
+    }
+    textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    setTimeout(() => textareaRef.current?.focus(), 350)
+  }
 
   const nombre = profile?.full_name || ''
   const correo = (() => {
@@ -110,6 +121,35 @@ export default function ContactoPage() {
         </div>
       </Card>
 
+      {/* ── Quiero anunciarme: tarjeta destacada ── */}
+      <button onClick={irAAnunciarme}
+        className="w-full text-left rounded-panel p-5 mb-4 relative overflow-hidden transition-all duration-[160ms] ease-premium active:scale-[0.99]"
+        style={{
+          background: 'linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 100%)',
+          boxShadow: 'var(--shadow-raised)',
+        }}>
+        {/* Destello decorativo, muy sutil */}
+        <Sparkles size={90} strokeWidth={1}
+          className="absolute -top-4 -right-4 opacity-[0.12] pointer-events-none" style={{ color: '#fff' }} />
+
+        <div className="flex items-start gap-3 relative">
+          <span className="w-11 h-11 rounded-input flex items-center justify-center flex-shrink-0"
+            style={{ background: 'rgba(255,255,255,0.18)' }}>
+            <Megaphone size={20} strokeWidth={2} style={{ color: '#fff' }} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <span className="inline-block t-caption font-semibold px-2 py-0.5 rounded-full mb-1.5"
+              style={{ background: 'rgba(255,255,255,0.18)', color: '#fff' }}>
+              Oportunidad
+            </span>
+            <p className="t-h4" style={{ color: '#fff' }}>¿Quieres anunciarte con nosotros?</p>
+            <p className="t-body-sm mt-1" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              Llega a toda la comunidad química de Cobalto. Cuéntanos tu idea y te enviamos las opciones.
+            </p>
+          </div>
+        </div>
+      </button>
+
       {/* ── Datos adicionales ── */}
       <Panel className="p-5 mb-8">
         <div className="flex items-center gap-3 mb-4">
@@ -140,13 +180,14 @@ export default function ContactoPage() {
         </label>
         <select value={asunto} onChange={e => setAsunto(e.target.value)}
           className={`${inputCls} mb-4`} style={inputStyle}>
+          {asunto === ANUNCIO_ASUNTO && <option value={ANUNCIO_ASUNTO}>{ANUNCIO_ASUNTO}</option>}
           {ASUNTOS.map(a => <option key={a} value={a}>{a}</option>)}
         </select>
 
         <label className="t-label block mb-2" style={{ color: 'var(--text-secondary)' }}>
           Mensaje
         </label>
-        <textarea value={mensaje} onChange={e => setMensaje(e.target.value)}
+        <textarea ref={textareaRef} value={mensaje} onChange={e => setMensaje(e.target.value)}
           rows={5} placeholder="Cuéntanos en qué podemos ayudarte"
           className={`${inputCls} resize-none`} style={{ ...inputStyle, minHeight: 120 }} />
 
