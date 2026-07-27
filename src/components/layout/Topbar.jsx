@@ -1,4 +1,4 @@
-import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, Calculator, FlaskConical, User, HelpCircle, Lock, LogOut, ChevronDown } from 'lucide-react'
+import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, Calculator, FlaskConical, Mail, User, HelpCircle, Lock, LogOut, ChevronDown } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import { signOut } from '../../api/auth'
@@ -28,12 +28,11 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
     { id: '/chats',         label: 'Inbox',     Icon: MessageSquare },
     { id: '/notifications', label: 'Alertas',   Icon: Bell, badge: unreadCount },
     { id: '/herramientas',  label: 'Herram.',   Icon: Calculator },
-    { id: '/quimica',       label: '¿Sabes?',   Icon: FlaskConical },
   ]
 
   const menuItems = [
     { label: 'Mi perfil',     Icon: User,         path: session?.user?.id ? `/u/${session.user.id}` : '/profile' },
-    { label: '¿Cuánto sabes?', Icon: FlaskConical, path: '/quimica' },
+    { label: 'Contáctanos', Icon: Mail, path: '/contacto' },
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', Icon: Lock, path: '/admin' }] : []),
   ]
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, FlaskConical, Home, Users, Search } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, Mail, Home, Users, Search } from 'lucide-react'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
 import { isAdmin } from '../../lib/constants'
@@ -72,7 +72,7 @@ export default function AppLayout() {
     { label: 'Mensajes', icon: MessageSquare, path: '/chats' },
     { label: 'Alertas',  icon: Bell,          path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
-    { label: '¿Cuánto sabes?', icon: FlaskConical, path: '/quimica' },
+    { label: 'Contáctanos', icon: Mail, path: '/contacto' },
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
   ]
 

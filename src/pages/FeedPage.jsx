@@ -324,22 +324,6 @@ export default function FeedPage() {
             </div>
           </div>
 
-          {/* Insignia del juego */}
-          <div className="bg-white rounded-xl border border-ink-200 shadow-sm p-3 text-center">
-            <div className="flex justify-center gap-0.5 mb-2">
-              {['🌱','📓','⚗️','👩‍🔬','🏆','⚡'].map((e,i,a) => (
-                <span key={e} style={{ fontSize: 10 + i*3, opacity: i === a.length-2 ? 1 : 0.35 + i*0.1 }}>{e}</span>
-              ))}
-            </div>
-            <p className="text-[11px] font-bold mb-0.5" style={{ color: 'var(--accent-deep)' }}>🏅 Gana tu insignia</p>
-            <p className="text-[10px] mb-2" style={{ color: 'var(--accent)' }}>Tu rango aparece en tus posts</p>
-            <button onClick={() => navigate('/quimica')}
-              className="w-full py-1.5 rounded-lg text-[11px] font-bold text-white"
-              style={{ background: 'var(--accent-deep)' }}>
-              Jugar ahora →
-            </button>
-          </div>
-
           {/* Próximos eventos */}
           <div className="bg-white rounded-xl border border-ink-200 shadow-sm">
             <p className="text-[11px] font-bold px-3 pt-3 pb-1" style={{ color: 'var(--accent-deep)' }}>📅 Próximos eventos</p>
