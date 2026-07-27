@@ -9,6 +9,14 @@ export const WHATSAPP_VERIFICATION_ENABLED = false
 // solo cambia este valor a `true`, no hay que tocar nada más.
 export const PHONE_AUTH_ENABLED = false
 
+// Canal por el que se envía el código cuando PHONE_AUTH_ENABLED esté activo.
+// 'sms' funciona con cualquier proveedor de Supabase (Twilio, MessageBird, etc).
+// 'whatsapp' SOLO funciona si el proveedor en Supabase es Twilio o Twilio Verify,
+// y requiere haber configurado un remitente de WhatsApp en la consola de Twilio
+// (sandbox para pruebas, o un número de WhatsApp Business aprobado por Meta
+// para producción).
+export const PHONE_AUTH_CHANNEL = 'whatsapp' // 'sms' | 'whatsapp'
+
 // Registro/login con código de 6 dígitos por correo. Requiere que la plantilla
 // "Magic Link" en Supabase incluya {{ .Token }} (Authentication → Email Templates).
 // Mientras esté en `false`, el registro usa correo + contraseña tradicional.

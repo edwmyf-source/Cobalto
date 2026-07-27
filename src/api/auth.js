@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { clearAllCaches } from '../lib/cacheManager'
+import { PHONE_AUTH_CHANNEL } from '../lib/constants'
 
 export const signUp = async (email, password) => {
   const { data, error } = await supabase.auth.signUp({ email, password })
@@ -57,14 +58,20 @@ export const normalizePhone = (raw, defaultCountry = '57') => {
   return `+${defaultCountry}${clean}`
 }
 
-// Envía el código SMS. Sirve tanto para registro como para login:
-// si el número no existe, Supabase crea el usuario automáticamente.
+// Envía el código de verificación por el canal configurado (WhatsApp o SMS).
+// Sirve tanto para registro como para login: si el número no existe, Supabase
+// crea el usuario automáticamente.
 export const sendPhoneCode = async (phone) => {
-  const { error } = await supabase.auth.signInWithOtp({ phone: normalizePhone(phone) })
+  const { error } = await supabase.auth.signInWithOtp({
+    phone: normalizePhone(phone),
+    options: { channel: PHONE_AUTH_CHANNEL },
+  })
   if (error) throw error
 }
 
-// Verifica el código recibido por SMS y abre sesión.
+// Verifica el código recibido y abre sesión. El "type" para verifyOtp siempre
+// es 'sms' en la API de Supabase, sin importar si el mensaje llegó por
+// WhatsApp o por SMS — es solo el nombre interno del flujo de teléfono.
 export const verifyPhoneCode = async (phone, code) => {
   const { data, error } = await supabase.auth.verifyOtp({
     phone: normalizePhone(phone),

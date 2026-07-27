@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Mail, Check, X } from 'lucide-react'
 import { signUp, signUpWithPhoneOnly, sendPhoneCode, verifyPhoneCode, normalizePhone, sendEmailCode, verifyEmailCode } from '../../api/auth'
-import { PHONE_AUTH_ENABLED, EMAIL_CODE_AUTH_ENABLED } from '../../lib/constants'
+import { PHONE_AUTH_ENABLED, EMAIL_CODE_AUTH_ENABLED, PHONE_AUTH_CHANNEL } from '../../lib/constants'
 import Spinner from '../shared/Spinner'
 
 const ERR_MAP = {
@@ -81,7 +81,7 @@ function QuickPhoneSignup({ onSwitchLogin, onWantsEmail }) {
         // Con Twilio activo: primero se verifica el número con un código.
         if (!codeSent) {
           await sendPhoneCode(phone)
-          setInfo(`Código enviado por SMS a ${normalizePhone(phone)}`)
+          setInfo(`Código enviado por ${PHONE_AUTH_CHANNEL === 'whatsapp' ? 'WhatsApp' : 'SMS'} a ${normalizePhone(phone)}`)
           setCodeSent(true)
           setLoading(false)
           return
@@ -107,7 +107,7 @@ function QuickPhoneSignup({ onSwitchLogin, onWantsEmail }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <Header title="Crear cuenta"
-        sub={codeSent ? 'Te enviamos un código por SMS' : 'Solo tu nombre y celular'} />
+        sub={codeSent ? `Te enviamos un código por ${PHONE_AUTH_CHANNEL === 'whatsapp' ? 'WhatsApp' : 'SMS'}` : 'Solo tu nombre y celular'} />
 
       {!codeSent ? (
         <>
