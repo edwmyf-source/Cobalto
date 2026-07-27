@@ -107,7 +107,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
               <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
                 <p className="text-sm font-bold" style={{ color: 'var(--accent-deep)' }}>{name}</p>
                 <p className="text-xs" style={{ color: 'var(--accent)' }}>
-                  {session?.user?.email?.endsWith('@phone.cobalto.app') ? profile?.phone : session?.user?.email}
+                  {session?.user?.email?.endsWith('@phone.redcobalto.com') ? profile?.phone : session?.user?.email}
                 </p>
               </div>
               {menuItems.map(({ label, Icon, path }) => (

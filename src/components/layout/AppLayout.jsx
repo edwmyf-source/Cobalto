@@ -111,7 +111,7 @@ export default function AppLayout() {
             <div className="px-4 py-4" style={{ borderBottom: '1px solid var(--border-soft)' }}>
               <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{name}</p>
               <p className="t-caption truncate mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
-                {session?.user?.email?.endsWith('@phone.cobalto.app') ? profile?.phone : session?.user?.email}
+                {session?.user?.email?.endsWith('@phone.redcobalto.com') ? profile?.phone : session?.user?.email}
               </p>
             </div>
             {profileMenuItems.map(item => {

@@ -97,7 +97,7 @@ export const verifyPhoneCode = async (phone, code) => {
 // cuentas nuevas (pasan a autenticarse por OTP real), sin afectar a quienes ya
 // se registraron por esta vía.
 const phoneToSyntheticEmail = (phone) =>
-  `${normalizePhone(phone).replace('+', '')}@phone.cobalto.app`
+  `${normalizePhone(phone).replace('+', '')}@phone.redcobalto.com`
 
 export const signUpWithPhoneOnly = async (phone) => {
   const email = phoneToSyntheticEmail(phone)

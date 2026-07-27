@@ -27,9 +27,9 @@ export default function ProfileSetup() {
   const userId = session?.user?.id || ''
   const rawEmail = session?.user?.email || ''
   // El registro exprés por celular usa un correo sintético invisible
-  // (numero@phone.cobalto.app) solo para que Supabase pueda crear la cuenta.
+  // (numero@phone.redcobalto.com) solo para que Supabase pueda crear la cuenta.
   // Nunca debe tratarse como el email real de la persona.
-  const isSyntheticEmail = rawEmail.endsWith('@phone.cobalto.app')
+  const isSyntheticEmail = rawEmail.endsWith('@phone.redcobalto.com')
   const userEmail = isSyntheticEmail ? '' : rawEmail
   const userPhone = session?.user?.phone || (isSyntheticEmail ? rawEmail.split('@')[0].replace(/^(\d)/, '+$1') : '')
   const defaultNumber = useMemo(() => generateIdentityNumber(userId), [userId])

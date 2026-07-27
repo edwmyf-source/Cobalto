@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const rawEmail = session?.user?.email || ''
   // Ver nota en ProfileSetup.jsx: el registro exprés por celular usa un correo
   // sintético invisible que nunca debe tratarse como el email real.
-  const isSyntheticEmail = rawEmail.endsWith('@phone.cobalto.app')
+  const isSyntheticEmail = rawEmail.endsWith('@phone.redcobalto.com')
   const userEmail = isSyntheticEmail ? '' : rawEmail
   const defaultNumber = useMemo(() => generateIdentityNumber(userId), [userId])
   const avatarInputRef = useRef(null)
