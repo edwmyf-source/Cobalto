@@ -84,7 +84,7 @@ export default function AppLayout() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ minHeight: '100vh', background: '#FFFFFF' }}>
+    <div className="min-h-app" style={{ background: '#FFFFFF' }}>
 
       {/* ── Topbar LinkedIn — visible solo en desktop ── */}
       <div className="hidden md:block">

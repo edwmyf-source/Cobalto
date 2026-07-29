@@ -54,8 +54,8 @@ function FilaComparativa({ label, s, l, hi }) {
   return (
     <div className="grid gap-1 px-3 py-1.5" style={{ gridTemplateColumns: '1.3fr 1fr 1fr', ...(hi ? { background: 'var(--surface-raised)', borderTop: '1px solid var(--border)' } : { borderTop: '1px solid #eef2ff' }) }}>
       <span className={hi ? 'text-xs font-bold' : 'text-xs'} style={{ color: 'var(--accent-deep)' }}>{label}</span>
-      <span className={hi ? 'text-xs font-black text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? 'var(--accent-deep)' : cS.color }}>{hi ? cop0(s) : cS.txt}</span>
-      <span className={hi ? 'text-xs font-black text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? '#6d28d9' : cL.color }}>{hi ? cop0(l) : cL.txt}</span>
+      <span className={hi ? 'text-xs font-extrabold text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? 'var(--accent-deep)' : cS.color }}>{hi ? cop0(s) : cS.txt}</span>
+      <span className={hi ? 'text-xs font-extrabold text-right tabular-nums' : 'text-xs text-right tabular-nums'} style={{ color: hi ? '#6d28d9' : cL.color }}>{hi ? cop0(l) : cL.txt}</span>
     </div>
   )
 }
@@ -136,7 +136,7 @@ function TabMensual() {
                 : <>Tu salario de <strong>{cop0(actual.ing)}</strong> equivale aproximadamente a unos honorarios por</>}
               {' '}al mes
             </p>
-            <p className="text-2xl font-black mt-1" style={{ color: 'var(--accent-deep)' }}>{cop0(res.eq)}</p>
+            <p className="text-2xl font-extrabold mt-1" style={{ color: 'var(--accent-deep)' }}>{cop0(res.eq)}</p>
           </div>
         </div>
       )}
@@ -193,7 +193,7 @@ function TabAnual() {
             {[['Neto anual', cop0(res.total), 'var(--surface-raised)', 'var(--accent-deep)'], ['Promedio mensual', cop0(res.promedio), 'var(--surface-raised)', 'var(--accent-deep)'], ['Equivale a salario', cop0(res.salEq), '#f5f3ff', '#6d28d9']].map(([l, v, bg, c]) => (
               <div key={l} className="rounded-xl p-2.5 text-center border border-blue-100" style={{ background: bg }}>
                 <p className="text-[10px] font-semibold mb-0.5" style={{ color: c, opacity: 0.7 }}>{l}</p>
-                <p className="text-base font-black" style={{ color: c }}>{v}</p>
+                <p className="text-base font-extrabold" style={{ color: c }}>{v}</p>
               </div>
             ))}
           </div>
@@ -201,7 +201,7 @@ function TabAnual() {
             <p className="text-xs" style={{ color: 'var(--accent-deep)', lineHeight: 1.5 }}>
               Tus honorarios anuales equivalen aproximadamente a un contrato laboral por
             </p>
-            <p className="text-2xl font-black mt-1" style={{ color: 'var(--accent-deep)' }}>{cop0(res.salEq)} al mes</p>
+            <p className="text-2xl font-extrabold mt-1" style={{ color: 'var(--accent-deep)' }}>{cop0(res.salEq)} al mes</p>
           </div>
         </div>
       )}
@@ -256,7 +256,7 @@ function CalcDiluciones() {
       {res && (
         <div className="rounded-2xl p-3 text-center" style={{ background: 'var(--surface-raised)', border: '1px solid var(--border)' }}>
           <p className="text-xs font-semibold mb-0.5" style={{ color: 'var(--accent-deep)' }}>{resLabel[res.inc]}</p>
-          <p className="text-3xl font-black" style={{ color: 'var(--accent-deep)' }}>{fmt(res.valor)}</p>
+          <p className="text-3xl font-extrabold" style={{ color: 'var(--accent-deep)' }}>{fmt(res.valor)}</p>
           <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{res.inc.startsWith('v') ? 'mL' : '%'}</p>
         </div>
       )}
@@ -374,7 +374,7 @@ function CalcPureza() {
         ].map(([l, v, bg, c]) => (
           <div key={l} className="rounded-xl p-2.5 text-center border border-blue-50" style={{ background: bg }}>
             <p className="text-[10px] font-semibold mb-0.5" style={{ color: c, opacity: 0.8 }}>{l}</p>
-            <p className="text-base font-black" style={{ color: c }}>{v}</p>
+            <p className="text-base font-extrabold" style={{ color: c }}>{v}</p>
             <p className="text-[9px]" style={{ color: c, opacity: 0.6 }}>g</p>
           </div>
         ))}
@@ -447,7 +447,7 @@ function CalcPH() {
       {res && (
         <div className="rounded-2xl p-4 text-center border" style={{ background: '#fff', borderColor: pHColor + '40' }}>
           <p className="text-xs font-semibold mb-1" style={{ color: pHColor }}>pH calculado</p>
-          <p className="text-5xl font-black" style={{ color: pHColor }}>{res}</p>
+          <p className="text-5xl font-extrabold" style={{ color: pHColor }}>{res}</p>
           <div className="mt-3 h-2 rounded-full overflow-hidden" style={{ background: 'linear-gradient(to right, #dc2626, #ea580c, #eab308, #16a34a, var(--accent-deep), #7c3aed)' }}>
             <div className="h-full w-1 rounded-full bg-white shadow-md" style={{ marginLeft: `${Math.min(Math.max((pHNum / 14) * 100, 0), 98)}%` }} />
           </div>
@@ -577,11 +577,11 @@ function FormulacionSimple() {
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-xl p-2.5 text-center border border-blue-100" style={{ background: 'var(--surface-raised)' }}>
               <p className="text-[10px] font-semibold mb-0.5" style={{ color: 'var(--accent-deep)', opacity: 0.7 }}>Costo por gramo</p>
-              <p className="text-base font-black" style={{ color: 'var(--accent-deep)' }}>{cop(res.costoPorGramo)}</p>
+              <p className="text-base font-extrabold" style={{ color: 'var(--accent-deep)' }}>{cop(res.costoPorGramo)}</p>
             </div>
             <div className="rounded-xl p-2.5 text-center border border-blue-100" style={{ background: 'var(--surface-raised)' }}>
               <p className="text-[10px] font-semibold mb-0.5" style={{ color: 'var(--accent-deep)', opacity: 0.7 }}>Costo por kg</p>
-              <p className="text-base font-black" style={{ color: 'var(--accent-deep)' }}>{cop(res.costoPorKg)}</p>
+              <p className="text-base font-extrabold" style={{ color: 'var(--accent-deep)' }}>{cop(res.costoPorKg)}</p>
             </div>
           </div>
 
@@ -662,7 +662,7 @@ export default function HerramientasPage() {
       {/* Header */}
       <div className="flex items-center gap-2">
         <Calculator size={20} style={{ color: 'var(--accent-deep)' }} />
-        <h1 className="text-lg font-black" style={{ color: 'var(--accent-deep)' }}>Honorarios vs salario</h1>
+        <h1 className="text-lg font-extrabold" style={{ color: 'var(--accent-deep)' }}>Honorarios vs salario</h1>
       </div>
 
       {/* Card calculadora */}

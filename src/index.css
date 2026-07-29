@@ -87,6 +87,28 @@ body {
   line-height: 24px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Manrope llega hasta el peso 800. Sin esto, iOS "inventa" los pesos que
+     faltan engrosando artificialmente el trazo, lo que ensancha el texto y
+     descuadra botones respecto a Android. */
+  font-synthesis-weight: none;
+  font-synthesis: none;
+}
+
+/* iOS no hereda la tipografía en controles de formulario como sí hace Chrome:
+   les aplica la fuente del sistema en un tamaño menor. Tailwind ya lo cubre en
+   su capa base, pero se refuerza aquí porque es la causa más común de que los
+   botones se vean de otro tamaño en iPhone. */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
 }
 
 /* Foco visible sólo por teclado: accesible sin ensuciar el clic con el ratón. */
@@ -132,6 +154,22 @@ input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
+/* Los campos de fecha son el control que más difiere entre iOS y Android:
+   Safari los alinea con su propio interlineado y los deja más bajos que el
+   resto de campos. Esto los iguala. */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'] {
+  min-height: 48px;
+  text-align: left;
+}
+input[type='date']::-webkit-date-and-time-value,
+input[type='time']::-webkit-date-and-time-value,
+input[type='datetime-local']::-webkit-date-and-time-value {
+  text-align: left;
+  margin: 0;
+}
+
 /* Quita el destello gris al tocar, que solo aparece en iOS. */
 * {
   -webkit-tap-highlight-color: transparent;
@@ -152,6 +190,14 @@ html {
 
 /* Números tabulares en métricas: no bailan al actualizarse. */
 .tnum { font-variant-numeric: tabular-nums; }
+
+/* Alto de pantalla seguro en iOS: 100vh incluye la barra del navegador y deja
+   la interfaz más alta que el área visible. 100dvh usa el alto real; el 100vh
+   previo queda como respaldo para navegadores que no soporten dvh. */
+.min-h-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 
 /* ════════════════════════════════════════════════════════════════════════
    ANTI-ZOOM EN MÓVIL

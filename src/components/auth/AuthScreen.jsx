@@ -112,7 +112,7 @@ function Landing({ stats, onSignup }) {
                 }}>
                   <div style={{
                     fontSize: 25,
-                    fontWeight: 900,
+                    fontWeight: 800,
                     lineHeight: 1,
                     flexShrink: 0,
                     color: item.navy ? 'var(--accent-deep)' : '#4C82F0',
@@ -155,7 +155,7 @@ export default function AuthScreen() {
   }, [])
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-app)' }}>
+    <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
       <TopBar onLogin={() => setMode('login')} onSignup={() => setMode('signup')} />
 
       {mode === 'landing' ? (
