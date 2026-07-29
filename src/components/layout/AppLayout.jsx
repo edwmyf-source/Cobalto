@@ -9,6 +9,7 @@ import { useRealtime } from '../../hooks/useRealtime'
 import { signOut } from '../../api/auth'
 import { publicName } from '../../lib/helpers'
 import useHideOnScroll from '../../lib/useHideOnScroll'
+import { hoverProps } from '../../lib/hover'
 
 export default function AppLayout() {
   const { session, profile } = useAuth()
@@ -121,8 +122,10 @@ export default function AppLayout() {
                   className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
                   style={{ color: 'var(--text-primary)' }}
                   role="menuitem"
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                  {...hoverProps(
+                    e => e.currentTarget.style.background = 'var(--bg-subtle)',
+                    e => e.currentTarget.style.background = 'transparent',
+                  )}>
                   <Icon size={18} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
                   {item.label}
                   {!!item.badge && (
@@ -139,8 +142,10 @@ export default function AppLayout() {
               <button onClick={() => signOut()} role="menuitem"
                 className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
                 style={{ color: 'var(--error)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--error-bg)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                {...hoverProps(
+                  e => e.currentTarget.style.background = 'var(--error-bg)',
+                  e => e.currentTarget.style.background = 'transparent',
+                )}>
                 <LogOut size={18} strokeWidth={2} />
                 Cerrar sesión
               </button>

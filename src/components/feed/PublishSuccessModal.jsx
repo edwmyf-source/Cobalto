@@ -22,7 +22,7 @@ export default function PublishSuccessModal({ open, onClose, onViewMyRequest }) 
     // un modal centrado queda por debajo del pliegue y parece "perdido abajo".
     <div className="fixed inset-0 z-[80] flex items-start justify-center px-4 overflow-y-auto"
       style={{ paddingTop: 'calc(env(safe-area-inset-top) + 72px)', paddingBottom: 24,
-        background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)' }}
+        background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
       onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="pub-ok-title">
       <div className="modal-enter rounded-modal w-full max-w-sm p-6 text-center"
         style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}

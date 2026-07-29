@@ -1,4 +1,5 @@
 import { Loader2 } from 'lucide-react'
+import { hoverProps } from '../../lib/hover'
 
 /**
  * Botón del sistema. Cuatro variantes, nada más.
@@ -61,8 +62,10 @@ export default function Button({
         active:scale-[0.98] disabled:opacity-45 disabled:pointer-events-none
         ${SIZES[size]} ${v.base} ${fullWidth ? 'w-full' : ''} ${className}`}
       style={v.style}
-      onMouseEnter={e => { if (!isDisabled) Object.assign(e.currentTarget.style, v.hover) }}
-      onMouseLeave={e => { Object.assign(e.currentTarget.style, v.style) }}
+      {...hoverProps(
+        e => { if (!isDisabled) Object.assign(e.currentTarget.style, v.hover) },
+        e => { Object.assign(e.currentTarget.style, v.style) },
+      )}
       {...rest}
     >
       {loading

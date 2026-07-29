@@ -9,6 +9,7 @@ import { safeErrorMessage } from '../lib/errors'
 import { publicName } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import { Card, Button, SkeletonListRow, EmptyState } from '../components/ui'
+import { hoverProps } from '../lib/hover'
 
 export default function ContactsPage() {
   const navigate = useNavigate()
@@ -52,8 +53,10 @@ export default function ContactsPage() {
       <button onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 t-body-sm font-medium mb-6 transition-colors duration-[160ms]"
         style={{ color: 'var(--text-tertiary)' }}
-        onMouseEnter={e => e.currentTarget.style.color = 'var(--text-secondary)'}
-        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-tertiary)'}>
+        {...hoverProps(
+          e => e.currentTarget.style.color = 'var(--text-secondary)',
+          e => e.currentTarget.style.color = 'var(--text-tertiary)',
+        )}>
         <ArrowLeft size={16} strokeWidth={2} /> Volver
       </button>
 

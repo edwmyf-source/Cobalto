@@ -1,4 +1,5 @@
 import { Search, X, ChevronDown } from 'lucide-react'
+import { hoverProps } from '../../lib/hover'
 import { Chip, Panel } from '../ui'
 import { useState, useRef, useEffect } from 'react'
 import {
@@ -108,8 +109,10 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           <button onClick={() => set('search', '')} aria-label="Limpiar búsqueda"
             className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full transition-colors"
             style={{ color: 'var(--text-tertiary)' }}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+            {...hoverProps(
+              e => e.currentTarget.style.background = 'var(--bg-subtle)',
+              e => e.currentTarget.style.background = 'transparent',
+            )}>
             <X size={15} strokeWidth={2.2} />
           </button>
         )}

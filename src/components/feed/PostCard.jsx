@@ -13,6 +13,7 @@ import { Button, Card, Badge } from '../ui'
 import UserAvatar from '../shared/UserAvatar'
 import CommentSection from './CommentSection'
 import ReportModal from './ReportModal'
+import { hoverProps } from '../../lib/hover'
 
 function MediaGallery({ media }) {
   if (!media || media.length === 0) return null
@@ -88,8 +89,10 @@ function PostMenu({ post, onReport, isMine = false, onDelete }) {
       <button onClick={() => setOpen(o => !o)} aria-label="Más opciones" aria-expanded={open}
         className="w-8 h-8 flex items-center justify-center rounded-input transition-colors duration-[160ms]"
         style={{ color: 'var(--text-tertiary)' }}
-        onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+        {...hoverProps(
+          e => e.currentTarget.style.background = 'var(--bg-subtle)',
+          e => e.currentTarget.style.background = 'transparent',
+        )}>
         <MoreHorizontal size={18} strokeWidth={2} />
       </button>
       {open && (
@@ -100,8 +103,10 @@ function PostMenu({ post, onReport, isMine = false, onDelete }) {
             <button onClick={() => { setOpen(false); onDelete?.() }} role="menuitem"
               className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
               style={{ color: 'var(--error)' }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--error-bg)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+              {...hoverProps(
+                e => e.currentTarget.style.background = 'var(--error-bg)',
+                e => e.currentTarget.style.background = 'transparent',
+              )}>
               <Trash2 size={16} strokeWidth={2} />
               Eliminar publicación
             </button>
@@ -110,16 +115,20 @@ function PostMenu({ post, onReport, isMine = false, onDelete }) {
               <button onClick={() => { setOpen(false); onReport() }} role="menuitem"
                 className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
                 style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                {...hoverProps(
+                  e => e.currentTarget.style.background = 'var(--bg-subtle)',
+                  e => e.currentTarget.style.background = 'transparent',
+                )}>
                 <Flag size={16} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
                 Reportar publicación
               </button>
               <button onClick={handleBlock} role="menuitem"
                 className="w-full flex items-center gap-3 px-4 py-2.5 t-body-sm font-medium transition-colors duration-[160ms]"
                 style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                {...hoverProps(
+                  e => e.currentTarget.style.background = 'var(--bg-subtle)',
+                  e => e.currentTarget.style.background = 'transparent',
+                )}>
                 <UserX size={16} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
                 Bloquear usuario
               </button>
@@ -284,7 +293,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
       {/* Confirmación de borrado — acción irreversible */}
       {confirmDelete && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-6"
-          style={{ background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)' }}
+          style={{ background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
           onClick={() => !deleting && setConfirmDelete(false)}
           role="dialog" aria-modal="true" aria-labelledby="del-title">
           <div className="modal-enter rounded-modal w-full max-w-[380px] p-6"

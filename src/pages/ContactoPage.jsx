@@ -4,6 +4,7 @@ import { ArrowLeft, Mail, Send, Copy, Check, MessageSquareText, Clock, MapPin } 
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/shared/Toast'
 import { Card, Panel, Button } from '../components/ui'
+import { hoverProps } from '../lib/hover'
 
 const CONTACT_EMAIL = 'info@redcobalto.com'
 
@@ -79,8 +80,10 @@ export default function ContactoPage() {
       <button onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 t-body-sm font-medium mb-6 transition-colors duration-[160ms]"
         style={{ color: 'var(--text-tertiary)' }}
-        onMouseEnter={e => e.currentTarget.style.color = 'var(--text-secondary)'}
-        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-tertiary)'}>
+        {...hoverProps(
+          e => e.currentTarget.style.color = 'var(--text-secondary)',
+          e => e.currentTarget.style.color = 'var(--text-tertiary)',
+        )}>
         <ArrowLeft size={16} strokeWidth={2} /> Volver
       </button>
 
@@ -105,8 +108,10 @@ export default function ContactoPage() {
           <button onClick={copyEmail} aria-label="Copiar correo"
             className="flex-shrink-0 w-9 h-9 rounded-input flex items-center justify-center transition-colors duration-[160ms]"
             style={{ color: copied ? 'var(--success)' : 'var(--text-tertiary)' }}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+            {...hoverProps(
+              e => e.currentTarget.style.background = 'var(--bg-subtle)',
+              e => e.currentTarget.style.background = 'transparent',
+            )}>
             {copied ? <Check size={16} strokeWidth={2.5} /> : <Copy size={16} strokeWidth={2} />}
           </button>
         </div>

@@ -460,7 +460,7 @@ export default function FeedPage() {
       {publishOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center px-4 overflow-y-auto"
           style={{ paddingTop: 'calc(env(safe-area-inset-top) + 64px)', paddingBottom: 24,
-            background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)',
+            background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
             // Con el teclado abierto el viewport se encoge: overscroll-contain
             // evita que el scroll se propague al feed de atrás.
             overscrollBehavior: 'contain' }}

@@ -334,7 +334,7 @@ export default function ChatsPage() {
 
   return (
     <div className="page-enter flex overflow-hidden rounded-2xl"
-      style={{ height: 'calc(100vh - 140px)', background: '#ffffff', boxShadow: '0 8px 28px rgba(0,71,171,0.09)' }}>
+      style={{ height: 'calc(100dvh - 140px)', background: '#ffffff', boxShadow: '0 8px 28px rgba(0,71,171,0.09)' }}>
 
       {/* Bandeja */}
       <div className={`md:w-[300px] md:border-r flex-shrink-0 overflow-hidden flex flex-col ${active ? 'hidden md:flex' : 'w-full flex'}`}
