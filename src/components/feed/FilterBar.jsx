@@ -26,7 +26,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         collapsible ? (
           <button
             onClick={onToggle}
-            className="w-full flex items-center justify-center gap-2 px-4 pt-3 pb-1"
+            className="w-full flex items-center justify-center gap-2 px-4 pt-2.5 pb-0.5"
             aria-expanded={open}
           >
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
@@ -37,7 +37,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         ) : (
           // Sin flecha ni comportamiento de clic: es solo un rótulo, esta
           // sección siempre está visible y no se puede colapsar.
-          <div className="w-full flex items-center justify-center px-4 pt-3 pb-1">
+          <div className="w-full flex items-center justify-center px-4 pt-2.5 pb-0.5">
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
           </div>
         )
@@ -49,7 +49,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         alignItems: 'start',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className={`px-4 pb-3 ${title ? 'pt-0.5' : 'pt-3'} flex flex-wrap items-center justify-center gap-1.5`}>
+          <div className={`px-4 pb-2.5 ${title ? 'pt-0' : 'pt-2.5'} flex flex-wrap items-center justify-center gap-1`}>
             {children}
           </div>
         </div>
