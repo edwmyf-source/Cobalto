@@ -19,20 +19,28 @@ function Pill({ label, active, onClick, size = 'sm' }) {
   )
 }
 
-function Section({ title, value, open, onToggle, children }) {
+function Section({ title, value, open, onToggle, collapsible = true, children }) {
   return (
     <div>
       {title && (
-        <button
-          onClick={onToggle}
-          className="w-full flex items-center justify-center gap-2 px-4 pt-4 pb-2"
-          aria-expanded={open}
-        >
-          <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
-          {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
-          <ChevronDown size={16} strokeWidth={2}
-            style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-        </button>
+        collapsible ? (
+          <button
+            onClick={onToggle}
+            className="w-full flex items-center justify-center gap-2 px-4 pt-4 pb-2"
+            aria-expanded={open}
+          >
+            <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
+            {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
+            <ChevronDown size={16} strokeWidth={2}
+              style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+        ) : (
+          // Sin flecha ni comportamiento de clic: es solo un rótulo, esta
+          // sección siempre está visible y no se puede colapsar.
+          <div className="w-full flex items-center justify-center px-4 pt-4 pb-2">
+            <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
+          </div>
+        )
       )}
       <div style={{
         display: 'grid',
@@ -132,11 +140,13 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           </div>
         )}
 
-        {/* Sección: Categoría (sin título propio, usa el del header) */}
+        {/* Sección: Categoría — siempre visible, con rótulo fijo (no se colapsa) */}
         <Section
+          title="Categoría"
           value={null}
           open={true}
           onToggle={() => {}}
+          collapsible={false}
         >
           {MARKETPLACE_TABS.map(t => (
             <Pill key={t.value} label={t.label} size="lg"
