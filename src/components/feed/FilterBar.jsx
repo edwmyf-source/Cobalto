@@ -41,7 +41,7 @@ function Section({ title, value, open, onToggle, children }) {
         alignItems: 'start',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="px-4 pb-4 pt-1 flex flex-wrap items-center justify-center gap-2">
+          <div className={`px-4 pb-4 ${title ? 'pt-1' : 'pt-4'} flex flex-wrap items-center justify-center gap-2`}>
             {children}
           </div>
         </div>
