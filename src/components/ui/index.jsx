@@ -44,7 +44,7 @@ export function Panel({ children, className = '', style = {}, ...rest }) {
    CHIP — categorías, filtros, etiquetas. Alterna encendido/apagado.
    ══════════════════════════════════════════════════════════════════════ */
 export function Chip({ children, active = false, size = 'md', onClick, className = '', ...rest }) {
-  const pad = size === 'sm' ? 'h-[28px] px-3 text-[12px]' : 'h-[34px] px-4 text-[13px]'
+  const pad = size === 'sm' ? 'h-[26px] px-3 text-[12px]' : 'h-[30px] px-3.5 text-[13px]'
   const isButton = typeof onClick === 'function'
 
   return (

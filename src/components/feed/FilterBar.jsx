@@ -26,7 +26,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         collapsible ? (
           <button
             onClick={onToggle}
-            className="w-full flex items-center justify-center gap-2 px-4 pt-4 pb-2"
+            className="w-full flex items-center justify-center gap-2 px-4 pt-3 pb-1"
             aria-expanded={open}
           >
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
@@ -37,7 +37,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         ) : (
           // Sin flecha ni comportamiento de clic: es solo un rótulo, esta
           // sección siempre está visible y no se puede colapsar.
-          <div className="w-full flex items-center justify-center px-4 pt-4 pb-2">
+          <div className="w-full flex items-center justify-center px-4 pt-3 pb-1">
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
           </div>
         )
@@ -49,7 +49,7 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         alignItems: 'start',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className={`px-4 pb-4 ${title ? 'pt-1' : 'pt-4'} flex flex-wrap items-center justify-center gap-2`}>
+          <div className={`px-4 pb-3 ${title ? 'pt-0.5' : 'pt-3'} flex flex-wrap items-center justify-center gap-1.5`}>
             {children}
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
       <div className="-mx-4 md:hidden" style={{ height: 40, marginTop: -1, background: 'var(--accent-deep)' }} />
 
       {/* Buscador flotante */}
-      <div className="relative mb-4 z-[5]" style={{ marginTop: -24 }}>
+      <div className="relative mb-3 z-[5]" style={{ marginTop: -24 }}>
         <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
           style={{ color: 'var(--text-tertiary)' }} />
         <input
@@ -130,7 +130,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
       <Panel className="overflow-hidden mb-4">
 
         {hasFilters && (
-          <div className="flex justify-center px-4 pt-4 pb-0">
+          <div className="flex justify-center px-4 pt-3 pb-0">
             <button
               onClick={() => { setFilters({}); setOpenSec('categoria') }}
               className="t-body-sm font-medium transition-opacity duration-[160ms] hover:opacity-70"
