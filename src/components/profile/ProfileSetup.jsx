@@ -11,7 +11,7 @@ import Spinner from '../shared/Spinner'
 
 const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 const labelCls = 'text-[12px] font-bold text-[var(--text-primary)]'
-const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95'
+const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[44px] rounded-btn disabled:opacity-40 transition-all active:scale-95'
 const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
 
 // Reglas de seguridad de la contraseña: mayúscula, minúscula, número y longitud.

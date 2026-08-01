@@ -26,9 +26,9 @@ const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','ab
 
 const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 const codeCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
-const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95'
+const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[44px] rounded-btn disabled:opacity-40 transition-all active:scale-95'
 const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
-const ghostBtn = 'w-full flex items-center justify-center gap-2 text-[14px] font-bold py-3 rounded-btn transition-all active:scale-95'
+const ghostBtn = 'w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95'
 const ghostStyle = { boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }
 
 const Header = ({ title, sub }) => (
