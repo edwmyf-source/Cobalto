@@ -27,7 +27,7 @@ export default function BannerCarousel() {
   const goTo = useCallback((idx) => {
     const clamped = Math.max(0, Math.min(idx, banners.length - 1))
     setCurrent(clamped)
-    trackRef.current?.scrollTo({ left: clamped * (trackRef.current.offsetWidth * 0.75 + 10), behavior: 'smooth' })
+    trackRef.current?.scrollTo({ left: clamped * (trackRef.current.offsetWidth * 0.85 + 10), behavior: 'smooth' })
   }, [banners.length])
 
   // Auto-slide cada 4 segundos
@@ -36,7 +36,7 @@ export default function BannerCarousel() {
     timerRef.current = setInterval(() => {
       setCurrent(prev => {
         const next = (prev + 1) % banners.length
-        trackRef.current?.scrollTo({ left: next * (trackRef.current.offsetWidth * 0.75 + 10), behavior: 'smooth' })
+        trackRef.current?.scrollTo({ left: next * (trackRef.current.offsetWidth * 0.85 + 10), behavior: 'smooth' })
         return next
       })
     }, 4000)
@@ -57,7 +57,7 @@ export default function BannerCarousel() {
         className="flex gap-2.5 overflow-x-auto pb-2 snap-x snap-mandatory min-w-0 w-full"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onScroll={(e) => {
-          const cardW = e.currentTarget.offsetWidth * 0.75 + 10
+          const cardW = e.currentTarget.offsetWidth * 0.85 + 10
           const idx = Math.round(e.currentTarget.scrollLeft / cardW)
           setCurrent(idx)
           clearInterval(timerRef.current)
@@ -72,7 +72,7 @@ export default function BannerCarousel() {
           <div
             key={banner.id}
             className="flex-shrink-0 snap-start rounded-3xl overflow-hidden border border-ink-300"
-            style={{ width: '75%', aspectRatio: '16/7' }}
+            style={{ width: '85%', aspectRatio: '16/9' }}
           >
             <img
               src={banner.image_url}
