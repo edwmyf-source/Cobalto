@@ -81,16 +81,29 @@ export default function BrandSplash({ onDone }) {
         .cbo-p3 .cbo-e::before { background:linear-gradient(90deg, transparent, #B8CBEF); }
 
         .cbo-brand {
-          color:#fff; font-weight:800; font-size:38px;
+          color:#fff; font-weight:800; font-size:42px;
           letter-spacing:-0.03em;
-          line-height: 0.92;
-          text-align: center;
+          line-height: 0.9;
+          /* inline-block: el bloque se encoge al ancho del texto, asi el
+             contenedor flex lo sigue centrando en pantalla, pero por dentro
+             las dos lineas se alinean a la izquierda entre si. */
+          display: inline-block;
+          text-align: left;
           font-family: Manrope, system-ui, -apple-system, sans-serif;
           margin-top:30px;
           animation: cbo-brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;
         }
         .cbo-brand i { color:#9CBEEE; font-style:normal; }
-        .cbo-brand-red { color: var(--brand-red); display: block; }
+        /* "Red" mas pequeño y con menos peso: acompaña sin competir, para que
+           "Cobalto" se lleve el protagonismo visual. */
+        .cbo-brand-red {
+          color: var(--brand-red);
+          display: block;
+          font-size: 0.52em;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          margin-bottom: 2px;
+        }
 
         .cbo-load {
           display:flex; align-items:center; gap:6px;
