@@ -48,9 +48,14 @@ function Landing({ stats, onSignup }) {
       {/* Hero */}
       <section className="flex-shrink-0 md:flex md:items-center md:gap-8">
         <div className="md:flex-1">
-          <h1 className="text-[32px] md:text-[32px] font-extrabold leading-tight" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-            Punto de encuentro<br />
-            <span style={{ color: 'var(--accent)' }}>de la industria química.</span>
+          <h1 className="text-left font-extrabold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 0.92 }}>
+            {/* Escalonado: las dos palabras con fuerza en grande, y el
+                complemento en un tamaño menor para crear el escalón. */}
+            <span className="block text-[46px] md:text-[62px]">Punto de</span>
+            <span className="block text-[46px] md:text-[62px]">encuentro</span>
+            <span className="block text-[24px] md:text-[34px] mt-1.5" style={{ color: 'var(--accent)' }}>
+              de la industria química.
+            </span>
           </h1>
           <p className="mt-3 text-[16px] md:text-[16px] leading-snug font-medium" style={{ color: 'var(--text-secondary)' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
@@ -89,14 +94,14 @@ function Landing({ stats, onSignup }) {
       {/* Ventajas — estilo H2 (+10% base, texto +20% adicional) */}
       <section className="mt-4">
         <h2 className="text-[12px] font-extrabold uppercase mb-2.5" style={{ color: 'var(--text-secondary)', letterSpacing: '0.12em' }}>
-          ¿Por qué Cobalto?
+          ¿Por qué Red Cobalto?
         </h2>
         <div className="rounded-card overflow-hidden" style={{ background: '#ffffff', boxShadow: 'var(--shadow-card)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
               { n: '01', title: 'Gratis',       sub: 'Sin costos ocultos',        navy: true  },
               { n: '02', title: 'Rápido',       sub: 'En segundos',               navy: true  },
-              { n: '03', title: 'Anónimo',      sub: 'Opcional',                  navy: true  },
+              { n: '03', title: 'Perfiles reales', sub: 'Sabes con quién hablas', navy: true  },
               { n: '04', title: 'Privado',      sub: 'Datos protegidos',          navy: false },
               { n: '05', title: 'Chat seguro',  sub: 'Contacto interno',          navy: false },
               { n: '06', title: 'Química',      sub: 'Industria y lab',           navy: false },
