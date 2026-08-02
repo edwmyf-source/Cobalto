@@ -31,6 +31,13 @@
   --accent-soft:   #E4EDFB;
   --accent-softer: #F1F6FE;
 
+  /* Azules claros que ya se usaban sueltos en la pantalla de bienvenida.
+     Mismos valores exactos, ahora nombrados para que todo salga del sistema
+     en vez de estar repetidos a mano. */
+  --accent-light:  #4C82F0;
+  --accent-pale:   #7FB2FF;
+  --accent-mist:   #9CBEEE;
+
   /* Rojo de marca para "Red" en el wordmark "Red Cobalto". Deliberadamente
      mas vivo y calido que --error (#C24141), para que no se confunda con un
      estado de alerta/eliminar: es identidad, no advertencia. Combina con el
