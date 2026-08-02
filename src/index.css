@@ -98,16 +98,6 @@ body {
      descuadra botones respecto a Android. */
   font-synthesis-weight: none;
   font-synthesis: none;
-
-  /* Reduce toda la interfaz un 15% de forma proporcional, como si el
-     navegador estuviera al 85% de zoom en vez de 100%. Se usa `zoom` y no
-     `transform: scale()` porque transform crea un nuevo contexto de
-     posicionamiento para los elementos `fixed` (la barra superior, el nav
-     inferior, los avisos), lo que los desprendería de su posición real en
-     pantalla. `zoom` no tiene ese problema: escala todo proporcionalmente
-     (incluidos los valores en px exactos repartidos por toda la app) sin
-     romper el posicionamiento fijo. */
-  zoom: 0.85;
 }
 
 /* iOS no hereda la tipografía en controles de formulario como sí hace Chrome:
