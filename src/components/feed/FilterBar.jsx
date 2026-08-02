@@ -95,11 +95,11 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
     <div className="mb-4">
 
       {/* Franja navy que continúa la cabecera: el buscador flota sobre su borde */}
-      <div className="-mx-4 md:hidden" style={{ height: 40, marginTop: -1, background: 'var(--accent-deep)' }} />
+      <div className="-mx-4 md:hidden" style={{ height: 34, marginTop: -1, background: 'var(--accent-deep)' }} />
 
       {/* Buscador flotante */}
-      <div className="relative mb-3 z-[5]" style={{ marginTop: -24 }}>
-        <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+      <div className="relative mb-3 z-[5]" style={{ marginTop: -22 }}>
+        <Search size={17} strokeWidth={2} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
           style={{ color: 'var(--text-tertiary)' }} />
         <input
           ref={searchRef}
@@ -107,7 +107,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           onChange={e => set('search', e.target.value)}
           placeholder="Buscar en Red Cobalto"
           aria-label="Buscar en Red Cobalto"
-          className="w-full h-[48px] pl-12 pr-11 rounded-input t-body-sm transition-all duration-[160ms] ease-premium"
+          className="w-full h-[44px] pl-11 pr-10 rounded-input t-body-sm transition-all duration-[160ms] ease-premium"
           style={{ background: 'var(--surface)', color: 'var(--text-primary)',
             boxShadow: 'var(--shadow-raised)' }}
           onFocus={e => e.currentTarget.style.boxShadow = 'var(--shadow-raised), 0 0 0 3px var(--accent-soft)'}

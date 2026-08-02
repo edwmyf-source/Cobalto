@@ -92,9 +92,9 @@ export default function AppLayout() {
       </div>
 
       {/* ── Topbar móvil fija ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center px-4 h-14"
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center px-4 h-12"
         style={{ background: 'var(--accent-deep)' }}>
-        <span className="text-[20px] font-semibold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+        <span className="text-[18px] font-semibold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
           <span style={{ color: 'var(--brand-red)', fontWeight: 800 }}>Red</span> Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
         </span>
       </div>
@@ -213,7 +213,7 @@ export default function AppLayout() {
       </div>
 
       {/* ── Contenido principal ── */}
-      <main className="pt-14 md:pt-0 pb-24 md:pb-8" style={{ overflowX: 'clip' }}>
+      <main className="pt-12 md:pt-0 pb-24 md:pb-8" style={{ overflowX: 'clip' }}>
         <Outlet />
       </main>
     </div>

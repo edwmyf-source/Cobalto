@@ -22,7 +22,7 @@ export function ToastProvider({ children }) {
     <ToastCtx.Provider value={toast}>
       {children}
       <div className="fixed inset-x-4 md:inset-x-auto md:right-6 z-[70] flex flex-col items-center md:items-end gap-2 pointer-events-none"
-        style={{ top: 'calc(env(safe-area-inset-top) + 68px)' }}>
+        style={{ top: 'calc(env(safe-area-inset-top) + 60px)' }}>
         {toasts.map(t => (
           <div key={t.id} className={`px-4 py-2 rounded-2xl border text-sm font-medium shadow-lg pointer-events-auto max-w-[calc(100vw-2rem)] md:max-w-sm ${styles[t.type]}`}>
             {t.msg}

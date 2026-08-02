@@ -46,9 +46,9 @@ export default function BannerCarousel() {
   if (banners.length === 0) return null
 
   return (
-    <div className="mb-3">
-      <div className="flex items-center justify-between mb-2 px-0.5">
-        <span className="text-[13px] font-semibold text-ink-500 uppercase tracking-wider">De interés</span>
+    <div className="mb-2">
+      <div className="flex items-center justify-between mb-1.5 px-0.5">
+        <span className="text-[12px] font-semibold text-ink-500 uppercase tracking-wider">De interés</span>
       </div>
 
       {/* Track */}
@@ -72,7 +72,7 @@ export default function BannerCarousel() {
           <div
             key={banner.id}
             className="flex-shrink-0 snap-start rounded-3xl overflow-hidden border border-ink-300"
-            style={{ width: '100%', aspectRatio: '4/3' }}
+            style={{ width: '100%', aspectRatio: '16/10' }}
           >
             <img
               src={banner.image_url}

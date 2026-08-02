@@ -408,10 +408,10 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
-        <p className="t-h4 mt-4 mb-1" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-[16px] leading-[22px] mt-3 mb-1" style={{ color: 'var(--text-secondary)' }}>
           Hola, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span> — bienvenido
         </p>
-        <div className="flex items-center justify-between mb-4 mt-2">
+        <div className="flex items-center justify-between mb-3 mt-1.5">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
             {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}
           </span>
@@ -459,7 +459,7 @@ export default function FeedPage() {
 
       {publishOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center px-4 overflow-y-auto"
-          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 64px)', paddingBottom: 24,
+          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 56px)', paddingBottom: 24,
             background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
             // Con el teclado abierto el viewport se encoge: overscroll-contain
             // evita que el scroll se propague al feed de atrás.
