@@ -31,6 +31,12 @@
   --accent-soft:   #E4EDFB;
   --accent-softer: #F1F6FE;
 
+  /* Rojo de marca para "Red" en el wordmark "Red Cobalto". Deliberadamente
+     mas vivo y calido que --error (#C24141), para que no se confunda con un
+     estado de alerta/eliminar: es identidad, no advertencia. Combina con el
+     azul navy de --accent-deep, una pareja de colores clasica. */
+  --brand-red: #E63946;
+
   /* ── Estados ── */
   --success:     #2E7D32;
   --success-bg:  #EDF7EE;

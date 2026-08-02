@@ -46,14 +46,16 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent-deep)' }}>
             <FlaskConical size={16} style={{ color: "var(--text-tertiary)" }} />
           </div>
-          <span className="text-base font-bold hidden lg:block" style={{ color: 'var(--accent-deep)', letterSpacing: '.5px' }}>Cobalto</span>
+          <span className="text-base font-bold hidden lg:block" style={{ color: 'var(--accent-deep)', letterSpacing: '.5px' }}>
+            <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto
+          </span>
         </button>
 
         {/* Buscador */}
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg flex-1 max-w-xs"
           style={{ background: '#FFFFFF', border: '1px solid var(--border)' }}>
           <Search size={14} style={{ color: "var(--text-tertiary)" }} />
-          <span className="text-xs" style={{ color: 'var(--accent)' }}>Buscar en Cobalto...</span>
+          <span className="text-xs" style={{ color: 'var(--accent)' }}>Buscar en Red Cobalto...</span>
         </div>
 
         <div className="flex-1" />

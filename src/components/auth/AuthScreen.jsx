@@ -21,7 +21,7 @@ function TopBar({ onLogin, onSignup }) {
       style={{ background: 'radial-gradient(circle at 30% -40%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)' }}>
       <div className="max-w-6xl mx-auto h-[70px] flex items-center justify-between px-4">
         <span className="font-extrabold text-[24px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
-          Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
+          <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
         </span>
         <div className="flex items-center gap-2.5">
           <button onClick={onLogin}

@@ -408,8 +408,8 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
-        <p className="t-body-sm mt-3 mb-1" style={{ color: 'var(--text-secondary)' }}>
-          Hola, <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{firstName}</span> — bienvenido
+        <p className="t-h4 mt-4 mb-1" style={{ color: 'var(--text-secondary)' }}>
+          Hola, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span> — bienvenido
         </p>
         <div className="flex items-center justify-between mb-4 mt-2">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>

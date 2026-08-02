@@ -105,8 +105,8 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           ref={searchRef}
           value={filters.search || ''}
           onChange={e => set('search', e.target.value)}
-          placeholder="Buscar en Cobalto"
-          aria-label="Buscar en Cobalto"
+          placeholder="Buscar en Red Cobalto"
+          aria-label="Buscar en Red Cobalto"
           className="w-full h-[48px] pl-12 pr-11 rounded-input t-body-sm transition-all duration-[160ms] ease-premium"
           style={{ background: 'var(--surface)', color: 'var(--text-primary)',
             boxShadow: 'var(--shadow-raised)' }}

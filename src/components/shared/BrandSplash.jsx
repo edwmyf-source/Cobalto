@@ -88,6 +88,7 @@ export default function BrandSplash({ onDone }) {
           animation: cbo-brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;
         }
         .cbo-brand i { color:#9CBEEE; font-style:normal; }
+        .cbo-brand-red { color: var(--brand-red); }
 
         .cbo-load {
           display:flex; align-items:center; gap:6px;
@@ -115,7 +116,7 @@ export default function BrandSplash({ onDone }) {
       </div>
 
       {/* Cobalto con letras separadas */}
-      <div className="cbo-brand">Cobalto</div>
+      <div className="cbo-brand"><span className="cbo-brand-red">Red</span> Cobalto</div>
 
       {/* Cargando + puntitos */}
       <div className="cbo-load">

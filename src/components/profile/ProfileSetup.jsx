@@ -135,7 +135,7 @@ export default function ProfileSetup() {
         <div className="bg-white rounded-modal w-full max-w-md p-7" style={{ boxShadow: 'var(--shadow-modal)' }}>
 
           <span className="font-extrabold text-[20px] block mb-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-            Cobalto<span style={{ color: 'var(--accent)' }}>.</span>
+            <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto<span style={{ color: 'var(--accent)' }}>.</span>
           </span>
 
           <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>
