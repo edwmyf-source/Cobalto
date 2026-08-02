@@ -79,16 +79,16 @@ function Landing({ stats, onSignup }) {
             </span>
           </h1>
 
-          <p className="mt-6 text-[16px] md:text-[18px] leading-relaxed max-w-[520px]" style={{ color: 'var(--text-secondary)' }}>
+          <p className="mt-6 text-[20px] md:text-[24px] leading-relaxed max-w-[560px]" style={{ color: 'var(--text-secondary)' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
           </p>
 
-          <div className="mt-4 flex items-center gap-3 flex-wrap">
-            <span className="text-[15px] font-extrabold" style={{ color: 'var(--accent-deep)' }}>Conecta</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="text-[15px] font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="text-[15px] font-extrabold" style={{ color: 'var(--accent-light)' }}>Crece</span>
+          <div className="mt-5 flex items-center gap-3 flex-wrap">
+            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent-deep)' }}>Conecta</span>
+            <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
+            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
+            <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
+            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent-light)' }}>Crece</span>
           </div>
 
           <CTA onClick={onSignup} size="lg" icon={ArrowRight} className="mt-8">
