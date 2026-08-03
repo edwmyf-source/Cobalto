@@ -230,10 +230,18 @@ html {
 /* ════════════════════════════════════════════════════════════════════════
    ESCALA TIPOGRÁFICA — 5 tamaños, según especificación
    ════════════════════════════════════════════════════════════════════════ */
-.t-h1      { font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.025em; }
-.t-h2      { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em; }
-.t-h3      { font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.015em; }
-.t-h4      { font-size: 18px; line-height: 26px; font-weight: 500; letter-spacing: -0.01em; }
+/* Los títulos son fluidos: su tamaño se calcula sobre el ancho real de la
+   pantalla, no en píxeles fijos. Sin esto, un iPhone (que reporta un ancho
+   lógico menor que un Android típico, sobre todo con Display Zoom activado)
+   muestra los mismos px ocupando una fracción mayor de pantalla, y todo se ve
+   "ampliado" aunque el navegador esté al 100%. Los valores en vw se calcularon
+   sobre 412px de ancho, para que en Android se vean igual que antes.
+   El texto de cuerpo NO se hace fluido a propósito: encogerlo en pantallas
+   angostas perjudicaría la legibilidad, y 16px ya es el mínimo accesible. */
+.t-h1      { font-size: clamp(26px, 7.8vw, 32px); line-height: 1.25; font-weight: 600; letter-spacing: -0.025em; }
+.t-h2      { font-size: clamp(21px, 5.8vw, 24px); line-height: 1.33; font-weight: 600; letter-spacing: -0.02em; }
+.t-h3      { font-size: clamp(18px, 4.9vw, 20px); line-height: 1.4;  font-weight: 600; letter-spacing: -0.015em; }
+.t-h4      { font-size: clamp(16px, 4.4vw, 18px); line-height: 1.44; font-weight: 500; letter-spacing: -0.01em; }
 .t-body    { font-size: 16px; line-height: 24px; font-weight: 400; }
 .t-body-sm { font-size: 14px; line-height: 20px; font-weight: 400; }
 .t-caption { font-size: 12px; line-height: 16px; font-weight: 400; }

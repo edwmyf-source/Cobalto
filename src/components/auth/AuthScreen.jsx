@@ -86,23 +86,23 @@ function Landing({ stats, onSignup }) {
       <section className="md:flex md:items-center md:gap-12">
         <div className="md:flex-1">
           <h1 className="text-left font-extrabold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 0.92 }}>
-            <span className="block text-[46px] md:text-[62px]">Punto de</span>
-            <span className="block text-[46px] md:text-[62px]">encuentro</span>
-            <span className="block text-[24px] md:text-[34px] mt-2" style={{ color: 'var(--accent)' }}>
+            <span className="block" style={{ fontSize: 'clamp(32px, 11.2vw, 62px)' }}>Punto de</span>
+            <span className="block" style={{ fontSize: 'clamp(32px, 11.2vw, 62px)' }}>encuentro</span>
+            <span className="block mt-2" style={{ color: 'var(--accent)', fontSize: 'clamp(18px, 5.8vw, 34px)' }}>
               de la industria química.
             </span>
           </h1>
 
-          <p className="mt-6 text-[20px] md:text-[24px] leading-relaxed max-w-[560px]" style={{ color: 'var(--text-secondary)' }}>
+          <p className="mt-6 leading-relaxed max-w-[560px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>
             Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
           </p>
 
           <div className="mt-5 flex items-center gap-3 flex-wrap">
-            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent-deep)' }}>Conecta</span>
+            <span className="font-extrabold" style={{ color: 'var(--accent-deep)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Conecta</span>
             <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
-            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
+            <span className="font-extrabold" style={{ color: 'var(--accent)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Comparte</span>
             <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
-            <span className="text-[20px] md:text-[24px] font-extrabold" style={{ color: 'var(--accent-light)' }}>Crece</span>
+            <span className="font-extrabold" style={{ color: 'var(--accent-light)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Crece</span>
           </div>
 
           <CTA onClick={onSignup} size="lg" icon={ArrowRight} className="mt-8">
@@ -120,8 +120,8 @@ function Landing({ stats, onSignup }) {
             <div key={label} className="rounded-card p-3 md:p-5"
               style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
               <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
-              <p className="text-[22px] md:text-[32px] font-extrabold text-white leading-none mt-3 tnum"
-                style={{ letterSpacing: '-0.03em' }}>
+              <p className="font-extrabold text-white leading-none mt-3 tnum"
+                style={{ letterSpacing: '-0.03em', fontSize: 'clamp(18px, 5.3vw, 32px)' }}>
                 {formatMetric(value)}
               </p>
               <p className="text-[11px] md:text-[12px] mt-1.5 uppercase font-extrabold leading-tight"
