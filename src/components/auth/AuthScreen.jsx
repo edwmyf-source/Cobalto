@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, ArrowRight } from 'lucide-react'
+import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Activity, ArrowRight } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
@@ -97,20 +97,21 @@ function Landing({ stats, onSignup }) {
         </div>
 
         {/* ── Métricas: el número es el protagonista ── */}
-        <div className="mt-8 md:mt-0 grid grid-cols-2 gap-4 md:w-[300px] flex-shrink-0">
+        <div className="mt-8 md:mt-0 grid grid-cols-3 gap-3 md:gap-4 md:w-[340px] flex-shrink-0">
           {[
-            { icon: Users,        value: stats.members, label: 'Miembros'      },
-            { icon: FlaskConical, value: stats.posts,   label: 'Publicaciones' },
+            { icon: Users,        value: stats.members,        label: 'Miembros'      },
+            { icon: FlaskConical, value: stats.posts,          label: 'Publicaciones' },
+            { icon: Activity,     value: stats.activeThisWeek, label: 'Activos'       },
           ].map(({ icon: Icon, value, label }) => (
-            <div key={label} className="rounded-card p-6"
+            <div key={label} className="rounded-card p-3 md:p-5"
               style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
-              <Icon size={20} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
-              <p className="text-[36px] md:text-[40px] font-extrabold text-white leading-none mt-4 tnum"
+              <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
+              <p className="text-[22px] md:text-[32px] font-extrabold text-white leading-none mt-3 tnum"
                 style={{ letterSpacing: '-0.03em' }}>
-                {value.toLocaleString('es-CO')}
+                {(value ?? 0).toLocaleString('es-CO')}
               </p>
-              <p className="text-[12px] mt-2 uppercase font-extrabold"
-                style={{ color: 'var(--accent-mist)', letterSpacing: '0.1em' }}>
+              <p className="text-[11px] md:text-[12px] mt-1.5 uppercase font-extrabold leading-tight"
+                style={{ color: 'var(--accent-mist)', letterSpacing: '0.08em' }}>
                 {label}
               </p>
             </div>
@@ -156,7 +157,10 @@ function Landing({ stats, onSignup }) {
 
 export default function AuthScreen() {
   const [mode, setMode] = useState('landing') // landing | login | signup | reset
-  const [stats, setStats] = useState({ members: 0, posts: 0 })
+  // El estado inicial debe incluir TODAS las métricas que se renderizan: en el
+  // primer render (antes de que responda la consulta) una clave faltante seria
+  // undefined, y undefined.toLocaleString() rompe la pantalla completa.
+  const [stats, setStats] = useState({ members: 0, posts: 0, activeThisWeek: 0 })
 
   useEffect(() => {
     getCommunityStats().then(setStats).catch(() => {})
