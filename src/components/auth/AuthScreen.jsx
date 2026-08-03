@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Activity, ArrowRight } from 'lucide-react'
+import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Zap, ArrowRight } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
@@ -15,6 +15,18 @@ const ADVANTAGES = [
   { icon: MessageCircle, title: 'Chat seguro',     sub: 'Contacto interno'       },
   { icon: FlaskConical,  title: 'Química',         sub: 'Industria y lab'        },
 ]
+
+// Las métricas crecen con el tiempo. Por debajo de 10.000 se muestra el número
+// exacto (más creíble y concreto); por encima se compacta ("12 mil") para que
+// no desborde la tarjeta en móvil ni pierda legibilidad.
+const formatMetric = (n) => {
+  const v = n ?? 0
+  if (v < 10000) return v.toLocaleString('es-CO')
+  // A partir de 100.000 se quitan los decimales: "123,5 k" no cabe en la
+  // tarjeta en móvil, "123 k" sí.
+  const decimals = v < 100000 ? 1 : 0
+  return new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: decimals }).format(v)
+}
 
 // Botón con estados hover / active / focus reales, no solo un scale al pulsar.
 function CTA({ children, onClick, variant = 'primary', size = 'md', className = '', icon: Icon }) {
@@ -101,14 +113,14 @@ function Landing({ stats, onSignup }) {
           {[
             { icon: Users,        value: stats.members,        label: 'Miembros'      },
             { icon: FlaskConical, value: stats.posts,          label: 'Publicaciones' },
-            { icon: Activity,     value: stats.activeThisWeek, label: 'Activos'       },
+            { icon: Zap,          value: stats.interactions,   label: 'Interacciones' },
           ].map(({ icon: Icon, value, label }) => (
             <div key={label} className="rounded-card p-3 md:p-5"
               style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
               <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
               <p className="text-[22px] md:text-[32px] font-extrabold text-white leading-none mt-3 tnum"
                 style={{ letterSpacing: '-0.03em' }}>
-                {(value ?? 0).toLocaleString('es-CO')}
+                {formatMetric(value)}
               </p>
               <p className="text-[11px] md:text-[12px] mt-1.5 uppercase font-extrabold leading-tight"
                 style={{ color: 'var(--accent-mist)', letterSpacing: '0.08em' }}>
@@ -160,7 +172,7 @@ export default function AuthScreen() {
   // El estado inicial debe incluir TODAS las métricas que se renderizan: en el
   // primer render (antes de que responda la consulta) una clave faltante seria
   // undefined, y undefined.toLocaleString() rompe la pantalla completa.
-  const [stats, setStats] = useState({ members: 0, posts: 0, activeThisWeek: 0 })
+  const [stats, setStats] = useState({ members: 0, posts: 0, interactions: 0 })
 
   useEffect(() => {
     getCommunityStats().then(setStats).catch(() => {})

@@ -34,7 +34,7 @@ function MetricsTab() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
         <Kpi label="Usuarios totales" value={stats.usersTotal} />
         <Kpi label="Publicaciones" value={stats.requests} />
-        <Kpi label="Interacciones" value={stats.connections} />
+        <Kpi label="Interacciones" value={stats.interactions} />
         <Kpi label="Activos esta semana" value={stats.activeThisWeek} />
       </div>
 
