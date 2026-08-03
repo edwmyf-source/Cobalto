@@ -14,6 +14,8 @@ const AdminPage = lazy(() => import('./pages/AdminPage'))
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'))
 const HerramientasPage = lazy(() => import('./pages/HerramientasPage'))
 const ContactoPage = lazy(() => import('./pages/ContactoPage'))
+const TerminosPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.TerminosPage })))
+const PrivacidadPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.PrivacidadPage })))
 const ContactsPage = lazy(() => import('./pages/ContactsPage'))
 
 function Loader() {
@@ -53,6 +55,8 @@ export const routes = [
       { path: 'contacts', element: <Page><ContactsPage /></Page> },
       { path: 'herramientas', element: <Page><HerramientasPage /></Page> },
       { path: 'contacto', element: <Page><ContactoPage /></Page> },
+      { path: 'terminos', element: <Page><TerminosPage /></Page> },
+      { path: 'privacidad', element: <Page><PrivacidadPage /></Page> },
       {
         path: 'admin',
         element: <RequireAdmin><Page><AdminPage /></Page></RequireAdmin>,

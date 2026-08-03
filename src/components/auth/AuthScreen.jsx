@@ -4,6 +4,8 @@ import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
+import Footer from '../layout/Footer'
+import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '../legal/LegalContent'
 
 // Ventajas con iconografía consistente: misma familia (lucide), mismo tamaño
 // y mismo grosor de trazo en las seis.
@@ -182,8 +184,22 @@ export default function AuthScreen() {
     <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
       <TopBar onLogin={() => setMode('login')} onSignup={() => setMode('signup')} />
 
-      {mode === 'landing' ? (
-        <Landing stats={stats} onSignup={() => setMode('signup')} />
+      {mode === 'terminos' ? (
+        <LegalLayout title="Términos y Condiciones" updated={LEGAL_UPDATED} onBack={() => setMode('landing')}>
+          <TerminosContent />
+        </LegalLayout>
+      ) : mode === 'privacidad' ? (
+        <LegalLayout title="Política de Privacidad y Tratamiento de Datos" updated={LEGAL_UPDATED} onBack={() => setMode('landing')}>
+          <PrivacidadContent />
+        </LegalLayout>
+      ) : mode === 'landing' ? (
+        <>
+          <Landing stats={stats} onSignup={() => setMode('signup')} />
+          <Footer
+            onTerminos={() => { setMode('terminos'); window.scrollTo({ top: 0 }) }}
+            onPrivacidad={() => { setMode('privacidad'); window.scrollTo({ top: 0 }) }}
+          />
+        </>
       ) : (
         <div className="flex-1 flex items-start md:items-center justify-center px-4 py-8 md:py-12">
           <div className="w-full max-w-md rounded-modal p-6 md:p-8" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}>

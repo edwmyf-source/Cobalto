@@ -166,6 +166,18 @@ export default function ContactoPage() {
         </Button>
       </Card>
 
+      {/* Acceso a los documentos legales desde dentro de la app */}
+      <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 mt-8">
+        <button onClick={() => navigate('/terminos')}
+          className="t-caption font-medium hover:underline" style={{ color: 'var(--text-tertiary)' }}>
+          Términos y Condiciones
+        </button>
+        <button onClick={() => navigate('/privacidad')}
+          className="t-caption font-medium hover:underline" style={{ color: 'var(--text-tertiary)' }}>
+          Política de Privacidad
+        </button>
+      </div>
+
     </div>
   )
 }
