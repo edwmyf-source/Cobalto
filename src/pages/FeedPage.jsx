@@ -294,7 +294,7 @@ export default function FeedPage() {
     <div className="page-enter" style={{ paddingBottom: 80 }}>
 
       {/* ── DESKTOP: Layout 3 columnas tipo LinkedIn ── */}
-      <div className="hidden md:flex gap-4 max-w-5xl mx-auto px-4 pt-4 items-start">
+      <div className="hidden md:flex gap-4 max-w-[820px] mx-auto px-4 pt-4 items-start">
 
         {/* ── Columna izquierda (sticky) ── */}
         <div className="w-52 flex-shrink-0 space-y-3" style={{ position: 'sticky', top: 72 }}>
@@ -354,6 +354,9 @@ export default function FeedPage() {
         <div className="flex-1 min-w-0 space-y-3">
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
           <BannerCarousel />
+          <p className="text-[15px]" style={{ color: 'var(--text-secondary)' }}>
+            Bienvenido, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span>
+          </p>
           <div className="flex items-center justify-between">
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
               {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
@@ -409,7 +412,7 @@ export default function FeedPage() {
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
         <p className="text-[16px] leading-[22px] mt-3 mb-1" style={{ color: 'var(--text-secondary)' }}>
-          Hola, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span> — bienvenido
+          Bienvenido, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span>
         </p>
         <div className="flex items-center justify-between mb-3 mt-1.5">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>

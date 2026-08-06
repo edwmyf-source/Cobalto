@@ -39,7 +39,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
   return (
     <header className="sticky top-0 z-40 w-full"
       style={{ background: '#ffffff', borderBottom: '1px solid #FFFFFF' }}>
-      <div className="max-w-5xl mx-auto h-14 flex items-center gap-4 px-4">
+      <div className="max-w-[820px] mx-auto h-14 flex items-center gap-4 px-4">
 
         {/* Logo */}
         <button onClick={() => navigate('/feed')} className="flex items-center gap-2 flex-shrink-0">
