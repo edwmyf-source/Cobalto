@@ -7,7 +7,7 @@ export const WHATSAPP_VERIFICATION_ENABLED = false
 // Registro/login por celular con código SMS. Requiere Twilio configurado en
 // Supabase (Authentication → Providers → Phone). Actívalo cuando esté listo:
 // solo cambia este valor a `true`, no hay que tocar nada más.
-export const PHONE_AUTH_ENABLED = false
+export const PHONE_AUTH_ENABLED = true
 
 // Canal por el que se envía el código cuando PHONE_AUTH_ENABLED esté activo.
 // 'sms' funciona con cualquier proveedor de Supabase (Twilio, MessageBird, etc).
@@ -15,7 +15,12 @@ export const PHONE_AUTH_ENABLED = false
 // y requiere haber configurado un remitente de WhatsApp en la consola de Twilio
 // (sandbox para pruebas, o un número de WhatsApp Business aprobado por Meta
 // para producción).
-export const PHONE_AUTH_CHANNEL = 'whatsapp' // 'sms' | 'whatsapp'
+// ACTUALMENTE EN 'sms': Twilio Verify ya está configurado en Supabase y los SMS
+// funcionan de inmediato. WhatsApp queda pendiente de que Meta apruebe el perfil
+// de WhatsApp Business (Twilio bloquea el canal hasta entonces con el mensaje
+// "You don't have an approved WhatsApp profile"). Cuando lo aprueben, basta
+// cambiar este valor a 'whatsapp' -- no hay que tocar nada más.
+export const PHONE_AUTH_CHANNEL = 'sms' // 'sms' | 'whatsapp'
 
 // Registro/login con código de 6 dígitos por correo. Requiere que la plantilla
 // "Magic Link" en Supabase incluya {{ .Token }} (Authentication → Email Templates).
