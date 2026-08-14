@@ -25,7 +25,7 @@ export const PHONE_AUTH_CHANNEL = 'sms' // 'sms' | 'whatsapp'
 // Registro/login con código de 6 dígitos por correo. Requiere que la plantilla
 // "Magic Link" en Supabase incluya {{ .Token }} (Authentication → Email Templates).
 // Mientras esté en `false`, el registro usa correo + contraseña tradicional.
-export const EMAIL_CODE_AUTH_ENABLED = false
+export const EMAIL_CODE_AUTH_ENABLED = true
 
 export const isAdmin = (profile, email = '') =>
   profile?.role === 'admin' || ADMIN_EMAILS.includes(email) || ADMIN_EMAILS.includes(profile?.email)

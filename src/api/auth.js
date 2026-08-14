@@ -116,6 +116,20 @@ export const signUpWithPhoneOnly = async (phone) => {
 }
 
 
+// ─── Login con Google (OAuth) ─────────────────────────────────────────────────
+// Costo cero por usuario y sin fricción: la cuenta de Google ya viene verificada,
+// así que no hay que enviar ningún código. Requiere configurar el proveedor en
+// Supabase: Authentication → Providers → Google, con el Client ID y Client Secret
+// de Google Cloud Console, y registrar allí la URL de callback que muestra
+// Supabase como "Authorized redirect URI".
+export const signInWithGoogle = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin },
+  })
+  if (error) throw error
+}
+
 export const signOut = async () => {
   clearAllCaches()
   return supabase?.auth.signOut()
