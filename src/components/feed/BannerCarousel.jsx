@@ -19,6 +19,7 @@ export default function BannerCarousel() {
   const [current, setCurrent]  = useState(0)
   const trackRef  = useRef(null)
   const timerRef  = useRef(null)
+  const autoRef   = useRef(false)
 
   useEffect(() => {
     getActiveBannersCached().then(setBanners).catch(() => {})
@@ -30,16 +31,17 @@ export default function BannerCarousel() {
     trackRef.current?.scrollTo({ left: clamped * (trackRef.current.offsetWidth + 10), behavior: 'smooth' })
   }, [banners.length])
 
-  // Auto-slide cada 4 segundos
+  // Auto-slide cada 1 segundo, en bucle
   useEffect(() => {
     if (banners.length <= 1) return
     timerRef.current = setInterval(() => {
       setCurrent(prev => {
         const next = (prev + 1) % banners.length
+        autoRef.current = true
         trackRef.current?.scrollTo({ left: next * (trackRef.current.offsetWidth + 10), behavior: 'smooth' })
         return next
       })
-    }, 4000)
+    }, 1000)
     return () => clearInterval(timerRef.current)
   }, [banners.length])
 
@@ -60,6 +62,7 @@ export default function BannerCarousel() {
           const cardW = e.currentTarget.offsetWidth + 10
           const idx = Math.round(e.currentTarget.scrollLeft / cardW)
           setCurrent(idx)
+          if (autoRef.current) { autoRef.current = false; return }
           clearInterval(timerRef.current)
         }}
         onWheel={(e) => {
