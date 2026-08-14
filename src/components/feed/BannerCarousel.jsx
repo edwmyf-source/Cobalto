@@ -19,31 +19,32 @@ export default function BannerCarousel() {
   const [current, setCurrent]  = useState(0)
   const trackRef  = useRef(null)
   const timerRef  = useRef(null)
-  const autoRef   = useRef(false)
+  const pausedRef = useRef(false)
+  const indexRef  = useRef(0)
 
   useEffect(() => {
     getActiveBannersCached().then(setBanners).catch(() => {})
   }, [])
 
-  const goTo = useCallback((idx) => {
-    const clamped = Math.max(0, Math.min(idx, banners.length - 1))
-    setCurrent(clamped)
-    trackRef.current?.scrollTo({ left: clamped * (trackRef.current.offsetWidth + 10), behavior: 'smooth' })
-  }, [banners.length])
+  const slideTo = useCallback((idx) => {
+    indexRef.current = idx
+    setCurrent(idx)
+    trackRef.current?.scrollTo({ left: idx * (trackRef.current.offsetWidth + 10), behavior: 'smooth' })
+  }, [])
 
-  // Auto-slide cada 1 segundo, en bucle
+  const goTo = useCallback((idx) => {
+    slideTo(Math.max(0, Math.min(idx, banners.length - 1)))
+  }, [banners.length, slideTo])
+
+  // Auto-slide cada 1 segundo, en bucle; se pausa mientras se mantiene el dedo
   useEffect(() => {
     if (banners.length <= 1) return
     timerRef.current = setInterval(() => {
-      setCurrent(prev => {
-        const next = (prev + 1) % banners.length
-        autoRef.current = true
-        trackRef.current?.scrollTo({ left: next * (trackRef.current.offsetWidth + 10), behavior: 'smooth' })
-        return next
-      })
+      if (pausedRef.current) return
+      slideTo((indexRef.current + 1) % banners.length)
     }, 1000)
     return () => clearInterval(timerRef.current)
-  }, [banners.length])
+  }, [banners.length, slideTo])
 
   if (banners.length === 0) return null
 
@@ -61,10 +62,15 @@ export default function BannerCarousel() {
         onScroll={(e) => {
           const cardW = e.currentTarget.offsetWidth + 10
           const idx = Math.round(e.currentTarget.scrollLeft / cardW)
+          indexRef.current = idx
           setCurrent(idx)
-          if (autoRef.current) { autoRef.current = false; return }
-          clearInterval(timerRef.current)
         }}
+        onPointerDown={() => { pausedRef.current = true }}
+        onPointerUp={() => { pausedRef.current = false }}
+        onPointerCancel={() => { pausedRef.current = false }}
+        onPointerLeave={() => { pausedRef.current = false }}
+        onTouchStart={() => { pausedRef.current = true }}
+        onTouchEnd={() => { pausedRef.current = false }}
         onWheel={(e) => {
           if (e.deltaY === 0) return
           e.currentTarget.scrollLeft += e.deltaY
