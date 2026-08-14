@@ -21,7 +21,7 @@ function Pill({ label, active, onClick, size = 'sm' }) {
 
 function StepBadge({ n }) {
   return (
-    <span className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full"
+    <span className="flex items-center justify-center rounded-full mb-1"
       style={{ width: 18, height: 18, background: 'var(--brand-red)', color: '#fff',
         fontSize: 11, fontWeight: 700, lineHeight: 1 }}>
       {n}
@@ -36,19 +36,21 @@ function Section({ title, value, open, onToggle, collapsible = true, step, child
         collapsible ? (
           <button
             onClick={onToggle}
-            className="relative w-full flex items-center justify-center gap-2 px-4 pt-2.5 pb-0.5"
+            className="w-full flex flex-col items-center px-4 pt-2.5 pb-0.5"
             aria-expanded={open}
           >
             {step && <StepBadge n={step} />}
-            <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
-            {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
-            <ChevronDown size={16} strokeWidth={2}
-              style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+            <span className="flex items-center gap-2">
+              <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
+              {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
+              <ChevronDown size={16} strokeWidth={2}
+                style={{ color: 'var(--text-tertiary)', transition: 'transform var(--t-base)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+            </span>
           </button>
         ) : (
           // Sin flecha ni comportamiento de clic: es solo un rótulo, esta
           // sección siempre está visible y no se puede colapsar.
-          <div className="relative w-full flex items-center justify-center px-4 pt-2.5 pb-0.5">
+          <div className="w-full flex flex-col items-center px-4 pt-2.5 pb-0.5">
             {step && <StepBadge n={step} />}
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
           </div>
