@@ -132,7 +132,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
         {hasFilters && (
           <div className="flex justify-center px-4 pt-3 pb-0">
             <button
-              onClick={() => { setFilters({}); setOpenSec('categoria') }}
+              onClick={() => { setFilters({}); setOpenSecs(new Set(['categoria'])) }}
               className="t-body-sm font-medium transition-opacity duration-[160ms] hover:opacity-70"
               style={{ color: 'var(--accent)' }}>
               Limpiar filtros
@@ -157,38 +157,49 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
 
         {/* Sección: Subcategoría (solo si el tab tiene sub-opciones) */}
         {tab === 'tienda' && (
-          <Section
-            title="Subcategoría"
-            value={filters.category ? TIENDA_CATS.find(c=>c.value===filters.category)?.label : null}
-            open={openSecs.has('subcategoria')}
-            onToggle={() => toggle('subcategoria')}
-          >
-            {TIENDA_CATS.map(c => (
-              <Pill key={c.value} label={c.label}
-                active={filters.category === c.value}
-                onClick={() => { setCat(c.value); setOpenSecs(prev => { const n = new Set(prev); n.add('subcategoria'); return n }) }} />
-            ))}
-            {tiendaCat && tiendaCat.subcategories.map(sub => (
-              <Pill key={sub} label={sub}
-                active={filters.subcategory === sub}
-                onClick={() => setSub(sub)} />
-            ))}
-          </Section>
+          <div style={{ borderTop: '1px solid var(--border-soft)' }}>
+            <Section
+              title="Subcategoría"
+              value={filters.category ? TIENDA_CATS.find(c=>c.value===filters.category)?.label : null}
+              open={openSecs.has('subcategoria')}
+              onToggle={() => toggle('subcategoria')}
+            >
+              {TIENDA_CATS.map(c => (
+                <Pill key={c.value} label={c.label}
+                  active={filters.category === c.value}
+                  onClick={() => { setCat(c.value); setOpenSecs(prev => { const n = new Set(prev); n.add('subcategoria'); return n }) }} />
+              ))}
+            </Section>
+
+            {tiendaCat && (
+              <div style={{ borderTop: '1px solid var(--border-soft)' }}>
+                <Section title={tiendaCat.label} open={true} onToggle={() => {}} collapsible={false}>
+                  {tiendaCat.subcategories.map(sub => (
+                    <Pill key={sub} label={sub}
+                      active={filters.subcategory === sub}
+                      onClick={() => setSub(sub)} />
+                  ))}
+                </Section>
+              </div>
+            )}
+          </div>
         )}
 
         {subOptions.length > 0 && tab !== 'tienda' && (
-          <Section
-            title="Subcategoría"
-            value={filters.subcategory || null}
-            open={openSecs.has('subcategoria')}
-            onToggle={() => toggle('subcategoria')}
-          >
-            {subOptions.map(sub => (
-              <Pill key={sub} label={sub}
-                active={filters.subcategory === sub}
-                onClick={() => setSub(sub)} />
-            ))}
-          </Section>
+          <div style={{ borderTop: '1px solid var(--border-soft)' }}>
+            <Section
+              title="Subcategoría"
+              value={filters.subcategory || null}
+              open={openSecs.has('subcategoria')}
+              onToggle={() => toggle('subcategoria')}
+            >
+              {subOptions.map(sub => (
+                <Pill key={sub} label={sub}
+                  active={filters.subcategory === sub}
+                  onClick={() => setSub(sub)} />
+              ))}
+            </Section>
+          </div>
         )}
 
       </Panel>
