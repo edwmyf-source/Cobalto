@@ -24,119 +24,74 @@ export default function BrandSplash({ onDone }) {
   return (
     <div onClick={skip} style={{
       position:'fixed', inset:0, zIndex:9999, cursor:'pointer', overflow:'hidden',
-      background:'radial-gradient(circle at 30% -10%, #1A5AC8 0%, #0B2E68 50%, #081F4A 100%)', display:'flex', flexDirection:'column',
+      background:'#0B2E68', display:'flex', flexDirection:'column',
       alignItems:'center', justifyContent:'center',
     }}>
       <style>{`
-        @keyframes cbo-core-pulse {
-          0%,100% { box-shadow: 0 0 30px rgba(126,182,255,0.55), inset 0 0 14px rgba(126,182,255,0.18); }
-          50%     { box-shadow: 0 0 50px rgba(126,182,255,0.85), inset 0 0 14px rgba(126,182,255,0.28); }
+        @keyframes cbo-wipe {
+          0%   { clip-path: inset(0 100% 0 0); }
+          100% { clip-path: inset(0 0 0 0); }
         }
-        @keyframes cbo-spin { to { transform: rotate(360deg); } }
-        @keyframes cbo-brand-in {
-          0%   { opacity:0; letter-spacing:0.8em; transform:translateY(10px); }
-          100% { opacity:1; letter-spacing:0.5em;  transform:translateY(0); }
+        @keyframes cbo-line-grow {
+          0%   { width: 0; }
+          100% { width: 60px; }
         }
-        @keyframes cbo-dot {
-          0%,100% { opacity:0.25; transform:translateY(0); }
-          50%     { opacity:1;    transform:translateY(-4px); }
+        @keyframes cbo-fade-up {
+          0%   { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
 
-        .cbo-stage {
-          position:relative;
-          width:190px; height:190px;
-          display:flex; align-items:center; justify-content:center;
-          perspective:800px;
-        }
-        .cbo-core {
-          position:absolute; top:50%; left:50%;
-          width:72px; height:72px; margin:-36px 0 0 -36px;
-          background:rgba(255,255,255,0.12);
-          border:2px solid #6B87B8;
-          border-radius:50%;
-          display:flex; align-items:center; justify-content:center;
-          color:#fff; font-weight:800; font-size:30px;
-          font-family:system-ui, -apple-system, sans-serif;
-          z-index:5;
-          animation: cbo-core-pulse 2.4s ease-in-out infinite;
-        }
-        .cbo-plane {
-          position:absolute; inset:0;
-          transform-style:preserve-3d;
-        }
-        .cbo-p1 { transform: rotateX(70deg) rotateY(0deg);   }
-        .cbo-p2 { transform: rotateX(70deg) rotateY(60deg);  }
-        .cbo-p3 { transform: rotateX(70deg) rotateY(120deg); }
-        .cbo-e  { position:absolute; top:50%; left:50%; width:0; height:0; }
-        .cbo-e::before {
-          content:''; position:absolute;
-          width:92px; height:2px; border-radius:2px;
-          transform-origin: 0 50%;
-        }
-        .cbo-p1 .cbo-e { animation: cbo-spin 1.6s linear infinite; }
-        .cbo-p1 .cbo-e::before { background:linear-gradient(90deg, transparent, #6B87B8); }
-        .cbo-p2 .cbo-e { animation: cbo-spin 2.0s linear infinite; }
-        .cbo-p2 .cbo-e::before { background:linear-gradient(90deg, transparent, #2C6BD4); }
-        .cbo-p3 .cbo-e { animation: cbo-spin 2.4s linear infinite -0.5s; }
-        .cbo-p3 .cbo-e::before { background:linear-gradient(90deg, transparent, #B8CBEF); }
-
-        .cbo-brand {
-          color:#fff; font-weight:800; font-size:42px;
-          letter-spacing:-0.03em;
-          line-height: 0.9;
-          /* inline-block: el bloque se encoge al ancho del texto, asi el
-             contenedor flex lo sigue centrando en pantalla, pero por dentro
-             las dos lineas se alinean a la izquierda entre si. */
-          display: inline-block;
-          text-align: left;
+        .cbo-word {
+          position: relative;
           font-family: Manrope, system-ui, -apple-system, sans-serif;
-          margin-top:30px;
-          animation: cbo-brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;
+          font-size: 44px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          line-height: 1;
+          color: #fff;
         }
-        .cbo-brand i { color:#9CBEEE; font-style:normal; }
-        /* "Red" mas pequeño y con menos peso: acompaña sin competir, para que
-           "Cobalto" se lleve el protagonismo visual. */
-        .cbo-brand-red {
-          color: var(--brand-red);
-          display: block;
-          font-size: 0.52em;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          margin-bottom: 2px;
+        .cbo-word b {
+          color: var(--brand-red, #E63946);
+          font-weight: 900;
         }
+        /* Capa de "revelado": mismo texto encima, recortado por clip-path
+           que crece de izquierda a derecha, dando el efecto de barrido. */
+        .cbo-wipe {
+          position: absolute;
+          inset: 0;
+          color: #fff;
+          background: #0B2E68;
+          animation: cbo-wipe 900ms cubic-bezier(.65,0,.35,1) 300ms both;
+        }
+        .cbo-wipe b { color: #fff; }
 
-        .cbo-load {
-          display:flex; align-items:center; gap:6px;
-          margin-top:22px;
-          color:#6B87B8; font-size:12px; letter-spacing:0.18em;
+        .cbo-line {
+          height: 2px;
+          background: var(--brand-red, #E63946);
+          margin: 16px auto 0;
+          width: 0;
+          animation: cbo-line-grow 500ms ease-out 1.1s both;
+        }
+        .cbo-sub {
+          margin-top: 14px;
+          color: #9CBEEE;
           font-family: system-ui, -apple-system, sans-serif;
-          font-weight:500;
+          font-size: 12px;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          text-align: center;
+          opacity: 0;
+          animation: cbo-fade-up 500ms ease-out 1.3s both;
         }
-        .cbo-load em {
-          width:6px; height:6px; border-radius:50%;
-          background:#6B87B8; display:inline-block;
-          animation: cbo-dot 1.2s ease-in-out infinite;
-        }
-        .cbo-load em:nth-child(2) { animation-delay:0s;   }
-        .cbo-load em:nth-child(3) { animation-delay:0.2s; }
-        .cbo-load em:nth-child(4) { animation-delay:0.4s; background:#2C6BD4; }
       `}</style>
 
-      {/* Nucleo redondo + 3 estelas 3D en planos cruzados */}
-      <div className="cbo-stage">
-        <div className="cbo-plane cbo-p1"><div className="cbo-e" /></div>
-        <div className="cbo-plane cbo-p2"><div className="cbo-e" /></div>
-        <div className="cbo-plane cbo-p3"><div className="cbo-e" /></div>
-        <div className="cbo-core">Co</div>
-      </div>
-
-      {/* Cobalto con letras separadas */}
-      <div className="cbo-brand"><span className="cbo-brand-red">Red</span>Cobalto</div>
-
-      {/* Cargando + puntitos */}
-      <div className="cbo-load">
-        <span>Cargando</span>
-        <em /><em /><em />
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ position: 'relative', overflow: 'hidden', display: 'inline-block' }}>
+          <div className="cbo-word">Red<b>Cobalto</b></div>
+          <div className="cbo-wipe cbo-word">Red<b>Cobalto</b></div>
+        </div>
+        <div className="cbo-line" />
+        <div className="cbo-sub">Industria química</div>
       </div>
     </div>
   )

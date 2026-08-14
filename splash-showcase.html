@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Red Cobalto — Propuestas de Splash</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800;900&display=swap');
+
+  :root {
+    --red: #E63946;
+    --deep: #0B2E68;
+    --mid: #1A5AC8;
+    --dark: #081F4A;
+    --steel: #6B87B8;
+    --blue: #2C6BD4;
+    --pale: #9CBEEE;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 20px 80px;
+    background: #EEF1F6;
+    font-family: Manrope, system-ui, sans-serif;
+  }
+  h1 { text-align:center; color:#0B2E68; font-size: 22px; margin-bottom: 4px; }
+  p.sub { text-align:center; color:#6B87B8; font-size: 14px; margin-top:0; margin-bottom: 40px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(11,46,104,0.10);
+  }
+  .label {
+    padding: 12px 16px;
+    font-weight: 800;
+    color: #0B2E68;
+    font-size: 14.5px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .label span.n {
+    background:#E63946; color:#fff; width:20px; height:20px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:11px; margin-right:8px;
+  }
+  .frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    overflow: hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ══════════════════════ 1. NÚCLEO ORBITAL (actual) ══════════════════════ */
+  .s1 { background: radial-gradient(circle at 30% -10%, var(--mid) 0%, var(--deep) 50%, var(--dark) 100%); }
+  @keyframes core-pulse { 0%,100%{box-shadow:0 0 30px rgba(126,182,255,.55),inset 0 0 14px rgba(126,182,255,.18);} 50%{box-shadow:0 0 50px rgba(126,182,255,.85),inset 0 0 14px rgba(126,182,255,.28);} }
+  @keyframes spin { to{transform:rotate(360deg);} }
+  @keyframes brand-in { 0%{opacity:0;letter-spacing:.8em;transform:translateY(10px);} 100%{opacity:1;letter-spacing:.5em;transform:translateY(0);} }
+  @keyframes dotb { 0%,100%{opacity:.25;transform:translateY(0);} 50%{opacity:1;transform:translateY(-4px);} }
+  .s1-stage{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;perspective:800px;}
+  .s1-core{position:absolute;width:46px;height:46px;background:rgba(255,255,255,.12);border:2px solid var(--steel);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:19px;z-index:5;animation:core-pulse 2.4s ease-in-out infinite;}
+  .s1-plane{position:absolute;inset:0;transform-style:preserve-3d;}
+  .s1-p1{transform:rotateX(70deg) rotateY(0deg);} .s1-p2{transform:rotateX(70deg) rotateY(60deg);} .s1-p3{transform:rotateX(70deg) rotateY(120deg);}
+  .s1-e{position:absolute;top:50%;left:50%;width:0;height:0;}
+  .s1-e::before{content:'';position:absolute;width:58px;height:2px;border-radius:2px;transform-origin:0 50%;}
+  .s1-p1 .s1-e{animation:spin 1.6s linear infinite;} .s1-p1 .s1-e::before{background:linear-gradient(90deg,transparent,var(--steel));}
+  .s1-p2 .s1-e{animation:spin 2s linear infinite;} .s1-p2 .s1-e::before{background:linear-gradient(90deg,transparent,var(--blue));}
+  .s1-p3 .s1-e{animation:spin 2.4s linear infinite -.5s;} .s1-p3 .s1-e::before{background:linear-gradient(90deg,transparent,var(--pale));}
+  .s1-brand{position:absolute;bottom:38%;color:#fff;font-weight:800;font-size:26px;letter-spacing:-.03em;text-align:left;animation:brand-in 900ms cubic-bezier(.22,.9,.25,1.1) both;}
+  .s1-brand i{color:var(--pale);font-style:normal;}
+  .s1-red{color:var(--red);display:block;font-size:.52em;font-weight:700;letter-spacing:.02em;}
+  .s1-load{position:absolute;bottom:28%;display:flex;align-items:center;gap:6px;color:var(--steel);font-size:10px;letter-spacing:.18em;font-weight:600;}
+  .s1-load em{width:5px;height:5px;border-radius:50%;background:var(--steel);display:inline-block;animation:dotb 1.2s ease-in-out infinite;}
+  .s1-load em:nth-child(2){animation-delay:0s;} .s1-load em:nth-child(3){animation-delay:.2s;background:var(--blue);}
+
+  /* ══════════════════════ 2. MOLÉCULA QUÍMICA ══════════════════════ */
+  .s2{background:linear-gradient(160deg,#fff 0%,#F4F7FC 60%,#E9EFFA 100%);}
+  @keyframes mol-orbit{to{transform:rotate(360deg);}}
+  @keyframes mol-orbit-rev{to{transform:rotate(-360deg);}}
+  @keyframes mol-pop{0%{opacity:0;transform:scale(.5);}100%{opacity:1;transform:scale(1);}}
+  @keyframes brand-rise{0%{opacity:0;transform:translateY(16px);}100%{opacity:1;transform:translateY(0);}}
+  .s2-stage{position:relative;width:130px;height:130px;}
+  .s2-orbit{position:absolute;inset:0;border:1.5px dashed rgba(11,46,104,.25);border-radius:50%;}
+  .s2-orbit1{animation:mol-orbit 5s linear infinite;}
+  .s2-orbit2{inset:18px;animation:mol-orbit-rev 4s linear infinite;border-color:rgba(230,57,70,.3);}
+  .s2-atom{position:absolute;width:14px;height:14px;border-radius:50%;top:-7px;left:50%;margin-left:-7px;box-shadow:0 2px 6px rgba(11,46,104,.3);}
+  .s2-orbit1 .s2-atom{background:var(--mid);}
+  .s2-orbit2 .s2-atom{background:var(--red);}
+  .s2-core{position:absolute;top:50%;left:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:var(--deep);box-shadow:0 0 0 6px rgba(11,46,104,.08);animation:mol-pop 600ms cubic-bezier(.34,1.56,.64,1) both;}
+  .s2-brand{position:absolute;bottom:34%;text-align:center;animation:brand-rise 700ms ease-out 200ms both;}
+  .s2-brand b{color:var(--red);font-weight:800;font-size:26px;}
+  .s2-brand i{color:var(--deep);font-weight:800;font-size:26px;font-style:normal;}
+  .s2-tag{position:absolute;bottom:28%;color:var(--steel);font-size:10.5px;letter-spacing:.06em;font-weight:600;animation:brand-rise 700ms ease-out 400ms both;}
+
+  /* ══════════════════════ 3. TIPOGRAFÍA CINÉTICA (minimal) ══════════════════════ */
+  .s3{background:var(--deep);}
+  @keyframes wipe{0%{clip-path:inset(0 100% 0 0);}100%{clip-path:inset(0 0 0 0);}}
+  @keyframes dot-grow{0%{width:0;}100%{width:10px;}}
+  @keyframes s3-line{0%{width:0;}100%{width:60px;}}
+  .s3-word{font-size:32px;font-weight:900;letter-spacing:-.02em;color:#fff;position:relative;}
+  .s3-word b{color:var(--red);}
+  .s3-word .wipe{position:absolute; inset:0; color:#fff; -webkit-mask-image:none;
+    animation: wipe 900ms cubic-bezier(.65,0,.35,1) 300ms both;
+    background: var(--deep);
+  }
+  .s3-inner{position:relative;overflow:hidden;}
+  .s3-line{height:2px;background:var(--red);margin:14px auto 0;animation:s3-line 500ms ease-out 1.1s both;}
+  .s3-sub{color:var(--pale);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;margin-top:12px;text-align:center;opacity:0;animation:brand-rise 500ms ease-out 1.3s both;}
+
+  /* ══════════════════════ 4. GOTA / PARTÍCULAS FLOTANDO (industria química, cálido) ══════════════════════ */
+  .s4{background:linear-gradient(180deg,var(--dark) 0%, var(--deep) 100%); }
+  @keyframes float1{0%,100%{transform:translateY(0) translateX(0);}50%{transform:translateY(-14px) translateX(6px);}}
+  @keyframes float2{0%,100%{transform:translateY(0) translateX(0);}50%{transform:translateY(10px) translateX(-8px);}}
+  @keyframes float3{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @keyframes drop-fall{0%{transform:translateY(-40px) scale(.6);opacity:0;}60%{opacity:1;}100%{transform:translateY(0) scale(1);opacity:1;}}
+  @keyframes ripple{0%{transform:scale(0.3);opacity:.8;}100%{transform:scale(2.6);opacity:0;}}
+  .s4-particle{position:absolute;border-radius:50%;opacity:.55;}
+  .s4-p1{width:8px;height:8px;background:var(--pale);top:22%;left:26%;animation:float1 4s ease-in-out infinite;}
+  .s4-p2{width:5px;height:5px;background:var(--red);top:66%;left:70%;animation:float2 3.4s ease-in-out infinite;}
+  .s4-p3{width:6px;height:6px;background:var(--blue);top:30%;left:72%;animation:float3 3.8s ease-in-out infinite;}
+  .s4-p4{width:4px;height:4px;background:var(--pale);top:70%;left:22%;animation:float1 4.6s ease-in-out infinite .5s;}
+  .s4-drop{width:26px;height:34px;background:linear-gradient(160deg,var(--mid),var(--blue));border-radius:50% 50% 50% 0;transform:rotate(45deg);animation:drop-fall 700ms cubic-bezier(.34,1.4,.64,1) both;box-shadow:0 4px 16px rgba(44,107,212,.5);}
+  .s4-ripple{position:absolute;width:26px;height:26px;border:1.5px solid var(--pale);border-radius:50%;bottom:41%;animation:ripple 1.8s ease-out 700ms infinite;}
+  .s4-brand{position:absolute;bottom:30%;color:#fff;font-weight:800;font-size:24px;text-align:center;opacity:0;animation:brand-rise 700ms ease-out 750ms both;}
+  .s4-brand b{color:var(--red);}
+
+  /* ══════════════════════ 5. GRID CORPORATIVO / GEOMÉTRICO (serio, B2B) ══════════════════════ */
+  .s5{background:#fff;}
+  @keyframes sq-in{0%{opacity:0;transform:scale(.4) rotate(-8deg);}100%{opacity:1;transform:scale(1) rotate(0);}}
+  @keyframes line-grow-h{0%{width:0;}100%{width:100%;}}
+  @keyframes line-grow-v{0%{height:0;}100%{height:100%;}}
+  .s5-mark{position:relative;width:56px;height:56px;}
+  .s5-sq{position:absolute;width:24px;height:24px;border-radius:6px;animation:sq-in 500ms cubic-bezier(.34,1.56,.64,1) both;}
+  .s5-sq1{top:0;left:0;background:var(--deep);animation-delay:0ms;}
+  .s5-sq2{top:0;right:0;background:var(--red);animation-delay:120ms;}
+  .s5-sq3{bottom:0;left:0;background:var(--mid);animation-delay:240ms;}
+  .s5-sq4{bottom:0;right:0;background:var(--pale);animation-delay:360ms;}
+  .s5-brand{position:absolute;bottom:33%;text-align:center;opacity:0;animation:brand-rise 500ms ease-out 650ms both;}
+  .s5-brand b{color:var(--red);font-weight:800;font-size:24px;}
+  .s5-brand i{color:var(--deep);font-weight:800;font-size:24px;font-style:normal;}
+  .s5-hl{width:0;height:1px;background:#DCE3F0;margin:14px auto 0;animation:line-grow-h 600ms ease-out 900ms both;}
+  .s5-tag{margin-top:10px;color:var(--steel);font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;opacity:0;animation:brand-rise 500ms ease-out 1.1s both;}
+
+  /* ══════════════════════ 6. HEXÁGONO / RED DE NODOS (conexión, "Red") ══════════════════════ */
+  .s6{background:radial-gradient(circle at 50% 30%, #123a7a 0%, var(--dark) 70%);}
+  @keyframes node-pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+  @keyframes hex-draw{0%{stroke-dashoffset:300;}100%{stroke-dashoffset:0;}}
+  @keyframes hex-fill-in{0%{opacity:0;transform:scale(.8);}100%{opacity:1;transform:scale(1);}}
+  .s6-wrap{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;}
+  .s6-svg{position:absolute;inset:0;}
+  .s6-hex{fill:none;stroke:var(--pale);stroke-width:1.5;stroke-dasharray:300;animation:hex-draw 1.3s ease-out both;}
+  .s6-node{fill:var(--red);animation:node-pulse 1.8s ease-in-out infinite;}
+  .s6-node:nth-child(3){animation-delay:.2s;fill:var(--pale);}
+  .s6-node:nth-child(4){animation-delay:.4s;fill:var(--blue);}
+  .s6-brand{position:absolute;color:#fff;font-weight:800;font-size:19px;text-align:center;opacity:0;animation:hex-fill-in 500ms ease-out 1.1s both;}
+  .s6-brand b{color:var(--red);}
+  .s6-tag{position:absolute;bottom:28%;color:var(--steel);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:brand-rise 500ms ease-out 1.4s both;}
+</style>
+</head>
+<body>
+  <h1>Red Cobalto — 6 propuestas de splash</h1>
+  <p class="sub">Cada tarjeta se anima en bucle automáticamente. Dime el número que más te guste.</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="label"><span><span class="n">1</span>Núcleo orbital (actual, refinado)</span></div>
+      <div class="frame s1" id="f1"></div>
+    </div>
+
+    <div class="card">
+      <div class="label"><span><span class="n">2</span>Molécula química</span></div>
+      <div class="frame s2" id="f2"></div>
+    </div>
+
+    <div class="card">
+      <div class="label"><span><span class="n">3</span>Tipografía cinética (minimal)</span></div>
+      <div class="frame s3" id="f3"></div>
+    </div>
+
+    <div class="card">
+      <div class="label"><span><span class="n">4</span>Gota + ondas (industria química)</span></div>
+      <div class="frame s4" id="f4"></div>
+    </div>
+
+    <div class="card">
+      <div class="label"><span><span class="n">5</span>Grid corporativo (serio, B2B)</span></div>
+      <div class="frame s5" id="f5"></div>
+    </div>
+
+    <div class="card">
+      <div class="label"><span><span class="n">6</span>Red de nodos (hexágono)</span></div>
+      <div class="frame s6" id="f6"></div>
+    </div>
+
+  </div>
+
+<script>
+function build1(el){
+  el.innerHTML = `
+    <div class="s1-stage">
+      <div class="s1-plane s1-p1"><div class="s1-e"></div></div>
+      <div class="s1-plane s1-p2"><div class="s1-e"></div></div>
+      <div class="s1-plane s1-p3"><div class="s1-e"></div></div>
+      <div class="s1-core">Co</div>
+    </div>
+    <div class="s1-brand"><span class="s1-red">Red</span>Cobalto</div>
+    <div class="s1-load"><span>CARGANDO</span><em></em><em></em><em></em></div>`;
+}
+function build2(el){
+  el.innerHTML = `
+    <div class="s2-stage">
+      <div class="s2-orbit s2-orbit1"><div class="s2-atom"></div></div>
+      <div class="s2-orbit s2-orbit2"><div class="s2-atom"></div></div>
+      <div class="s2-core"></div>
+    </div>
+    <div class="s2-brand"><b>Red</b> <i>Cobalto</i></div>
+    <div class="s2-tag">CONECTA · COMPARTE · CRECE</div>`;
+}
+function build3(el){
+  el.innerHTML = `
+    <div style="text-align:center;">
+      <div class="s3-inner"><div class="s3-word">Red<b>Cobalto</b><div class="wipe">Red<b style="color:#fff">Cobalto</b></div></div></div>
+      <div class="s3-line"></div>
+      <div class="s3-sub">Industria química</div>
+    </div>`;
+}
+function build4(el){
+  el.innerHTML = `
+    <div class="s4-particle s4-p1"></div>
+    <div class="s4-particle s4-p2"></div>
+    <div class="s4-particle s4-p3"></div>
+    <div class="s4-particle s4-p4"></div>
+    <div style="position:relative;">
+      <div class="s4-ripple"></div>
+      <div class="s4-drop"></div>
+    </div>
+    <div class="s4-brand"><b>Red</b> Cobalto</div>`;
+}
+function build5(el){
+  el.innerHTML = `
+    <div class="s5-mark">
+      <div class="s5-sq s5-sq1"></div>
+      <div class="s5-sq s5-sq2"></div>
+      <div class="s5-sq s5-sq3"></div>
+      <div class="s5-sq s5-sq4"></div>
+    </div>
+    <div class="s5-brand"><b>Red</b> <i>Cobalto</i></div>
+    <div style="text-align:center;position:absolute;bottom:22%;">
+      <div class="s5-hl"></div>
+      <div class="s5-tag">Red profesional</div>
+    </div>`;
+}
+function build6(el){
+  el.innerHTML = `
+    <div class="s6-wrap">
+      <svg class="s6-svg" viewBox="0 0 140 140">
+        <polygon class="s6-hex" points="70,15 118,42 118,98 70,125 22,98 22,42"/>
+        <circle class="s6-node" cx="70" cy="15" r="4"/>
+        <circle class="s6-node" cx="118" cy="42" r="4"/>
+        <circle class="s6-node" cx="118" cy="98" r="4"/>
+        <circle class="s6-node" cx="70" cy="125" r="4"/>
+        <circle class="s6-node" cx="22" cy="98" r="4"/>
+        <circle class="s6-node" cx="22" cy="42" r="4"/>
+      </svg>
+      <div class="s6-brand"><b>Red</b><br>Cobalto</div>
+    </div>
+    <div class="s6-tag">EN LÍNEA</div>`;
+}
+
+const builders = [build1,build2,build3,build4,build5,build6];
+function playAll(){
+  builders.forEach((fn,i)=> fn(document.getElementById('f'+(i+1))));
+}
+playAll();
+setInterval(playAll, 3200);
+</script>
+</body>
+</html>
