@@ -354,9 +354,6 @@ export default function FeedPage() {
         <div className="flex-1 min-w-0 space-y-3">
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
           <BannerCarousel />
-          <p className="text-[15px]" style={{ color: 'var(--text-secondary)' }}>
-            Bienvenido, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span>
-          </p>
           <div className="flex items-center justify-between">
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
               {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
@@ -411,10 +408,7 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         <BannerCarousel />
-        <p className="text-[16px] leading-[22px] mt-3 mb-1" style={{ color: 'var(--text-secondary)' }}>
-          Bienvenido, <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{firstName}</span>
-        </p>
-        <div className="flex items-center justify-between mb-3 mt-1.5">
+        <div className="flex items-center justify-between mb-3 mt-3">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
             {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}
           </span>

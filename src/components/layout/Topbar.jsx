@@ -84,6 +84,11 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
           })}
         </nav>
 
+        {/* Saludo */}
+        <span className="text-sm font-medium hidden md:block flex-shrink-0" style={{ color: 'var(--accent-deep)' }}>
+          Hola, {name.split(' ')[0]} 👋
+        </span>
+
         {/* Divider */}
         <div className="w-px h-7 flex-shrink-0" style={{ background: 'var(--border)' }} />
 
