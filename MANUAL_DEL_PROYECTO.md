@@ -1,8 +1,8 @@
 # Cobalto — Manual del proyecto
 
 > Documento de referencia con todo lo necesario para entender, mantener y
-> restaurar la aplicación. Última actualización: **30 de julio de 2026**
-> (commit `f4948a4`).
+> restaurar la aplicación. Última actualización: **13 de agosto de 2026**
+> (commit `ff504c5`).
 
 ---
 
@@ -24,6 +24,7 @@ mensajería interna.
 | **Supabase** | Base de datos, usuarios, archivos | `supabase.com/dashboard/project/oazbsvkysymahdudiodi` |
 | **Cloudflare** | Dueño del dominio y su DNS | `dash.cloudflare.com` → `redcobalto.com` |
 | **Zoho Mail** | Correo corporativo | `mail.zoho.com` |
+| **Twilio** | Envía el código de verificación al registrarse | `console.twilio.com` |
 
 **Cuenta usada en todos:** `edwmyf@gmail.com`
 
@@ -208,29 +209,37 @@ En `src/lib/constants.js` hay opciones que activan funciones sin tocar más cód
 
 | Interruptor | Estado actual | Qué hace |
 |---|---|---|
-| `PHONE_AUTH_ENABLED` | `false` | Activa el código de verificación al registrarse. **Requiere Twilio configurado en Supabase** |
-| `PHONE_AUTH_CHANNEL` | `'whatsapp'` | Canal del código: `'whatsapp'` o `'sms'` |
+| `PHONE_AUTH_ENABLED` | **`true`** | Verificación por código ACTIVA (ver sección 12b) |
+| `PHONE_AUTH_CHANNEL` | **`'sms'`** | Canal del código. Cambiar a `'whatsapp'` cuando Meta apruebe el perfil |
 | `EMAIL_CODE_AUTH_ENABLED` | `false` | Registro con código de 6 dígitos por correo |
 | `ADMIN_EMAILS` | `['edwmyf@gmail.com']` | Quién ve el panel de administración |
 
 ### Cómo funciona el registro hoy
 
-Como todavía no hay proveedor de SMS/WhatsApp, el registro pide **solo nombre y
-celular**, sin código de verificación.
+**Con verificación activa** (desde el commit `ff504c5`): la persona escribe su
+nombre y celular, recibe un código de 6 dígitos por SMS, y la cuenta se crea
+solo después de que lo ingrese correctamente. Ver sección 12b para el detalle
+de la configuración con Twilio.
 
-Para que Supabase pueda crear la cuenta (siempre exige un identificador), se
-genera un **correo interno invisible** con el formato
-`573001234567@phone.redcobalto.com`. El usuario nunca lo ve ni lo escribe.
+### El correo interno (mecanismo heredado, sigue vigente)
 
-Ese correo se filtra en 6 lugares del código para que nunca aparezca en pantalla:
+Cuando `PHONE_AUTH_ENABLED` estaba en `false`, la app creaba las cuentas con un
+**correo interno invisible** con el formato `573001234567@phone.redcobalto.com`,
+porque Supabase siempre exige un identificador. El usuario nunca lo ve.
+
+Ese código sigue en el proyecto (`signUpWithPhoneOnly` en `api/auth.js`) como
+respaldo por si se desactiva la verificación, y **las cuentas creadas antes de
+activar Twilio siguen usándolo**.
+
+El correo se filtra en 6 lugares para que nunca aparezca en pantalla:
 `api/auth.js`, `ProfileSetup`, `ProfilePage`, `AppLayout`, `Topbar` y
 `ContactoPage`. **Si algún día cambias ese dominio, hay que actualizarlo en los
 6.**
 
-> **Riesgo conocido:** sin verificación, quien pierda el dispositivo o borre los
-> datos del navegador no puede recuperar su cuenta (no hay contraseña conocida ni
-> correo real). Por eso existe la sección **"Asegura tu cuenta"** en Mi Perfil,
-> que invita a definir una contraseña real.
+> **Sobre las cuentas antiguas:** quienes se registraron antes de activar la
+> verificación no tienen contraseña conocida ni correo real. Si pierden el
+> dispositivo, no pueden recuperar la cuenta. Por eso existe la sección
+> **"Asegura tu cuenta"** en Mi Perfil, que les invita a definir una contraseña.
 
 ---
 
@@ -321,38 +330,100 @@ Revisa en este orden:
 
 ### Prioridad alta
 
+- [ ] **Rotar el Auth Token de Twilio.** Quedó visible en una conversación.
+      En Twilio → Auth tokens → "Request secondary token", y luego actualizar
+      ese valor en Supabase (Authentication → Providers → Phone).
+- [ ] **Borrar la API Key creada por error** en Twilio → API Key & creds →
+      API keys. Es la única de la lista con fecha del 13 de agosto de 2026; se
+      creó por equivocación (se necesitaba el Auth Token, no una API Key) y su
+      secreto quedó expuesto en una conversación.
 - [ ] **Revocar los tokens de GitHub** usados en conversaciones anteriores
-      (`github.com/settings/tokens`) y generar uno nuevo. Quedaron expuestos en
-      texto plano en el chat.
+      (`github.com/settings/tokens`) y generar uno nuevo.
 
-### Verificación por WhatsApp (para activar el registro con código)
+### WhatsApp (para reemplazar el SMS actual)
 
-- [ ] Crear cuenta en Twilio (`twilio.com/try-twilio`)
-- [ ] Activar un remitente de WhatsApp:
-      - *Sandbox* (gratis, para probar): cada persona debe enviar primero un
-        mensaje "join …" al número de pruebas de Twilio
-      - *Producción*: número de WhatsApp Business, requiere verificar la empresa
-        ante Meta (puede tardar días)
-- [ ] Crear un servicio **Verify** en Twilio y copiar su Service SID (`VA…`)
-- [ ] En Supabase → Authentication → Providers → Phone: activar y elegir
-      **Twilio Verify**, pegando Account SID, Auth Token y Service SID
-- [ ] Cambiar `PHONE_AUTH_ENABLED` a `true` en `src/lib/constants.js`
+La verificación **ya funciona por SMS**. WhatsApp queda pendiente porque Twilio
+lo bloquea hasta que Meta apruebe un perfil de WhatsApp Business
+(mensaje exacto: *"You don't have an approved WhatsApp profile"*).
+
+- [ ] Solicitar el perfil de WhatsApp Business desde Twilio → Messaging →
+      Senders → WhatsApp senders → "apply for one here"
+- [ ] Requiere: datos de la empresa, un número que **no esté ya registrado en
+      WhatsApp**, y un Meta Business Manager vinculado
+- [ ] La aprobación de Meta tarda de días a semanas
+- [ ] **Cuando lo aprueben:** cambiar `PHONE_AUTH_CHANNEL` de `'sms'` a
+      `'whatsapp'` en `src/lib/constants.js`. Una sola línea, nada más.
+      Los textos de la interfaz se adaptan solos al canal.
+
+> Vale la pena hacerlo: WhatsApp cuesta menos que SMS y **solo se cobra si el
+> mensaje se entrega**, mientras que el SMS se cobra aunque no llegue.
 
 ### Correo saliente desde el dominio propio
 
 - [ ] Configurar **SMTP personalizado** en Supabase (Project Settings → Auth →
-      SMTP) con las credenciales de Zoho, para que los correos de confirmación y
-      enlace mágico salgan de `@redcobalto.com` en vez del dominio genérico de
-      Supabase.
+      SMTP) con las credenciales de Zoho, para que los correos de confirmación
+      y enlace mágico salgan de `@redcobalto.com` en vez del dominio genérico
+      de Supabase.
 
 ### Menores
 
 - [ ] Limpiar las columnas `quimica_personaje`, `quimica_nombre` y `quimica_pts`
-      de los `SELECT` en `src/api/posts.js`. Son restos del juego eliminado: no
-      se muestran en ninguna parte, pero siguen viajando en cada consulta.
-- [ ] Verificar en un iPhone real las correcciones de iOS del commit `f4948a4`.
-- [ ] `EMAIL_CODE_AUTH_ENABLED` requiere agregar `{{ .Token }}` a la plantilla de
-      Magic Link en Supabase (Authentication → Email Templates).
+      de los `SELECT` en `src/api/posts.js`. Son restos del juego eliminado.
+- [ ] Revisar en un iPhone real si persiste el tema del tamaño. Se aplicó
+      tipografía fluida (commit `2f34fd6`); si aún se ve ampliado, revisar el
+      zoom por sitio de Safari (menú "Aa" en la barra de direcciones), que es
+      un ajuste del navegador y no se puede corregir desde el código.
+- [ ] `EMAIL_CODE_AUTH_ENABLED` requiere agregar `{{ .Token }}` a la plantilla
+      de Magic Link en Supabase (Authentication → Email Templates).
+
+---
+
+## 12b. Verificación por código (estado actual)
+
+**Funcionando desde el commit `ff504c5`.** Al registrarse, la app pide nombre y
+celular, envía un código de 6 dígitos, y solo crea la cuenta tras verificarlo.
+
+### Cómo está armado
+
+```
+Cobalto  →  Supabase (Auth)  →  Twilio Verify  →  SMS al usuario
+```
+
+Cobalto **no** envía el mensaje directamente: se lo pide a Supabase, y Supabase
+a Twilio. Por eso las credenciales de Twilio van configuradas en Supabase, no
+en el código de la app.
+
+### Datos de Twilio
+
+Los tres identificadores **no se versionan en este repositorio a propósito**
+(el detector de secretos de GitHub bloquea el push si se incluyen, y con razón:
+quedarían en el historial público para siempre). Se consultan directamente en
+la consola de Twilio:
+
+| Dato | Dónde encontrarlo |
+|---|---|
+| Account SID | Pantalla de inicio de `console.twilio.com`, o API Key & creds → Auth tokens |
+| Auth Token | API Key & creds → Auth tokens (oculto tras el ícono del ojo) |
+| Verify Service SID | Verify → Services → servicio "RED COBALTO" → campo *Service SID* (empieza con `VA`) |
+
+Guárdalos en el Excel de cuentas o en un gestor de contraseñas, nunca en el
+repositorio.
+
+Configurados en: Supabase → Authentication → Providers → Phone → **Twilio Verify**
+(importante: "Twilio Verify", no "Twilio" a secas).
+
+> En Supabase, el campo se llama "Message Service SID" pero ahí va el
+> **Verify Service SID** (el que empieza con `VA`).
+
+### Costos
+
+- ~**$0.05 USD** por verificación exitosa + unos centavos del SMS ≈ **$0.06 USD**
+  (≈ 250 pesos)
+- Saldo inicial: **$20 USD**, más 100 SMS y 100 mensajes de WhatsApp de bono
+- Alcanza para unas **400 verificaciones** en total
+- ⚠️ **El SMS se cobra aunque no se entregue.** Los reintentos también cuestan.
+- Conviene activar el **auto-recarga** en Twilio con un tope bajo, para que el
+  registro no se apague de golpe si crece rápido
 
 ---
 
