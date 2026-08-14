@@ -36,13 +36,13 @@ export default function BannerCarousel() {
     slideTo(Math.max(0, Math.min(idx, banners.length - 1)))
   }, [banners.length, slideTo])
 
-  // Auto-slide cada 1 segundo, en bucle; se pausa mientras se mantiene el dedo
+  // Auto-slide cada 3 segundos, en bucle; se pausa mientras se mantiene el dedo
   useEffect(() => {
     if (banners.length <= 1) return
     timerRef.current = setInterval(() => {
       if (pausedRef.current) return
       slideTo((indexRef.current + 1) % banners.length)
-    }, 1000)
+    }, 3000)
     return () => clearInterval(timerRef.current)
   }, [banners.length, slideTo])
 
