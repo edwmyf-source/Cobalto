@@ -19,16 +19,27 @@ function Pill({ label, active, onClick, size = 'sm' }) {
   )
 }
 
-function Section({ title, value, open, onToggle, collapsible = true, children }) {
+function StepBadge({ n }) {
+  return (
+    <span className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full"
+      style={{ width: 18, height: 18, background: 'var(--brand-red)', color: '#fff',
+        fontSize: 11, fontWeight: 700, lineHeight: 1 }}>
+      {n}
+    </span>
+  )
+}
+
+function Section({ title, value, open, onToggle, collapsible = true, step, children }) {
   return (
     <div>
       {title && (
         collapsible ? (
           <button
             onClick={onToggle}
-            className="w-full flex items-center justify-center gap-2 px-4 pt-2.5 pb-0.5"
+            className="relative w-full flex items-center justify-center gap-2 px-4 pt-2.5 pb-0.5"
             aria-expanded={open}
           >
+            {step && <StepBadge n={step} />}
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
             {value && <span className="t-caption font-medium" style={{ color: 'var(--accent)' }}>{value}</span>}
             <ChevronDown size={16} strokeWidth={2}
@@ -37,7 +48,8 @@ function Section({ title, value, open, onToggle, collapsible = true, children })
         ) : (
           // Sin flecha ni comportamiento de clic: es solo un rótulo, esta
           // sección siempre está visible y no se puede colapsar.
-          <div className="w-full flex items-center justify-center px-4 pt-2.5 pb-0.5">
+          <div className="relative w-full flex items-center justify-center px-4 pt-2.5 pb-0.5">
+            {step && <StepBadge n={step} />}
             <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>{title}</span>
           </div>
         )
@@ -147,6 +159,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           open={true}
           onToggle={() => {}}
           collapsible={false}
+          step={1}
         >
           {MARKETPLACE_TABS.map(t => (
             <Pill key={t.value} label={t.label} size="lg"
@@ -163,6 +176,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
               value={filters.category ? TIENDA_CATS.find(c=>c.value===filters.category)?.label : null}
               open={openSecs.has('subcategoria')}
               onToggle={() => toggle('subcategoria')}
+              step={2}
             >
               {TIENDA_CATS.map(c => (
                 <Pill key={c.value} label={c.label}
@@ -173,7 +187,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
 
             {tiendaCat && (
               <div style={{ borderTop: '1px solid var(--border-soft)' }}>
-                <Section title={tiendaCat.label} open={true} onToggle={() => {}} collapsible={false}>
+                <Section title={tiendaCat.label} open={true} onToggle={() => {}} collapsible={false} step={3}>
                   {tiendaCat.subcategories.map(sub => (
                     <Pill key={sub} label={sub}
                       active={filters.subcategory === sub}
@@ -192,6 +206,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
               value={filters.subcategory || null}
               open={openSecs.has('subcategoria')}
               onToggle={() => toggle('subcategoria')}
+              step={2}
             >
               {subOptions.map(sub => (
                 <Pill key={sub} label={sub}
