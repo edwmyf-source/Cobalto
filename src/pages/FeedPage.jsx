@@ -294,7 +294,7 @@ export default function FeedPage() {
     <div className="page-enter" style={{ paddingBottom: 80 }}>
 
       {/* ── DESKTOP: Layout 3 columnas tipo LinkedIn ── */}
-      <div className="hidden md:flex gap-6 max-w-[1400px] mx-auto px-4 pt-4 items-start">
+      <div className="hidden md:flex gap-6 max-w-[1400px] mx-auto px-10 pt-4 items-start">
 
         {/* ── Columna izquierda (sticky) ── */}
         <div className="w-[225px] flex-shrink-0 space-y-3" style={{ position: 'sticky', top: 72 }}>

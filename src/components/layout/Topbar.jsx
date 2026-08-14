@@ -39,7 +39,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
   return (
     <header className="sticky top-0 z-40 w-full"
       style={{ background: '#ffffff', borderBottom: '1px solid #FFFFFF' }}>
-      <div className="max-w-[1400px] mx-auto h-14 flex items-center gap-4 px-4">
+      <div className="max-w-[1400px] mx-auto h-14 flex items-center gap-4 px-4 md:px-10">
 
         {/* Logo */}
         <button onClick={() => navigate('/feed')} className="flex items-center gap-2 flex-shrink-0">
@@ -53,9 +53,9 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
 
         {/* Buscador */}
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg flex-1 max-w-xs min-w-0"
-          style={{ background: '#FFFFFF', border: '1px solid var(--border)' }}>
-          <Search size={14} className="flex-shrink-0" style={{ color: "var(--text-tertiary)" }} />
-          <span className="text-xs truncate" style={{ color: 'var(--accent)' }}>Buscar en Red Cobalto...</span>
+          style={{ background: 'var(--bg-app)', border: '1px solid var(--border-strong, #C7D2E4)' }}>
+          <Search size={15} className="flex-shrink-0" style={{ color: "var(--accent-deep)" }} />
+          <span className="text-xs truncate" style={{ color: 'var(--text-secondary)' }}>Buscar en Red Cobalto...</span>
         </div>
 
         <div className="flex-1" />
