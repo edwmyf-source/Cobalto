@@ -92,10 +92,13 @@ export default function AppLayout() {
       </div>
 
       {/* ── Topbar móvil fija ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center px-4 h-12"
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 h-12"
         style={{ background: 'var(--accent-deep)' }}>
         <span className="text-[18px] font-semibold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
           <span style={{ color: 'var(--brand-red)', fontWeight: 800 }}>Red</span> Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
+        </span>
+        <span className="text-[13px] font-medium truncate max-w-[45%]" style={{ color: '#fff' }}>
+          Hola, {name.split(' ')[0]} 👋
         </span>
       </div>
 
