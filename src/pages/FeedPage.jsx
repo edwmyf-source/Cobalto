@@ -353,7 +353,7 @@ export default function FeedPage() {
         {/* ── Columna central ── */}
         <div className="flex-1 min-w-0 space-y-3">
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
-          <BannerCarousel />
+          {activeTab === 'todo' && <BannerCarousel />}
           <div className="flex items-center justify-between">
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
               {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
@@ -407,7 +407,7 @@ export default function FeedPage() {
       {/* ── MÓVIL: columna única ── */}
       <div className="md:hidden max-w-2xl mx-auto px-4">
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
-        <BannerCarousel />
+        {activeTab === 'todo' && <BannerCarousel />}
         <div className="flex items-center justify-between mb-3 mt-3">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
             {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}
