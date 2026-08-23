@@ -71,8 +71,12 @@ export default function ProfileSetup() {
     let cancelled = false
     ;(async () => {
       try {
+        // Si entró con Google, Supabase ya trae su nombre real en los metadatos
+        // de la cuenta; si no, se deriva uno legible de la parte local del correo.
+        const meta = session?.user?.user_metadata || {}
+        const googleName = (meta.full_name || meta.name || '').trim()
         const payload = {
-          full_name: nameFromEmail(userEmail),
+          full_name: googleName || nameFromEmail(userEmail),
           identity_mode: 'real',
           identity_number: defaultNumber,
           email: userEmail,
