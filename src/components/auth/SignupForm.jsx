@@ -39,22 +39,21 @@ const Header = ({ title, sub }) => (
 )
 
 export default function SignupForm({ onSwitchLogin }) {
-  const [wantsEmail, setWantsEmail] = useState(false)
+  const [wantsPhone, setWantsPhone] = useState(false)
 
   // ══════════════════════════════════════════════════════════════════════════
-  // Vía por defecto: nombre + celular, sin verificación por ahora.
-  // Cuando PHONE_AUTH_ENABLED esté activo, este mismo formulario pedirá además
-  // el código de 6 dígitos por SMS antes de crear la cuenta.
+  // Vía por defecto: correo con código de 6 dígitos. Sin costo por SMS y sin
+  // límite de volumen real (a diferencia del teléfono, que cuesta por envío).
   // ══════════════════════════════════════════════════════════════════════════
-  if (!wantsEmail) {
-    return <QuickPhoneSignup onSwitchLogin={onSwitchLogin} onWantsEmail={() => setWantsEmail(true)} />
+  if (wantsPhone) {
+    return <QuickPhoneSignup onSwitchLogin={onSwitchLogin} onWantsEmail={() => setWantsPhone(false)} />
   }
 
-  // Vía secundaria: correo, para quien la prefiera.
+  // Vía secundaria: celular, para quien lo prefiera.
   if (!EMAIL_CODE_AUTH_ENABLED) {
-    return <ClassicEmailSignup onSwitchLogin={onSwitchLogin} onBack={() => setWantsEmail(false)} />
+    return <ClassicEmailSignup onSwitchLogin={onSwitchLogin} onBack={() => setWantsPhone(true)} />
   }
-  return <EmailCodeSignup onSwitchLogin={onSwitchLogin} onBack={() => setWantsEmail(false)} />
+  return <EmailCodeSignup onSwitchLogin={onSwitchLogin} onWantsPhone={() => setWantsPhone(true)} />
 }
 
 // ── Registro exprés: nombre + celular. Nada más. ───────────────────────────────
@@ -160,7 +159,7 @@ function QuickPhoneSignup({ onSwitchLogin, onWantsEmail }) {
 }
 
 // ── Registro por correo con código (cuando EMAIL_CODE_AUTH_ENABLED esté activo) ──
-function EmailCodeSignup({ onSwitchLogin, onBack }) {
+function EmailCodeSignup({ onSwitchLogin, onWantsPhone }) {
   const [contact, setContact] = useState('')
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
@@ -233,10 +232,12 @@ function EmailCodeSignup({ onSwitchLogin, onBack }) {
       </button>
 
       <div className="flex items-center justify-between pt-2">
-        <button type="button" onClick={onBack}
-          className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
-          Volver
-        </button>
+        {PHONE_AUTH_ENABLED && !codeSent ? (
+          <button type="button" onClick={onWantsPhone}
+            className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
+            Prefiero registrarme con celular
+          </button>
+        ) : <span />}
         <button type="button" onClick={onSwitchLogin} className="text-[12px] font-bold hover:underline text-[var(--accent-deep)]">
           Ya tengo cuenta
         </button>

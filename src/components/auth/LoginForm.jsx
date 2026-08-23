@@ -14,7 +14,7 @@ const ERR_MAP = {
 const LAST_EMAIL_KEY = 'cobalto-last-email'
 
 export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
-  const [mode, setMode]     = useState('password') // 'password' | 'magic' | 'phone'
+  const [mode, setMode]     = useState('emailcode') // 'password' | 'magic' | 'phone' | 'emailcode'
   const [phone, setPhone]   = useState('')
   const [code, setCode]     = useState('')
   const [codeSent, setCodeSent] = useState(false)
@@ -153,6 +153,21 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
       </div>
 
+      {!codeSent && (
+        <button type="button"
+          onClick={async () => { try { await signInWithGoogle() } catch (e) { setError(e.message) } }}
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+          style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
+          <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2 5.1-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.3z"/>
+            <path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.2l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.700H4.3v5.7C7.9 41 15.4 46 24 46z"/>
+            <path fill="#FBBC05" d="M11.6 27.7c-.5-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.3C2.8 16.6 2 20.2 2 23.5s.8 6.9 2.3 9.9l7.3-5.7z"/>
+            <path fill="#EA4335" d="M24 10.3c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 3.7 30 1.5 24 1.5 15.4 1.5 7.9 6.5 4.3 13.6l7.3 5.7c1.7-5.8 6.6-9 12.4-9z"/>
+          </svg>
+          Continuar con Google
+        </button>
+      )}
+
       {codeSent ? (
         <button type="button"
           onClick={() => { setCodeSent(false); setCode(''); setError('') }}
@@ -162,32 +177,30 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         </button>
       ) : mode === 'phone' ? (
         <button type="button"
-          onClick={() => { setMode('password'); setError('') }}
+          onClick={() => { setMode('emailcode'); setError('') }}
           className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
           style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <ArrowLeft size={15} /> Entrar con correo
         </button>
       ) : mode === 'emailcode' ? (
-        <button type="button"
-          onClick={() => { setMode('password'); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
-          style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
-          <KeyRound size={15} /> Entrar con contraseña
-        </button>
-      ) : (
         <div className="space-y-2">
           <button type="button"
-            onClick={async () => { try { await signInWithGoogle() } catch (e) { setError(e.message) } }}
+            onClick={() => { setMode('password'); setError('') }}
             className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
             style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
-            <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
-              <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2 5.1-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.3z"/>
-              <path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.2l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.700H4.3v5.7C7.9 41 15.4 46 24 46z"/>
-              <path fill="#FBBC05" d="M11.6 27.7c-.5-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.3C2.8 16.6 2 20.2 2 23.5s.8 6.9 2.3 9.9l7.3-5.7z"/>
-              <path fill="#EA4335" d="M24 10.3c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 3.7 30 1.5 24 1.5 15.4 1.5 7.9 6.5 4.3 13.6l7.3 5.7c1.7-5.8 6.6-9 12.4-9z"/>
-            </svg>
-            Continuar con Google
+            <KeyRound size={15} /> Entrar con contraseña
           </button>
+          {PHONE_AUTH_ENABLED && (
+            <button type="button"
+              onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+              style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
+              <Phone size={15} /> Entrar con mi celular
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-2">
           <button type="button"
             onClick={() => { setMode(m => m === 'magic' ? 'password' : 'magic'); setError('') }}
             className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
