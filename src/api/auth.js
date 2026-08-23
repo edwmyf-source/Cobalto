@@ -45,6 +45,13 @@ export const verifyEmailCode = async (email, code) => {
   return data
 }
 
+// Fija la contraseña de la cuenta recién verificada por correo, para que
+// después también pueda entrar con email + contraseña si lo prefiere.
+export const setPassword = async (password) => {
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) throw error
+}
+
 // ─── Registro / login por celular (OTP vía SMS) ───────────────────────────────
 // Requiere que Twilio (u otro proveedor SMS) esté configurado en Supabase:
 // Dashboard → Authentication → Providers → Phone → habilitar y poner credenciales.
