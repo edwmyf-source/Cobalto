@@ -20,8 +20,8 @@
   --text-inverse:   #FFFFFF;
 
   /* ── Bordes ── */
-  --border:        #E3E8EF;
-  --border-soft:   #EDF1F7;
+  --border:        #E8EBF1;
+  --border-soft:   #F1F4F9;
   --border-focus:  #1A5AC8;
 
   /* ── Acento (Cobalto) ── */
@@ -63,11 +63,11 @@
   --r-pill:   999px;
 
   /* ── Sombras: muy suaves, jerarquía real ── */
-  --shadow-card:     0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.03);
-  --shadow-card-hover:0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
-  --shadow-raised:   0 4px 16px rgba(15,23,42,0.07), 0 1px 3px rgba(15,23,42,0.04);
-  --shadow-dropdown: 0 8px 28px rgba(15,23,42,0.10), 0 2px 6px rgba(15,23,42,0.05);
-  --shadow-modal:    0 24px 60px rgba(15,23,42,0.16), 0 4px 12px rgba(15,23,42,0.06);
+  --shadow-card:     0 1px 2px rgba(15,23,42,0.03), 0 1px 2px rgba(15,23,42,0.02);
+  --shadow-card-hover:0 3px 10px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.03);
+  --shadow-raised:   0 3px 14px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.03);
+  --shadow-dropdown: 0 8px 28px rgba(15,23,42,0.09), 0 2px 6px rgba(15,23,42,0.04);
+  --shadow-modal:    0 24px 60px rgba(15,23,42,0.14), 0 4px 12px rgba(15,23,42,0.05);
 
   /* ── Movimiento ── */
   --t-hover: 160ms cubic-bezier(0.4, 0, 0.2, 1);
