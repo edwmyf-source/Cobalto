@@ -75,7 +75,7 @@ export default function BrandSplash({ onDone }) {
 
         .cbo-word {
           font-family: Manrope, system-ui, -apple-system, sans-serif;
-          font-size: clamp(48px, 14vw, 76px);
+          font-size: clamp(38px, 11.5vw, 58px);
           font-weight: 900;
           letter-spacing: -0.03em;
           line-height: 1;
