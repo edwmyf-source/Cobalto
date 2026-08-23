@@ -70,8 +70,7 @@ export default function AppLayout() {
   useEffect(() => { setProfileMenuOpen(false) }, [location.pathname])
 
   const profileMenuItems = [
-    { label: 'Mensajes', icon: MessageSquare, path: '/chats' },
-    { label: 'Alertas',  icon: Bell,          path: '/notifications', badge: unreadCount },
+    { label: 'Notificaciones', icon: Bell, path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
     { label: 'Contáctanos', icon: Mail, path: '/contacto' },
     ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
@@ -80,7 +79,7 @@ export default function AppLayout() {
   const mobileNavItems = [
     { id: '/feed',          label: 'Feed',     icon: LayoutList },
     { id: '/chats',         label: 'Mensajes', icon: MessageSquare },
-    { id: '/notifications', label: 'Alertas',  icon: Bell, badge: unreadCount },
+    { id: '/notifications', label: 'Notificaciones',  icon: Bell, badge: unreadCount },
   ]
 
   return (

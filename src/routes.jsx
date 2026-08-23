@@ -12,7 +12,6 @@ const NotificationsPage = lazy(() => import('./pages/NotificationsPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'))
-const HerramientasPage = lazy(() => import('./pages/HerramientasPage'))
 const ContactoPage = lazy(() => import('./pages/ContactoPage'))
 const TerminosPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.TerminosPage })))
 const PrivacidadPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.PrivacidadPage })))
@@ -53,7 +52,6 @@ export const routes = [
       { path: 'profile', element: <Page><ProfilePage /></Page> },
       { path: 'u/:userId', element: <Page><UserProfilePage /></Page> },
       { path: 'contacts', element: <Page><ContactsPage /></Page> },
-      { path: 'herramientas', element: <Page><HerramientasPage /></Page> },
       { path: 'contacto', element: <Page><ContactoPage /></Page> },
       { path: 'terminos', element: <Page><TerminosPage /></Page> },
       { path: 'privacidad', element: <Page><PrivacidadPage /></Page> },

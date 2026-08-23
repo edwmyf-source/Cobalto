@@ -58,8 +58,4 @@ export const sortCats = (cats) =>
     return a.name.localeCompare(b.name, 'es')
   })
 
-// Puntos del quiz (0-500) renderizados con emojis de números: 250 -> 2️⃣5️⃣0️⃣
-const DIGIT_EMOJI = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣']
-export const ptsEmoji = (pts) =>
-  String(Math.max(0, Math.min(500, Math.round(Number(pts) || 0))))
-    .split('').map(d => DIGIT_EMOJI[+d]).join('')
+

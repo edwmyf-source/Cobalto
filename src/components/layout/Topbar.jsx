@@ -1,4 +1,4 @@
-import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, Calculator, FlaskConical, Mail, User, HelpCircle, Lock, LogOut, ChevronDown } from 'lucide-react'
+import { Bell, Search, Plus, Pencil, LayoutList, MessageSquare, FlaskConical, Mail, User, HelpCircle, Lock, LogOut, ChevronDown } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import { signOut } from '../../api/auth'
@@ -24,10 +24,9 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
   }, [menuOpen])
 
   const navItems = [
-    { id: '/feed',          label: 'Feed',      Icon: LayoutList },
-    { id: '/chats',         label: 'Inbox',     Icon: MessageSquare },
-    { id: '/notifications', label: 'Alertas',   Icon: Bell, badge: unreadCount },
-    { id: '/herramientas',  label: 'Herram.',   Icon: Calculator },
+    { id: '/feed',          label: 'Feed',          Icon: LayoutList },
+    { id: '/chats',         label: 'Inbox',         Icon: MessageSquare },
+    { id: '/notifications', label: 'Notificaciones', Icon: Bell, badge: unreadCount },
   ]
 
   const menuItems = [
