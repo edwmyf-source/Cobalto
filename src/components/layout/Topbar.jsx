@@ -98,7 +98,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
               style={{ background: 'var(--accent-deep)' }}>
               {profile?.avatar_url
-                ? <img src={profile.avatar_url} className="w-7 h-7 rounded-full object-cover" alt={name} />
+                ? <img src={profile.avatar_url} loading="lazy" decoding="async" className="w-7 h-7 rounded-full object-cover" alt={name} />
                 : initials}
             </div>
             <span className="text-[10px] font-medium flex items-center gap-0.5" style={{ color: 'var(--accent)' }}>

@@ -306,7 +306,7 @@ export default function FeedPage() {
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
                 style={{ border: '3px solid white', background: 'var(--accent-deep)' }}>
                 {profile?.avatar_url
-                  ? <img src={profile.avatar_url} className="w-12 h-12 object-cover" alt={name} />
+                  ? <img src={profile.avatar_url} loading="lazy" decoding="async" className="w-12 h-12 object-cover" alt={name} />
                   : <span>{initials}</span>}
               </div>
               <p className="font-bold text-sm leading-tight" style={{ color: 'var(--accent-deep)' }}>{name}</p>

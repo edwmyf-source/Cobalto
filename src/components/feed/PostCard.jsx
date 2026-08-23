@@ -25,19 +25,27 @@ function MediaGallery({ media }) {
     <div className="mb-2 space-y-1.5">
       {images.length > 0 && (
         <div className={`grid gap-1 rounded-2xl overflow-hidden ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-          {images.slice(0, 4).map((img, idx) => (
-            <div key={idx} className="relative bg-ink-100"
-              style={images.length === 1 ? { maxHeight: 320, aspectRatio: '16/9' } : { aspectRatio: '1/1' }}>
-              <img src={img.url} alt="" loading="lazy" decoding="async"
-                className="w-full h-full object-cover cursor-pointer"
-                onClick={() => window.open(img.url, '_blank')} />
-              {idx === 3 && images.length > 4 && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <span className="text-white font-medium text-lg">+{images.length - 4}</span>
-                </div>
-              )}
-            </div>
-          ))}
+          {images.slice(0, 4).map((img, idx) => {
+            // Aspect ratio real cuando lo tenemos guardado (media nueva);
+            // fallback a 16/9 (única) o 1/1 (grid) para media histórica.
+            const ratio = img.w && img.h
+              ? (images.length === 1 ? Math.max(img.w / img.h, 1) : 1)
+              : (images.length === 1 ? 16 / 9 : 1)
+            return (
+              <div key={idx} className="relative bg-ink-100"
+                style={{ aspectRatio: String(ratio), ...(images.length === 1 ? { maxHeight: 320 } : {}) }}>
+                <img src={img.url} alt="" loading="lazy" decoding="async"
+                  width={img.w || undefined} height={img.h || undefined}
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={() => window.open(img.url, '_blank')} />
+                {idx === 3 && images.length > 4 && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="text-white font-medium text-lg">+{images.length - 4}</span>
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
       {videos.map((vid, idx) => (

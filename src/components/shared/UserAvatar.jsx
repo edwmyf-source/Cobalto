@@ -35,6 +35,8 @@ export default function UserAvatar({ seed = '', size = 40, avatarUrl = null, cla
       <img
         src={avatarUrl}
         alt=""
+        loading="lazy"
+        decoding="async"
         className={`rounded-full object-cover flex-shrink-0 ${className}`}
         style={style}
         onError={e => { e.target.style.display = 'none' }}

@@ -237,7 +237,7 @@ export default function UserProfilePage() {
         {/* ── Portada degradada ── */}
         <div className="relative" style={{ height: 150 }}>
           {coverUrl
-            ? <img src={coverUrl} alt="" className="w-full h-full object-cover" />
+            ? <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             : <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 70%, #4C82F0 100%)' }} />
           }
           {uploadingCover && (

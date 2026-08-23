@@ -1,14 +1,31 @@
 import { supabase } from './supabase'
+import { compressImage } from '../lib/imageCompress'
 
 const MAX_FILE_MB = 15
 const UPLOAD_TIMEOUT_MS = 30_000
 
-export const uploadMedia = async (file, authorId) => {
+// Extrae dimensiones de una imagen (o null si no aplica / falla).
+const getImageSize = (file) => new Promise((resolve) => {
+  if (!file.type?.startsWith('image/')) { resolve(null); return }
+  const url = URL.createObjectURL(file)
+  const img = new Image()
+  img.onload = () => { URL.revokeObjectURL(url); resolve({ w: img.naturalWidth, h: img.naturalHeight }) }
+  img.onerror = () => { URL.revokeObjectURL(url); resolve(null) }
+  img.src = url
+})
+
+export const uploadMedia = async (rawFile, authorId) => {
+  // Comprimir en cliente antes de validar peso: la imagen liviana suele pasar.
+  const file = await compressImage(rawFile)
+
   if (file.size > MAX_FILE_MB * 1024 * 1024) {
     throw new Error(`El archivo "${file.name}" supera el límite de ${MAX_FILE_MB} MB.`)
   }
   const ext = file.name.split('.').pop().toLowerCase()
   const path = `${authorId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+
+  // Medir dimensiones en paralelo con la subida, sin bloquearla si falla.
+  const sizePromise = getImageSize(file)
 
   const uploadPromise = supabase.storage
     .from('post-media')
@@ -19,7 +36,14 @@ export const uploadMedia = async (file, authorId) => {
   const { error } = await Promise.race([uploadPromise, timeoutPromise])
   if (error) throw error
   const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(path)
-  return { url: urlData.publicUrl, type: file.type, name: file.name, path }
+  const size = await sizePromise
+  return {
+    url: urlData.publicUrl,
+    type: file.type,
+    name: file.name,
+    path,
+    ...(size ? { w: size.w, h: size.h } : {}),
+  }
 }
 
 export const createPost = async (payload, mediaFiles = []) => {

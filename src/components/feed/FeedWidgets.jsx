@@ -26,7 +26,7 @@ export default function FeedWidgets() {
 
           {/* Imagen 1:1 */}
           {w.imagen_url ? (
-            <img src={w.imagen_url} alt={w.titulo}
+            <img src={w.imagen_url} alt={w.titulo} loading="lazy" decoding="async"
               className="w-full object-cover" style={{ aspectRatio: '1/1' }} />
           ) : (
             <div className="w-full flex flex-col items-center justify-center gap-2"
