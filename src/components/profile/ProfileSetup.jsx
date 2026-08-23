@@ -1,10 +1,10 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Lock, Check, X, ArrowRight, ArrowLeft } from 'lucide-react'
 import { updateProfile } from '../../api/profiles'
 import { updatePassword, signOut } from '../../api/auth'
 import { useAuth } from '../../contexts/AuthContext'
 import { safeErrorMessage } from '../../lib/errors'
-import { domainOf, generateIdentityNumber } from '../../lib/helpers'
+import { domainOf, generateIdentityNumber, nameFromEmail } from '../../lib/helpers'
 import UserAvatar from '../shared/UserAvatar'
 import PrivacyBadge from '../shared/PrivacyBadge'
 import Spinner from '../shared/Spinner'
@@ -56,6 +56,45 @@ export default function ProfileSetup() {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // ══════════════════════════════════════════════════════════════════════
+  // Entrada por correo real (no la sintética del registro por celular):
+  // el perfil se crea solo, con el nombre derivado del correo. Sin pedir
+  // teléfono ni contraseña — el usuario ya validó su identidad con el
+  // código que le llegó al correo, así que no hace falta más fricción.
+  // ══════════════════════════════════════════════════════════════════════
+  const shouldAutoCreate = Boolean(userEmail) && !profile?.full_name && !pendingName
+  const [autoCreating, setAutoCreating] = useState(shouldAutoCreate)
+
+  useEffect(() => {
+    if (!shouldAutoCreate) return
+    let cancelled = false
+    ;(async () => {
+      try {
+        const payload = {
+          full_name: nameFromEmail(userEmail),
+          identity_mode: 'real',
+          identity_number: defaultNumber,
+          email: userEmail,
+          email_domain: domainOf(userEmail),
+        }
+        const p = await updateProfile(userId, payload)
+        if (!cancelled) setProfile(p)
+      } catch (err) {
+        if (!cancelled) { setError(safeErrorMessage(err)); setAutoCreating(false) }
+      }
+    })()
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (autoCreating) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'var(--bg-app)' }}>
+        <Spinner size={22} />
+      </div>
+    )
+  }
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 

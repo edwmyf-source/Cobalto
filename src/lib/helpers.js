@@ -4,6 +4,16 @@ export const domainOf = (email) => {
   return p.length === 2 ? `@${p[1]}` : ''
 }
 
+// Deriva un nombre para mostrar a partir de la parte local del correo.
+// "juan.perez21@gmail.com" -> "Juan Perez"  ·  "jsmith@x.com" -> "Jsmith"
+export const nameFromEmail = (email) => {
+  const local = String(email || '').split('@')[0]
+  const cleaned = local.replace(/[._-]+/g, ' ').replace(/\d+/g, ' ').trim()
+  const words = cleaned.split(/\s+/).filter(Boolean)
+  if (words.length === 0) return local || 'Usuario'
+  return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
+
 export const maskedEmail = (email) => {
   const d = domainOf(email)
   return d ? `xxxxx${d}` : 'xxxxx@****'

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { Mail, Check, X } from 'lucide-react'
-import { sendEmailCode, verifyEmailCode, setPassword, signInWithGoogle } from '../../api/auth'
+import { sendEmailCode, verifyEmailCode, signInWithGoogle } from '../../api/auth'
 import Spinner from '../shared/Spinner'
 
 const ERR_MAP = {
@@ -11,15 +10,6 @@ const ERR_MAP = {
   'Email rate limit exceeded': 'Demasiados intentos. Espera un momento.',
   'For security purposes, you can only request this after 60 seconds': 'Espera 60 segundos antes de pedir otro código.',
 }
-
-const RULES = [
-  { id: 'len',   label: 'Mínimo 8 caracteres',  test: p => p.length >= 8 },
-  { id: 'upper', label: 'Una mayúscula',        test: p => /[A-Z]/.test(p) },
-  { id: 'lower', label: 'Una minúscula',        test: p => /[a-z]/.test(p) },
-  { id: 'num',   label: 'Un número',            test: p => /[0-9]/.test(p) },
-  { id: 'sym',   label: 'Un símbolo (!@#$...)', test: p => /[^A-Za-z0-9]/.test(p) },
-]
-const COMMON = ['12345678','password','contrasena','contraseña','qwerty123','abc12345','cobalto11','cobalto123']
 
 const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 const codeCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
@@ -38,30 +28,21 @@ const GoogleIcon = () => (
 )
 
 // ══════════════════════════════════════════════════════════════════════════
-// Únete ahora: dos caminos, sin ramas intermedias.
-//   1) Google — un clic con la cuenta que ya tienes abierta en el navegador.
-//   2) Correo — pides el código, lo confirmas y creas tu contraseña, listo.
+// Únete ahora: dos caminos, sin fricción de más.
+//   1) Google — un clic con la cuenta que ya tienes abierta.
+//   2) Correo — pides el código y lo confirmas. Listo, ya estás dentro.
+// El perfil (nombre, etc.) se crea solo a partir del correo, sin pedir
+// teléfono ni contraseña (ver ProfileSetup.jsx).
 // ══════════════════════════════════════════════════════════════════════════
 export default function SignupForm({ onSwitchLogin }) {
   const [email, setEmail]   = useState('')
   const [code, setCode]     = useState('')
-  const [pass, setPass]     = useState('')
   const [codeSent, setCodeSent] = useState(false)
-  const [verified, setVerified] = useState(false)
-  const [touched, setTouched]   = useState(false)
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState('')
   const [info, setInfo]         = useState('')
 
   const emailValid = /\S+@\S+\.\S+/.test(email)
-  const passed   = RULES.filter(r => r.test(pass))
-  const isCommon = COMMON.includes(pass.toLowerCase())
-  const strong   = passed.length === RULES.length && !isCommon
-  const strength = isCommon ? 0 : passed.length
-  const barColor = strength <= 2 ? '#dc2626' : strength <= 4 ? 'var(--accent)' : '#16a34a'
-  const barLabel = isCommon ? 'Muy común, elige otra'
-    : strength <= 2 ? 'Débil' : strength <= 3 ? 'Media' : strength === 4 ? 'Buena' : 'Fuerte'
-
   const reset = () => { setError(''); setInfo('') }
 
   const sendCode = async (e) => {
@@ -79,34 +60,15 @@ export default function SignupForm({ onSwitchLogin }) {
     setLoading(false)
   }
 
-  const submit = async (e) => {
+  const verify = async (e) => {
     e.preventDefault()
     reset()
-    if (!verified) {
-      if (code.trim().length < 6) { setError('Ingresa el código de 6 dígitos.'); return }
-      setLoading(true)
-      try {
-        await verifyEmailCode(email, code)
-        setVerified(true)
-      } catch (err) {
-        setError(ERR_MAP[err.message] || err.message)
-        setLoading(false)
-        return
-      }
-      setLoading(false)
-      return
-    }
-    // Código ya verificado (hay sesión abierta): falta fijar la contraseña.
-    if (!strong) {
-      setTouched(true)
-      setError(isCommon
-        ? 'Esa contraseña es demasiado común. Elige una diferente.'
-        : 'La contraseña no cumple los requisitos de seguridad.')
-      return
-    }
+    if (code.trim().length < 6) { setError('Ingresa el código de 6 dígitos.'); return }
     setLoading(true)
     try {
-      await setPassword(pass)
+      await verifyEmailCode(email, code)
+      // Sesión creada: App.jsx detecta el login y ProfileSetup arma el
+      // perfil solo con el nombre derivado del correo. Nada más que hacer.
     } catch (err) {
       setError(ERR_MAP[err.message] || err.message)
     }
@@ -134,7 +96,7 @@ export default function SignupForm({ onSwitchLogin }) {
         </>
       )}
 
-      <form onSubmit={codeSent ? submit : sendCode} className="space-y-4">
+      <form onSubmit={codeSent ? verify : sendCode} className="space-y-4">
         {!codeSent ? (
           <div>
             <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Correo electrónico</label>
@@ -142,7 +104,7 @@ export default function SignupForm({ onSwitchLogin }) {
               onChange={e => setEmail(e.target.value)}
               placeholder="tu@empresa.com" className={inputCls} />
           </div>
-        ) : !verified ? (
+        ) : (
           <div>
             <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
             <input type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus value={code}
@@ -153,46 +115,14 @@ export default function SignupForm({ onSwitchLogin }) {
               Reenviar código
             </button>
           </div>
-        ) : (
-          <div>
-            <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Crea tu contraseña</label>
-            <input type="password" value={pass} autoFocus autoComplete="new-password"
-              onChange={e => { setPass(e.target.value); if (!touched) setTouched(true) }}
-              placeholder="••••••••" className={inputCls} />
-
-            {touched && pass.length > 0 && (
-              <div className="mt-2">
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--accent-soft)' }}>
-                  <div className="h-full transition-all" style={{ width: `${(strength / RULES.length) * 100}%`, background: barColor }} />
-                </div>
-                <p className="text-[12px] mt-1 font-bold" style={{ color: barColor }}>{barLabel}</p>
-                <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 mt-1.5">
-                  {RULES.map(r => {
-                    const ok = r.test(pass)
-                    return (
-                      <div key={r.id} className="flex items-center gap-1">
-                        {ok ? <Check size={11} style={{ color: '#16a34a', flexShrink: 0 }} />
-                            : <X size={11} style={{ color: '#C9D9F2', flexShrink: 0 }} />}
-                        <span className="text-[12px]" style={{ color: ok ? '#16a34a' : 'var(--text-tertiary)' }}>{r.label}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
         )}
 
         {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
         {info && !error && <p className="text-[12px] font-semibold text-green-600">{info}</p>}
 
-        <button type="submit"
-          disabled={loading || (!codeSent ? !emailValid : !verified ? code.length < 6 : false)}
+        <button type="submit" disabled={loading || (!codeSent ? !emailValid : code.length < 6)}
           className={primaryBtn} style={primaryStyle}>
-          {loading ? <Spinner size={16} />
-            : !codeSent ? 'Enviarme el código'
-            : !verified ? 'Verificar código'
-            : 'Crear cuenta'}
+          {loading ? <Spinner size={16} /> : !codeSent ? 'Enviarme el código' : 'Entrar a Cobalto'}
         </button>
 
         <div className="flex items-center justify-end pt-2">
