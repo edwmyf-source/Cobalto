@@ -56,7 +56,7 @@ export default function BrandSplash({ onDone }) {
           border-radius: 50%;
           background: #F1F4FA;
           opacity: 0;
-          animation: cbo-circle-in 1600ms cubic-bezier(.22,1,.36,1) 0ms both;
+          animation: cbo-circle-in 1600ms cubic-bezier(0.16,1,0.3,1) 0ms both;
         }
         .cbo-geo-ring {
           position: absolute;
@@ -67,7 +67,7 @@ export default function BrandSplash({ onDone }) {
           border-radius: 50%;
           border: 1px solid rgba(11,46,104,0.05);
           opacity: 0;
-          animation: cbo-circle-in 1800ms cubic-bezier(.22,1,.36,1) 120ms both;
+          animation: cbo-circle-in 1800ms cubic-bezier(0.16,1,0.3,1) 120ms both;
         }
 
         /* ── Contenido central ── */
@@ -76,15 +76,18 @@ export default function BrandSplash({ onDone }) {
         .cbo-word {
           font-family: Manrope, system-ui, -apple-system, sans-serif;
           font-size: clamp(38px, 11.5vw, 58px);
-          font-weight: 900;
-          letter-spacing: -0.03em;
+          font-weight: 800;
+          letter-spacing: -0.025em;
           line-height: 1;
           opacity: 0;
           transform: scale(0.96);
-          animation: cbo-scale-in 650ms cubic-bezier(.22,1,.36,1) 250ms both;
+          animation: cbo-scale-in 650ms cubic-bezier(0.16,1,0.3,1) 250ms both;
         }
-        .cbo-word .cbo-red { color: var(--accent-deep, #0B2E68); }
-        .cbo-word .cbo-cobalto { color: var(--brand-red, #E63946); }
+        /* Misma convención de color que en Topbar, AppLayout y AuthScreen:
+           "Red" siempre en rojo de marca, "Cobalto" en azul marino. */
+        .cbo-word .cbo-red { color: var(--brand-red, #E63946); }
+        .cbo-word .cbo-cobalto { color: var(--accent-deep, #0B2E68); }
+        .cbo-word .cbo-dot { color: var(--accent, #1A5AC8); }
 
         .cbo-tag {
           margin-top: 22px;
@@ -95,16 +98,16 @@ export default function BrandSplash({ onDone }) {
         }
         .cbo-tag span { display: block; opacity: 0; }
         .cbo-tag-line1 {
-          color: #6B7C99;
+          color: var(--text-secondary, #475569);
           font-weight: 500;
           transform: translateY(8px);
-          animation: cbo-fade-up 450ms cubic-bezier(.22,1,.36,1) 650ms both;
+          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 650ms both;
         }
         .cbo-tag-line2 {
-          color: #2C6BD4;
+          color: var(--accent, #1A5AC8);
           font-weight: 700;
           transform: translateY(8px);
-          animation: cbo-fade-up 450ms cubic-bezier(.22,1,.36,1) 820ms both;
+          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 820ms both;
         }
 
         .cbo-bar {
@@ -113,7 +116,7 @@ export default function BrandSplash({ onDone }) {
           width: 0;
           background: var(--brand-red, #E63946);
           border-radius: 2px;
-          animation: cbo-bar-grow 460ms cubic-bezier(.22,1,.36,1) 1150ms both;
+          animation: cbo-bar-grow 460ms cubic-bezier(0.16,1,0.3,1) 1150ms both;
         }
       `}</style>
 
@@ -124,7 +127,7 @@ export default function BrandSplash({ onDone }) {
       {/* Contenido */}
       <div className="cbo-content">
         <div className="cbo-word">
-          <span className="cbo-red">Red</span><span className="cbo-cobalto">Cobalto</span>
+          <span className="cbo-red">Red</span><span className="cbo-cobalto">Cobalto</span><span className="cbo-dot">.</span>
         </div>
 
         <div className="cbo-tag">
