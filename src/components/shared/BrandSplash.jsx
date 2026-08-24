@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import CobaltoMark from './CobaltoMark'
 
 // Primera vez por sesión del navegador: 3s. En recargas siguientes: 1s.
 const SPLASH_SEEN_KEY = 'cobalto-splash-seen'
@@ -73,6 +74,14 @@ export default function BrandSplash({ onDone }) {
         /* ── Contenido central ── */
         .cbo-content { position: relative; z-index: 2; text-align: center; padding: 0 28px; }
 
+        .cbo-mark {
+          display: inline-flex;
+          margin-bottom: 18px;
+          opacity: 0;
+          transform: scale(0.85);
+          animation: cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both;
+        }
+
         .cbo-word {
           font-family: Manrope, system-ui, -apple-system, sans-serif;
           font-size: clamp(38px, 11.5vw, 58px);
@@ -81,7 +90,7 @@ export default function BrandSplash({ onDone }) {
           line-height: 1;
           opacity: 0;
           transform: scale(0.96);
-          animation: cbo-scale-in 650ms cubic-bezier(0.16,1,0.3,1) 250ms both;
+          animation: cbo-scale-in 650ms cubic-bezier(0.16,1,0.3,1) 320ms both;
         }
         /* Misma convención de color que en Topbar, AppLayout y AuthScreen:
            "Red" siempre en rojo de marca, "Cobalto" en azul marino. */
@@ -101,13 +110,13 @@ export default function BrandSplash({ onDone }) {
           color: var(--text-secondary, #475569);
           font-weight: 500;
           transform: translateY(8px);
-          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 650ms both;
+          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 700ms both;
         }
         .cbo-tag-line2 {
           color: var(--accent, #1A5AC8);
           font-weight: 700;
           transform: translateY(8px);
-          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 820ms both;
+          animation: cbo-fade-up 450ms cubic-bezier(0.16,1,0.3,1) 860ms both;
         }
 
         .cbo-bar {
@@ -116,7 +125,7 @@ export default function BrandSplash({ onDone }) {
           width: 0;
           background: var(--brand-red, #E63946);
           border-radius: 2px;
-          animation: cbo-bar-grow 460ms cubic-bezier(0.16,1,0.3,1) 1150ms both;
+          animation: cbo-bar-grow 460ms cubic-bezier(0.16,1,0.3,1) 1180ms both;
         }
       `}</style>
 
@@ -126,6 +135,10 @@ export default function BrandSplash({ onDone }) {
 
       {/* Contenido */}
       <div className="cbo-content">
+        <div className="cbo-mark">
+          <CobaltoMark size={56} rounded="rounded-2xl" />
+        </div>
+
         <div className="cbo-word">
           <span className="cbo-red">Red</span><span className="cbo-cobalto">Cobalto</span><span className="cbo-dot">.</span>
         </div>
