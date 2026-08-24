@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Zap, ArrowRight } from 'lucide-react'
+import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Zap, ArrowRight, Building2, MapPin } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
 import Footer from '../layout/Footer'
 import RedCobaltoLogo from '../shared/RedCobaltoLogo'
+import CobaltoMark from '../shared/CobaltoMark'
 import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '../legal/LegalContent'
 
 // Ventajas con iconografía consistente: misma familia (lucide), mismo tamaño
@@ -110,27 +111,52 @@ function Landing({ stats, onSignup }) {
           </CTA>
         </div>
 
-        {/* ── Métricas: el número es el protagonista ── */}
-        <div className="mt-8 md:mt-0 grid grid-cols-3 gap-3 md:gap-4 md:w-[340px] flex-shrink-0">
-          {[
-            { icon: Users,        value: stats.members,        label: 'Miembros'      },
-            { icon: FlaskConical, value: stats.posts,          label: 'Publicaciones' },
-            { icon: Zap,          value: stats.interactions,   label: 'Interacciones' },
-          ].map(({ icon: Icon, value, label }) => (
-            <div key={label} className="rounded-card p-3 md:p-4 border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-              <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-              <p className="font-extrabold leading-none mt-2 tnum"
-                style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(22px, 5.3vw, 34px)' }}>
-                {formatMetric(value)}
-              </p>
-              <p className="text-[11px] md:text-[12px] mt-1 uppercase font-extrabold leading-tight"
-                style={{ color: 'var(--text-tertiary)', letterSpacing: '0.08em' }}>
-                {label}
-              </p>
+        {/* ── Marca: llena el vacío de la derecha en escritorio ── */}
+        <div className="hidden md:flex md:flex-col md:items-center md:justify-center md:w-[360px] flex-shrink-0">
+          <div className="relative flex items-center justify-center w-full">
+            {/* Círculo sutil de fondo, mismo lenguaje visual que el splash */}
+            <div className="absolute rounded-full" aria-hidden="true"
+              style={{ width: 300, height: 300, background: 'var(--accent-softer)' }} />
+            <div className="absolute rounded-full" aria-hidden="true"
+              style={{ width: 230, height: 230, border: '1px solid var(--border-soft)' }} />
+            <div className="relative flex flex-col items-center gap-5">
+              <CobaltoMark size={104} rounded="rounded-[28px]" />
+              <div className="text-center">
+                <p className="font-extrabold leading-none" style={{ letterSpacing: '-0.03em', fontSize: 34 }}>
+                  <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
+                </p>
+                <p className="t-eyebrow mt-2.5" style={{ color: 'var(--text-tertiary)' }}>
+                  INDUSTRIA QUÍMICA · COLOMBIA
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
+      </section>
+
+      {/* ── Métricas: fila completa bajo el hero ── */}
+      <section className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+        {[
+          { icon: Users,          value: stats.members,        label: 'Miembros'      },
+          { icon: FlaskConical,   value: stats.posts,          label: 'Publicaciones' },
+          { icon: Zap,            value: stats.interactions,   label: 'Interacciones' },
+          { icon: MessageCircle,  value: stats.comments,       label: 'Comentarios'   },
+          { icon: Building2,      value: stats.companies,      label: 'Empresas'      },
+          { icon: MapPin,         value: stats.cities,         label: 'Ciudades'      },
+        ].map(({ icon: Icon, value, label }) => (
+          <div key={label} className="rounded-card p-3 md:p-4 border"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
+            <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+            <p className="font-extrabold leading-none mt-2 tnum"
+              style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(20px, 5.3vw, 30px)' }}>
+              {formatMetric(value)}
+            </p>
+            <p className="text-[10px] md:text-[11px] mt-1 uppercase font-extrabold leading-tight"
+              style={{ color: 'var(--text-tertiary)', letterSpacing: '0.06em' }}>
+              {label}
+            </p>
+          </div>
+        ))}
       </section>
 
       {/* ── Ventajas ── */}
@@ -175,7 +201,7 @@ export default function AuthScreen() {
   // El estado inicial debe incluir TODAS las métricas que se renderizan: en el
   // primer render (antes de que responda la consulta) una clave faltante seria
   // undefined, y undefined.toLocaleString() rompe la pantalla completa.
-  const [stats, setStats] = useState({ members: 0, posts: 0, interactions: 0 })
+  const [stats, setStats] = useState({ members: 0, posts: 0, interactions: 0, comments: 0, companies: 0, cities: 0 })
 
   useEffect(() => {
     getCommunityStats().then(setStats).catch(() => {})

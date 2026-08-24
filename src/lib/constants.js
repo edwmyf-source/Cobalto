@@ -141,8 +141,8 @@ export const TIENDA_CATS = [
   },
 ]
 
-// Subcategorías de Novedades
-export const NOVEDADES_SUBCATS = ['Novedades', 'Noticias', 'Eventos', 'Normativas', 'Recursos', 'Preguntas']
+// Subcategorías de Novedades (pestaña "Info")
+export const NOVEDADES_SUBCATS = ['Noticias y eventos', 'Normatividad', 'Conocimiento técnico', 'Preguntas']
 
 // Niveles de Vacantes
 export const VACANTES_NIVELES = ['Operativo', 'Técnico', 'Profesional', 'Coordinador', 'Gerencial']

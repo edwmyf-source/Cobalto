@@ -24,6 +24,18 @@ export const getCommunityStats = async () => {
     // bienvenida) siempre contaría 0 y el total saldría mal.
     const interactions = (postsCount || 0) + (reactionsCount || 0) + (commentsCount || 0)
 
+    // Empresas y ciudades distintas representadas en la comunidad. Se cuentan
+    // en el cliente porque PostgREST no expone COUNT(DISTINCT) directamente.
+    const { data: orgRows } = await supabase
+      .from('profiles')
+      .select('company_name, city')
+    const companies = new Set()
+    const cities = new Set()
+    ;(orgRows || []).forEach(r => {
+      if (r.company_name?.trim()) companies.add(r.company_name.trim().toLowerCase())
+      if (r.city?.trim()) cities.add(r.city.trim().toLowerCase())
+    })
+
     return {
       connections: reactionsCount || 0,
       requests: postsCount || 0,
@@ -31,11 +43,13 @@ export const getCommunityStats = async () => {
       comments: commentsCount || 0,
       members: membersCount || 0,
       activeThisWeek: activeWeek || 0,
+      companies: companies.size,
+      cities: cities.size,
       interactions,
     }
   } catch (e) {
     console.warn('Error fetching community stats:', e)
-    return { connections: 0, requests: 0, posts: 0, comments: 0, members: 0, activeThisWeek: 0, interactions: 0 }
+    return { connections: 0, requests: 0, posts: 0, comments: 0, members: 0, activeThisWeek: 0, companies: 0, cities: 0, interactions: 0 }
   }
 }
 
