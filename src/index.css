@@ -102,14 +102,15 @@ body {
      100dvh se ajusta al alto realmente visible; 100vh queda de respaldo. */
   min-height: 100vh;
   min-height: 100dvh;
-  font-family: Manrope, Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "DM Sans", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 16px;
   line-height: 24px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Manrope llega hasta el peso 800. Sin esto, iOS "inventa" los pesos que
-     faltan engrosando artificialmente el trazo, lo que ensancha el texto y
-     descuadra botones respecto a Android. */
+  /* DM Sans es variable y cubre de 100 a 1000, así que todos los pesos que usa
+     la app existen de verdad. Se desactiva la síntesis igual: sin esto, si la
+     fuente aún no cargó, iOS engrosa artificialmente el trazo de la fuente de
+     respaldo, ensancha el texto y descuadra botones respecto a Android. */
   font-synthesis-weight: none;
   font-synthesis: none;
 }

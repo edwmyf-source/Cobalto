@@ -83,7 +83,7 @@ export default function BrandSplash({ onDone }) {
         }
 
         .cbo-word {
-          font-family: Manrope, system-ui, -apple-system, sans-serif;
+          font-family: "DM Sans", system-ui, -apple-system, sans-serif;
           font-size: clamp(38px, 11.5vw, 58px);
           font-weight: 800;
           letter-spacing: -0.025em;
@@ -100,7 +100,7 @@ export default function BrandSplash({ onDone }) {
 
         .cbo-tag {
           margin-top: 22px;
-          font-family: Manrope, system-ui, -apple-system, sans-serif;
+          font-family: "DM Sans", system-ui, -apple-system, sans-serif;
           font-size: clamp(14px, 4vw, 17px);
           line-height: 1.6;
           text-align: center;
