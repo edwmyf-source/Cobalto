@@ -1,6 +1,8 @@
 import { supabase } from './supabase'
+import { compressImage } from '../lib/imageCompress'
 
 const PROFILE_FIELDS = 'id, full_name, identity_mode, identity_number, city, email_domain'
+const MAX_FILE_MB = 15
 
 // Get all conversations for a user
 export const getConversations = async (userId) => {
@@ -50,19 +52,41 @@ export const getMessages = async (conversationId) => {
   return data || []
 }
 
+// Sube un archivo adjunto al chat (imagen comprimida, PDF u otro documento tal
+// cual). Reutiliza el mismo bucket público que las fotos de publicaciones; la
+// política de acceso exige que la primera carpeta de la ruta sea el propio
+// uid de quien sube, por eso se guarda bajo `${senderId}/...`.
+export const uploadMessageAttachment = async (rawFile, senderId) => {
+  const file = await compressImage(rawFile)
+  if (file.size > MAX_FILE_MB * 1024 * 1024) {
+    throw new Error(`El archivo "${file.name}" supera el límite de ${MAX_FILE_MB} MB.`)
+  }
+  const ext = file.name.split('.').pop().toLowerCase()
+  const path = `${senderId}/msg-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('post-media')
+    .upload(path, file, { cacheControl: '3600', upsert: false })
+  if (error) throw error
+
+  const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(path)
+  return { url: urlData.publicUrl, type: file.type, name: file.name }
+}
+
 // Send message
-export const sendMessage = async ({ conversation_id, sender_id, content }) => {
+export const sendMessage = async ({ conversation_id, sender_id, content, media_url, media_type, media_name }) => {
   const { data, error } = await supabase
     .from('messages')
-    .insert({ conversation_id, sender_id, content })
+    .insert({ conversation_id, sender_id, content: content || null, media_url, media_type, media_name })
     .select()
     .single()
   if (error) throw error
 
   // Update conversation timestamp
+  const preview = content || (media_url ? '📎 Adjunto' : '')
   await supabase
     .from('conversations')
-    .update({ updated_at: new Date().toISOString(), last_message: content })
+    .update({ updated_at: new Date().toISOString(), last_message: preview })
     .eq('id', conversation_id)
 
   return data

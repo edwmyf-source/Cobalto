@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles } from 'lucide-react'
+import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getConversations, getMessages, sendMessage } from '../api/messages'
+import { getConversations, getMessages, sendMessage, uploadMessageAttachment } from '../api/messages'
 import { createNotification } from '../api/notifications'
 import { useAuth } from '../contexts/AuthContext'
 import { useRealtime } from '../hooks/useRealtime'
@@ -128,6 +128,8 @@ function ChatThread({ conversation, userId, myProfile }) {
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef(null)
   const bottomRef = useRef(null)
 
   const other = conversation.user1_id === userId ? conversation.user2 : conversation.user1
@@ -159,24 +161,42 @@ function ChatThread({ conversation, userId, myProfile }) {
     if (!loading) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
-  const handleSend = async () => {
-    if (!text.trim() || sending) return
+  const handleSend = async (media = null) => {
     const content = text.trim()
+    if (!content && !media) return
+    if (sending) return
     setText('')
     setSending(true)
     try {
-      const sent = await sendMessage({ conversation_id: conversation.id, sender_id: userId, content })
+      const sent = await sendMessage({
+        conversation_id: conversation.id, sender_id: userId, content,
+        media_url: media?.url, media_type: media?.type, media_name: media?.name,
+      })
       setMessages(prev => [...prev, { ...sent, profiles: myProfile || {} }])
       const otherId = conversation.user1_id === userId ? conversation.user2_id : conversation.user1_id
       createNotification({
         user_id: otherId,
         from_user_id: userId,
         type: 'message',
-        content: 'te envió un mensaje',
+        content: media ? 'te envió un adjunto' : 'te envió un mensaje',
         post_id: conversation.post_id,
       })
-    } catch (e) { toast(safeErrorMessage(e), 'error'); setText(content) }
+    } catch (e) { toast(safeErrorMessage(e), 'error'); if (content) setText(content) }
     setSending(false)
+  }
+
+  const handleFileSelected = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // permite volver a elegir el mismo archivo después
+    if (!file) return
+    setUploading(true)
+    try {
+      const media = await uploadMessageAttachment(file, userId)
+      await handleSend(media)
+    } catch (err) {
+      toast(safeErrorMessage(err), 'error')
+    }
+    setUploading(false)
   }
 
   // Agrupar mensajes por fecha
@@ -258,7 +278,7 @@ function ChatThread({ conversation, userId, myProfile }) {
                     <div key={msg.id}
                       className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                       <div style={{ maxWidth: '75%' }}>
-                        <div className="px-4 py-3 t-body-sm leading-relaxed whitespace-pre-wrap break-words"
+                        <div className={`t-body-sm leading-relaxed whitespace-pre-wrap break-words ${msg.media_url ? 'p-1.5' : 'px-4 py-3'}`}
                           style={{
                             background: isMine ? 'var(--accent)' : 'var(--surface)',
                             color: isMine ? '#ffffff' : 'var(--text-primary)',
@@ -268,7 +288,22 @@ function ChatThread({ conversation, userId, myProfile }) {
                             boxShadow: isMine ? 'none' : 'var(--shadow-card)',
                             border: isMine ? 'none' : '1px solid var(--border-soft)',
                           }}>
-                          {msg.content}
+                          {msg.media_url && msg.media_type?.startsWith('image/') ? (
+                            <img src={msg.media_url} alt={msg.media_name || 'Adjunto'} loading="lazy" decoding="async"
+                              onClick={() => window.open(msg.media_url, '_blank')}
+                              className="rounded-2xl cursor-pointer block"
+                              style={{ maxWidth: '100%', maxHeight: 280, objectFit: 'cover' }} />
+                          ) : msg.media_url ? (
+                            <a href={msg.media_url} target="_blank" rel="noopener noreferrer"
+                              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-opacity hover:opacity-85"
+                              style={{ background: isMine ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)' }}>
+                              <FileText size={20} strokeWidth={2} style={{ color: isMine ? '#fff' : 'var(--accent-deep)', flexShrink: 0 }} />
+                              <span className="text-[13px] font-medium truncate" style={{ color: isMine ? '#fff' : 'var(--text-primary)' }}>
+                                {msg.media_name || 'Archivo adjunto'}
+                              </span>
+                            </a>
+                          ) : null}
+                          {msg.content && <div className={msg.media_url ? 'px-2.5 pt-2' : ''}>{msg.content}</div>}
                         </div>
                         {isLast && (
                           <div className={`t-caption mt-1.5 ${isMine ? 'text-right pr-1' : 'pl-1'}`}
@@ -292,7 +327,15 @@ function ChatThread({ conversation, userId, myProfile }) {
       <div className="px-6 py-4 flex-shrink-0 flex items-end gap-3"
         style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-soft)' }}>
         <div className="flex items-center gap-1.5 pb-0.5">
-          <button aria-label="Adjuntar archivo" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ color:'var(--text-secondary)', background:'var(--bg-subtle)' }}><Paperclip size={17}/></button>
+          <input ref={fileInputRef} type="file" className="hidden"
+            accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+            onChange={handleFileSelected} />
+          <button aria-label="Adjuntar archivo" disabled={uploading}
+            onClick={() => fileInputRef.current?.click()}
+            className="w-9 h-9 rounded-pill flex items-center justify-center disabled:opacity-50"
+            style={{ color:'var(--text-secondary)', background:'var(--bg-subtle)' }}>
+            {uploading ? <Spinner size={15} /> : <Paperclip size={17}/>}
+          </button>
         </div>
         <textarea
           value={text}
@@ -307,7 +350,7 @@ function ChatThread({ conversation, userId, myProfile }) {
           onInput={e => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px' }}
         />
         <button aria-label="Añadir emoji" className="hidden sm:flex w-9 h-9 rounded-pill flex items-center justify-center" style={{ color:'var(--text-secondary)', background:'transparent' }}><Smile size={17}/></button>
-        <button onClick={handleSend} disabled={!text.trim() || sending} aria-label="Enviar mensaje"
+        <button onClick={() => handleSend()} disabled={!text.trim() || sending} aria-label="Enviar mensaje"
           className="w-11 h-11 rounded-btn flex items-center justify-center flex-shrink-0 transition-all duration-[160ms] active:scale-95 disabled:opacity-40"
           style={{ background: 'var(--accent)', color:'#fff' }}>
           {sending ? <Spinner size={16} color="#fff" /> : <Send size={17} strokeWidth={2} color="#fff" />}
