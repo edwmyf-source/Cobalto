@@ -207,6 +207,18 @@ export default function UserProfilePage() {
     setLoadingFollow(false)
   }
 
+  const [messagingUser, setMessagingUser] = useState(false)
+
+  const handleMessage = async () => {
+    if (messagingUser) return
+    setMessagingUser(true)
+    try {
+      const conv = await getOrCreateConversation(myId, userId)
+      navigate('/chats', { state: { convId: conv.id } })
+    } catch (e) { toast(safeErrorMessage(e), 'error') }
+    setMessagingUser(false)
+  }
+
   const handleContact = useCallback(async (post) => {
     if (contactingPost) return
     setContactingPost(post.id)
@@ -321,11 +333,11 @@ export default function UserProfilePage() {
                 </button>
               ) : (
                 <>
-                  <button onClick={() => navigate('/chats')}
-                    className="inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all active:scale-[0.98]"
+                  <button onClick={handleMessage} disabled={messagingUser}
+                    className="inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all active:scale-[0.98] disabled:opacity-60"
                     style={{ borderColor: 'var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}
-                    aria-label="Abrir mensajes">
-                    <Send size={17} />
+                    aria-label="Enviar mensaje">
+                    {messagingUser ? <Spinner size={15} /> : <Send size={17} />}
                   </button>
                   <button onClick={handleFollow} disabled={loadingFollow}
                     className="inline-flex items-center gap-2 px-5 h-11 rounded-btn text-[13px] font-bold transition-all disabled:opacity-60 active:scale-[0.98]"
