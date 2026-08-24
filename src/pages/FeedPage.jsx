@@ -117,7 +117,7 @@ export default function FeedPage() {
         setTimeout(() => reject(new Error('timeout')), 5000)
       )
       return Promise.race([
-        listPosts({ cursor, limit: 20, filters: debouncedFilters, sort, userId: session?.user?.id }),
+        listPosts({ cursor, limit: 20, filters: debouncedFilters, sort, userId: session?.user?.id, blockedIds: blockedUsers }),
         timeout,
       ])
     }
@@ -152,7 +152,7 @@ export default function FeedPage() {
       toast(`Feed falló: ${detail}`, 'error')
       console.error('FEED ERROR COMPLETO:', e)
     }
-  }, [debouncedFilters, sort, toast, session?.user?.id])
+  }, [debouncedFilters, sort, toast, session?.user?.id, blockedUsers])
 
   useEffect(() => {
     let mounted = true
@@ -373,7 +373,7 @@ export default function FeedPage() {
           {activeTab === 'todo' && <BannerCarousel />}
           <div className="flex items-center justify-between">
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
-              {loading ? '...' : `${posts.filter(p => !blockedUsers.includes(p.author_id)).length} publicaciones`}
+              {loading ? '...' : `${posts.length} publicaciones`}
             </span>
             <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
               {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
@@ -403,7 +403,7 @@ export default function FeedPage() {
             </Panel>
           ) : (
             <div className="space-y-0">
-              {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
+              {posts.map((post, idx, arr) => (
                 <div key={post.id}>
                   <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
                   {idx < arr.length - 1 && <div style={{ height: '16px' }} />}
@@ -434,7 +434,7 @@ export default function FeedPage() {
         {activeTab === 'todo' && <BannerCarousel />}
         <div className="flex items-center justify-between mb-3 mt-3">
           <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
-            {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.filter(p => !blockedUsers.includes(p.author_id)).length}</span></>}
+            {loading ? 'Publicaciones' : <>Publicaciones<span className="tnum"> · {posts.length}</span></>}
           </span>
           <div className="flex rounded-input overflow-hidden p-0.5" style={{ background: 'var(--bg-subtle)' }} role="tablist">
             {SORT_OPTIONS.map(opt => { const Icon = opt.icon; const on = sort === opt.value; return (
@@ -466,7 +466,7 @@ export default function FeedPage() {
           </Panel>
         ) : (
           <div className="space-y-0">
-            {posts.filter(p => !blockedUsers.includes(p.author_id)).map((post, idx, arr) => (
+            {posts.map((post, idx, arr) => (
               <div key={post.id}>
                 <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
                 {idx < arr.length - 1 && <div style={{ height: '16px' }} />}

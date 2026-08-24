@@ -95,7 +95,7 @@ const engagementScore = (post) => {
   return raw / Math.log2(ageHours + 2)
 }
 
-export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smart', userId } = {}) => {
+export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smart', userId, blockedIds = [] } = {}) => {
   const fetchLimit = sort === 'smart' ? Math.min(limit * 2, 40) : limit
 
   const buildSelect = (withEventDate) => `
@@ -113,6 +113,10 @@ export const listPosts = async ({ cursor, limit = 20, filters = {}, sort = 'smar
       .limit(fetchLimit)
 
     if (cursor) q = q.lt('created_at', cursor)
+    // Los autores bloqueados se excluyen en el servidor: filtrarlos después de
+    // recibirlos descuadraba la paginación (pedías 20 y mostrabas 17) y traía
+    // al navegador contenido que el usuario pidió no ver.
+    if (blockedIds.length) q = q.not('author_id', 'in', `(${blockedIds.join(',')})`)
     if (filters.categories?.length) q = q.in('category', filters.categories)
     if (filters.category)    q = q.eq('category', filters.category)
     if (filters.subcategory) q = q.eq('subcategory', filters.subcategory)

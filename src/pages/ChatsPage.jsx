@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getConversations, getMessages, sendMessage, uploadMessageAttachment, getAttachmentUrl } from '../api/messages'
+import { getConversations, getMessages, sendMessage, uploadMessageAttachment, getAttachmentUrl, markConversationRead } from '../api/messages'
 import { createNotification } from '../api/notifications'
 import { useAuth } from '../contexts/AuthContext'
 import { useRealtime } from '../hooks/useRealtime'
@@ -181,7 +181,7 @@ function MessageAttachment({ msg, isMine }) {
 }
 
 /* ─── Hilo de mensajes estilo C6 (yo celeste, ellos blanco) ─── */
-function ChatThread({ conversation, userId, myProfile }) {
+function ChatThread({ conversation, userId, myProfile, onRead }) {
   const toast = useToast()
   const navigate = useNavigate()
   const [messages, setMessages] = useState([])
@@ -199,8 +199,13 @@ function ChatThread({ conversation, userId, myProfile }) {
     try {
       const data = await getMessages(conversation.id)
       setMessages(data)
+      // Al abrir el hilo, lo recibido pasa a leído. Si falla no se interrumpe
+      // la lectura: es un efecto secundario, no el objetivo de la pantalla.
+      markConversationRead(conversation.id, userId)
+        .then(() => onRead?.())
+        .catch(() => {})
     } catch (e) { toast(safeErrorMessage(e), 'error') }
-  }, [conversation.id, toast])
+  }, [conversation.id, toast, userId, onRead])
 
   useEffect(() => {
     let mounted = true
@@ -210,12 +215,15 @@ function ChatThread({ conversation, userId, myProfile }) {
     return () => { mounted = false }
   }, [fetchMessages])
 
+  // El filtro se aplica en el servidor: este cliente solo recibe los INSERT de
+  // ESTA conversación, en vez de todos los mensajes de la plataforma.
   useRealtime('messages', 'INSERT', useCallback((payload) => {
     const msg = payload.new
     if (msg?.conversation_id !== conversation.id) return
     if (msg.sender_id === userId) return
     setMessages(prev => [...prev, { ...msg, profiles: other }])
-  }, [conversation.id, userId, other]))
+    markConversationRead(conversation.id, userId).then(() => onRead?.()).catch(() => {})
+  }, [conversation.id, userId, other, onRead]), `conversation_id=eq.${conversation.id}`)
 
   useEffect(() => {
     if (!loading) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -470,7 +478,7 @@ export default function ChatsPage() {
               </button>
               <p className="text-sm font-semibold truncate" style={{ color: 'var(--accent-deep)' }}>Mensajes</p>
             </div>
-            <ChatThread conversation={active} userId={session.user.id} myProfile={myProfile} />
+            <ChatThread conversation={active} userId={session.user.id} myProfile={myProfile} onRead={loadConversations} />
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6">

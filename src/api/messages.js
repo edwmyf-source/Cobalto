@@ -17,7 +17,36 @@ export const getConversations = async (userId) => {
     .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
     .order('updated_at', { ascending: false })
   if (error) throw error
-  return data || []
+  const convs = data || []
+  if (convs.length === 0) return convs
+
+  // El contador de no leídos no vive en la tabla: se calcula contando los
+  // mensajes recibidos (de la contraparte) que siguen con read = false.
+  // Una sola consulta para todas las conversaciones, no una por cada una.
+  const { data: unread, error: unreadErr } = await supabase
+    .from('messages')
+    .select('conversation_id')
+    .in('conversation_id', convs.map(c => c.id))
+    .neq('sender_id', userId)
+    .eq('read', false)
+  if (unreadErr) return convs.map(c => ({ ...c, unread_count: 0 }))
+
+  const counts = (unread || []).reduce((acc, m) => {
+    acc[m.conversation_id] = (acc[m.conversation_id] || 0) + 1
+    return acc
+  }, {})
+  return convs.map(c => ({ ...c, unread_count: counts[c.id] || 0 }))
+}
+
+// Marca como leídos los mensajes recibidos en una conversación.
+export const markConversationRead = async (conversationId, userId) => {
+  const { error } = await supabase
+    .from('messages')
+    .update({ read: true })
+    .eq('conversation_id', conversationId)
+    .neq('sender_id', userId)
+    .eq('read', false)
+  if (error) throw error
 }
 
 // Get or create conversation between two users, optionally tied to a post
