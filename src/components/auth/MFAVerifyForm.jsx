@@ -73,7 +73,7 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
       <button
         type="submit"
         disabled={loading || code.length !== 6 || !challengeId}
-        className="w-full flex items-center justify-center gap-2 h-[44px] rounded-btn text-white text-[14px] font-extrabold disabled:opacity-50 transition-all active:scale-95"
+        className="w-full flex items-center justify-center gap-2 h-[38px] rounded-btn text-white text-[14px] font-extrabold disabled:opacity-50 transition-all active:scale-95"
         style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}
       >
         {loading ? <Spinner size={16} /> : 'Verificar'}

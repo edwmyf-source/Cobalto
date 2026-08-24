@@ -40,7 +40,7 @@ export default function ResetForm({ onSwitchLogin }) {
       {success && <p className="text-[12px] font-semibold text-green-600">{success}</p>}
 
       <button type="submit" disabled={loading}
-        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[44px] rounded-btn disabled:opacity-50 transition-all active:scale-95"
+        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[38px] rounded-btn disabled:opacity-50 transition-all active:scale-95"
         style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
         {loading ? <Spinner size={16} /> : 'Enviar enlace'}
       </button>

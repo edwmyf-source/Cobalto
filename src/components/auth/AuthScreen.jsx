@@ -44,7 +44,7 @@ function CTA({ children, onClick, variant = 'primary', size = 'md', className = 
     ghostNavy:{ background: 'rgba(255,255,255,0.2)' },
   }[variant]
 
-  const h = size === 'lg' ? 'h-[52px] px-8 text-[16px]' : 'h-[44px] px-6 text-[14px]'
+  const h = size === 'lg' ? 'h-[44px] px-8 text-[15px]' : 'h-[38px] px-6 text-[13.5px]'
 
   return (
     <button
@@ -56,7 +56,7 @@ function CTA({ children, onClick, variant = 'primary', size = 'md', className = 
       onMouseLeave={e => Object.assign(e.currentTarget.style, base)}
     >
       {children}
-      {Icon && <Icon size={20} strokeWidth={2.4} />}
+      {Icon && <Icon size={18} strokeWidth={2.4} />}
     </button>
   )
 }
@@ -117,14 +117,14 @@ function Landing({ stats, onSignup }) {
             { icon: FlaskConical, value: stats.posts,          label: 'Publicaciones' },
             { icon: Zap,          value: stats.interactions,   label: 'Interacciones' },
           ].map(({ icon: Icon, value, label }) => (
-            <div key={label} className="rounded-card p-3 md:p-5"
+            <div key={label} className="rounded-input p-2.5 md:p-4"
               style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
               <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
-              <p className="font-extrabold text-white leading-none mt-3 tnum"
+              <p className="font-extrabold text-white leading-none mt-2 tnum"
                 style={{ letterSpacing: '-0.03em', fontSize: 'clamp(18px, 5.3vw, 32px)' }}>
                 {formatMetric(value)}
               </p>
-              <p className="text-[11px] md:text-[12px] mt-1.5 uppercase font-extrabold leading-tight"
+              <p className="text-[11px] md:text-[12px] mt-1 uppercase font-extrabold leading-tight"
                 style={{ color: 'var(--accent-mist)', letterSpacing: '0.08em' }}>
                 {label}
               </p>
@@ -141,11 +141,11 @@ function Landing({ stats, onSignup }) {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {ADVANTAGES.map(({ icon: Icon, title, sub }) => (
             <div key={title}
-              className="rounded-card p-6 transition-all duration-[160ms] ease-premium hover:shadow-card-hover"
+              className="rounded-card p-4 transition-all duration-[160ms] ease-premium hover:shadow-card-hover"
               style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-soft)' }}>
-              <span className="flex items-center justify-center w-10 h-10 rounded-input mb-4"
+              <span className="flex items-center justify-center w-11 h-11 rounded-input mb-3"
                 style={{ background: 'var(--accent-soft)' }}>
-                <Icon size={20} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
+                <Icon size={24} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
               </span>
               <p className="text-[15px] font-extrabold" style={{ color: 'var(--text-primary)' }}>{title}</p>
               <p className="text-[13px] mt-1 leading-snug" style={{ color: 'var(--text-tertiary)' }}>{sub}</p>

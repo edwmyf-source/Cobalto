@@ -137,7 +137,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
       {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
 
       <button type="submit" disabled={loading || (codeSent ? code.length < 6 : mode === 'phone' ? phone.replace(/\D/g,'').length < 10 : !email)}
-        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[44px] rounded-btn disabled:opacity-50 transition-all active:scale-95"
+        className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[38px] rounded-btn disabled:opacity-50 transition-all active:scale-95"
         style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
         {loading ? <Spinner size={16} />
           : codeSent ? 'Verificar y entrar'
@@ -156,7 +156,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
       {!codeSent && (
         <button type="button"
           onClick={async () => { try { await signInWithGoogle() } catch (e) { setError(e.message) } }}
-          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
           style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
             <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2 5.1-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.3z"/>
@@ -171,14 +171,14 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
       {codeSent ? (
         <button type="button"
           onClick={() => { setCodeSent(false); setCode(''); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
           style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <ArrowLeft size={15} /> {mode === 'phone' ? 'Cambiar número' : 'Cambiar correo'}
         </button>
       ) : mode === 'phone' ? (
         <button type="button"
           onClick={() => { setMode('emailcode'); setError('') }}
-          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+          className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
           style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
           <ArrowLeft size={15} /> Entrar con correo
         </button>
@@ -186,14 +186,14 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         <div className="space-y-2">
           <button type="button"
             onClick={() => { setMode('password'); setError('') }}
-            className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+            className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
             style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
             <KeyRound size={15} /> Entrar con contraseña
           </button>
           {PHONE_AUTH_ENABLED && (
             <button type="button"
               onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
-              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
               style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
               <Phone size={15} /> Entrar con mi celular
             </button>
@@ -203,7 +203,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         <div className="space-y-2">
           <button type="button"
             onClick={() => { setMode(m => m === 'magic' ? 'password' : 'magic'); setError('') }}
-            className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+            className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
             style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
             {mode === 'magic'
               ? <><KeyRound size={15} /> Entrar con contraseña</>
@@ -212,7 +212,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
           {EMAIL_CODE_AUTH_ENABLED && (
             <button type="button"
               onClick={() => { setMode('emailcode'); setCodeSent(false); setError('') }}
-              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
               style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
               <Mail size={15} /> Recibir código por correo
             </button>
@@ -220,7 +220,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
           {PHONE_AUTH_ENABLED && (
             <button type="button"
               onClick={() => { setMode('phone'); setCodeSent(false); setError('') }}
-              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[44px] rounded-btn transition-all active:scale-95"
+              className="w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95"
               style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--accent-deep)', background: '#fff' }}>
               <Phone size={15} /> Entrar con mi celular
             </button>
