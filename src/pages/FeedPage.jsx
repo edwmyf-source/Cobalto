@@ -406,7 +406,7 @@ export default function FeedPage() {
               {posts.map((post, idx, arr) => (
                 <div key={post.id}>
                   <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
-                  {idx < arr.length - 1 && <div style={{ height: '16px' }} />}
+                  {idx < arr.length - 1 && <div style={{ height: '10px' }} />}
                 </div>
               ))}
               <div ref={sentinel} />
@@ -469,7 +469,7 @@ export default function FeedPage() {
             {posts.map((post, idx, arr) => (
               <div key={post.id}>
                 <PostCard post={post} onContact={handleContact} contactingId={contactingPost} blockedUsers={blockedUsers} onDeleted={handlePostDeleted} />
-                {idx < arr.length - 1 && <div style={{ height: '16px' }} />}
+                {idx < arr.length - 1 && <div style={{ height: '10px' }} />}
               </div>
             ))}
             <div ref={sentinel} />

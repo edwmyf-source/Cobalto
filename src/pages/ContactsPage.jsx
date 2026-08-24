@@ -10,18 +10,17 @@ import { publicName } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import { Card, Button, SkeletonListRow, EmptyState } from '../components/ui'
 
-const accents = ['var(--accent-soft)', '#EEF8F6', '#F3F0FF', '#FFF6E8', '#EEF6FF']
 const accentIcons = ['var(--accent)', 'var(--accent-mint)', 'var(--accent-violet)', 'var(--accent-amber)', 'var(--accent-sky)']
 
 function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
   const isContacting = contactingId === user.id
   const meta = [user.company_name, user.city].filter(Boolean)
   return (
-    <Card className="group relative overflow-hidden !rounded-[20px] p-5 transition-all duration-[180ms] hover:-translate-y-[1px]"
+    <Card className="group relative overflow-hidden !rounded-[16px] p-3.5 transition-all duration-[180ms] hover:-translate-y-[1px]"
       style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', borderColor: 'var(--border-soft)' }}
     >
       <div className="absolute inset-x-0 top-0 h-1" style={{ background: accentIcons[index % accentIcons.length] }} />
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-3">
         <button
           type="button"
           className="flex-shrink-0 rounded-full focus-visible:ring-2"
@@ -29,25 +28,20 @@ function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
           onClick={() => onOpenProfile(user)}
           aria-label={`Ver perfil de ${publicName(user)}`}
         >
-          <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={52} />
+          <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={42} />
         </button>
-        <div className="min-w-0 flex-1 pt-0.5">
+        <div className="min-w-0 flex-1">
           <button type="button" className="block max-w-full text-left" onClick={() => onOpenProfile(user)}>
-            <p className="t-h4 truncate" style={{ color: 'var(--text-primary)' }}>{publicName(user)}</p>
+            <p className="t-body-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{publicName(user)}</p>
           </button>
           {meta.length > 0 ? (
-            <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
-              {user.company_name && <span className="inline-flex min-w-0 items-center gap-1.5 t-caption" style={{ color: 'var(--text-secondary)' }}><BriefcaseBusiness size={13} /> <span className="truncate">{user.company_name}</span></span>}
-              {user.city && <span className="inline-flex items-center gap-1.5 t-caption" style={{ color: 'var(--text-tertiary)' }}><MapPin size={13} /> {user.city}</span>}
+            <div className="mt-0.5 flex flex-wrap gap-x-3">
+              {user.company_name && <span className="inline-flex min-w-0 items-center gap-1.5 t-caption" style={{ color: 'var(--text-secondary)' }}><BriefcaseBusiness size={12} /> <span className="truncate">{user.company_name}</span></span>}
+              {user.city && <span className="inline-flex items-center gap-1.5 t-caption" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {user.city}</span>}
             </div>
           ) : (
-            <p className="t-caption mt-1.5" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</p>
+            <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</p>
           )}
-        </div>
-      </div>
-      <div className="mt-5 flex items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 t-caption" style={{ background: accents[index % accents.length], color: accentIcons[index % accentIcons.length] }}>
-          Comunidad REDCOBALTO
         </div>
         <Button
           variant="secondary"
@@ -56,7 +50,7 @@ function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
           loading={isContacting}
           icon={MessageSquareText}
           aria-label={`Enviar mensaje a ${publicName(user)}`}
-          className="!min-h-[40px] !rounded-[12px] !px-3.5"
+          className="!min-h-[34px] !rounded-[10px] !px-3 flex-shrink-0"
         >
           <span className="hidden sm:inline">Mensaje</span>
         </Button>
