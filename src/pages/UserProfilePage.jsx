@@ -41,8 +41,8 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
 
   return (
     <article className="group overflow-hidden rounded-card bg-white border border-line-soft transition-all duration-200 hover:-translate-y-0.5" style={{ boxShadow: 'var(--shadow-card)' }}>
-      <div className="px-5 py-4">
-        <div className="flex items-center gap-2.5 mb-3">
+      <div className="px-4 py-3">
+        <div className="flex items-center gap-2.5 mb-2">
           <div className="w-8 h-8 rounded-full bg-[var(--accent-softer)] flex items-center justify-center flex-shrink-0">
             <span className="text-[11px] font-extrabold text-[var(--accent)]">RC</span>
           </div>
@@ -59,15 +59,15 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
         </div>
 
         {post.title && (
-          <h4 className="t-h4 mb-2" style={{ color: 'var(--text-primary)' }}>{post.title}</h4>
+          <h4 className="t-h4 mb-1.5" style={{ color: 'var(--text-primary)' }}>{post.title}</h4>
         )}
         {post.content && (
-          <p className="t-body-sm whitespace-pre-wrap break-words line-clamp-4 mb-4" style={{ color: 'var(--text-secondary)' }}>
+          <p className="t-body-sm whitespace-pre-wrap break-words line-clamp-3 mb-2.5" style={{ color: 'var(--text-secondary)' }}>
             {post.content}
           </p>
         )}
 
-        <div className="flex items-center justify-between pt-3 border-t border-line-soft">
+        <div className="flex items-center justify-between pt-2 border-t border-line-soft">
           <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-1.5 rounded-pill" style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
             <MessageCircle size={13} />
             {post.comment_count || 0} comentarios

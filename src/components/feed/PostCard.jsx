@@ -22,7 +22,7 @@ function MediaGallery({ media }) {
   const pdfs   = media.filter(m => m.type === 'application/pdf')
 
   return (
-    <div className="mb-2 space-y-1.5">
+    <div className="mb-1.5 space-y-1.5">
       {images.length > 0 && (
         <div className={`grid gap-1 rounded-2xl overflow-hidden ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {images.slice(0, 4).map((img, idx) => {
@@ -235,10 +235,10 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
   return (
     <Card id={`post-${post.id}`} className="overflow-hidden group" style={{ borderColor: 'var(--border)', boxShadow: 'var(--shadow-card)' }}>
-      <div className="px-4 py-3 sm:px-5 sm:py-3.5">
+      <div className="px-4 py-2.5 sm:px-5 sm:py-3">
 
         {/* Header */}
-        <div className="flex items-start gap-2.5 mb-2.5">
+        <div className="flex items-start gap-2.5 mb-2">
           <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
             <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={36} className="!rounded-full ring-2 ring-white" />
           </button>
@@ -263,7 +263,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
 
         {/* Contenido */}
         {wallText && (
-          <p className="text-[15px] leading-[1.45] mb-2.5 whitespace-pre-wrap break-words"
+          <p className="text-[15px] leading-[1.4] mb-2 whitespace-pre-wrap break-words"
             style={{ color: 'var(--text-primary)' }}>
             {wallText}
           </p>
@@ -272,7 +272,7 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
         <MediaGallery media={media} />
 
         {/* Footer / acciones — sin línea, separado por aire */}
-        <div className="flex items-center gap-1 pt-1">
+        <div className="flex items-center gap-1 pt-0.5">
           <button onClick={handleLike} aria-pressed={liked}
             className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-btn text-[13px] font-semibold transition-all duration-[160ms] active:scale-[0.98]"
             style={liked

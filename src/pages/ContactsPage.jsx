@@ -16,11 +16,11 @@ function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
   const isContacting = contactingId === user.id
   const meta = [user.company_name, user.city].filter(Boolean)
   return (
-    <Card className="group relative overflow-hidden !rounded-[16px] p-3.5 transition-all duration-[180ms] hover:-translate-y-[1px]"
+    <Card className="group relative overflow-hidden !rounded-[16px] px-3.5 py-2.5 transition-all duration-[180ms] hover:-translate-y-[1px]"
       style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', borderColor: 'var(--border-soft)' }}
     >
       <div className="absolute inset-x-0 top-0 h-1" style={{ background: accentIcons[index % accentIcons.length] }} />
-      <div className="flex items-start gap-3">
+      <div className="flex items-center gap-3">
         <button
           type="button"
           className="flex-shrink-0 rounded-full focus-visible:ring-2"
@@ -28,19 +28,19 @@ function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
           onClick={() => onOpenProfile(user)}
           aria-label={`Ver perfil de ${publicName(user)}`}
         >
-          <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={42} />
+          <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={36} />
         </button>
         <div className="min-w-0 flex-1">
           <button type="button" className="block max-w-full text-left" onClick={() => onOpenProfile(user)}>
             <p className="t-body-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{publicName(user)}</p>
           </button>
           {meta.length > 0 ? (
-            <div className="mt-0.5 flex flex-wrap gap-x-3">
+            <div className="flex flex-wrap gap-x-3">
               {user.company_name && <span className="inline-flex min-w-0 items-center gap-1.5 t-caption" style={{ color: 'var(--text-secondary)' }}><BriefcaseBusiness size={12} /> <span className="truncate">{user.company_name}</span></span>}
               {user.city && <span className="inline-flex items-center gap-1.5 t-caption" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {user.city}</span>}
             </div>
           ) : (
-            <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</p>
+            <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</p>
           )}
         </div>
         <Button
@@ -50,7 +50,7 @@ function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
           loading={isContacting}
           icon={MessageSquareText}
           aria-label={`Enviar mensaje a ${publicName(user)}`}
-          className="!min-h-[34px] !rounded-[10px] !px-3 flex-shrink-0"
+          className="!min-h-[30px] !rounded-[10px] !px-3 flex-shrink-0"
         >
           <span className="hidden sm:inline">Mensaje</span>
         </Button>
