@@ -360,15 +360,15 @@ export default function UserProfilePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mt-6">
+          <div className="grid grid-cols-3 gap-2 mt-6">
             {[
               { value: posts.length, label: 'Publicaciones' },
               { value: counts.followers, label: 'Seguidores' },
               { value: counts.following, label: 'Siguiendo' },
             ].map(stat => (
-              <div key={stat.label} className="rounded-card border border-line-soft px-3 py-4 text-center" style={{ background: 'var(--bg-app)' }}>
-                <div className="text-[22px] sm:text-[24px] font-extrabold leading-none tnum" style={{ color: 'var(--text-primary)' }}>{stat.value}</div>
-                <div className="text-[11px] sm:text-[12px] font-semibold mt-2" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
+              <div key={stat.label} className="rounded-input border border-line-soft px-2 py-2 text-center" style={{ background: 'var(--bg-app)' }}>
+                <div className="text-[16px] sm:text-[18px] font-extrabold leading-none tnum" style={{ color: 'var(--text-primary)' }}>{stat.value}</div>
+                <div className="text-[10px] sm:text-[11px] font-semibold mt-1" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
               </div>
             ))}
           </div>

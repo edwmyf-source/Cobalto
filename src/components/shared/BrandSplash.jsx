@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import CobaltoMark from './CobaltoMark'
 
-// Primera vez por sesión del navegador: 3s. En recargas siguientes: 1s.
+// Primera vez por sesión del navegador: 4s. En recargas siguientes: 3s.
 const SPLASH_SEEN_KEY = 'cobalto-splash-seen'
 
 export default function BrandSplash({ onDone }) {
@@ -10,7 +10,7 @@ export default function BrandSplash({ onDone }) {
   useEffect(() => {
     let seen = false
     try { seen = sessionStorage.getItem(SPLASH_SEEN_KEY) === '1' } catch {}
-    const duration = seen ? 1000 : 3000
+    const duration = seen ? 3000 : 4000
     try { sessionStorage.setItem(SPLASH_SEEN_KEY, '1') } catch {}
     const t = setTimeout(() => {
       if (!doneRef.current) { doneRef.current = true; onDone() }
