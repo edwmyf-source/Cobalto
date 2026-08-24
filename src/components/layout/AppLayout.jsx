@@ -10,6 +10,7 @@ import { signOut } from '../../api/auth'
 import { publicName } from '../../lib/helpers'
 import useHideOnScroll from '../../lib/useHideOnScroll'
 import { hoverProps } from '../../lib/hover'
+import RedCobaltoLogo from '../shared/RedCobaltoLogo'
 
 export default function AppLayout() {
   const { session, profile } = useAuth()
@@ -83,7 +84,7 @@ export default function AppLayout() {
   ]
 
   return (
-    <div className="min-h-app" style={{ background: '#FFFFFF' }}>
+    <div className="min-h-app" style={{ background: 'var(--bg-app)' }}>
 
       {/* ── Topbar LinkedIn — visible solo en desktop ── */}
       <div className="hidden md:block">
@@ -92,11 +93,9 @@ export default function AppLayout() {
 
       {/* ── Topbar móvil fija ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4"
-        style={{ background: 'var(--accent-deep)', height: '53px' }}>
-        <span className="text-[20px] font-semibold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
-          <span style={{ color: 'var(--brand-red)', fontWeight: 800 }}>Red</span> Cobalto<span style={{ color: '#9CBEEE' }}>.</span>
-        </span>
-        <span className="text-[14px] font-medium truncate max-w-[45%]" style={{ color: '#fff' }}>
+        style={{ background: 'linear-gradient(180deg, var(--accent-deep) 0%, #10213A 100%)', height: '56px', boxShadow: '0 1px 0 rgba(255,255,255,.08)' }}>
+        <RedCobaltoLogo size="sm" dark />
+        <span className="text-[14px] font-medium truncate max-w-[45%]" style={{ color: 'var(--text-inverse)' }}>
           Hola, {name.split(' ')[0]} 👋
         </span>
       </div>
@@ -136,7 +135,7 @@ export default function AppLayout() {
                       {item.badge > 99 ? '99+' : item.badge}
                     </span>
                   )}
-                  <ChevronRight size={16} className="ml-auto" style={{ color: '#9CA3AF' }} />
+                  <ChevronRight size={16} className="ml-auto" style={{ color: 'var(--text-tertiary)' }} />
                 </button>
               )
             })}
@@ -157,7 +156,7 @@ export default function AppLayout() {
 
         <div className="flex items-center justify-around px-2"
           style={{ height: 64, paddingBottom: 'env(safe-area-inset-bottom)', boxSizing: 'content-box',
-            background: 'rgba(255,255,255,0.94)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(20px)',
             borderTop: '1px solid var(--border)', pointerEvents: 'auto' }}>
 
           {/* Feed */}
@@ -190,7 +189,7 @@ export default function AppLayout() {
           <div className="flex-shrink-0 px-2 flex items-center justify-center h-full">
             <button onClick={() => navigate('/feed?publish=1')} aria-label="Publicar"
               className="w-[46px] h-[46px] rounded-btn flex items-center justify-center transition-all duration-[160ms] ease-premium active:scale-[0.96]"
-              style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+              style={{ background: 'var(--accent)', boxShadow: '0 10px 24px rgba(36,87,197,.28)' }}>
               <Plus size={22} color="#ffffff" strokeWidth={2.5} />
             </button>
           </div>

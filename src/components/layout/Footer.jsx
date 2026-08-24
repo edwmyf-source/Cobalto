@@ -19,7 +19,7 @@ export default function Footer({ onTerminos, onPrivacidad, onContacto }) {
           {/* ── Marca (sin línea de propósito) ── */}
           <div>
             <span className="font-extrabold text-[16px]" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-              <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto
+              <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
             </span>
           </div>
 
@@ -66,7 +66,7 @@ export default function Footer({ onTerminos, onPrivacidad, onContacto }) {
         <div className="mt-3 pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-1"
           style={{ borderTop: '1px solid var(--border-soft)' }}>
           <p className="text-[12px]" style={{ color: 'var(--text-tertiary)' }}>
-            © {year} Red Cobalto. Todos los derechos reservados.
+            © {year} REDCobalto. Todos los derechos reservados.
           </p>
           <p className="text-[12px]" style={{ color: 'var(--text-tertiary)' }}>
             Hecho en Colombia

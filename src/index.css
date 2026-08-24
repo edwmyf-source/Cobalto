@@ -8,35 +8,42 @@
    ════════════════════════════════════════════════════════════════════════ */
 :root {
   /* ── Fondos ── */
-  --bg-app:        #F5F7FA;
-  --bg-subtle:     #EEF1F6;
+  --bg-app:        #F7F8FA;
+  --bg-subtle:     #F1F4F8;
   --surface:       #FFFFFF;
-  --surface-raised:#FAFBFD;
+  --surface-raised:#FCFDFE;
 
   /* ── Texto ── */
-  --text-primary:   #0F172A;
-  --text-secondary: #475569;
-  --text-tertiary:  #94A3B8;
+  --text-primary:   #111827;
+  --text-secondary: #667085;
+  --text-tertiary:  #98A2B3;
   --text-inverse:   #FFFFFF;
 
   /* ── Bordes ── */
-  --border:        #E8EBF1;
-  --border-soft:   #F1F4F9;
-  --border-focus:  #1A5AC8;
+  --border:        #E4E7EC;
+  --border-soft:   #EEF1F5;
+  --border-focus:  #2457C5;
 
   /* ── Acento (Cobalto) ── */
-  --accent-deep:   #0B2E68;
-  --accent:        #1A5AC8;
-  --accent-hover:  #17509F;
-  --accent-soft:   #E4EDFB;
-  --accent-softer: #F1F6FE;
+  --accent-deep:   #162A4A;
+  --accent:        #2457C5;
+  --accent-hover:  #1949B5;
+  --accent-soft:   #EAF1FF;
+  --accent-softer: #F4F7FF;
 
   /* Azules claros que ya se usaban sueltos en la pantalla de bienvenida.
      Mismos valores exactos, ahora nombrados para que todo salga del sistema
      en vez de estar repetidos a mano. */
   --accent-light:  #4C82F0;
-  --accent-pale:   #7FB2FF;
-  --accent-mist:   #9CBEEE;
+  --accent-pale:   #8FAEF0;
+  --accent-mist:   #C8D7F5;
+
+  /* Acentos de contenido: vivos, pero reservados para categorías y contenido. */
+  --accent-mint:   #18B89A;
+  --accent-violet: #8067E8;
+  --accent-amber:  #E6A23C;
+  --accent-coral:  #F07868;
+  --accent-sky:    #4C9BE8;
 
   /* Rojo de marca para "Red" en el wordmark "Red Cobalto". Deliberadamente
      mas vivo y calido que --error (#C24141), para que no se confunda con un
@@ -55,11 +62,11 @@
   --info-bg:     #EBF2FE;
 
   /* ── Radios ── */
-  --r-input:  12px;
+  --r-input:  14px;
   --r-btn:    14px;
-  --r-card:   20px;
+  --r-card:   18px;
   --r-panel:  24px;
-  --r-modal:  28px;
+  --r-modal:  24px;
   --r-pill:   999px;
 
   /* ── Sombras: muy suaves, jerarquía real ── */
@@ -342,4 +349,115 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   REDCOBALTO VISUAL SYSTEM v1
+   Visual-only layer: normalizes surfaces, controls, cards and brand usage.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  --logo-red: var(--brand-red);
+  --logo-cobalt: var(--accent-deep);
+  --surface-hover: #F8FAFC;
+  --surface-selected: #F4F7FF;
+  --focus-ring: rgba(36, 87, 197, 0.16);
+  --shadow-card: 0 1px 2px rgba(17,24,39,.025), 0 6px 20px rgba(17,24,39,.035);
+  --shadow-card-hover: 0 2px 4px rgba(17,24,39,.03), 0 12px 28px rgba(17,24,39,.07);
+  --shadow-raised: 0 6px 18px rgba(17,24,39,.08), 0 2px 5px rgba(17,24,39,.04);
+  --shadow-dropdown: 0 16px 40px rgba(17,24,39,.12), 0 3px 10px rgba(17,24,39,.05);
+}
+
+/* Reduce accidental visual noise from native/Tailwind utility combinations. */
+button, input, select, textarea { border-radius: var(--r-input); }
+button { -webkit-tap-highlight-color: transparent; }
+
+/* Shared surface language. */
+.rc-surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}
+.rc-surface:hover { box-shadow: var(--shadow-card-hover); }
+
+.rc-brand-dark {
+  background: linear-gradient(180deg, #182D4F 0%, #10213A 100%);
+}
+
+.rc-focus:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--focus-ring);
+}
+
+/* Consistent interactive states for common utility classes. */
+.hover\:bg-gray-50:hover { background: var(--surface-hover) !important; }
+.hover\:bg-blue-50:hover { background: var(--accent-softer) !important; }
+.hover\:bg-red-50:hover { background: var(--error-bg) !important; }
+
+/* Make very small utility text less visually dominant but still legible. */
+.text-\[8px\], .text-\[9px\] { letter-spacing: 0; }
+
+/* Desktop shell: generous canvas and cleaner content rhythm. */
+@media (min-width: 768px) {
+  main { background: var(--bg-app); }
+}
+
+/* Respect reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .rc-interactive { transition: transform 180ms cubic-bezier(.16,1,.3,1), box-shadow 180ms ease, background-color 160ms ease; }
+  .rc-interactive:hover { transform: translateY(-1px); }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   REDCOBALTO GLOBAL POLISH v1
+   Coherencia transversal + mobile-safe + superficies + touch targets.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --touch-min: 44px;
+}
+
+body {
+  min-width: 320px;
+  background: var(--bg-app);
+}
+
+button, a, [role=button] {
+  touch-action: manipulation;
+}
+
+@media (hover: none) {
+  .rc-interactive:hover { transform: none; }
+}
+
+@media (max-width: 767px) {
+  body { overscroll-behavior-x: none; }
+  main {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  .rc-mobile-safe-bottom { padding-bottom: var(--safe-bottom); }
+}
+
+/* Evita que una vista social cree scroll horizontal por media, badges o chips. */
+img, video, canvas, svg { max-width: 100%; }
+
+/* Las superficies nunca deben generar un borde visual doble cuando se
+   combinan con componentes ya portadores de border. */
+.rc-surface-subtle {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-card);
+}
+
+/* Escala de botones táctiles consistente. */
+.rc-touch { min-width: var(--touch-min); min-height: var(--touch-min); }
+
+/* Selección de texto coherente con la marca sin cambiar la legibilidad. */
+::selection {
+  color: var(--text-primary);
+  background: var(--accent-soft);
 }

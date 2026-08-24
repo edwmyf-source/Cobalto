@@ -294,65 +294,82 @@ export default function FeedPage() {
     <div className="page-enter" style={{ paddingBottom: 80 }}>
 
       {/* ── DESKTOP: Layout 3 columnas tipo LinkedIn ── */}
-      <div className="hidden md:flex gap-6 max-w-[1400px] mx-auto px-10 pt-4 items-start">
+      <div className="hidden md:grid grid-cols-[248px,minmax(0,1fr),292px] gap-6 max-w-[1500px] mx-auto px-6 lg:px-8 pt-6 items-start">
 
         {/* ── Columna izquierda (sticky) ── */}
-        <div className="w-[225px] flex-shrink-0 space-y-3" style={{ position: 'sticky', top: 72 }}>
+        <div className="w-full flex-shrink-0 space-y-4" style={{ position: 'sticky', top: 88 }}>
 
           {/* Mini perfil */}
-          <div className="bg-white rounded-xl overflow-hidden border border-ink-200 shadow-sm">
-            <div className="h-12 w-full" style={{ background: 'linear-gradient(135deg, #0B2E68 0%, #1A5AC8 100%)' }} />
-            <div className="px-3 pb-3 -mt-6">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base mb-2 shadow-sm overflow-hidden"
-                style={{ border: '3px solid white', background: 'var(--accent-deep)' }}>
+          <div className="overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', borderRadius: 'var(--r-card)', boxShadow: 'var(--shadow-card)' }}>
+            <div className="h-14 w-full" style={{ background: 'linear-gradient(135deg, #162A4A 0%, #2457C5 72%, #4C9BE8 100%)' }} />
+            <div className="px-4 pb-4 -mt-7">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-base mb-3 shadow-sm overflow-hidden"
+                style={{ border: '3px solid var(--surface)', background: 'var(--accent-deep)' }}>
                 {profile?.avatar_url
-                  ? <img src={profile.avatar_url} loading="lazy" decoding="async" className="w-12 h-12 object-cover" alt={name} />
+                  ? <img src={profile.avatar_url} loading="lazy" decoding="async" className="w-14 h-14 object-cover" alt={name} />
                   : <span>{initials}</span>}
               </div>
-              <p className="font-bold text-sm leading-tight" style={{ color: 'var(--accent-deep)' }}>{name}</p>
-              {profile?.city && <p className="text-[11px] mt-0.5" style={{ color: 'var(--accent)' }}>{profile.city}</p>}
-              <div className="mt-2 pt-2 space-y-1.5" style={{ borderTop: '1px solid var(--border)' }}>
+              <p className="text-[15px] font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>{name}</p>
+              {profile?.city && <p className="text-[12px] mt-1" style={{ color: 'var(--text-tertiary)' }}>{profile.city}</p>}
+              <div className="mt-4 pt-4 space-y-2" style={{ borderTop: '1px solid var(--border-soft)' }}>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: 'var(--accent)' }}>Publicaciones</span>
-                  <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>{communityStats.requests || 0}</span>
+                  <span className="text-[12px]" style={{ color: 'var(--text-secondary)' }}>Publicaciones</span>
+                  <span className="text-[12px] font-bold" style={{ color: 'var(--text-primary)' }}>{communityStats.requests || 0}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[11px]" style={{ color: 'var(--accent)' }}>Activos hoy</span>
-                  <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>{communityStats.activeThisWeek || 0}</span>
+                  <span className="text-[12px]" style={{ color: 'var(--text-secondary)' }}>Activos hoy</span>
+                  <span className="text-[12px] font-bold" style={{ color: 'var(--text-primary)' }}>{communityStats.activeThisWeek || 0}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Próximos eventos */}
-          <div className="bg-white rounded-xl border border-ink-200 shadow-sm">
-            <p className="text-[11px] font-bold px-3 pt-3 pb-1" style={{ color: 'var(--accent-deep)' }}>📅 Próximos eventos</p>
-            <div className="px-3 pb-3 space-y-2">
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', borderRadius: 'var(--r-card)', boxShadow: 'var(--shadow-card)' }}>
+            <div className="px-4 pt-4 pb-1 flex items-center justify-between">
+              <p className="text-[13px] font-bold" style={{ color: 'var(--text-primary)' }}>Próximos eventos</p>
+              <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-mint)' }} />
+            </div>
+            <div className="px-4 pb-4 space-y-3">
               {[
                 { day: '12', mon: 'Jul', name: 'Expoquímica Bogotá', loc: 'Corferias · Presencial' },
                 { day: '18', mon: 'Jul', name: 'Webinar Formulación', loc: 'Virtual · Gratis' },
                 { day: '2',  mon: 'Ago', name: 'Taller reactivos lab', loc: 'Medellín · Cupos ltdos.' },
               ].map(ev => (
                 <div key={ev.name} className="flex gap-2 items-start">
-                  <div className="w-8 flex-shrink-0 text-center rounded-md py-1" style={{ background: '#FFFFFF', border: '1px solid var(--border)' }}>
+                  <div className="w-10 flex-shrink-0 text-center rounded-[12px] py-1.5" style={{ background: 'var(--accent-softer)', border: '1px solid var(--accent-soft)' }}>
                     <p className="text-sm font-bold leading-none" style={{ color: 'var(--accent-deep)' }}>{ev.day}</p>
-                    <p className="text-[8px] uppercase" style={{ color: 'var(--accent)' }}>{ev.mon}</p>
+                    <p className="text-[9px] uppercase tracking-[0.08em]" style={{ color: 'var(--accent)' }}>{ev.mon}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-semibold leading-tight" style={{ color: 'var(--accent-deep)' }}>{ev.name}</p>
-                    <p className="text-[9px]" style={{ color: 'var(--accent)' }}>{ev.loc}</p>
+                    <p className="text-[12px] font-semibold leading-tight" style={{ color: 'var(--text-primary)' }}>{ev.name}</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{ev.loc}</p>
                   </div>
                 </div>
               ))}
-              <button className="text-[10px] font-semibold mt-1" style={{ color: 'var(--accent-deep)' }}>Ver todos →</button>
+              <button className="text-[12px] font-semibold mt-1" style={{ color: 'var(--accent)' }}>Ver todos →</button>
             </div>
           </div>
 
         </div>
 
         {/* ── Columna central ── */}
-        <div className="flex-1 min-w-0 space-y-3">
+        <div className="flex-1 min-w-0 space-y-4">
+          <div className="hidden md:flex items-center justify-between px-1">
+            <div>
+              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'var(--text-tertiary)' }}>Tu comunidad</p>
+              <p className="text-[24px] font-semibold tracking-[-0.02em]" style={{ color: 'var(--text-primary)' }}>Inicio</p>
+            </div>
+            <button onClick={() => setPublishOpen(true)} className="h-10 px-4 rounded-btn text-[13px] font-semibold text-white transition-all duration-[160ms] hover:-translate-y-px active:translate-y-0" style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-raised)' }}>
+              + Nueva publicación
+            </button>
+          </div>
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
+          {publishOpen === false && <button onClick={() => setPublishOpen(true)} className="md:hidden w-full flex items-center gap-3 p-3.5 rounded-card text-left transition-all duration-[160ms] active:scale-[0.995]" style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
+            <UserAvatar seed={session?.user?.id || 'me'} avatarUrl={profile?.avatar_url} size={38} />
+            <span className="flex-1 text-[14px]" style={{ color: 'var(--text-tertiary)' }}>¿Qué quieres compartir con tu comunidad?</span>
+            <span className="inline-flex items-center justify-center px-3 h-9 rounded-btn text-[12px] font-semibold text-white" style={{ background: 'var(--accent)' }}>Publicar</span>
+          </button>}
           {activeTab === 'todo' && <BannerCarousel />}
           <div className="flex items-center justify-between">
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
@@ -399,13 +416,20 @@ export default function FeedPage() {
         </div>
 
         {/* ── Columna derecha — widgets configurables por admin ── */}
-        <div className="w-[300px] flex-shrink-0" style={{ position: 'sticky', top: 72 }}>
+        <div className="w-full flex-shrink-0" style={{ position: 'sticky', top: 88 }}>
           <FeedWidgets />
         </div>
       </div>
 
       {/* ── MÓVIL: columna única ── */}
-      <div className="md:hidden max-w-2xl mx-auto px-4">
+      <div className="md:hidden max-w-2xl mx-auto px-4 pt-3">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'var(--text-tertiary)' }}>Tu comunidad</p>
+            <p className="text-[22px] font-semibold tracking-[-0.02em]" style={{ color: 'var(--text-primary)' }}>Inicio</p>
+          </div>
+          <button onClick={() => setPublishOpen(true)} className="h-9 px-3 rounded-btn text-[12px] font-semibold text-white" style={{ background: 'var(--accent)' }}>Publicar</button>
+        </div>
         <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
         {activeTab === 'todo' && <BannerCarousel />}
         <div className="flex items-center justify-between mb-3 mt-3">

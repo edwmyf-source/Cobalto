@@ -11,8 +11,8 @@ const ERR_MAP = {
   'For security purposes, you can only request this after 60 seconds': 'Espera 60 segundos antes de pedir otro código.',
 }
 
-const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
-const codeCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+const inputCls = 'w-full px-4 py-3 rounded-btn border text-[var(--text-primary)] placeholder-[var(--text-tertiary)] text-[14px] font-medium focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors'
+const codeCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors'
 const primaryBtn = 'w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[38px] rounded-btn disabled:opacity-40 transition-all active:scale-95'
 const primaryStyle = { background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }
 const ghostBtn = 'w-full flex items-center justify-center gap-2 text-[14px] font-bold h-[38px] rounded-btn transition-all active:scale-95'

@@ -65,7 +65,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+  const inputCls = 'w-full px-4 py-3 rounded-btn border text-[var(--text-primary)] placeholder-[var(--text-tertiary)] text-[14px] font-medium focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors'
 
   if (sent) {
     return (
@@ -102,7 +102,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
           <input type="text" value={code} inputMode="numeric" autoComplete="one-time-code" required autoFocus
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
-            className="w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors" />
+            className="w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors" />
           <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">
             Enviado a {mode === 'phone' ? normalizePhone(phone) : email}
           </p>

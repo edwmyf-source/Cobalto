@@ -234,103 +234,106 @@ export default memo(function PostCard({ post, onContact, contactingId, blockedUs
   const goToProfile = () => navigate(`/u/${post.author_id}`)
 
   return (
-    <Card id={`post-${post.id}`} className="overflow-hidden">
-      <div className="px-4 py-3.5 sm:px-5 sm:py-4">
+    <Card id={`post-${post.id}`} className="overflow-hidden group" style={{ borderColor: 'var(--border)', boxShadow: 'var(--shadow-card)' }}>
+      <div className="px-4 py-4 sm:px-5 sm:py-5">
 
-      {/* Header */}
-      <div className="flex items-center gap-2.5 mb-3">
-        <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
-          <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={32} className="!rounded-input" />
-        </button>
-        <div className="flex-1 min-w-0">
-          <button onClick={goToProfile}
-            className="t-body-sm font-semibold text-left hover:underline block truncate"
-            style={{ color: 'var(--text-primary)' }}>
-            {name}
+        {/* Header */}
+        <div className="flex items-start gap-3 mb-4">
+          <button onClick={goToProfile} aria-label={`Ver perfil de ${name}`} className="flex-shrink-0">
+            <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={42} className="!rounded-full ring-2 ring-white" />
           </button>
-          <p className="t-caption truncate" style={{ color: 'var(--text-tertiary)' }}>
-            {prof.city && <>{prof.city} · </>}
-            {timeAgo(post.created_at)}
-          </p>
-        </div>
-        {catLabel && <Badge tone="brand" className="flex-shrink-0">{catLabel}</Badge>}
-        <PostMenu post={post} isMine={isMine}
-          onReport={() => setReportOpen(true)}
-          onDelete={() => setConfirmDelete(true)} />
-      </div>
-
-      {/* Texto muro */}
-      <p className="t-body-sm mb-3 whitespace-pre-wrap break-words line-clamp-3"
-        style={{ color: 'var(--text-secondary)' }}>
-        {wallText}
-      </p>
-
-      <MediaGallery media={media} />
-
-      {/* Footer — sin línea, separado por aire */}
-      <div className="flex items-center gap-1 pt-1">
-        <button onClick={handleLike} aria-pressed={liked}
-          className="inline-flex items-center gap-1.5 h-[30px] px-3 rounded-btn text-[14px] font-medium
-            transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
-          style={liked
-            ? { background: 'var(--accent-soft)', color: 'var(--accent-deep)' }
-            : { background: 'transparent', color: 'var(--text-secondary)' }}>
-          <ThumbsUp size={16} strokeWidth={2} fill={liked ? 'var(--accent-deep)' : 'none'} />
-          {likeCount || 0}
-        </button>
-
-        <button onClick={() => setShowComments(!showComments)} aria-expanded={showComments}
-          className="inline-flex items-center gap-1.5 h-[30px] px-3 rounded-btn text-[14px] font-medium
-            transition-all duration-[160ms] ease-premium active:scale-[0.98] tnum"
-          style={{ background: 'transparent', color: 'var(--text-secondary)' }}>
-          <MessageCircle size={16} strokeWidth={2} />
-          {post.comment_count || 0}
-        </button>
-
-        {!isMine && (
-          <Button size="sm" onClick={() => onContact?.(post)} loading={isContacting}
-            className="ml-auto !h-[30px] !px-4">
-            Contactar
-          </Button>
-        )}
-      </div>
-
-      <CommentSection post={post} isOpen={showComments} />
-      <ReportModal post={post} open={reportOpen} onClose={() => setReportOpen(false)} />
-
-      {/* Confirmación de borrado — acción irreversible */}
-      {confirmDelete && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6"
-          style={{ background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
-          onClick={() => !deleting && setConfirmDelete(false)}
-          role="dialog" aria-modal="true" aria-labelledby="del-title">
-          <div className="modal-enter rounded-modal w-full max-w-[380px] p-6"
-            style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}
-            onClick={e => e.stopPropagation()}>
-            <div className="w-11 h-11 rounded-input flex items-center justify-center mb-4"
-              style={{ background: 'var(--error-bg)' }}>
-              <Trash2 size={20} strokeWidth={1.9} style={{ color: 'var(--error)' }} />
+          <div className="flex-1 min-w-0 pt-0.5">
+            <div className="flex items-center gap-2 min-w-0">
+              <button onClick={goToProfile}
+                className="text-[14px] font-semibold text-left truncate transition-colors hover:text-[var(--accent)]"
+                style={{ color: 'var(--text-primary)' }}>
+                {name}
+              </button>
+              {catLabel && <Badge tone="brand" className="flex-shrink-0">{catLabel}</Badge>}
             </div>
-            <h3 id="del-title" className="t-h4" style={{ color: 'var(--text-primary)' }}>
-              Eliminar publicación
-            </h3>
-            <p className="t-body-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
-              Se borran también sus comentarios y reacciones, y no se puede deshacer.
-              Los chats que iniciaste desde ella se conservan.
+            <p className="text-[12px] mt-0.5 truncate" style={{ color: 'var(--text-tertiary)' }}>
+              {prof.city && <>{prof.city} · </>}
+              {timeAgo(post.created_at)}
             </p>
-            <div className="flex gap-3 mt-6">
-              <Button variant="secondary" size="sm" fullWidth
-                onClick={() => setConfirmDelete(false)} disabled={deleting}>
-                Cancelar
-              </Button>
-              <Button variant="destructive" size="sm" fullWidth
-                onClick={handleDelete} loading={deleting}>
-                {deleting ? 'Eliminando' : 'Eliminar'}
-              </Button>
+          </div>
+          <PostMenu post={post} isMine={isMine}
+            onReport={() => setReportOpen(true)}
+            onDelete={() => setConfirmDelete(true)} />
+        </div>
+
+        {/* Contenido */}
+        {wallText && (
+          <p className="text-[15px] leading-6 mb-4 whitespace-pre-wrap break-words"
+            style={{ color: 'var(--text-primary)' }}>
+            {wallText}
+          </p>
+        )}
+
+        <MediaGallery media={media} />
+
+        {/* Footer / acciones — sin línea, separado por aire */}
+        <div className="flex items-center gap-1 pt-1">
+          <button onClick={handleLike} aria-pressed={liked}
+            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-btn text-[13px] font-semibold transition-all duration-[160ms] active:scale-[0.98]"
+            style={liked
+              ? { background: 'var(--accent-soft)', color: 'var(--accent)' }
+              : { background: 'transparent', color: 'var(--text-secondary)' }}>
+            <ThumbsUp size={16} strokeWidth={1.9} fill={liked ? 'currentColor' : 'none'} />
+            <span>{likeCount || 0}</span>
+          </button>
+
+          <button onClick={() => setShowComments(!showComments)} aria-expanded={showComments}
+            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-btn text-[13px] font-semibold transition-all duration-[160ms] active:scale-[0.98]"
+            style={{ background: 'transparent', color: 'var(--text-secondary)' }}>
+            <MessageCircle size={16} strokeWidth={1.9} />
+            <span>{post.comment_count || 0}</span>
+          </button>
+
+          <div className="flex-1" />
+          {!isMine && (
+            <Button size="sm" onClick={() => onContact?.(post)} loading={isContacting}
+              className="!h-9 !px-4">
+              Contactar
+            </Button>
+          )}
+        </div>
+
+        <CommentSection post={post} isOpen={showComments} />
+        <ReportModal post={post} open={reportOpen} onClose={() => setReportOpen(false)} />
+
+        {/* Confirmación de borrado */}
+        {confirmDelete && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-6"
+            style={{ background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
+            onClick={() => !deleting && setConfirmDelete(false)}
+            role="dialog" aria-modal="true" aria-labelledby="del-title">
+            <div className="modal-enter rounded-modal w-full max-w-[380px] p-6"
+              style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}
+              onClick={e => e.stopPropagation()}>
+              <div className="w-11 h-11 rounded-input flex items-center justify-center mb-4"
+                style={{ background: 'var(--error-bg)' }}>
+                <Trash2 size={20} strokeWidth={1.9} style={{ color: 'var(--error)' }} />
+              </div>
+              <h3 id="del-title" className="t-h4" style={{ color: 'var(--text-primary)' }}>
+                Eliminar publicación
+              </h3>
+              <p className="t-body-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
+                Se borran también sus comentarios y reacciones, y no se puede deshacer.
+                Los chats que iniciaste desde ella se conservan.
+              </p>
+              <div className="flex gap-3 mt-6">
+                <Button variant="secondary" size="sm" fullWidth
+                  onClick={() => setConfirmDelete(false)} disabled={deleting}>
+                  Cancelar
+                </Button>
+                <Button variant="destructive" size="sm" fullWidth
+                  onClick={handleDelete} loading={deleting}>
+                  {deleting ? 'Eliminando' : 'Eliminar'}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </Card>
   )

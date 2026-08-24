@@ -8,6 +8,7 @@ import { domainOf, generateIdentityNumber, nameFromEmail } from '../../lib/helpe
 import UserAvatar from '../shared/UserAvatar'
 import PrivacyBadge from '../shared/PrivacyBadge'
 import Spinner from '../shared/Spinner'
+import RedCobaltoLogo from '../shared/RedCobaltoLogo'
 
 const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
 const labelCls = 'text-[12px] font-bold text-[var(--text-primary)]'
@@ -177,9 +178,7 @@ export default function ProfileSetup() {
       <div className="min-h-full flex items-start justify-center p-4 py-8">
         <div className="bg-white rounded-modal w-full max-w-md p-7" style={{ boxShadow: 'var(--shadow-modal)' }}>
 
-          <span className="font-extrabold text-[20px] block mb-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-            <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto<span style={{ color: 'var(--accent)' }}>.</span>
-          </span>
+          <RedCobaltoLogo size="lg" className="mb-5" />
 
           <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>
             Crea tu cuenta en 2 pasos
@@ -249,9 +248,9 @@ export default function ProfileSetup() {
                 {passFilled && (() => {
                   const level = passStrength <= 2 ? 'low' : passStrength === 3 ? 'mid' : 'high'
                   const meta = {
-                    low:  { label: 'Seguridad baja',  color: '#dc2626', bg: '#FEE2E2' },
-                    mid:  { label: 'Seguridad media',  color: '#d97706', bg: '#FEF3C7' },
-                    high: { label: 'Seguridad alta',   color: '#16a34a', bg: '#DCFCE7' },
+                    low:  { label: 'Seguridad baja',  color: 'var(--error)', bg: 'var(--error-bg)' },
+                    mid:  { label: 'Seguridad media',  color: 'var(--warning)', bg: 'var(--warning-bg)' },
+                    high: { label: 'Seguridad alta',   color: 'var(--success)', bg: 'var(--success-bg)' },
                   }[level]
                   return (
                     <div className="mt-2.5">
@@ -278,9 +277,9 @@ export default function ProfileSetup() {
                             <div key={r.id} className="flex items-center gap-1.5 transition-all duration-300"
                               style={{ opacity: ok ? 1 : 0.55 }}>
                               <span className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 transition-all duration-300"
-                                style={{ background: ok ? '#DCFCE7' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
+                                style={{ background: ok ? 'var(--success-bg)' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
                                 {ok
-                                  ? <Check size={10} strokeWidth={3} style={{ color: '#16a34a' }} />
+                                  ? <Check size={10} strokeWidth={3} style={{ color: 'var(--success)' }} />
                                   : <X size={9} strokeWidth={2.5} style={{ color: 'var(--text-tertiary)' }} />}
                               </span>
                               <span className="text-[11px] font-medium" style={{ color: ok ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>
@@ -301,7 +300,7 @@ export default function ProfileSetup() {
                   onChange={e => set('password2', e.target.value)}
                   placeholder="Escríbela de nuevo" className={inputCls} />
                 {passFilled && form.password2.length > 0 && (
-                  <p className="text-[12px] mt-1.5 font-bold" style={{ color: passMatch ? '#16a34a' : '#dc2626' }}>
+                  <p className="text-[12px] mt-1.5 font-bold" style={{ color: passMatch ? 'var(--success)' : 'var(--error)' }}>
                     {passMatch ? '✓ Las contraseñas coinciden' : 'No coinciden'}
                   </p>
                 )}

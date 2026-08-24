@@ -75,7 +75,7 @@ export default function ContactoPage() {
   }
 
   return (
-    <div className="page-enter max-w-lg mx-auto p-6">
+    <div className="page-enter max-w-3xl mx-auto px-4 py-6 md:px-8 md:py-10">
 
       <button onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 t-body-sm font-medium mb-6 transition-colors duration-[160ms]"
@@ -87,10 +87,21 @@ export default function ContactoPage() {
         <ArrowLeft size={16} strokeWidth={2} /> Volver
       </button>
 
-      <h1 className="t-h1" style={{ color: 'var(--text-primary)' }}>Contáctanos</h1>
-      <p className="t-body mt-2 mb-8" style={{ color: 'var(--text-secondary)' }}>
+      <div className="mb-8 rounded-panel p-6 md:p-8" style={{ background: 'linear-gradient(135deg, rgba(36,87,197,0.08), rgba(230,57,70,0.06) 55%, rgba(255,255,255,0.9))', border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)' }}>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+            <MessageSquareText size={20} color="#fff" strokeWidth={2} />
+          </div>
+          <div>
+            <p className="t-caption font-semibold uppercase tracking-[0.08em]" style={{ color: 'var(--accent-deep)' }}>REDCOBALTO</p>
+            <p className="t-body-sm" style={{ color: 'var(--text-tertiary)' }}>Estamos para ayudarte</p>
+          </div>
+        </div>
+        <h1 className="t-h1" style={{ color: 'var(--text-primary)' }}>Hablemos</h1>
+      <p className="t-body mt-2" style={{ color: 'var(--text-secondary)' }}>
         ¿Tienes una duda, encontraste un problema o quieres proponernos algo? Escríbenos.
       </p>
+      </div>
 
       {/* ── Correo corporativo ── */}
       <Card className="p-5 mb-4">

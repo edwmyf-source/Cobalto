@@ -286,7 +286,7 @@ function SecureAccountSection({ userId }) {
     return (
       <div className="rounded-panel p-5" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--accent-soft)' }}>
         <div className="flex items-center gap-2">
-          <Check size={18} style={{ color: '#16a34a' }} />
+          <Check size={18} style={{ color: 'var(--success)' }} />
           <p className="t-body-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Contraseña guardada</p>
         </div>
         <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>
@@ -315,9 +315,9 @@ function SecureAccountSection({ userId }) {
         {pass.length > 0 && (() => {
           const level = passStrength <= 2 ? 'low' : passStrength === 3 ? 'mid' : 'high'
           const meta = {
-            low:  { label: 'Seguridad baja',  color: '#dc2626' },
-            mid:  { label: 'Seguridad media', color: '#d97706' },
-            high: { label: 'Seguridad alta',  color: '#16a34a' },
+            low:  { label: 'Seguridad baja',  color: 'var(--error)' },
+            mid:  { label: 'Seguridad media', color: 'var(--warning)' },
+            high: { label: 'Seguridad alta',  color: 'var(--success)' },
           }[level]
           return (
             <div>
@@ -341,8 +341,8 @@ function SecureAccountSection({ userId }) {
                   return (
                     <div key={r.id} className="flex items-center gap-1.5 transition-all duration-300" style={{ opacity: ok ? 1 : 0.55 }}>
                       <span className="flex items-center justify-center w-4 h-4 rounded-full flex-shrink-0 transition-all duration-300"
-                        style={{ background: ok ? '#DCFCE7' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
-                        {ok ? <Check size={10} strokeWidth={3} style={{ color: '#16a34a' }} />
+                        style={{ background: ok ? 'var(--success-bg)' : 'var(--accent-soft)', transform: ok ? 'scale(1)' : 'scale(0.9)' }}>
+                        {ok ? <Check size={10} strokeWidth={3} style={{ color: 'var(--success)' }} />
                             : <X size={9} strokeWidth={2.5} style={{ color: 'var(--text-tertiary)' }} />}
                       </span>
                       <span className="text-[11px] font-medium" style={{ color: ok ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>{r.label}</span>
@@ -359,7 +359,7 @@ function SecureAccountSection({ userId }) {
           className={inputCls} style={inputStyle} />
       </div>
 
-      {error && <p className="t-caption font-semibold mt-2" style={{ color: '#dc2626' }}>{error}</p>}
+      {error && <p className="t-caption font-semibold mt-2" style={{ color: 'var(--error)' }}>{error}</p>}
 
       <button type="submit" disabled={loading || !passValid}
         className="mt-4 w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95"

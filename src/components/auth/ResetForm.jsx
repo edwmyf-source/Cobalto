@@ -21,7 +21,7 @@ export default function ResetForm({ onSwitchLogin }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-4 py-3 rounded-btn border border-ink-200 bg-ink-50 text-ink-900 placeholder-ink-400 text-[14px] font-medium focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+  const inputCls = 'w-full px-4 py-3 rounded-btn border text-[var(--text-primary)] placeholder-[var(--text-tertiary)] text-[14px] font-medium focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors'
 
   return (
     <form onSubmit={submit} className="space-y-4">

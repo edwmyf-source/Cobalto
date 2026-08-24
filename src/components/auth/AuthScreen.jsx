@@ -5,6 +5,7 @@ import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
 import Footer from '../layout/Footer'
+import RedCobaltoLogo from '../shared/RedCobaltoLogo'
 import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '../legal/LegalContent'
 
 // Ventajas con iconografía consistente: misma familia (lucide), mismo tamaño
@@ -44,7 +45,7 @@ function CTA({ children, onClick, variant = 'primary', size = 'md', className = 
     ghostNavy:{ background: 'rgba(255,255,255,0.2)' },
   }[variant]
 
-  const h = size === 'lg' ? 'h-[44px] px-8 text-[15px]' : 'h-[38px] px-6 text-[13.5px]'
+  const h = size === 'lg' ? 'h-[44px] px-8 text-[15px]' : 'h-[38px] px-6 text-[14px]'
 
   return (
     <button
@@ -64,14 +65,12 @@ function CTA({ children, onClick, variant = 'primary', size = 'md', className = 
 // Barra superior fija: logo a la izquierda, acciones a la derecha
 function TopBar({ onLogin, onSignup }) {
   return (
-    <header className="w-full flex-shrink-0" style={{ background: 'var(--accent-deep)' }}>
+    <header className="sticky top-0 z-40 w-full border-b" style={{ background: 'rgba(255,255,255,0.86)', backdropFilter: 'blur(18px)', borderColor: 'var(--border-soft)' }}>
       <div className="max-w-6xl mx-auto h-[72px] flex items-center justify-between px-4 md:px-6">
-        <span className="font-extrabold text-[24px]" style={{ color: '#ffffff', letterSpacing: '-0.03em' }}>
-          <span style={{ color: 'var(--brand-red)' }}>Red</span> Cobalto<span style={{ color: 'var(--accent-mist)' }}>.</span>
-        </span>
+        <RedCobaltoLogo size="md" />
         <div className="flex items-center gap-2">
-          <CTA onClick={onLogin} variant="ghostNavy" className="!px-4">Iniciar sesión</CTA>
-          <CTA onClick={onSignup} variant="onNavy" className="!px-4">Unirse ahora</CTA>
+          <CTA onClick={onLogin} variant="ghostNavy" className="!bg-transparent !text-[var(--accent-deep)] !shadow-none !px-4 hover:!bg-[var(--accent-softer)]">Iniciar sesión</CTA>
+          <CTA onClick={onSignup} variant="primary" className="!px-4">Unirse ahora</CTA>
         </div>
       </div>
     </header>
@@ -85,6 +84,7 @@ function Landing({ stats, onSignup }) {
       {/* ── Hero ── */}
       <section className="md:flex md:items-center md:gap-12">
         <div className="md:flex-1">
+          <div className="mb-5 flex items-center gap-2"><span className="h-2 w-2 rounded-full" style={{ background: 'var(--brand-red)' }} /><span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>COMUNIDAD PROFESIONAL</span></div>
           <h1 className="text-left font-extrabold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 0.92 }}>
             <span className="block" style={{ fontSize: 'clamp(32px, 11.2vw, 62px)' }}>Punto de</span>
             <span className="block" style={{ fontSize: 'clamp(32px, 11.2vw, 62px)' }}>encuentro</span>
@@ -98,11 +98,11 @@ function Landing({ stats, onSignup }) {
           </p>
 
           <div className="mt-5 flex items-center gap-3 flex-wrap">
-            <span className="font-extrabold" style={{ color: 'var(--accent-deep)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Conecta</span>
+            <span className="font-extrabold" style={{ color: 'var(--brand-red)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Conecta</span>
             <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
             <span className="font-extrabold" style={{ color: 'var(--accent)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Comparte</span>
             <span className="text-[18px]" style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent-light)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Crece</span>
+            <span className="font-extrabold" style={{ color: 'var(--accent-violet)', fontSize: 'clamp(16px, 4.85vw, 24px)' }}>Crece</span>
           </div>
 
           <CTA onClick={onSignup} size="lg" icon={ArrowRight} className="mt-8">
@@ -117,15 +117,15 @@ function Landing({ stats, onSignup }) {
             { icon: FlaskConical, value: stats.posts,          label: 'Publicaciones' },
             { icon: Zap,          value: stats.interactions,   label: 'Interacciones' },
           ].map(({ icon: Icon, value, label }) => (
-            <div key={label} className="rounded-input p-2.5 md:p-4"
-              style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
-              <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent-pale)' }} />
-              <p className="font-extrabold text-white leading-none mt-2 tnum"
-                style={{ letterSpacing: '-0.03em', fontSize: 'clamp(18px, 5.3vw, 32px)' }}>
+            <div key={label} className="rounded-card p-3 md:p-4 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
+              <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+              <p className="font-extrabold leading-none mt-2 tnum"
+                style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(22px, 5.3vw, 34px)' }}>
                 {formatMetric(value)}
               </p>
               <p className="text-[11px] md:text-[12px] mt-1 uppercase font-extrabold leading-tight"
-                style={{ color: 'var(--accent-mist)', letterSpacing: '0.08em' }}>
+                style={{ color: 'var(--text-tertiary)', letterSpacing: '0.08em' }}>
                 {label}
               </p>
             </div>
@@ -155,8 +155,9 @@ function Landing({ stats, onSignup }) {
       </section>
 
       {/* ── CTA final ── */}
-      <section className="py-12 px-6 text-center rounded-panel"
-        style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+      <section className="py-12 px-6 text-center rounded-panel border relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, var(--accent-deep), #223B68)', borderColor: 'rgba(36,87,197,0.18)', boxShadow: 'var(--shadow-raised)' }}>
+        <div className="absolute -right-2 -top-2 opacity-[0.12]"><RedCobaltoLogo size="xl" dark markOnly /></div>
         <h2 className="text-[20px] md:text-[26px] font-extrabold text-white max-w-[480px] mx-auto leading-snug"
           style={{ letterSpacing: '-0.02em' }}>
           Únete a la comunidad química de Colombia
@@ -201,8 +202,12 @@ export default function AuthScreen() {
           />
         </>
       ) : (
-        <div className="flex-1 flex items-start md:items-center justify-center px-4 py-8 md:py-12">
-          <div className="w-full max-w-md rounded-modal p-6 md:p-8" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-modal)' }}>
+        <div className="flex-1 flex items-start md:items-center justify-center px-4 py-8 md:py-12" style={{ background: 'radial-gradient(circle at top, rgba(36,87,197,0.06), transparent 34%), var(--bg-app)' }}>
+          <div className="w-full max-w-md rounded-panel p-6 md:p-8 border" style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
+            <div className="flex items-center justify-between mb-6 pb-5 border-b" style={{ borderColor: 'var(--border-soft)' }}>
+              <RedCobaltoLogo size="md" />
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.12em]" style={{ color: 'var(--text-tertiary)' }}>Acceso seguro</span>
+            </div>
             {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
             {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}

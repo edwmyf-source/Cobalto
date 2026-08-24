@@ -162,161 +162,155 @@ export default function PublishBox({ onClose, onPublished }) {
     }
   }
 
-  const inputCls = 'w-full px-3 py-2.5 rounded-2xl border border-ink-300 text-[16px] focus:outline-none focus:border-brand-600 bg-white'
+  const inputCls = 'w-full px-4 py-3 rounded-input border text-[16px] focus:outline-none transition-all duration-[160ms]'
 
   return (
-    <div className="bg-white border border-ink-300 rounded-2xl p-4 mb-3">
+    <div className="overflow-hidden rounded-panel" style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-modal)' }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <UserAvatar seed={session?.user?.id || 'me'} size={32} />
-          <div>
-            <span className="font-medium text-sm text-ink-900">¿Qué está pasando?</span>
-            {!detectingLoc && location && <p className="text-[10px] text-brand-600 font-medium flex items-center gap-0.5"><MapPin size={10} /> {location}</p>}
-            {detectingLoc && <p className="text-[10px] text-ink-400">Detectando ubicación...</p>}
-          </div>
+      <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border-soft)' }}>
+        <div>
+          <p className="text-[17px] font-semibold" style={{ color: 'var(--text-primary)' }}>Crear publicación</p>
+          <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Comparte algo útil con tu comunidad</p>
         </div>
-        <button onClick={onClose} aria-label="Cerrar" className="p-1 rounded hover:bg-slate-50 text-ink-500"><X size={16} /></button>
+        <button onClick={onClose} aria-label="Cerrar"
+          className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
+          style={{ color: 'var(--text-tertiary)' }}>
+          <X size={18} />
+        </button>
       </div>
 
-      <form onSubmit={submit} className="space-y-3">
-        {/* Único textarea */}
+      <form onSubmit={submit} className="px-5 py-5 space-y-5">
+        <div className="flex items-center gap-3">
+          <UserAvatar seed={session?.user?.id || 'me'} size={44} />
+          <div className="min-w-0">
+            <p className="text-[14px] font-semibold" style={{ color: 'var(--text-primary)' }}>Tu publicación</p>
+            {!detectingLoc && location && <p className="text-[12px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {location}</p>}
+            {detectingLoc && <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Detectando ubicación...</p>}
+          </div>
+        </div>
+
         <textarea value={form.title} onChange={e => set('title', e.target.value)}
-          placeholder={placeholder} rows={3}
-          className={`${inputCls} resize-none`} required maxLength={280} autoFocus />
+          placeholder={placeholder} rows={4} maxLength={280} autoFocus required
+          className={`${inputCls} resize-none`}
+          style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)', borderColor: 'var(--border-soft)' }} />
 
         {/* Categorías */}
         <div>
-          <p className="text-[11px] text-ink-500 font-medium mb-1.5">
-            ¿De qué trata? <span className="text-danger-500">*</span>
-          </p>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[12px] font-semibold" style={{ color: 'var(--text-primary)' }}>¿De qué trata?</p>
+            <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>Obligatorio</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {CATEGORIES.map(c => {
               const Icon = CAT_ICONS[c.value]
+              const active = form.category === c.value
               return (
                 <button key={c.value} type="button"
-                  onClick={() => { set('category', form.category === c.value ? '' : c.value); set('subcategory', '') }}
-                  className={`flex flex-col items-center gap-1 py-2.5 px-1 rounded-3xl border text-center transition-all ${
-                    form.category === c.value
-                      ? 'border-brand-500 bg-brand-500/8'
-                      : 'border-ink-200 bg-ink-50 hover:border-ink-300 hover:bg-slate-50'
-                  }`}>
-                  <Icon size={20} className={form.category === c.value ? 'text-brand-600' : 'text-ink-400'} />
-                  <span className={`text-[10px] font-medium leading-tight ${form.category === c.value ? 'text-brand-700' : 'text-ink-600'}`}>
-                    {c.label}
-                  </span>
+                  onClick={() => { set('category', active ? '' : c.value); set('subcategory', '') }}
+                  className="flex items-center sm:flex-col sm:justify-center gap-2 sm:gap-1.5 min-h-[52px] px-3 py-2.5 rounded-input text-left sm:text-center transition-all duration-[160ms] active:scale-[0.98]"
+                  style={active
+                    ? { background: 'var(--accent-soft)', color: 'var(--accent)', border: '1px solid var(--accent)' }
+                    : { background: 'var(--surface)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
+                  <Icon size={19} strokeWidth={1.9} />
+                  <span className="text-[11px] font-semibold leading-tight">{c.label}</span>
                 </button>
               )
             })}
           </div>
           {!form.category && form.title.trim() && (
-            <p className="text-[10.5px] text-danger-500 mt-1.5">Selecciona una categoría para poder publicar.</p>
+            <p className="text-[12px] mt-2" style={{ color: 'var(--error)' }}>Selecciona una categoría para poder publicar.</p>
           )}
         </div>
 
         {/* Subcategorías */}
         {selectedCat && (
           <div>
-            <p className="text-[11px] text-ink-500 font-medium mb-1.5">Subcategoría</p>
-            <div className="flex flex-wrap gap-1.5">
-              {selectedCat.subcategories.map(s => (
-                <button key={s} type="button"
-                  onClick={() => set('subcategory', form.subcategory === s ? '' : s)}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-medium border transition-all ${
-                    form.subcategory === s
-                      ? 'border-brand-500 bg-brand-500/10 text-brand-700'
-                      : 'border-ink-200 bg-ink-50 text-ink-600 hover:bg-slate-50'
-                  }`}>
-                  {s}
-                </button>
-              ))}
+            <p className="text-[12px] font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Subcategoría</p>
+            <div className="flex flex-wrap gap-2">
+              {selectedCat.subcategories.map(s => {
+                const active = form.subcategory === s
+                return (
+                  <button key={s} type="button"
+                    onClick={() => set('subcategory', active ? '' : s)}
+                    className="px-3.5 h-9 rounded-full text-[12px] font-semibold border transition-all duration-[160ms] active:scale-[0.98]"
+                    style={active
+                      ? { background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' }
+                      : { background: 'var(--surface)', color: 'var(--text-secondary)', borderColor: 'var(--border)' }}>
+                    {s}
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}
 
-        {/* Fecha del evento — solo cuando la subcategoría es "Eventos" */}
+        {/* Fecha del evento */}
         {form.subcategory === 'Eventos' && (
           <div>
-            <p className="text-[11px] text-ink-500 font-medium mb-1.5 flex items-center gap-1">
-              <Calendar size={12} className="text-brand-600" /> Fecha del evento
+            <p className="text-[12px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+              <Calendar size={14} style={{ color: 'var(--accent)' }} /> Fecha del evento
             </p>
             <input type="date"
               value={form.event_date}
               min={new Date().toISOString().slice(0, 10)}
               onChange={e => set('event_date', e.target.value)}
-              className="w-full px-3 py-2.5 rounded-2xl border border-ink-300 text-[16px] focus:outline-none focus:border-brand-600 bg-white" />
-            <p className="text-[10.5px] text-ink-400 mt-1">Aparecerá en "Próximos eventos" para que la comunidad sepa qué viene.</p>
+              className={inputCls}
+              style={{ background: 'var(--surface)', color: 'var(--text-primary)', borderColor: 'var(--border)' }} />
+            <p className="text-[12px] mt-1.5" style={{ color: 'var(--text-tertiary)' }}>La fecha aparecerá en Próximos eventos.</p>
           </div>
         )}
+
+        {/* Adjuntos */}
         {files.length > 0 && (
-          <div className="flex gap-2 flex-wrap">
-            {files.map((f, idx) => (
-              <div key={idx} className="relative rounded-3xl overflow-hidden border border-ink-200 bg-ink-50"
-                style={{ width: 72, height: 72 }}>
-                {f.kind === 'image' && (
-                  <img src={f.preview} alt="" className="w-full h-full object-cover" />
-                )}
-                {f.kind === 'pdf' && (
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-1 px-1">
-                    <FileText size={22} className="text-danger-500" />
-                    <span className="text-[9px] text-ink-500 text-center leading-tight line-clamp-2">{f.file.name}</span>
-                  </div>
-                )}
-                {/* Overlay tipo de archivo */}
-                <button type="button" onClick={() => removeFile(idx)}
-                  className="absolute top-0.5 right-0.5 bg-black/50 rounded-full p-0.5">
-                  <XCircle size={13} className="text-white" />
-                </button>
-              </div>
-            ))}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[12px] font-semibold" style={{ color: 'var(--text-primary)' }}>Adjuntos</p>
+              <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{files.length}/{MAX_FILES}</span>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {files.map((f, idx) => (
+                <div key={idx} className="relative rounded-input overflow-hidden" style={{ width: 78, height: 78, border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
+                  {f.kind === 'image' && <img src={f.preview} alt="" className="w-full h-full object-cover" />}
+                  {f.kind === 'pdf' && (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 px-1">
+                      <FileText size={20} style={{ color: 'var(--error)' }} />
+                      <span className="text-[9px] truncate max-w-full" style={{ color: 'var(--text-secondary)' }}>{f.file.name}</span>
+                    </div>
+                  )}
+                  <button type="button" onClick={() => removeFile(idx)} aria-label="Quitar archivo"
+                    className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-white"
+                    style={{ background: 'rgba(15,23,42,0.65)' }}>
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Footer — botones de adjuntar + publicar */}
-        <div className="flex items-center justify-between pt-1 border-t border-ink-100">
-          {/* Inputs ocultos */}
-          <input ref={imageRef} type="file" accept="image/*" multiple className="hidden"
-            onChange={e => { addFiles(e.target.files); e.target.value = '' }} />
-          <input ref={pdfRef}   type="file" accept=".pdf" multiple className="hidden"
-            onChange={e => { addFiles(e.target.files); e.target.value = '' }} />
-
+        {/* Acciones */}
+        <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid var(--border-soft)' }}>
           <div className="flex items-center gap-1.5">
-            {/* Botón fotos */}
-            <button type="button" disabled={files.length >= MAX_FILES}
-              onClick={() => imageRef.current?.click()}
-              className={`flex items-center justify-center rounded-3xl border-2 border-dashed transition-all ${
-                files.length >= MAX_FILES
-                  ? 'border-ink-200 bg-ink-50 opacity-40 cursor-not-allowed'
-                  : 'border-ink-300 bg-ink-50 hover:border-brand-400 hover:bg-brand-500/5 cursor-pointer'
-              }`}
-              style={{ width: 46, height: 46 }}
-              title="Foto">
-              <ImagePlus size={18} className="text-ink-400" />
+            <input ref={imageRef} type="file" accept="image/*" multiple hidden onChange={e => { addFiles(e.target.files); e.target.value = '' }} />
+            <input ref={pdfRef} type="file" accept="application/pdf" multiple hidden onChange={e => { addFiles(e.target.files); e.target.value = '' }} />
+            <button type="button" onClick={() => imageRef.current?.click()} disabled={files.length >= MAX_FILES}
+              className="inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-btn text-[12px] font-semibold transition-all disabled:opacity-40"
+              style={{ color: 'var(--text-secondary)', background: 'var(--bg-subtle)' }}>
+              <ImagePlus size={15} /> Foto
             </button>
-            {/* Botón PDF */}
-            <button type="button" disabled={files.length >= MAX_FILES}
-              onClick={() => pdfRef.current?.click()}
-              className={`flex items-center justify-center rounded-3xl border-2 border-dashed transition-all ${
-                files.length >= MAX_FILES
-                  ? 'border-ink-200 bg-ink-50 opacity-40 cursor-not-allowed'
-                  : 'border-ink-300 bg-ink-50 hover:border-danger-300 hover:bg-danger-500/5 cursor-pointer'
-              }`}
-              style={{ width: 46, height: 46 }}
-              title="PDF">
-              <FileText size={18} className="text-ink-400" />
+            <button type="button" onClick={() => pdfRef.current?.click()} disabled={files.length >= MAX_FILES}
+              className="inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-btn text-[12px] font-semibold transition-all disabled:opacity-40"
+              style={{ color: 'var(--text-secondary)', background: 'var(--bg-subtle)' }}>
+              <FileText size={15} /> PDF
             </button>
-
-            {files.length > 0 && (
-              <span className="text-[10px] text-ink-400 ml-1">{files.length}/{MAX_FILES}</span>
-            )}
           </div>
 
           <button type="submit" disabled={!valid || loading}
-            className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium px-4 py-2 rounded-2xl disabled:opacity-50 transition-colors">
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-btn text-[13px] font-semibold text-white transition-all duration-[160ms] active:scale-[0.98] disabled:opacity-50"
+            style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-raised)' }}>
             {loading
-              ? <><Loader2 size={13} className="animate-spin" /> Subiendo...</>
-              : <><Send size={13} /> Publicar</>
-            }
+              ? <><Loader2 size={14} className="animate-spin" /> Publicando...</>
+              : <><Send size={14} /> Publicar</>}
           </button>
         </div>
       </form>

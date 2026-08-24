@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ArrowLeft, Send, Search, MessageSquareText } from 'lucide-react'
+import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getConversations, getMessages, sendMessage } from '../api/messages'
 import { createNotification } from '../api/notifications'
@@ -27,8 +27,16 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
     <div className="flex flex-col h-full" style={{ background: 'var(--surface)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-soft)' }}>
-        <h2 className="t-h3" style={{ color: 'var(--text-primary)' }}>Mensajes</h2>
+      <div className="px-5 pt-5 pb-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-soft)' }}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="t-eyebrow mb-1" style={{ color: 'var(--accent)' }}>REDCobalto</p>
+            <h2 className="t-h2" style={{ color: 'var(--text-primary)' }}>Mensajes</h2>
+          </div>
+          <button aria-label="Más opciones" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ background:'var(--bg-subtle)', color:'var(--text-secondary)' }}>
+            <MoreHorizontal size={18} />
+          </button>
+        </div>
       </div>
 
       {/* Buscador */}
@@ -41,14 +49,14 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
             onChange={e => setSearch(e.target.value)}
             placeholder="Buscar conversación"
             aria-label="Buscar conversación"
-            className="w-full h-[38px] pl-9 pr-3 rounded-input t-caption transition-all duration-[160ms]"
+            className="w-full h-10 pl-9 pr-3 rounded-input t-body-sm transition-all duration-[160ms]"
             style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)' }}
           />
         </div>
       </div>
 
       {/* Lista */}
-      <div className="flex-1 overflow-y-auto px-3 pb-3">
+      <div className="flex-1 overflow-y-auto px-3 pb-4">
         {filtered.length === 0 ? (
           <EmptyState icon={MessageSquareText}
             title={search ? 'Sin resultados' : 'Sin conversaciones aún'}
@@ -65,10 +73,11 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
                 className="w-full text-left mb-2 rounded-card transition-all duration-[160ms] ease-premium active:scale-[0.99]"
                 style={{
                   background: active ? 'var(--accent-softer)' : 'var(--surface)',
-                  boxShadow: active ? 'none' : 'var(--shadow-card)',
-                  border: active ? '1px solid var(--accent-soft)' : '1px solid var(--border-soft)',
+                  boxShadow: active ? 'var(--shadow-card)' : 'none',
+                  border: active ? '1px solid var(--accent-soft)' : '1px solid transparent',
                 }}>
-                <div className="flex items-center gap-3 px-3 py-3">
+                <div className="flex items-center gap-3 px-3 py-3 relative">
+                  {active && <span className="absolute left-0 top-3 bottom-3 w-1 rounded-pill" style={{ background:'var(--accent)' }} />}
 
                   <div className="relative flex-shrink-0">
                     <UserAvatar seed={other?.id || name} avatarUrl={other?.avatar_url} size={40} />
@@ -182,20 +191,29 @@ function ChatThread({ conversation, userId, myProfile }) {
     <div className="flex flex-col h-full">
 
       {/* Header */}
-      <div className="flex items-center gap-3 px-6 py-4 flex-shrink-0"
+      <div className="flex items-center gap-3 px-5 py-3.5 flex-shrink-0"
         style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border-soft)' }}>
-        <UserAvatar seed={other?.id || otherName} avatarUrl={other?.avatar_url} size={36} />
-        <div className="flex-1 min-w-0">
-          <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{otherName}</p>
-          {other?.city && <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>{other.city}</p>}
+        <div className="relative">
+          <UserAvatar seed={other?.id || otherName} avatarUrl={other?.avatar_url} size={42} />
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full" style={{ background:'var(--accent-mint)', border:'2px solid var(--surface)' }} />
         </div>
+        <div className="flex-1 min-w-0">
+          <p className="t-body font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{otherName}</p>
+          <div className="flex items-center gap-2">
+            <span className="t-caption" style={{ color: 'var(--accent-mint)', fontWeight:600 }}>Disponible</span>
+            {other?.city && <span className="t-caption truncate" style={{ color: 'var(--text-tertiary)' }}>· {other.city}</span>}
+          </div>
+        </div>
+        <button aria-label="Más opciones" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ background:'var(--bg-subtle)', color:'var(--text-secondary)' }}>
+          <MoreHorizontal size={18} />
+        </button>
       </div>
 
       {/* Post de referencia */}
       {conversation.posts && (
         <button onClick={() => navigate('/feed', { state: { scrollToPostId: conversation.posts.id } })}
           className="mx-4 mt-3 flex-shrink-0 flex items-start gap-3 px-4 py-3 rounded-card text-left transition-all duration-[160ms] active:scale-[0.99]"
-          style={{ background: 'var(--accent-softer)', border: '1px solid var(--accent-soft)' }}>
+          style={{ background: 'linear-gradient(135deg, var(--accent-softer), #ffffff)', border: '1px solid var(--accent-soft)' }}>
           <span className="w-9 h-9 rounded-input flex items-center justify-center flex-shrink-0 mt-0.5"
             style={{ background: 'var(--surface)' }}>
             <MessageSquareText size={16} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
@@ -215,7 +233,7 @@ function ChatThread({ conversation, userId, myProfile }) {
       )}
 
       {/* Mensajes */}
-      <div className="flex-1 overflow-y-auto px-6 py-6" style={{ background: 'var(--bg-app)' }}>
+      <div className="flex-1 overflow-y-auto px-6 py-6" style={{ background: 'linear-gradient(180deg, var(--bg-app) 0%, #F9FAFC 100%)' }}>
         {loading ? (
           <div className="flex justify-center py-6"><Spinner size={20} /></div>
         ) : messages.length === 0 ? (
@@ -242,11 +260,11 @@ function ChatThread({ conversation, userId, myProfile }) {
                       <div style={{ maxWidth: '75%' }}>
                         <div className="px-4 py-3 t-body-sm leading-relaxed whitespace-pre-wrap break-words"
                           style={{
-                            background: isMine ? 'var(--accent-deep)' : 'var(--surface)',
+                            background: isMine ? 'var(--accent)' : 'var(--surface)',
                             color: isMine ? '#ffffff' : 'var(--text-primary)',
                             borderRadius: isMine
-                              ? isLast ? '18px 18px 4px 18px' : '18px'
-                              : isLast ? '18px 18px 18px 4px' : '18px',
+                              ? isLast ? '18px 18px 5px 18px' : '18px'
+                              : isLast ? '18px 18px 18px 5px' : '18px',
                             boxShadow: isMine ? 'none' : 'var(--shadow-card)',
                             border: isMine ? 'none' : '1px solid var(--border-soft)',
                           }}>
@@ -273,6 +291,9 @@ function ChatThread({ conversation, userId, myProfile }) {
       {/* Input */}
       <div className="px-6 py-4 flex-shrink-0 flex items-end gap-3"
         style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-soft)' }}>
+        <div className="flex items-center gap-1.5 pb-0.5">
+          <button aria-label="Adjuntar archivo" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ color:'var(--text-secondary)', background:'var(--bg-subtle)' }}><Paperclip size={17}/></button>
+        </div>
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
@@ -285,9 +306,10 @@ function ChatThread({ conversation, userId, myProfile }) {
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() } }}
           onInput={e => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px' }}
         />
+        <button aria-label="Añadir emoji" className="hidden sm:flex w-9 h-9 rounded-pill flex items-center justify-center" style={{ color:'var(--text-secondary)', background:'transparent' }}><Smile size={17}/></button>
         <button onClick={handleSend} disabled={!text.trim() || sending} aria-label="Enviar mensaje"
           className="w-11 h-11 rounded-btn flex items-center justify-center flex-shrink-0 transition-all duration-[160ms] active:scale-95 disabled:opacity-40"
-          style={{ background: 'var(--accent-deep)' }}>
+          style={{ background: 'var(--accent)', color:'#fff' }}>
           {sending ? <Spinner size={16} color="#fff" /> : <Send size={17} strokeWidth={2} color="#fff" />}
         </button>
       </div>
@@ -333,12 +355,12 @@ export default function ChatsPage() {
   }, [loadConversations, conversations, session?.user?.id]))
 
   return (
-    <div className="page-enter flex overflow-hidden rounded-2xl"
-      style={{ height: 'calc(100dvh - 140px)', background: '#ffffff', boxShadow: '0 8px 28px rgba(0,71,171,0.09)' }}>
+    <div className="page-enter flex overflow-hidden rounded-panel"
+      style={{ height: 'calc(100dvh - 140px)', background: '#ffffff', boxShadow: 'var(--shadow-raised)', border:'1px solid var(--border)' }}>
 
       {/* Bandeja */}
-      <div className={`md:w-[300px] md:border-r flex-shrink-0 overflow-hidden flex flex-col ${active ? 'hidden md:flex' : 'w-full flex'}`}
-        style={{ borderColor: 'var(--accent-soft)' }}>
+      <div className={`md:w-[340px] md:border-r flex-shrink-0 overflow-hidden flex flex-col ${active ? 'hidden md:flex' : 'w-full flex'}`}
+        style={{ borderColor: 'var(--border)' }}>
         {loading ? (
           <div className="p-4 space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-16" />)}</div>
         ) : (
@@ -363,7 +385,9 @@ export default function ChatsPage() {
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>Selecciona una conversación</p>
+            <div className="w-14 h-14 rounded-card flex items-center justify-center mb-4" style={{ background:'var(--accent-softer)', color:'var(--accent)' }}><Sparkles size={22}/></div>
+            <p className="t-h3 mb-1" style={{ color: 'var(--text-primary)' }}>Tu espacio de conexión</p>
+            <p className="t-body-sm max-w-xs" style={{ color: 'var(--text-tertiary)' }}>Selecciona una conversación para continuar o contacta a alguien desde tu comunidad.</p>
           </div>
         )}
       </div>

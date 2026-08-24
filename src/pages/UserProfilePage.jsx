@@ -10,6 +10,7 @@ import { createNotification } from '../api/notifications'
 import { publicName, timeAgo } from '../lib/helpers'
 import { CATEGORY_MAP } from '../lib/constants'
 import UserAvatar from '../components/shared/UserAvatar'
+import RedCobaltoLogo from '../components/shared/RedCobaltoLogo'
 import Spinner from '../components/shared/Spinner'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
@@ -39,51 +40,66 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
   }
 
   return (
-    <div className="rounded-card overflow-hidden bg-white" style={{ boxShadow: 'var(--shadow-card)' }}>
-      <div className="px-4 pt-3.5 pb-3">
-        <div className="flex items-center gap-2 mb-2">
-          {catLabel && (
-            <span className="flex-shrink-0 px-2.5 py-1 rounded-input text-[11px] font-extrabold" style={{ background: 'var(--accent-soft)', color: 'var(--accent-deep)' }}>
-              {catLabel}
-            </span>
-          )}
-          <span className="text-[10px] font-semibold ml-auto" style={{ color: 'var(--text-tertiary)' }}>{timeAgo(post.created_at)}</span>
+    <article className="group overflow-hidden rounded-card bg-white border border-line-soft transition-all duration-200 hover:-translate-y-0.5" style={{ boxShadow: 'var(--shadow-card)' }}>
+      <div className="px-5 py-4">
+        <div className="flex items-center gap-2.5 mb-3">
+          <div className="w-8 h-8 rounded-full bg-[var(--accent-softer)] flex items-center justify-center flex-shrink-0">
+            <span className="text-[11px] font-extrabold text-[var(--accent)]">RC</span>
+          </div>
+          <div className="min-w-0">
+            {catLabel ? (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-pill text-[11px] font-bold" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
+                {catLabel}
+              </span>
+            ) : (
+              <span className="text-[11px] font-semibold" style={{ color: 'var(--text-secondary)' }}>Publicación</span>
+            )}
+          </div>
+          <span className="text-[12px] ml-auto flex-shrink-0" style={{ color: 'var(--text-tertiary)' }}>{timeAgo(post.created_at)}</span>
         </div>
-        <p className="text-[13px] leading-relaxed mb-2.5 whitespace-pre-wrap break-words line-clamp-4 font-medium" style={{ color: 'var(--text-secondary)' }}>
-          {wallText}
-        </p>
-        <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-input" style={{ background: 'var(--accent-softer)', color: 'var(--text-secondary)' }}>
-            <MessageCircle size={12} />{post.comment_count || 0}
+
+        {post.title && (
+          <h4 className="t-h4 mb-2" style={{ color: 'var(--text-primary)' }}>{post.title}</h4>
+        )}
+        {post.content && (
+          <p className="t-body-sm whitespace-pre-wrap break-words line-clamp-4 mb-4" style={{ color: 'var(--text-secondary)' }}>
+            {post.content}
+          </p>
+        )}
+
+        <div className="flex items-center justify-between pt-3 border-t border-line-soft">
+          <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-1.5 rounded-pill" style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
+            <MessageCircle size={13} />
+            {post.comment_count || 0} comentarios
           </span>
 
           {isMine && (
             confirming ? (
-              <div className="ml-auto flex items-center gap-1.5">
-                <span className="text-[10px] font-bold" style={{ color: 'var(--text-tertiary)' }}>¿Eliminar?</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>¿Eliminar?</span>
                 <button onClick={() => setConfirming(false)} disabled={deleting}
-                  className="text-[11px] font-bold px-2 py-1 rounded-input disabled:opacity-50"
-                  style={{ boxShadow: 'inset 0 0 0 1.5px var(--border)', color: 'var(--text-secondary)' }}>
+                  className="px-2.5 py-1.5 rounded-pill text-[12px] font-bold disabled:opacity-50"
+                  style={{ border: '1px solid var(--border)', color: 'var(--text-secondary)', background: 'var(--surface)' }}>
                   No
                 </button>
                 <button onClick={remove} disabled={deleting}
-                  className="flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-input text-white disabled:opacity-60"
-                  style={{ background: 'linear-gradient(135deg,#b91c1c,#dc2626)' }}>
-                  {deleting ? <Loader2 size={11} className="animate-spin" /> : null}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-pill text-[12px] font-bold text-white disabled:opacity-60"
+                  style={{ background: 'var(--error)' }}>
+                  {deleting ? <Loader2 size={12} className="animate-spin" /> : null}
                   Sí
                 </button>
               </div>
             ) : (
               <button onClick={() => setConfirming(true)} aria-label="Eliminar publicación"
-                className="ml-auto flex items-center justify-center w-7 h-7 rounded-input transition-colors hover:bg-red-50"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-[var(--error-bg)]"
                 style={{ color: 'var(--text-tertiary)' }}>
-                <Trash2 size={13} />
+                <Trash2 size={14} />
               </button>
             )
           )}
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 
@@ -225,125 +241,158 @@ export default function UserProfilePage() {
   const coverUrl    = profile.cover_url || null
 
   return (
-    <div className="page-enter max-w-xl mx-auto px-1">
+    <div className="page-enter max-w-2xl mx-auto px-1 pb-10">
       <button onClick={() => navigate(-1)}
-        className="flex items-center gap-1.5 text-gray-500 hover:text-gray-800 text-[14px] font-medium mb-4 transition-colors">
+        className="inline-flex items-center gap-1.5 mb-5 text-[14px] font-semibold transition-colors"
+        style={{ color: 'var(--text-secondary)' }}>
         <ArrowLeft size={16} /> Volver
       </button>
 
-      {/* Tarjeta de perfil premium */}
-      <div className="rounded-3xl overflow-hidden mb-5" style={{ boxShadow: '0 12px 36px rgba(0,71,171,0.18)' }}>
-
-        {/* ── Portada degradada ── */}
-        <div className="relative" style={{ height: 150 }}>
-          {coverUrl
-            ? <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
-            : <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 70%, #4C82F0 100%)' }} />
-          }
-          {uploadingCover && (
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <Loader2 size={24} className="text-white animate-spin" />
+      <section className="overflow-hidden rounded-panel bg-white border border-line-soft mb-7" style={{ boxShadow: 'var(--shadow-raised)' }}>
+        <div className="relative h-44 sm:h-52">
+          {coverUrl ? (
+            <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+          ) : (
+            <div className="relative w-full h-full overflow-hidden" style={{ background: 'linear-gradient(135deg, var(--accent-deep) 0%, #193764 48%, var(--accent) 100%)' }}>
+              <div className="absolute inset-0 opacity-60" style={{ background: 'radial-gradient(circle at 78% 18%, rgba(255,255,255,0.22), transparent 28%), radial-gradient(circle at 24% 84%, rgba(230,57,70,0.26), transparent 28%)' }} />
+              <div className="absolute -right-10 -top-8 w-48 h-48 rounded-full border border-white/10" />
+              <div className="absolute right-8 top-8 w-24 h-24 rounded-full border border-white/10" />
             </div>
           )}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
+
           {isOwnProfile && (
             <>
               <button
                 onClick={() => coverInputRef.current?.click()}
                 disabled={uploadingCover}
-                className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/40 hover:bg-black/60 text-white text-[12px] font-medium px-3.5 py-2 rounded-full transition-colors disabled:opacity-50 backdrop-blur-sm"
+                className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3.5 h-10 rounded-pill text-[12px] font-bold text-white border border-white/15 bg-black/25 backdrop-blur-md hover:bg-black/35 transition-all disabled:opacity-50"
                 aria-label="Cambiar portada">
                 <Camera size={14} /> Cambiar portada
               </button>
               <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
             </>
           )}
+
+          {uploadingCover && (
+            <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px] flex items-center justify-center">
+              <Loader2 size={26} className="text-white animate-spin" />
+            </div>
+          )}
         </div>
 
-        {/* ── Avatar + acciones ── */}
-        <div className="bg-white px-6 pb-6">
-          <div className="flex items-end justify-between -mt-12 mb-4">
-            <div className="relative flex-shrink-0">
+        <div className="px-5 sm:px-7 pb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between -mt-12 relative">
+            <div className="relative w-fit">
               <div
-                className="border-4 border-white rounded-modal overflow-hidden"
+                className="w-[104px] h-[104px] rounded-[24px] overflow-hidden border-4 border-white bg-white"
                 onClick={isOwnProfile ? () => avatarInputRef.current?.click() : undefined}
-                style={isOwnProfile ? { cursor: 'pointer' } : {}}>
+                style={{ boxShadow: 'var(--shadow-raised)', cursor: isOwnProfile ? 'pointer' : 'default' }}>
                 {uploadingAvatar ? (
-                  <div style={{ width: 92, height: 92 }}
-                    className="rounded-panel bg-gray-100 flex items-center justify-center">
-                    <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent-deep)' }} />
+                  <div className="w-full h-full bg-[var(--bg-subtle)] flex items-center justify-center">
+                    <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent)' }} />
                   </div>
                 ) : (
-                  <UserAvatar seed={profile.id} avatarUrl={profile.avatar_url} size={92} className="!rounded-panel" />
+                  <UserAvatar seed={profile.id} avatarUrl={profile.avatar_url} size={104} className="!rounded-[20px]" />
                 )}
               </div>
-              {isOwnProfile && (
-                <button
-                  onClick={() => avatarInputRef.current?.click()}
-                  disabled={uploadingAvatar}
-                  className="absolute bottom-1 right-1 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center transition-colors disabled:opacity-50"
-                  style={{ background: 'var(--accent-deep)' }}
-                  aria-label="Cambiar foto de perfil">
-                  <Camera size={14} className="text-white" />
-                </button>
-              )}
+
+              <div className="absolute -right-1 -bottom-1 w-8 h-8 rounded-full border-2 border-white flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+                {isOwnProfile ? (
+                  <button onClick={() => avatarInputRef.current?.click()} disabled={uploadingAvatar} className="w-full h-full rounded-full flex items-center justify-center disabled:opacity-50" aria-label="Cambiar foto de perfil">
+                    <Camera size={14} className="text-white" />
+                  </button>
+                ) : (
+                  <span className="w-2 h-2 rounded-full bg-white" aria-hidden="true" />
+                )}
+              </div>
+
               {isOwnProfile && (
                 <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
               )}
             </div>
 
-            {isOwnProfile ? (
-              <button onClick={() => navigate('/profile')}
-                className="flex items-center gap-1.5 text-[14px] font-semibold px-5 h-11 rounded-2xl text-gray-700 transition-colors active:scale-95"
-                style={{ border: '1px solid #E5E7EB', background: '#fff' }}>
-                <Settings size={16} /> Editar
-              </button>
-            ) : (
-              <button onClick={handleFollow} disabled={loadingFollow}
-                className="flex items-center gap-1.5 text-[14px] font-semibold px-6 h-11 rounded-2xl transition-all disabled:opacity-60 active:scale-95"
-                style={isFollowing
-                  ? { border: '1px solid var(--accent-deep)', color: 'var(--accent-deep)', background: '#fff' }
-                  : { background: 'var(--accent-deep)', color: '#fff', boxShadow: '0 8px 20px rgba(0,71,171,0.3)' }}>
-                {loadingFollow
-                  ? <Spinner size={15} />
-                  : isFollowing
-                    ? <><UserCheck size={16} /> Siguiendo</>
-                    : <><UserPlus size={16} /> Seguir</>
-                }
-              </button>
-            )}
+            <div className="flex items-center gap-2 pb-1">
+              {isOwnProfile ? (
+                <button onClick={() => navigate('/profile')}
+                  className="inline-flex items-center gap-2 px-4 h-11 rounded-btn text-[13px] font-bold transition-all active:scale-[0.98]"
+                  style={{ border: '1px solid var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}>
+                  <Settings size={16} /> Editar perfil
+                </button>
+              ) : (
+                <>
+                  <button onClick={() => navigate('/chats')}
+                    className="inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all active:scale-[0.98]"
+                    style={{ borderColor: 'var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}
+                    aria-label="Abrir mensajes">
+                    <Send size={17} />
+                  </button>
+                  <button onClick={handleFollow} disabled={loadingFollow}
+                    className="inline-flex items-center gap-2 px-5 h-11 rounded-btn text-[13px] font-bold transition-all disabled:opacity-60 active:scale-[0.98]"
+                    style={isFollowing
+                      ? { border: '1px solid var(--accent)', color: 'var(--accent)', background: 'var(--surface)' }
+                      : { background: 'var(--accent)', color: '#fff', boxShadow: '0 8px 20px rgba(36,87,197,0.20)' }}>
+                    {loadingFollow ? <Spinner size={15} /> : isFollowing ? <><UserCheck size={16} /> Siguiendo</> : <><UserPlus size={16} /> Seguir</>}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
-          <p className="text-[22px] font-extrabold text-[var(--text-primary)] leading-tight" style={{ letterSpacing: '-0.02em' }}>{displayName}</p>
-          {profile.company_name && <p className="text-[15px] text-gray-500 mt-0.5">{profile.company_name}</p>}
-          {profile.city && (
-            <p className="flex items-center gap-1 text-[14px] text-gray-400 mt-1.5">
-              <MapPin size={14} /> {profile.city}
-            </p>
-          )}
+          <div className="mt-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="t-h2" style={{ color: 'var(--text-primary)' }}>{displayName}</h1>
+              <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-pill" style={{ background: 'var(--accent-soft)' }}>
+                <RedCobaltoLogo size="sm" markOnly />
+                <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>REDCobalto</span>
+              </span>
+            </div>
+            {profile.company_name && <p className="t-body-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{profile.company_name}</p>}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3">
+              {profile.city && (
+                <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
+                  <MapPin size={14} /> {profile.city}
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent-mint)' }} /> Comunidad profesional
+              </span>
+            </div>
+          </div>
 
-          {/* Stat cards */}
-          <div className="grid grid-cols-3 gap-3 mt-5">
-            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
-              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{posts.length}</div>
-              <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Publicaciones</div>
-            </div>
-            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
-              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{counts.followers}</div>
-              <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Seguidores</div>
-            </div>
-            <div className="rounded-2xl py-4 text-center" style={{ background: 'var(--accent-softer)' }}>
-              <div className="text-[22px] font-extrabold text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>{counts.following}</div>
-              <div className="text-[12px] text-gray-500 mt-0.5 font-medium">Siguiendo</div>
-            </div>
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mt-6">
+            {[
+              { value: posts.length, label: 'Publicaciones' },
+              { value: counts.followers, label: 'Seguidores' },
+              { value: counts.following, label: 'Siguiendo' },
+            ].map(stat => (
+              <div key={stat.label} className="rounded-card border border-line-soft px-3 py-4 text-center" style={{ background: 'var(--bg-app)' }}>
+                <div className="text-[22px] sm:text-[24px] font-extrabold leading-none tnum" style={{ color: 'var(--text-primary)' }}>{stat.value}</div>
+                <div className="text-[11px] sm:text-[12px] font-semibold mt-2" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
+
+      <div className="flex items-end justify-between mb-4 px-1">
+        <div>
+          <p className="t-eyebrow" style={{ color: 'var(--accent)' }}>Actividad</p>
+          <h2 className="t-h3 mt-1" style={{ color: 'var(--text-primary)' }}>Publicaciones</h2>
+        </div>
+        <span className="text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>{posts.length} en total</span>
       </div>
 
-      <h3 className="text-[10px] font-extrabold uppercase mb-3 px-2" style={{ color: 'var(--text-secondary)', letterSpacing: '0.12em' }}>Publicaciones</h3>
       {posts.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 text-[15px]">Sin publicaciones aún.</div>
+        <div className="rounded-card bg-white border border-line-soft px-6 py-14 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
+          <div className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
+            <MessageCircle size={20} />
+          </div>
+          <p className="t-body-sm font-bold" style={{ color: 'var(--text-primary)' }}>Aún no hay publicaciones</p>
+          <p className="text-[13px] mt-1" style={{ color: 'var(--text-tertiary)' }}>Cuando comparta algo con la comunidad aparecerá aquí.</p>
+        </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {posts.map(post => (
             <MiniPostCard key={post.id} post={post} onContact={handleContact} contactingId={contactingPost}
               onDeleted={(id) => setPosts(prev => prev.filter(p => p.id !== id))} />
