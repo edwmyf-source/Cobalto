@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getConversations, getMessages, sendMessage, uploadMessageAttachment } from '../api/messages'
+import { getConversations, getMessages, sendMessage, uploadMessageAttachment, getAttachmentUrl } from '../api/messages'
 import { createNotification } from '../api/notifications'
 import { useAuth } from '../contexts/AuthContext'
 import { useRealtime } from '../hooks/useRealtime'
@@ -117,6 +117,66 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
         )}
       </div>
     </div>
+  )
+}
+
+/* ─── Adjunto de un mensaje ───
+   El archivo vive en un bucket privado, así que hay que pedir una URL firmada
+   antes de poder mostrarlo o descargarlo. */
+function MessageAttachment({ msg, isMine }) {
+  const [url, setUrl] = useState(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    getAttachmentUrl(msg.media_url)
+      .then(u => { if (alive) setUrl(u) })
+      .catch(() => { if (alive) setFailed(true) })
+    return () => { alive = false }
+  }, [msg.media_url])
+
+  const isImage = msg.media_type?.startsWith('image/')
+
+  if (failed) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl"
+        style={{ background: isMine ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)' }}>
+        <FileText size={18} style={{ color: isMine ? '#fff' : 'var(--text-tertiary)', flexShrink: 0 }} />
+        <span className="text-[12px]" style={{ color: isMine ? '#fff' : 'var(--text-tertiary)' }}>
+          Adjunto no disponible
+        </span>
+      </div>
+    )
+  }
+
+  if (!url) {
+    return (
+      <div className="flex items-center justify-center rounded-xl"
+        style={{ width: isImage ? 180 : 150, height: isImage ? 120 : 44,
+                 background: isMine ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)' }}>
+        <Spinner size={15} />
+      </div>
+    )
+  }
+
+  if (isImage) {
+    return (
+      <img src={url} alt={msg.media_name || 'Adjunto'} loading="lazy" decoding="async"
+        onClick={() => window.open(url, '_blank')}
+        className="rounded-2xl cursor-pointer block"
+        style={{ maxWidth: '100%', maxHeight: 280, objectFit: 'cover' }} />
+    )
+  }
+
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer"
+      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-opacity hover:opacity-85"
+      style={{ background: isMine ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)' }}>
+      <FileText size={20} strokeWidth={2} style={{ color: isMine ? '#fff' : 'var(--accent-deep)', flexShrink: 0 }} />
+      <span className="text-[13px] font-medium truncate" style={{ color: isMine ? '#fff' : 'var(--text-primary)' }}>
+        {msg.media_name || 'Archivo adjunto'}
+      </span>
+    </a>
   )
 }
 
@@ -288,21 +348,7 @@ function ChatThread({ conversation, userId, myProfile }) {
                             boxShadow: isMine ? 'none' : 'var(--shadow-card)',
                             border: isMine ? 'none' : '1px solid var(--border-soft)',
                           }}>
-                          {msg.media_url && msg.media_type?.startsWith('image/') ? (
-                            <img src={msg.media_url} alt={msg.media_name || 'Adjunto'} loading="lazy" decoding="async"
-                              onClick={() => window.open(msg.media_url, '_blank')}
-                              className="rounded-2xl cursor-pointer block"
-                              style={{ maxWidth: '100%', maxHeight: 280, objectFit: 'cover' }} />
-                          ) : msg.media_url ? (
-                            <a href={msg.media_url} target="_blank" rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-opacity hover:opacity-85"
-                              style={{ background: isMine ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)' }}>
-                              <FileText size={20} strokeWidth={2} style={{ color: isMine ? '#fff' : 'var(--accent-deep)', flexShrink: 0 }} />
-                              <span className="text-[13px] font-medium truncate" style={{ color: isMine ? '#fff' : 'var(--text-primary)' }}>
-                                {msg.media_name || 'Archivo adjunto'}
-                              </span>
-                            </a>
-                          ) : null}
+                          {msg.media_url && <MessageAttachment msg={msg} isMine={isMine} />}
                           {msg.content && <div className={msg.media_url ? 'px-2.5 pt-2' : ''}>{msg.content}</div>}
                         </div>
                         {isLast && (

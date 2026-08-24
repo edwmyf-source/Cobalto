@@ -53,9 +53,10 @@ export const getMessages = async (conversationId) => {
 }
 
 // Sube un archivo adjunto al chat (imagen comprimida, PDF u otro documento tal
-// cual). Reutiliza el mismo bucket público que las fotos de publicaciones; la
-// política de acceso exige que la primera carpeta de la ruta sea el propio
-// uid de quien sube, por eso se guarda bajo `${senderId}/...`.
+// cual). Va al bucket PRIVADO `chat-media`: a diferencia de las fotos de
+// publicaciones, un documento enviado por chat no debe quedar accesible para
+// cualquiera que tenga la URL. Se guarda la ruta, no una URL pública, y al
+// mostrarlo se genera una URL firmada de corta duración.
 export const uploadMessageAttachment = async (rawFile, senderId) => {
   const file = await compressImage(rawFile)
   if (file.size > MAX_FILE_MB * 1024 * 1024) {
@@ -65,12 +66,25 @@ export const uploadMessageAttachment = async (rawFile, senderId) => {
   const path = `${senderId}/msg-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
   const { error } = await supabase.storage
-    .from('post-media')
+    .from('chat-media')
     .upload(path, file, { cacheControl: '3600', upsert: false })
   if (error) throw error
 
-  const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(path)
-  return { url: urlData.publicUrl, type: file.type, name: file.name }
+  return { url: path, type: file.type, name: file.name }
+}
+
+// Genera una URL temporal (1 hora) para ver o descargar un adjunto. Solo
+// funciona si el usuario tiene permiso de lectura sobre ese objeto.
+export const getAttachmentUrl = async (path) => {
+  if (!path) return null
+  // Compatibilidad: los adjuntos subidos antes de este cambio guardaron una
+  // URL pública completa; esos se devuelven tal cual.
+  if (path.startsWith('http')) return path
+  const { data, error } = await supabase.storage
+    .from('chat-media')
+    .createSignedUrl(path, 3600)
+  if (error) throw error
+  return data.signedUrl
 }
 
 // Send message
