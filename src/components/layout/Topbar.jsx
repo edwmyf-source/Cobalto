@@ -43,7 +43,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
 
         {/* Logo */}
         <button onClick={() => navigate('/feed')} className="flex items-center flex-shrink-0 rc-focus rounded-xl">
-          <RedCobaltoLogo size="md" />
+          <RedCobaltoLogo size="lg" />
         </button>
 
         {/* Buscador */}

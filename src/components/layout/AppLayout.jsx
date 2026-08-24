@@ -94,7 +94,7 @@ export default function AppLayout() {
       {/* ── Topbar móvil fija ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4"
         style={{ background: 'linear-gradient(180deg, var(--accent-deep) 0%, #10213A 100%)', height: '56px', boxShadow: '0 1px 0 rgba(255,255,255,.08)' }}>
-        <RedCobaltoLogo size="sm" dark />
+        <RedCobaltoLogo size="md" dark />
         <span className="text-[14px] font-medium truncate max-w-[45%]" style={{ color: 'var(--text-inverse)' }}>
           Hola, {name.split(' ')[0]} 👋
         </span>
