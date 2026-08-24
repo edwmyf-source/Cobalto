@@ -81,6 +81,9 @@ export const updateProfile = async (uid, fields) => {
     updated_at: new Date().toISOString(),
   }
   if (fields.segment) payload.segment = fields.segment
+  // Solo se toca si viene en la llamada: al cambiar el avatar o la portada
+  // desde otra pantalla no se envía, y así no se borra la frase existente.
+  if (fields.headline !== undefined) payload.headline = fields.headline?.trim() || null
   if (fields.avatar_url !== undefined) payload.avatar_url = fields.avatar_url
   if (fields.cover_url !== undefined) payload.cover_url = fields.cover_url
 

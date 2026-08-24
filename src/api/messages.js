@@ -38,6 +38,25 @@ export const getConversations = async (userId) => {
   return convs.map(c => ({ ...c, unread_count: counts[c.id] || 0 }))
 }
 
+// Total de mensajes sin leer que ha recibido el usuario, en todas sus
+// conversaciones. Alimenta el badge del ícono "Msj" en la barra inferior.
+export const getUnreadMessageCount = async (userId) => {
+  const { data: convs, error: convErr } = await supabase
+    .from('conversations')
+    .select('id')
+    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
+  if (convErr || !convs || convs.length === 0) return 0
+
+  const { count, error } = await supabase
+    .from('messages')
+    .select('id', { count: 'exact', head: true })
+    .in('conversation_id', convs.map(c => c.id))
+    .neq('sender_id', userId)
+    .eq('read', false)
+  if (error) return 0
+  return count || 0
+}
+
 // Marca como leídos los mensajes recibidos en una conversación.
 export const markConversationRead = async (conversationId, userId) => {
   const { error } = await supabase

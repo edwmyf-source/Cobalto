@@ -359,6 +359,9 @@ export default function UserProfilePage() {
                 <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>REDCobalto</span>
               </span>
             </div>
+            {profile.headline && (
+              <p className="t-body mt-1.5" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
+            )}
             {profile.company_name && <p className="t-body-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{profile.company_name}</p>}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3">
               {profile.city && (

@@ -5,6 +5,7 @@ import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
 import { isAdmin } from '../../lib/constants'
 import { getUnreadCount } from '../../api/notifications'
+import { getUnreadMessageCount } from '../../api/messages'
 import { useRealtime } from '../../hooks/useRealtime'
 import { signOut } from '../../api/auth'
 import { publicName } from '../../lib/helpers'
@@ -17,6 +18,7 @@ export default function AppLayout() {
   const location = useLocation()
   const navigate = useNavigate()
   const [unreadCount, setUnreadCount] = useState(0)
+  const [unreadMsgs, setUnreadMsgs] = useState(0)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const profileBtnRef = useRef(null)
@@ -28,16 +30,21 @@ export default function AppLayout() {
   const name = publicName(profile)
   const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 
-  const refreshUnread = useCallback(() => {
+  const refreshUnread = useCallback((force = false) => {
     const now = Date.now()
-    if (now - lastFetchRef.current < 30_000) return
+    if (!force && now - lastFetchRef.current < 30_000) return
     lastFetchRef.current = now
     if (session?.user?.id) {
       getUnreadCount(session.user.id).then(setUnreadCount).catch(() => {})
+      getUnreadMessageCount(session.user.id).then(setUnreadMsgs).catch(() => {})
     }
   }, [session?.user?.id])
 
-  useEffect(() => { refreshUnread() }, [refreshUnread, location.pathname])
+  // Al entrar o salir de la bandeja se fuerza el refresco: si no, el throttle
+  // de 30s dejaba el badge en el número viejo después de leer los mensajes.
+  useEffect(() => {
+    refreshUnread(location.pathname.startsWith('/chats'))
+  }, [refreshUnread, location.pathname])
 
   useEffect(() => {
     const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1500))
@@ -174,10 +181,10 @@ export default function AppLayout() {
               className="flex flex-col items-center justify-center gap-[1px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
               <div className="relative">
                 <MessageSquare size={22} style={{ color: active ? 'var(--accent-deep)' : 'var(--text-tertiary)' }} strokeWidth={active ? 2.4 : 2} />
-                {unreadCount > 0 && (
+                {unreadMsgs > 0 && (
                   <span className="absolute -top-1.5 -right-2.5 text-white text-[10px] font-semibold px-1.5 rounded-full min-w-[17px] text-center leading-[17px] tnum"
                     style={{ background: 'var(--error)' }}>
-                    {unreadCount > 99 ? '99+' : unreadCount}
+                    {unreadMsgs > 99 ? '99+' : unreadMsgs}
                   </span>
                 )}
               </div>

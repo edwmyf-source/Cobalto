@@ -30,6 +30,7 @@ export default function ProfilePage() {
 
   const [form, setForm] = useState({
     full_name: profile?.full_name || '',
+    headline: profile?.headline || '',
     company_name: profile?.company_name || '',
     phone: profile?.phone || '',
     city: profile?.city || '',
@@ -65,6 +66,7 @@ export default function ProfilePage() {
       // Guardar en el perfil inmediatamente
       const p = await updateProfile(userId, {
         full_name: form.full_name.trim(),
+        headline: form.headline.trim() || null,
         company_name: form.company_name.trim(),
         phone: form.phone.trim(),
         city: form.city,
@@ -89,6 +91,7 @@ export default function ProfilePage() {
     try {
       const p = await updateProfile(userId, {
         full_name: form.full_name.trim(),
+        headline: form.headline.trim() || null,
         company_name: form.company_name.trim(),
         phone: form.phone.trim(),
         city: form.city,
@@ -161,6 +164,16 @@ export default function ProfilePage() {
           <div>
             <div className="flex items-center justify-between mb-1"><label className={labelCls}>Nombre completo</label><PrivacyBadge variant="private" /></div>
             <input value={form.full_name} onChange={e => set('full_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Tu nombre" />
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Sobre ti</label><PrivacyBadge variant="public" /></div>
+            <input value={form.headline} maxLength={120}
+              onChange={e => set('headline', e.target.value)}
+              className={inputCls} style={inputStyle}
+              placeholder="Ej: Química farmacéutica · Control de calidad" />
+            <p className="text-[11px] mt-1" style={{ color: 'var(--text-tertiary)' }}>
+              Una frase corta que aparece bajo tu nombre. {120 - form.headline.length} caracteres restantes.
+            </p>
           </div>
           <div>
             <div className="flex items-center justify-between mb-1"><label className={labelCls}>Empresa</label><PrivacyBadge variant="private" /></div>
