@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Search, MessageSquareText, Users, SlidersHorizontal, MapPin, BriefcaseBusiness, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Search, MessageSquareText, Users, MapPin, X } from 'lucide-react'
 import { searchUsers } from '../api/users'
 import { getOrCreateConversation } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
@@ -8,54 +8,40 @@ import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
 import { publicName } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
-import { Card, Button, SkeletonListRow, EmptyState } from '../components/ui'
+import Spinner from '../components/shared/Spinner'
+import { SkeletonListRow, EmptyState } from '../components/ui'
 
-const accentIcons = ['var(--accent)', 'var(--accent-mint)', 'var(--accent-violet)', 'var(--accent-amber)', 'var(--accent-sky)']
-
-function PersonCard({ user, index, contactingId, onOpenProfile, onMessage }) {
+// Una fila de persona, estilo lista de Contactos: avatar + nombre + ciudad,
+// sin tarjeta propia ni sombra — el contorno lo da la línea divisoria entre
+// filas, igual que en Configuración de perfil.
+function PersonRow({ user, isLast, contactingId, onOpenProfile, onMessage }) {
   const isContacting = contactingId === user.id
-  const meta = [user.company_name, user.city].filter(Boolean)
   return (
-    <Card className="group relative overflow-hidden !rounded-[16px] px-3.5 py-2.5 transition-all duration-[180ms] hover:-translate-y-[1px]"
-      style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', borderColor: 'var(--border-soft)' }}
-    >
-      <div className="absolute inset-x-0 top-0 h-1" style={{ background: accentIcons[index % accentIcons.length] }} />
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          className="flex-shrink-0 rounded-full focus-visible:ring-2"
-          style={{ '--tw-ring-color': 'var(--border-focus)' }}
-          onClick={() => onOpenProfile(user)}
-          aria-label={`Ver perfil de ${publicName(user)}`}
-        >
-          <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={36} />
-        </button>
-        <div className="min-w-0 flex-1">
-          <button type="button" className="block max-w-full text-left" onClick={() => onOpenProfile(user)}>
-            <p className="t-body-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{publicName(user)}</p>
-          </button>
-          {meta.length > 0 ? (
-            <div className="flex flex-wrap gap-x-3">
-              {user.company_name && <span className="inline-flex min-w-0 items-center gap-1.5 t-caption" style={{ color: 'var(--text-secondary)' }}><BriefcaseBusiness size={12} /> <span className="truncate">{user.company_name}</span></span>}
-              {user.city && <span className="inline-flex items-center gap-1.5 t-caption" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {user.city}</span>}
-            </div>
-          ) : (
-            <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</p>
-          )}
-        </div>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => onMessage(user)}
-          loading={isContacting}
-          icon={MessageSquareText}
-          aria-label={`Enviar mensaje a ${publicName(user)}`}
-          className="!min-h-[30px] !rounded-[10px] !px-3 flex-shrink-0"
-        >
-          <span className="hidden sm:inline">Mensaje</span>
-        </Button>
-      </div>
-    </Card>
+    <div className="flex items-center gap-3 px-4 py-3"
+      style={!isLast ? { borderBottom: '1px solid var(--border-soft)' } : undefined}>
+      <button type="button" className="flex-shrink-0 rounded-full" onClick={() => onOpenProfile(user)}
+        aria-label={`Ver perfil de ${publicName(user)}`}>
+        <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={42} />
+      </button>
+
+      <button type="button" className="min-w-0 flex-1 text-left" onClick={() => onOpenProfile(user)}>
+        <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{publicName(user)}</p>
+        {user.city ? (
+          <span className="inline-flex items-center gap-1 t-caption" style={{ color: 'var(--text-tertiary)' }}>
+            <MapPin size={11} /> {user.city}
+          </span>
+        ) : (
+          <span className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Perfil profesional</span>
+        )}
+      </button>
+
+      <button type="button" onClick={() => onMessage(user)} disabled={isContacting}
+        className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+        style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
+        aria-label={`Enviar mensaje a ${publicName(user)}`}>
+        {isContacting ? <Spinner size={14} /> : <MessageSquareText size={16} />}
+      </button>
+    </div>
   )
 }
 
@@ -101,86 +87,66 @@ export default function ContactsPage() {
 
   return (
     <div className="page-enter min-h-full" style={{ background: 'var(--bg-app)' }}>
-      <div className="mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
-        <div className="mb-7 flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 t-body-sm transition-colors duration-[160ms]"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            <ArrowLeft size={17} strokeWidth={2} />
-            Volver
-          </button>
-          <div className="hidden items-center gap-2 rounded-full border px-3 py-1.5 sm:inline-flex" style={{ borderColor: 'var(--border)', background: 'rgba(255,255,255,.72)', color: 'var(--text-tertiary)' }}>
-            <Users size={14} />
-            <span className="t-caption">Personas en REDCOBALTO</span>
-          </div>
-        </div>
+      <div className="mx-auto w-full max-w-lg px-4 py-5 sm:px-6 sm:py-8">
+        <button type="button" onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-1.5 t-body-sm font-semibold mb-4"
+          style={{ color: 'var(--text-tertiary)' }}>
+          <ArrowLeft size={16} /> Volver
+        </button>
 
-        <section className="relative overflow-hidden rounded-[28px] border p-6 sm:p-8" style={{ background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FF 55%, #F6FBFA 100%)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-          <div className="pointer-events-none absolute -right-16 -top-20 h-44 w-44 rounded-full opacity-60" style={{ background: 'radial-gradient(circle, rgba(36,87,197,.13), transparent 68%)' }} />
-          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-40 w-40 rounded-full opacity-70" style={{ background: 'radial-gradient(circle, rgba(24,184,154,.09), transparent 68%)' }} />
-          <div className="relative">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5 t-eyebrow" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
-              <Users size={13} /> Comunidad profesional
-            </div>
-            <h1 className="t-h1 max-w-xl" style={{ color: 'var(--text-primary)' }}>Encuentra a las personas que hacen crecer tu red.</h1>
-            <p className="t-body mt-3 max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
-              Descubre profesionales, abre conversaciones y construye conexiones con intención.
-            </p>
-            <div className="relative mt-6">
-              <Search size={19} strokeWidth={2} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-tertiary)' }} />
-              <input
-                value={query}
-                onChange={e => handleQueryChange(e.target.value)}
-                placeholder="Buscar por nombre, empresa o ciudad"
-                aria-label="Buscar contactos"
-                className="h-12 w-full rounded-[15px] border bg-white pl-12 pr-12 t-body-sm transition-all duration-[160ms] focus:outline-none"
-                style={{ borderColor: 'var(--border)', color: 'var(--text-primary)', boxShadow: '0 4px 16px rgba(15,23,42,.04)' }}
-              />
-              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-[10px] p-2" style={{ background: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }}>
-                <SlidersHorizontal size={15} />
-              </div>
-            </div>
-          </div>
-        </section>
+        <h1 className="t-h1" style={{ color: 'var(--text-primary)' }}>Red</h1>
+        <p className="t-body-sm mt-1 mb-5" style={{ color: 'var(--text-tertiary)' }}>
+          Encuentra profesionales y abre una conversación.
+        </p>
 
-        <div className="mt-7 flex items-end justify-between gap-4">
-          <div>
-            <p className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>Personas</p>
-            <h2 className="t-h3 mt-1" style={{ color: 'var(--text-primary)' }}>{query ? 'Resultados' : 'Descubrir profesionales'}</h2>
-          </div>
-          <span className="t-caption" style={{ color: 'var(--text-tertiary)' }}>{loading ? 'Buscando…' : `${users.length} resultados`}</span>
-        </div>
-
-        <div className="mt-4">
-          {loading ? (
-            <div className="grid gap-3 md:grid-cols-2">{[1,2,3,4].map(i => <SkeletonListRow key={i} />)}</div>
-          ) : users.length === 0 ? (
-            <div className="mt-4 rounded-[24px] border bg-white p-4 sm:p-8" style={{ borderColor: 'var(--border-soft)' }}>
-              <EmptyState icon={Users} title="No se encontraron personas" description="Prueba con otro nombre, empresa o ciudad." />
-            </div>
-          ) : (
-            <div className="grid gap-3 md:grid-cols-2">
-              {users.map((user, index) => (
-                <PersonCard
-                  key={user.id}
-                  user={user}
-                  index={index}
-                  contactingId={contactingId}
-                  onOpenProfile={u => navigate(`/u/${u.id}`)}
-                  onMessage={handleStartChat}
-                />
-              ))}
-            </div>
+        {/* Buscador estilo sistema: fondo plano, sin sombra */}
+        <div className="relative mb-2">
+          <Search size={17} strokeWidth={2} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-tertiary)' }} />
+          <input
+            value={query}
+            onChange={e => handleQueryChange(e.target.value)}
+            placeholder="Buscar por nombre o ciudad"
+            aria-label="Buscar personas"
+            className="h-11 w-full rounded-full pl-10 pr-10 t-body-sm border-0 outline-none transition-colors"
+            style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)' }}
+          />
+          {query && (
+            <button type="button" onClick={() => handleQueryChange('')} aria-label="Limpiar búsqueda"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center"
+              style={{ background: 'var(--border)', color: 'var(--text-tertiary)' }}>
+              <X size={12} />
+            </button>
           )}
         </div>
 
-        {!loading && users.length > 0 && (
-          <button type="button" onClick={() => navigate('/')} className="mx-auto mt-8 inline-flex items-center gap-2 t-body-sm" style={{ color: 'var(--text-secondary)' }}>
-            Volver al feed <ChevronRight size={15} />
-          </button>
+        <div className="flex items-center justify-between px-1 mt-5 mb-2">
+          <p className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>
+            {query ? 'Resultados' : 'Sugeridos'}
+          </p>
+          <span className="t-caption" style={{ color: 'var(--text-tertiary)' }}>
+            {loading ? '' : `${users.length}`}
+          </span>
+        </div>
+
+        {loading ? (
+          <div className="space-y-2">{[1, 2, 3, 4].map(i => <SkeletonListRow key={i} />)}</div>
+        ) : users.length === 0 ? (
+          <div className="rounded-panel p-6" style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
+            <EmptyState icon={Users} title="No se encontraron personas" description="Prueba con otro nombre o ciudad." />
+          </div>
+        ) : (
+          <div className="rounded-panel overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
+            {users.map((user, index) => (
+              <PersonRow
+                key={user.id}
+                user={user}
+                isLast={index === users.length - 1}
+                contactingId={contactingId}
+                onOpenProfile={u => navigate(`/u/${u.id}`)}
+                onMessage={handleStartChat}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
