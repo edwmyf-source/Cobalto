@@ -1,16 +1,15 @@
 import { useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, X, Camera, Loader2, Lock, Globe, ShieldCheck, ArrowLeft } from 'lucide-react'
+import { Check, X, Camera, Loader2, Lock, ArrowLeft } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/profiles'
 import { updatePassword } from '../api/auth'
 import { useAuth } from '../contexts/AuthContext'
-import { DEPARTAMENTOS, isAdmin } from '../lib/constants'
+import { DEPARTAMENTOS } from '../lib/constants'
 import { safeErrorMessage } from '../lib/errors'
 import { generateIdentityNumber } from '../lib/helpers'
 import PrivacyBadge from '../components/shared/PrivacyBadge'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
-import MFASetup from '../components/auth/MFASetup'
 
 const inputCls = 'w-full px-4 h-14 rounded-card text-[16px] focus:outline-none transition-all'
 const inputStyle = { background: '#ffffff', border: 'none', boxShadow: '0 4px 14px rgba(0,71,171,0.07)', color: 'var(--text-primary)', fontWeight: 500 }
@@ -210,49 +209,9 @@ export default function ProfilePage() {
         </button>
       </form>
 
-      {/* ─── Configuración: privacidad de tus datos ─── */}
-      <div className="mt-5">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mb-2">Configuración · Privacidad de tus datos</p>
-        <div className="bg-white border border-ink-300 rounded-2xl p-4">
-          <div className="flex items-start gap-2 mb-3">
-            <ShieldCheck size={15} className="text-success-700 mt-0.5 flex-shrink-0" />
-            <p className="text-[11px] text-ink-500 leading-relaxed">
-              Esto es lo que la comunidad <strong className="text-ink-900 font-medium">ve</strong> y lo que <strong className="text-ink-900 font-medium">nunca verá</strong> de tu cuenta.
-            </p>
-          </div>
-          <div className="space-y-px">
-            {[
-              { label: 'Nombre completo', priv: true },
-              { label: 'Empresa', priv: true },
-              { label: 'Email', priv: true },
-              { label: 'Teléfono', priv: true },
-              { label: 'Departamento', priv: false },
-              { label: 'Identidad pública (nombre o anónimo)', priv: false },
-            ].map(row => (
-              <div key={row.label} className="flex items-center justify-between py-2 border-b border-ink-100 last:border-0">
-                <span className="text-[13px] text-ink-900 flex items-center gap-2">
-                  {row.priv
-                    ? <Lock size={13} className="text-ink-400" />
-                    : <Globe size={13} className="text-brand-600" />}
-                  {row.label}
-                </span>
-                <PrivacyBadge variant={row.priv ? 'private' : 'public'} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {isSyntheticEmail && (
         <div className="mt-4">
           <SecureAccountSection userId={userId} />
-        </div>
-      )}
-
-      {isAdmin(profile, session?.user?.email) && (
-        <div className="mt-4">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mb-2">Seguridad</p>
-          <MFASetup />
         </div>
       )}
     </div>
