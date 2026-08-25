@@ -39,6 +39,15 @@ export const publicName = (profile) => {
   return `Usuario-${num}`
 }
 
+// Iniciales para el avatar cuando no hay foto: primera letra de las dos
+// primeras palabras del nombre. "Edward Andres Alfonso" -> "EA".
+export const initialsOf = (name) => {
+  const words = String(name || '').trim().split(/\s+/).filter(Boolean)
+  if (words.length === 0) return ''
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase()
+  return (words[0][0] + words[1][0]).toUpperCase()
+}
+
 export const timeAgo = (iso) => {
   if (!iso) return ''
   const d = Math.floor((Date.now() - new Date(iso)) / 1000)

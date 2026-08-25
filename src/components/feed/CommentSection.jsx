@@ -18,7 +18,7 @@ function renderWithMentions(content) {
 }
 
 export default function CommentSection({ post, isOpen }) {
-  const { session } = useAuth()
+  const { session, profile: myProfile } = useAuth()
   const [comments, setComments]       = useState([])
   const [loading, setLoading]         = useState(false)
   const [text, setText]               = useState('')
@@ -154,7 +154,7 @@ export default function CommentSection({ post, isOpen }) {
                 const name = publicName(prof)
                 return (
                   <div key={c.id} className="flex items-start gap-2">
-                    <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={26} />
+                    <UserAvatar seed={prof.id || name} name={name} avatarUrl={prof.avatar_url} size={26} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className="text-[11px] font-medium text-[var(--text-primary)]">{name}</span>
@@ -192,7 +192,7 @@ export default function CommentSection({ post, isOpen }) {
                       )}
                       <button type="button" onClick={() => pickMention(p)}
                         className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-subtle)] text-left transition-colors">
-                        <UserAvatar seed={p.id} avatarUrl={p.avatar_url} size={24} />
+                        <UserAvatar seed={p.id} name={publicName(p)} avatarUrl={p.avatar_url} size={24} />
                         <div className="min-w-0">
                           <span className="text-[12px] text-[var(--text-primary)] font-medium">{publicName(p)}</span>
                           {p._isAuthor && (
@@ -210,7 +210,7 @@ export default function CommentSection({ post, isOpen }) {
             )}
 
             <div className="flex items-center gap-2">
-              <UserAvatar seed={session?.user?.id || 'me'} size={26} />
+              <UserAvatar seed={session?.user?.id || 'me'} name={publicName(myProfile)} avatarUrl={myProfile?.avatar_url} size={26} />
               <input ref={inputRef} value={text} onChange={e => onChangeText(e.target.value)}
                 placeholder="Escribe un comentario... (usa @ para etiquetar)"
                 className="flex-1 px-3 py-1.5 rounded-full border border-[var(--border-soft)] text-xs focus:outline-none focus:border-[var(--accent)] bg-[var(--border-soft)]/50"

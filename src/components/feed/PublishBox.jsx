@@ -5,6 +5,7 @@ import { CATEGORIES, DEPARTAMENTOS } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../shared/Toast'
 import { safeErrorMessage } from '../../lib/errors'
+import { publicName } from '../../lib/helpers'
 import UserAvatar from '../shared/UserAvatar'
 import Spinner from '../shared/Spinner'
 
@@ -97,7 +98,7 @@ const fileKind = (file) => {
 }
 
 export default function PublishBox({ onClose, onPublished }) {
-  const { session } = useAuth()
+  const { session, profile: myProfile } = useAuth()
   const toast = useToast()
   const imageRef = useRef(null)
   const pdfRef   = useRef(null)
@@ -181,7 +182,7 @@ export default function PublishBox({ onClose, onPublished }) {
 
       <form onSubmit={submit} className="px-5 py-5 space-y-5">
         <div className="flex items-center gap-3">
-          <UserAvatar seed={session?.user?.id || 'me'} size={44} />
+          <UserAvatar seed={session?.user?.id || 'me'} name={publicName(myProfile)} avatarUrl={myProfile?.avatar_url} size={44} />
           <div className="min-w-0">
             <p className="text-[14px] font-semibold" style={{ color: 'var(--text-primary)' }}>Tu publicación</p>
             {!detectingLoc && location && <p className="text-[12px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {location}</p>}

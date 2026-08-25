@@ -151,7 +151,7 @@ export default function ProfilePage() {
         style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-soft)' }}>
         {/* Foto de perfil con botón de cambiar */}
         <div className="relative flex-shrink-0">
-          <UserAvatar seed={userId} avatarUrl={displayAvatar} size={52} />
+          <UserAvatar seed={userId} name={publicLabel} avatarUrl={displayAvatar} size={52} />
           {uploadingAvatar && (
             <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center">
               <Loader2 size={16} className="text-white animate-spin" />

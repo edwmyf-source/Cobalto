@@ -366,7 +366,7 @@ export default function FeedPage() {
           </div>
           <ErrorBoundary><FilterBar filters={filters} setFilters={setFilters} autoFocusSearch={focusSearch} /></ErrorBoundary>
           {publishOpen === false && <button onClick={() => setPublishOpen(true)} className="md:hidden w-full flex items-center gap-3 p-3.5 rounded-card text-left transition-all duration-[160ms] active:scale-[0.995]" style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-            <UserAvatar seed={session?.user?.id || 'me'} avatarUrl={profile?.avatar_url} size={38} />
+            <UserAvatar seed={session?.user?.id || 'me'} name={name} avatarUrl={profile?.avatar_url} size={38} />
             <span className="flex-1 text-[14px]" style={{ color: 'var(--text-tertiary)' }}>¿Qué quieres compartir con tu comunidad?</span>
             <span className="inline-flex items-center justify-center px-3 h-9 rounded-btn text-[12px] font-semibold text-white" style={{ background: 'var(--accent)' }}>Publicar</span>
           </button>}

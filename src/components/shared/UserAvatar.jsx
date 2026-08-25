@@ -1,3 +1,5 @@
+import { initialsOf } from '../../lib/helpers'
+
 const PALETTE = [
   { from: '#22c55e', to: '#15803d' },
   { from: '#f59e0b', to: '#b45309' },
@@ -19,10 +21,9 @@ export function getAvatarColor(seed = '') {
   return PALETTE[Math.abs(hash) % PALETTE.length]
 }
 
-export default function UserAvatar({ seed = '', size = 40, avatarUrl = null, className = '', borderColor = null }) {
+export default function UserAvatar({ seed = '', name = '', size = 40, avatarUrl = null, className = '', borderColor = null }) {
   const c = getAvatarColor(seed)
-  const iconSize = Math.round(size * 0.52)
-  const stroke = 1.5
+  const initials = initialsOf(name)
   const style = {
     width: size, height: size,
     border: borderColor ? `2px solid ${borderColor}` : 'none',
@@ -44,7 +45,33 @@ export default function UserAvatar({ seed = '', size = 40, avatarUrl = null, cla
     )
   }
 
-  // Si no, el cubo isométrico de siempre
+  // Sin foto: iniciales del nombre sobre un fondo de color (estilo iOS
+  // Contactos). Si no hay nombre real (ej. "Usuario-4821"), se conserva el
+  // cubo isométrico como respaldo genérico.
+  if (initials) {
+    return (
+      <div
+        className={`rounded-full flex items-center justify-center flex-shrink-0 select-none ${className}`}
+        style={{ ...style, background: `linear-gradient(135deg, ${c.from} 0%, ${c.to} 100%)` }}
+      >
+        <span
+          style={{
+            color: '#fff',
+            fontWeight: 600,
+            fontSize: Math.round(size * 0.4),
+            letterSpacing: '0.01em',
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+          }}
+        >
+          {initials}
+        </span>
+      </div>
+    )
+  }
+
+  // Respaldo: el cubo isométrico de siempre (perfiles anónimos sin nombre real)
+  const iconSize = Math.round(size * 0.52)
+  const stroke = 1.5
   return (
     <div
       className={`rounded-full flex items-center justify-center flex-shrink-0 ${className}`}

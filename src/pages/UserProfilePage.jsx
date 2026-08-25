@@ -304,7 +304,7 @@ export default function UserProfilePage() {
                     <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent)' }} />
                   </div>
                 ) : (
-                  <UserAvatar seed={profile.id} avatarUrl={profile.avatar_url} size={104} className="!rounded-[20px]" />
+                  <UserAvatar seed={profile.id} name={displayName} avatarUrl={profile.avatar_url} size={104} className="!rounded-[20px]" />
                 )}
               </div>
 

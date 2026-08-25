@@ -135,7 +135,7 @@ export default function ContactsPage() {
                 style={{ background: 'var(--surface)', border: '1px solid transparent' }}>
                 <div className="flex items-center gap-3 px-3 py-3">
                   <div className="relative flex-shrink-0">
-                    <UserAvatar seed={user.id} avatarUrl={user.avatar_url} size={40} />
+                    <UserAvatar seed={user.id} name={publicName(user)} avatarUrl={user.avatar_url} size={40} />
                   </div>
 
                   <div className="flex-1 min-w-0">

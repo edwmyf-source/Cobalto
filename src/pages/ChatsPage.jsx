@@ -79,7 +79,7 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
                   {active && <span className="absolute left-0 top-3 bottom-3 w-1 rounded-pill" style={{ background:'var(--accent)' }} />}
 
                   <div className="relative flex-shrink-0">
-                    <UserAvatar seed={other?.id || name} avatarUrl={other?.avatar_url} size={40} />
+                    <UserAvatar seed={other?.id || name} name={name} avatarUrl={other?.avatar_url} size={40} />
                     {unread && (
                       <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full"
                         style={{ background: 'var(--accent)', border: '2px solid var(--surface)' }} />
@@ -277,7 +277,7 @@ function ChatThread({ conversation, userId, myProfile, onRead }) {
       <div className="flex items-center gap-3 px-5 py-3.5 flex-shrink-0"
         style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border-soft)' }}>
         <div className="relative">
-          <UserAvatar seed={other?.id || otherName} avatarUrl={other?.avatar_url} size={42} />
+          <UserAvatar seed={other?.id || otherName} name={otherName} avatarUrl={other?.avatar_url} size={42} />
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full" style={{ background:'var(--accent-mint)', border:'2px solid var(--surface)' }} />
         </div>
         <div className="flex-1 min-w-0">

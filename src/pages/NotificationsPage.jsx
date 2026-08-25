@@ -198,7 +198,7 @@ export default function NotificationsPage() {
 
                         <div className="flex items-start gap-3">
                           <div className="relative flex-shrink-0">
-                            <UserAvatar seed={n.from_user_id || senderName || '?'}
+                            <UserAvatar seed={n.from_user_id || senderName || '?'} name={senderName}
                               avatarUrl={n.from_profile?.avatar_url} size={42} />
                             <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2"
                               style={{ background: iconBg, color: iconColor, borderColor: 'var(--surface)' }}>
