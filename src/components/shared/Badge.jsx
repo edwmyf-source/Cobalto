@@ -1,8 +1,8 @@
 const variants = {
-  blue:  'bg-brand-500/10 text-brand-700',
-  green: 'bg-success-50 text-success-500',
-  red:   'bg-danger-50 text-danger-500',
-  gray:  'bg-ink-100 text-ink-900',
+  blue:  'bg-[var(--accent)]/10 text-[var(--accent-deep)]',
+  green: 'bg-[var(--success-bg)] text-[var(--success)]',
+  red:   'bg-[var(--error-bg)] text-[var(--error)]',
+  gray:  'bg-[var(--border-soft)] text-[var(--text-primary)]',
 }
 
 export default function Badge({ children, variant = 'gray', className = '' }) {

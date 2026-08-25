@@ -16,8 +16,8 @@ export default function Modal({ open, onClose, title, children, wide }) {
         onClick={e => e.stopPropagation()}
       >
         {title && (
-          <div className="px-6 pt-5 pb-2 border-b border-ink-100">
-            <h2 className="font-bold text-lg text-ink-900">{title}</h2>
+          <div className="px-6 pt-5 pb-2 border-b border-[var(--border-soft)]">
+            <h2 className="font-bold text-lg text-[var(--text-primary)]">{title}</h2>
           </div>
         )}
         <div className="px-6 py-5">{children}</div>

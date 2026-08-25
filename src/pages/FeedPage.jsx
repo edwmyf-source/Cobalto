@@ -375,10 +375,10 @@ export default function FeedPage() {
             <span className="text-[11px]" style={{ color: 'var(--accent)' }}>
               {loading ? '...' : `${posts.length} publicaciones`}
             </span>
-            <div className="flex bg-white border border-ink-200 rounded-xl overflow-hidden">
+            <div className="flex bg-white border border-[var(--border-soft)] rounded-xl overflow-hidden">
               {SORT_OPTIONS.map(opt => { const Icon = opt.icon; return (
                 <button key={opt.value} onClick={() => setSort(opt.value)}
-                  className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-ink-500 hover:bg-ink-50'}`}
+                  className={`flex items-center gap-1 px-3 py-1.5 text-[11px] font-medium transition-colors ${sort === opt.value ? 'text-white' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-subtle)]'}`}
                   style={sort === opt.value ? { background: 'var(--accent-deep)' } : {}}>
                   <Icon size={12} />{opt.label}
                 </button>
@@ -410,7 +410,7 @@ export default function FeedPage() {
                 </div>
               ))}
               <div ref={sentinel} />
-              {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-brand-600" /></div>}
+              {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-[var(--accent)]" /></div>}
             </div>
           )}
         </div>
@@ -473,7 +473,7 @@ export default function FeedPage() {
               </div>
             ))}
             <div ref={sentinel} />
-            {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-brand-600" /></div>}
+            {loadingMore && <div className="flex justify-center py-4"><Spinner size={20} className="text-[var(--accent)]" /></div>}
           </div>
         )}
       </div>

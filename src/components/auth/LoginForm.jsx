@@ -102,7 +102,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
           <input id="login-code" type="text" value={code} inputMode="numeric" autoComplete="one-time-code" required autoFocus
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
-            className="w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors" />
+            className="w-full px-3 py-3 rounded-btn border border-[var(--border-soft)] bg-[var(--bg-subtle)] text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors" />
           <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">
             Enviado a {mode === 'phone' ? normalizePhone(phone) : email}
           </p>

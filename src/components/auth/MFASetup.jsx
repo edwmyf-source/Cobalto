@@ -39,15 +39,15 @@ export default function MFAVerifyForm({ onSuccess, onCancel }) {
     setLoading(false)
   }
 
-  const inputCls = 'w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-ink-900 focus:outline-none focus:border-brand-600 focus:bg-white transition-colors'
+  const inputCls = 'w-full px-3 py-3 rounded-btn border border-[var(--border-soft)] bg-[var(--bg-subtle)] text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors'
 
   return (
     <form onSubmit={submit} className="space-y-5">
       <div className="flex flex-col items-center text-center gap-2 mb-2">
-        <div className="w-12 h-12 rounded-full bg-brand-600/10 flex items-center justify-center">
-          <ShieldCheck size={24} className="text-brand-600" />
+        <div className="w-12 h-12 rounded-full bg-[var(--accent)]/10 flex items-center justify-center">
+          <ShieldCheck size={24} className="text-[var(--accent)]" />
         </div>
-        <h2 className="font-medium text-lg text-ink-900 tracking-tight">Verificación en dos pasos</h2>
+        <h2 className="font-medium text-lg text-[var(--text-primary)] tracking-tight">Verificación en dos pasos</h2>
         <p className="text-[12px] font-medium text-[var(--text-tertiary)] max-w-xs">
           Abre Google Authenticator o Authy e ingresa el código de 6 dígitos de <strong>Cobalto</strong>.
         </p>

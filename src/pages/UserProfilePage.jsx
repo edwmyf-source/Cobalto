@@ -238,13 +238,13 @@ export default function UserProfilePage() {
   }, [myId, navigate, toast, contactingPost])
 
   if (loadingPage) {
-    return <div className="flex items-center justify-center py-20"><Spinner size={28} className="text-brand-600" /></div>
+    return <div className="flex items-center justify-center py-20"><Spinner size={28} className="text-[var(--accent)]" /></div>
   }
   if (!profile) {
     return (
       <div className="max-w-xl mx-auto text-center py-16">
-        <p className="text-ink-500 text-sm">Perfil no encontrado.</p>
-        <button onClick={() => navigate(-1)} className="mt-4 text-brand-600 text-sm hover:underline">Volver</button>
+        <p className="text-[var(--text-tertiary)] text-sm">Perfil no encontrado.</p>
+        <button onClick={() => navigate(-1)} className="mt-4 text-[var(--accent)] text-sm hover:underline">Volver</button>
       </div>
     )
   }

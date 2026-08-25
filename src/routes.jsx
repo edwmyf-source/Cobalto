@@ -20,7 +20,7 @@ const ContactsPage = lazy(() => import('./pages/ContactsPage'))
 function Loader() {
   return (
     <div className="flex items-center justify-center py-20">
-      <Spinner size={24} className="text-brand-600" />
+      <Spinner size={24} className="text-[var(--accent)]" />
     </div>
   )
 }

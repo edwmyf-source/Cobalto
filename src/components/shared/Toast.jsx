@@ -4,9 +4,9 @@ const ToastCtx = createContext()
 export const useToast = () => useContext(ToastCtx)
 
 const styles = {
-  success: 'bg-success-50 text-success-500 border-success-500/30',
-  error:   'bg-danger-50 text-danger-500 border-danger-500/30',
-  warn:    'bg-ink-100 text-ink-900 border-ink-300',
+  success: 'bg-[var(--success-bg)] text-[var(--success)] border-success-500/30',
+  error:   'bg-[var(--error-bg)] text-[var(--error)] border-[var(--error)]/30',
+  warn:    'bg-[var(--border-soft)] text-[var(--text-primary)] border-[var(--border)]',
 }
 
 export function ToastProvider({ children }) {

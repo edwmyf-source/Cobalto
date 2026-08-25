@@ -46,7 +46,7 @@ export default function ResetForm({ onSwitchLogin }) {
       </button>
 
       <div className="text-center text-[12px] font-medium text-[var(--text-tertiary)]">
-        <button type="button" onClick={onSwitchLogin} className="text-brand-600 hover:underline">
+        <button type="button" onClick={onSwitchLogin} className="text-[var(--accent)] hover:underline">
           Volver
         </button>
       </div>

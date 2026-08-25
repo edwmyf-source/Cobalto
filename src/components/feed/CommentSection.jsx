@@ -12,7 +12,7 @@ function renderWithMentions(content) {
   const parts = content.split(/(@[\w.\-]+)/g)
   return parts.map((part, i) =>
     part.startsWith('@')
-      ? <span key={i} className="text-brand-600 font-medium">{part}</span>
+      ? <span key={i} className="text-[var(--accent)] font-medium">{part}</span>
       : part
   )
 }
@@ -142,9 +142,9 @@ export default function CommentSection({ post, isOpen }) {
   let lastWasPost = null
 
   return (
-    <div className="border-t border-ink-100 pt-3 mt-3">
+    <div className="border-t border-[var(--border-soft)] pt-3 mt-3">
       {loading ? (
-        <div className="flex justify-center py-3"><Spinner size={16} className="text-brand-600" /></div>
+        <div className="flex justify-center py-3"><Spinner size={16} className="text-[var(--accent)]" /></div>
       ) : (
         <>
           {comments.length > 0 && (
@@ -157,10 +157,10 @@ export default function CommentSection({ post, isOpen }) {
                     <UserAvatar seed={prof.id || name} avatarUrl={prof.avatar_url} size={26} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[11px] font-medium text-ink-900">{name}</span>
-                        <span className="text-[10px] text-ink-400">{timeAgo(c.created_at)}</span>
+                        <span className="text-[11px] font-medium text-[var(--text-primary)]">{name}</span>
+                        <span className="text-[10px] text-[var(--text-tertiary)]">{timeAgo(c.created_at)}</span>
                       </div>
-                      <p className="text-xs text-ink-700 mt-0.5">{renderWithMentions(c.content)}</p>
+                      <p className="text-xs text-[var(--text-secondary)] mt-0.5">{renderWithMentions(c.content)}</p>
                     </div>
                   </div>
                 )
@@ -169,13 +169,13 @@ export default function CommentSection({ post, isOpen }) {
           )}
 
           {comments.length === 0 && (
-            <p className="text-[11px] text-ink-400 text-center mb-3">Sé el primero en comentar</p>
+            <p className="text-[11px] text-[var(--text-tertiary)] text-center mb-3">Sé el primero en comentar</p>
           )}
 
           <div className="relative">
             {/* Dropdown de menciones con dos secciones */}
             {suggestions.length > 0 && (
-              <div className="absolute bottom-full mb-1 left-8 right-0 bg-white border border-ink-300 rounded-xl shadow-lg overflow-hidden z-10">
+              <div className="absolute bottom-full mb-1 left-8 right-0 bg-white border border-[var(--border)] rounded-xl shadow-lg overflow-hidden z-10">
                 {suggestions.map((p, idx) => {
                   const isPost = participantIds.has(p.id)
                   const prevIsPost = idx === 0 ? null : participantIds.has(suggestions[idx - 1].id)
@@ -183,7 +183,7 @@ export default function CommentSection({ post, isOpen }) {
                   return (
                     <div key={p.id}>
                       {showHeader && (
-                        <div className="px-3 py-1.5 text-[10px] font-semibold text-ink-400 uppercase tracking-wider bg-ink-50 border-b border-ink-100 flex items-center gap-1.5">
+                        <div className="px-3 py-1.5 text-[10px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider bg-[var(--bg-subtle)] border-b border-[var(--border-soft)] flex items-center gap-1.5">
                           {isPost
                             ? <><span>👥</span> En este post</>
                             : <><span>✅</span> Personas que sigues</>
@@ -191,15 +191,15 @@ export default function CommentSection({ post, isOpen }) {
                         </div>
                       )}
                       <button type="button" onClick={() => pickMention(p)}
-                        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-ink-50 text-left transition-colors">
+                        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-subtle)] text-left transition-colors">
                         <UserAvatar seed={p.id} avatarUrl={p.avatar_url} size={24} />
                         <div className="min-w-0">
-                          <span className="text-[12px] text-ink-900 font-medium">{publicName(p)}</span>
+                          <span className="text-[12px] text-[var(--text-primary)] font-medium">{publicName(p)}</span>
                           {p._isAuthor && (
-                            <span className="ml-1.5 text-[10px] text-brand-600 font-medium">Autor</span>
+                            <span className="ml-1.5 text-[10px] text-[var(--accent)] font-medium">Autor</span>
                           )}
                           {p.city && (
-                            <p className="text-[10px] text-ink-400 truncate">{p.city}</p>
+                            <p className="text-[10px] text-[var(--text-tertiary)] truncate">{p.city}</p>
                           )}
                         </div>
                       </button>
@@ -213,10 +213,10 @@ export default function CommentSection({ post, isOpen }) {
               <UserAvatar seed={session?.user?.id || 'me'} size={26} />
               <input ref={inputRef} value={text} onChange={e => onChangeText(e.target.value)}
                 placeholder="Escribe un comentario... (usa @ para etiquetar)"
-                className="flex-1 px-3 py-1.5 rounded-full border border-ink-200 text-xs focus:outline-none focus:border-brand-600 bg-ink-100/50"
+                className="flex-1 px-3 py-1.5 rounded-full border border-[var(--border-soft)] text-xs focus:outline-none focus:border-[var(--accent)] bg-[var(--border-soft)]/50"
                 onKeyDown={e => { if (e.key === 'Enter' && suggestions.length === 0) handleSubmit() }} />
               <button onClick={handleSubmit} disabled={!text.trim() || sending}
-                className="p-1.5 rounded-full bg-brand-600 text-white disabled:opacity-30 hover:bg-brand-700">
+                className="p-1.5 rounded-full bg-[var(--accent)] text-white disabled:opacity-30 hover:opacity-90">
                 {sending ? <Spinner size={12} /> : <Send size={12} />}
               </button>
             </div>

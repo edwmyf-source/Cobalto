@@ -29,17 +29,17 @@ function AppInner() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
-        <Spinner size={28} className="text-brand-600" />
+      <div className="fixed inset-0 flex items-center justify-center bg-[var(--border-soft)]">
+        <Spinner size={28} className="text-[var(--accent)]" />
       </div>
     )
   }
 
   if (error && !session) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-ink-100 p-4">
-        <div className="bg-white rounded-2xl border border-ink-300 p-6 max-w-md">
-          <p className="text-danger-500 text-sm">{error}</p>
+      <div className="fixed inset-0 flex items-center justify-center bg-[var(--border-soft)] p-4">
+        <div className="bg-white rounded-2xl border border-[var(--border)] p-6 max-w-md">
+          <p className="text-[var(--error)] text-sm">{error}</p>
         </div>
       </div>
     )
@@ -49,8 +49,8 @@ function AppInner() {
 
   if (mfaRequired) {
     return (
-      <div className="min-h-app bg-ink-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-sm bg-white rounded-3xl border border-ink-300 p-8 shadow-sm">
+      <div className="min-h-app bg-[var(--border-soft)] flex items-center justify-center p-4">
+        <div className="w-full max-w-sm bg-white rounded-3xl border border-[var(--border)] p-8 shadow-sm">
           <MFAVerifyForm
             onSuccess={() => setMfaRequired(false)}
             onCancel={() => { import('./api/auth').then(m => m.signOut()) }}
@@ -64,8 +64,8 @@ function AppInner() {
   // (con cache esto rara vez se ve, pero protege a usuarios nuevos en red lenta)
   if (profile === null && !waitedForProfile) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-ink-100">
-        <Spinner size={28} className="text-brand-600" />
+      <div className="fixed inset-0 flex items-center justify-center bg-[var(--border-soft)]">
+        <Spinner size={28} className="text-[var(--accent)]" />
       </div>
     )
   }

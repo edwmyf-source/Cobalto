@@ -38,7 +38,7 @@ export default function ReportModal({ post, open, onClose }) {
   return (
     <Modal open={open} onClose={onClose} title="Reportar publicación">
       <div className="space-y-3">
-        <p className="text-xs text-ink-500 leading-relaxed">
+        <p className="text-xs text-[var(--text-tertiary)] leading-relaxed">
           ¿Por qué quieres reportar esta publicación? Tu reporte es anónimo.
         </p>
         <div className="space-y-1.5">
@@ -46,19 +46,19 @@ export default function ReportModal({ post, open, onClose }) {
             <button key={r} onClick={() => setReason(r)}
               className={`w-full text-left px-3 py-2.5 rounded-2xl text-[12px] border transition-all ${
                 reason === r
-                  ? 'border-brand-500 bg-brand-500/8 text-brand-700 font-medium'
-                  : 'border-ink-200 text-ink-700 hover:bg-ink-50'
+                  ? 'border-[var(--accent)] bg-[var(--accent)]/8 text-[var(--accent-deep)] font-medium'
+                  : 'border-[var(--border-soft)] text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)]'
               }`}>
               {r}
             </button>
           ))}
         </div>
         <div className="flex justify-end gap-2 pt-1">
-          <button onClick={onClose} className="px-4 py-2 text-xs font-medium text-ink-700 hover:bg-slate-50 rounded-2xl">
+          <button onClick={onClose} className="px-4 py-2 text-xs font-medium text-[var(--text-secondary)] hover:bg-slate-50 rounded-2xl">
             Cancelar
           </button>
           <button onClick={handleSend} disabled={!reason || sending}
-            className="flex items-center gap-2 bg-danger-500 hover:bg-danger-600 text-white text-xs font-medium px-4 py-2 rounded-2xl disabled:opacity-50">
+            className="flex items-center gap-2 bg-[var(--error)] hover:opacity-90 text-white text-xs font-medium px-4 py-2 rounded-2xl disabled:opacity-50">
             {sending ? <Spinner size={14} /> : <><Flag size={13} /> Enviar reporte</>}
           </button>
         </div>

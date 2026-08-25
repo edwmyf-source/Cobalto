@@ -17,13 +17,13 @@ function MetricsTab() {
     getAdminStats().then(s => { setStats(s); setLoading(false) }).catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="flex justify-center py-10"><Spinner size={20} className="text-brand-600" /></div>
-  if (!stats) return <p className="text-xs text-ink-500 text-center py-6">No se pudieron cargar las métricas.</p>
+  if (loading) return <div className="flex justify-center py-10"><Spinner size={20} className="text-[var(--accent)]" /></div>
+  if (!stats) return <p className="text-xs text-[var(--text-tertiary)] text-center py-6">No se pudieron cargar las métricas.</p>
 
   const Kpi = ({ label, value }) => (
-    <div className="bg-white border border-ink-300 rounded-2xl p-3.5">
-      <p className="text-[10px] uppercase tracking-wider text-ink-500 font-medium mb-1.5">{label}</p>
-      <p className="text-2xl font-medium text-ink-900 tracking-tight leading-none">{(value || 0).toLocaleString('es-CO')}</p>
+    <div className="bg-white border border-[var(--border)] rounded-2xl p-3.5">
+      <p className="text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] font-medium mb-1.5">{label}</p>
+      <p className="text-2xl font-medium text-[var(--text-primary)] tracking-tight leading-none">{(value || 0).toLocaleString('es-CO')}</p>
     </div>
   )
 
@@ -39,18 +39,18 @@ function MetricsTab() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div className="bg-white border border-ink-300 rounded-2xl p-4">
-          <p className="text-xs font-medium text-ink-900 mb-3">Por departamento</p>
-          {stats.topDepartments.length === 0 ? <p className="text-xs text-ink-500">Sin datos aún.</p> : (
+        <div className="bg-white border border-[var(--border)] rounded-2xl p-4">
+          <p className="text-xs font-medium text-[var(--text-primary)] mb-3">Por departamento</p>
+          {stats.topDepartments.length === 0 ? <p className="text-xs text-[var(--text-tertiary)]">Sin datos aún.</p> : (
             <div className="space-y-2.5">
               {stats.topDepartments.map(d => (
                 <div key={d.name}>
                   <div className="flex justify-between mb-1">
-                    <span className="text-xs text-ink-900">{d.name}</span>
-                    <span className="text-xs text-ink-500 font-medium">{d.count}</span>
+                    <span className="text-xs text-[var(--text-primary)]">{d.name}</span>
+                    <span className="text-xs text-[var(--text-tertiary)] font-medium">{d.count}</span>
                   </div>
-                  <div className="h-1.5 bg-ink-100 rounded overflow-hidden">
-                    <div className="h-full bg-brand-600" style={{ width: `${(d.count / maxDept) * 100}%` }} />
+                  <div className="h-1.5 bg-[var(--border-soft)] rounded overflow-hidden">
+                    <div className="h-full bg-[var(--accent)]" style={{ width: `${(d.count / maxDept) * 100}%` }} />
                   </div>
                 </div>
               ))}
@@ -58,14 +58,14 @@ function MetricsTab() {
           )}
         </div>
 
-        <div className="bg-white border border-ink-300 rounded-2xl p-4">
-          <p className="text-xs font-medium text-ink-900 mb-3">Dominios más activos</p>
-          {stats.topDomains.length === 0 ? <p className="text-xs text-ink-500">Sin datos aún.</p> : (
+        <div className="bg-white border border-[var(--border)] rounded-2xl p-4">
+          <p className="text-xs font-medium text-[var(--text-primary)] mb-3">Dominios más activos</p>
+          {stats.topDomains.length === 0 ? <p className="text-xs text-[var(--text-tertiary)]">Sin datos aún.</p> : (
             <div className="space-y-2">
               {stats.topDomains.map(d => (
                 <div key={d.name} className="flex justify-between items-center">
-                  <span className="text-xs text-brand-700 font-mono font-medium">{d.name}</span>
-                  <span className="text-xs text-ink-500 font-medium">{d.count}</span>
+                  <span className="text-xs text-[var(--accent-deep)] font-mono font-medium">{d.name}</span>
+                  <span className="text-xs text-[var(--text-tertiary)] font-medium">{d.count}</span>
                 </div>
               ))}
             </div>
@@ -97,25 +97,25 @@ function DataTable({ tab }) {
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
   const data = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
 
-  const thCls = 'text-left text-[11px] font-medium uppercase tracking-wider text-ink-500 px-3 py-2'
-  const tdCls = 'text-xs text-ink-900 px-3 py-2 border-t border-ink-100'
+  const thCls = 'text-left text-[11px] font-medium uppercase tracking-wider text-[var(--text-tertiary)] px-3 py-2'
+  const tdCls = 'text-xs text-[var(--text-primary)] px-3 py-2 border-t border-[var(--border-soft)]'
 
   return (
     <>
       <div className="mb-3 flex justify-end">
         <input value={search} onChange={e => { setSearch(e.target.value); setPage(0) }}
           placeholder="Buscar..."
-          className="px-3 py-2 rounded-2xl border border-ink-300 bg-white text-xs w-48 focus:outline-none focus:border-brand-600" />
+          className="px-3 py-2 rounded-2xl border border-[var(--border)] bg-white text-xs w-48 focus:outline-none focus:border-[var(--accent)]" />
       </div>
 
-      <div className="bg-white border border-ink-300 rounded-2xl overflow-x-auto">
+      <div className="bg-white border border-[var(--border)] rounded-2xl overflow-x-auto">
         {loading ? (
-          <div className="flex justify-center py-10"><Spinner size={20} className="text-brand-600" /></div>
+          <div className="flex justify-center py-10"><Spinner size={20} className="text-[var(--accent)]" /></div>
         ) : (
           <>
             <table className="w-full">
               <thead>
-                <tr className="bg-ink-100">
+                <tr className="bg-[var(--border-soft)]">
                   {tab === 1 && <><th className={thCls}>Nombre</th><th className={thCls}>Email</th><th className={thCls}>Empresa</th><th className={thCls}>Ciudad</th></>}
                   {tab === 2 && <><th className={thCls}>Título</th><th className={thCls}>Categoría</th><th className={thCls}>Subcategoría</th><th className={thCls}>Autor</th></>}
                 </tr>
@@ -129,13 +129,13 @@ function DataTable({ tab }) {
                 ))}
               </tbody>
             </table>
-            <div className="flex items-center justify-between px-4 py-2.5 border-t border-ink-100 bg-ink-100/30">
-              <span className="text-xs text-ink-500">{filtered.length} registros</span>
+            <div className="flex items-center justify-between px-4 py-2.5 border-t border-[var(--border-soft)] bg-[var(--border-soft)]/30">
+              <span className="text-xs text-[var(--text-tertiary)]">{filtered.length} registros</span>
               {totalPages > 1 && (
                 <div className="flex items-center gap-2">
                   <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
                     className="p-1 rounded hover:bg-slate-50 disabled:opacity-30"><ChevronLeft size={14} /></button>
-                  <span className="text-xs text-ink-900">{page + 1} / {totalPages}</span>
+                  <span className="text-xs text-[var(--text-primary)]">{page + 1} / {totalPages}</span>
                   <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}
                     className="p-1 rounded hover:bg-slate-50 disabled:opacity-30"><ChevronRight size={14} /></button>
                 </div>
@@ -173,45 +173,45 @@ function ModerationTab() {
   const pending = reports.filter(r => r.status === 'pending')
   const resolved = reports.filter(r => r.status !== 'pending')
 
-  if (loading) return <div className="flex justify-center py-10"><Spinner size={20} className="text-brand-600" /></div>
+  if (loading) return <div className="flex justify-center py-10"><Spinner size={20} className="text-[var(--accent)]" /></div>
 
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 mb-2">
-        <ShieldAlert size={16} className="text-danger-500" />
-        <span className="text-sm font-medium text-ink-900">Reportes pendientes ({pending.length})</span>
+        <ShieldAlert size={16} className="text-[var(--error)]" />
+        <span className="text-sm font-medium text-[var(--text-primary)]">Reportes pendientes ({pending.length})</span>
       </div>
 
       {pending.length === 0 && (
-        <div className="bg-white border border-ink-300 rounded-2xl p-6 text-center">
-          <CheckCircle size={24} className="text-success-500 mx-auto mb-2" />
-          <p className="text-sm text-ink-500">Sin reportes pendientes</p>
+        <div className="bg-white border border-[var(--border)] rounded-2xl p-6 text-center">
+          <CheckCircle size={24} className="text-[var(--success)] mx-auto mb-2" />
+          <p className="text-sm text-[var(--text-tertiary)]">Sin reportes pendientes</p>
         </div>
       )}
 
       {pending.map(r => (
-        <div key={r.id} className="bg-white border border-ink-300 rounded-2xl p-4">
+        <div key={r.id} className="bg-white border border-[var(--border)] rounded-2xl p-4">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div>
-              <p className="text-xs font-medium text-ink-900 mb-0.5">
-                Reportado por: <span className="text-brand-600">{r.reporter?.full_name || `Usuario-${r.reporter?.identity_number}`}</span>
+              <p className="text-xs font-medium text-[var(--text-primary)] mb-0.5">
+                Reportado por: <span className="text-[var(--accent)]">{r.reporter?.full_name || `Usuario-${r.reporter?.identity_number}`}</span>
               </p>
-              <p className="text-xs text-ink-500">Motivo: <span className="font-medium text-ink-700">{r.reason}</span></p>
-              {r.posts && <p className="text-xs text-ink-500 mt-1">Post: <span className="font-medium text-ink-700 line-clamp-1">{r.posts.title}</span></p>}
+              <p className="text-xs text-[var(--text-tertiary)]">Motivo: <span className="font-medium text-[var(--text-secondary)]">{r.reason}</span></p>
+              {r.posts && <p className="text-xs text-[var(--text-tertiary)] mt-1">Post: <span className="font-medium text-[var(--text-secondary)] line-clamp-1">{r.posts.title}</span></p>}
             </div>
-            <span className="text-[10px] text-ink-400 flex-shrink-0">{new Date(r.created_at).toLocaleDateString('es-CO')}</span>
+            <span className="text-[10px] text-[var(--text-tertiary)] flex-shrink-0">{new Date(r.created_at).toLocaleDateString('es-CO')}</span>
           </div>
           <div className="flex gap-2 flex-wrap">
             <button onClick={() => resolve(r.id, 'dismissed', null, null)}
-              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-ink-200 text-ink-600 hover:bg-ink-50">
+              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-[var(--border-soft)] text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)]">
               <CheckCircle size={12} /> Desestimar
             </button>
             <button onClick={() => resolve(r.id, 'post_removed', r.post_id, null)}
-              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-danger-200 text-danger-600 hover:bg-danger-50">
+              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-[var(--error)]/25 text-[var(--error)] hover:bg-[var(--error-bg)]">
               <Trash2 size={12} /> Eliminar post
             </button>
             <button onClick={() => resolve(r.id, 'user_banned', r.post_id, r.posts?.author_id)}
-              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-danger-200 bg-danger-50 text-danger-700 hover:bg-danger-100 font-medium">
+              className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-[var(--error)]/25 bg-[var(--error-bg)] text-[var(--error)] hover:bg-[var(--error-bg)] font-medium">
               <Ban size={12} /> Banear usuario
             </button>
           </div>
@@ -220,14 +220,14 @@ function ModerationTab() {
 
       {resolved.length > 0 && (
         <details className="mt-4">
-          <summary className="text-xs text-ink-500 cursor-pointer hover:text-ink-700 font-medium">
+          <summary className="text-xs text-[var(--text-tertiary)] cursor-pointer hover:text-[var(--text-secondary)] font-medium">
             Ver {resolved.length} reportes resueltos
           </summary>
           <div className="mt-2 space-y-2">
             {resolved.map(r => (
-              <div key={r.id} className="bg-ink-50 border border-ink-200 rounded-2xl p-3 opacity-70">
-                <p className="text-xs text-ink-600">{r.reason}</p>
-                <p className="text-[10px] text-ink-400 mt-1">Estado: {r.status}</p>
+              <div key={r.id} className="bg-[var(--bg-subtle)] border border-[var(--border-soft)] rounded-2xl p-3 opacity-70">
+                <p className="text-xs text-[var(--text-secondary)]">{r.reason}</p>
+                <p className="text-[10px] text-[var(--text-tertiary)] mt-1">Estado: {r.status}</p>
               </div>
             ))}
           </div>
@@ -303,15 +303,15 @@ function BannersTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Image size={16} className="text-brand-600" />
-          <span className="text-sm font-medium text-ink-900">Banners "De interés"</span>
-          <span className="text-xs text-ink-500">({banners.length}/5)</span>
+          <Image size={16} className="text-[var(--accent)]" />
+          <span className="text-sm font-medium text-[var(--text-primary)]">Banners "De interés"</span>
+          <span className="text-xs text-[var(--text-tertiary)]">({banners.length}/5)</span>
         </div>
         {banners.length < 5 && (
           <button
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-2xl bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50"
+            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-2xl bg-[var(--accent)] text-white hover:opacity-90 disabled:opacity-50"
           >
             {uploading ? 'Subiendo...' : <><Plus size={13} /> Agregar imagen</>}
           </button>
@@ -319,50 +319,50 @@ function BannersTab() {
         <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
       </div>
 
-      {error && <p className="text-xs text-danger-500">{error}</p>}
+      {error && <p className="text-xs text-[var(--error)]">{error}</p>}
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="w-5 h-5 border-2 border-brand-600 border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-10"><div className="w-5 h-5 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" /></div>
       ) : banners.length === 0 ? (
-        <div className="bg-white border border-ink-300 rounded-2xl p-8 text-center">
-          <Image size={28} className="text-ink-300 mx-auto mb-2" />
-          <p className="text-sm text-ink-500">No hay banners aún.</p>
-          <p className="text-xs text-ink-400 mt-1">Agrega hasta 5 imágenes que aparecerán en el carrusel del feed.</p>
+        <div className="bg-white border border-[var(--border)] rounded-2xl p-8 text-center">
+          <Image size={28} className="text-[var(--border)] mx-auto mb-2" />
+          <p className="text-sm text-[var(--text-tertiary)]">No hay banners aún.</p>
+          <p className="text-xs text-[var(--text-tertiary)] mt-1">Agrega hasta 5 imágenes que aparecerán en el carrusel del feed.</p>
         </div>
       ) : (
         <div className="space-y-2.5">
           {banners.map((banner, i) => (
-            <div key={banner.id} className="bg-white border border-ink-300 rounded-2xl overflow-hidden flex items-center gap-3 p-2.5">
-              <img src={banner.image_url} alt="" className="w-24 h-14 object-cover rounded-2xl flex-shrink-0 border border-ink-200" />
+            <div key={banner.id} className="bg-white border border-[var(--border)] rounded-2xl overflow-hidden flex items-center gap-3 p-2.5">
+              <img src={banner.image_url} alt="" className="w-24 h-14 object-cover rounded-2xl flex-shrink-0 border border-[var(--border-soft)]" />
               <div className="flex flex-col gap-1 flex-shrink-0">
                 <button onClick={() => move(i, -1)} disabled={i === 0}
-                  className="p-1 rounded-lg hover:bg-ink-50 disabled:opacity-20 transition-opacity"
+                  className="p-1 rounded-lg hover:bg-[var(--bg-subtle)] disabled:opacity-20 transition-opacity"
                   title="Subir">
-                  <ChevronUp size={14} className="text-ink-600" />
+                  <ChevronUp size={14} className="text-[var(--text-secondary)]" />
                 </button>
-                <span className="text-[10px] font-bold text-center text-ink-400">#{i + 1}</span>
+                <span className="text-[10px] font-bold text-center text-[var(--text-tertiary)]">#{i + 1}</span>
                 <button onClick={() => move(i, 1)} disabled={i === banners.length - 1}
-                  className="p-1 rounded-lg hover:bg-ink-50 disabled:opacity-20 transition-opacity"
+                  className="p-1 rounded-lg hover:bg-[var(--bg-subtle)] disabled:opacity-20 transition-opacity"
                   title="Bajar">
-                  <ChevronDown size={14} className="text-ink-600" />
+                  <ChevronDown size={14} className="text-[var(--text-secondary)]" />
                 </button>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-ink-900">Banner #{i + 1}</p>
-                <p className="text-[10px] text-ink-400 truncate">{banner.image_url.split('/').pop()}</p>
+                <p className="text-xs font-medium text-[var(--text-primary)]">Banner #{i + 1}</p>
+                <p className="text-[10px] text-[var(--text-tertiary)] truncate">{banner.image_url.split('/').pop()}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => toggleActive(banner)}
                   className={`text-[11px] font-medium px-2.5 py-1 rounded-2xl border ${
                     banner.active
-                      ? 'border-brand-600 text-brand-600 bg-brand-50'
-                      : 'border-ink-300 text-ink-500 bg-ink-50'
+                      ? 'border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]'
+                      : 'border-[var(--border)] text-[var(--text-tertiary)] bg-[var(--bg-subtle)]'
                   }`}
                 >
                   {banner.active ? 'Activo' : 'Inactivo'}
                 </button>
-                <button onClick={() => remove(banner.id)} className="p-1.5 text-danger-500 hover:bg-danger-50 rounded-2xl">
+                <button onClick={() => remove(banner.id)} className="p-1.5 text-[var(--error)] hover:bg-[var(--error-bg)] rounded-2xl">
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -371,7 +371,7 @@ function BannersTab() {
         </div>
       )}
 
-      <p className="text-[11px] text-ink-400">
+      <p className="text-[11px] text-[var(--text-tertiary)]">
         Las imágenes activas aparecen en el carrusel "De interés" arriba del feed para todos los usuarios.
         Recomendado: formato 16:7 horizontal (ej. 1600×700px).
       </p>
@@ -448,32 +448,32 @@ function WidgetsTab() {
     'linear-gradient(135deg,#006064,#0097a7)',
   ]
 
-  const fld = 'w-full border border-ink-200 rounded-lg px-3 py-2 text-xs text-ink-900 bg-white font-sans'
+  const fld = 'w-full border border-[var(--border-soft)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] bg-white font-sans'
 
   return (
     <div className="space-y-6">
       {/* Lista de widgets */}
-      <div className="bg-white rounded-2xl border border-ink-200 p-4">
-        <p className="text-sm font-bold text-ink-900 mb-3">Widgets activos en columna derecha del feed</p>
-        {loading ? <p className="text-xs text-ink-400">Cargando...</p> : widgets.length === 0 ? <p className="text-xs text-ink-400">No hay widgets. Crea el primero abajo.</p> : (
+      <div className="bg-white rounded-2xl border border-[var(--border-soft)] p-4">
+        <p className="text-sm font-bold text-[var(--text-primary)] mb-3">Widgets activos en columna derecha del feed</p>
+        {loading ? <p className="text-xs text-[var(--text-tertiary)]">Cargando...</p> : widgets.length === 0 ? <p className="text-xs text-[var(--text-tertiary)]">No hay widgets. Crea el primero abajo.</p> : (
           <div className="space-y-2">
             {widgets.map(w => (
-              <div key={w.id} className="flex items-center gap-3 p-3 rounded-xl border border-ink-200">
+              <div key={w.id} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border-soft)]">
                 {w.imagen_url ? (
-                  <img src={w.imagen_url} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-ink-200" />
+                  <img src={w.imagen_url} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-[var(--border-soft)]" />
                 ) : (
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style={{ background: w.imagen_gradient }}>
                     {w.imagen_emoji}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-ink-900 truncate">{w.titulo}</p>
-                  <p className="text-[10px] text-ink-400 truncate">{w.btn_url}</p>
+                  <p className="text-xs font-semibold text-[var(--text-primary)] truncate">{w.titulo}</p>
+                  <p className="text-[10px] text-[var(--text-tertiary)] truncate">{w.btn_url}</p>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${w.activo ? 'bg-green-100 text-green-700' : 'bg-ink-100 text-ink-500'}`}>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${w.activo ? 'bg-green-100 text-green-700' : 'bg-[var(--border-soft)] text-[var(--text-tertiary)]'}`}>
                   {w.activo ? 'Activo' : 'Inactivo'}
                 </span>
-                <button onClick={() => edit(w)} className="text-[10px] font-medium px-2 py-1 rounded-lg bg-ink-50 text-ink-700 hover:bg-blue-50">Editar</button>
+                <button onClick={() => edit(w)} className="text-[10px] font-medium px-2 py-1 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:bg-blue-50">Editar</button>
                 <button onClick={() => remove(w.id)} className="text-[10px] font-medium px-2 py-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-100">Eliminar</button>
               </div>
             ))}
@@ -482,25 +482,25 @@ function WidgetsTab() {
       </div>
 
       {/* Formulario */}
-      <div className="bg-white rounded-2xl border border-ink-200 p-4">
-        <p className="text-sm font-bold text-ink-900 mb-4">{editId ? '✏️ Editar widget' : '➕ Nuevo widget'}</p>
+      <div className="bg-white rounded-2xl border border-[var(--border-soft)] p-4">
+        <p className="text-sm font-bold text-[var(--text-primary)] mb-4">{editId ? '✏️ Editar widget' : '➕ Nuevo widget'}</p>
         <div className="space-y-3">
           <div>
-            <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Título del widget</label>
+            <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">Título del widget</label>
             <input className={fld} value={form.titulo} onChange={e => setForm(f => ({...f, titulo: e.target.value}))} placeholder="Ej: Congreso Nacional de Química 2026" />
           </div>
           <div>
-            <label className="text-[10px] font-semibold text-ink-600 mb-2 block">Imagen del widget (1:1, recomendado 400×400px)</label>
+            <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-2 block">Imagen del widget (1:1, recomendado 400×400px)</label>
             <div className="flex items-center gap-3">
               {form.imagen_url ? (
-                <img src={form.imagen_url} alt="" className="w-14 h-14 rounded-lg object-cover border border-ink-200 flex-shrink-0" />
+                <img src={form.imagen_url} alt="" className="w-14 h-14 rounded-lg object-cover border border-[var(--border-soft)] flex-shrink-0" />
               ) : (
                 <div className="w-14 h-14 rounded-lg flex items-center justify-center text-2xl flex-shrink-0" style={{ background: form.imagen_gradient }}>
                   {form.imagen_emoji}
                 </div>
               )}
               <button onClick={() => fileRef.current?.click()} disabled={uploadingImg}
-                className="text-xs font-medium px-3 py-1.5 rounded-xl bg-ink-100 text-ink-700 hover:bg-blue-50 disabled:opacity-50">
+                className="text-xs font-medium px-3 py-1.5 rounded-xl bg-[var(--border-soft)] text-[var(--text-secondary)] hover:bg-blue-50 disabled:opacity-50">
                 {uploadingImg ? 'Subiendo...' : form.imagen_url ? 'Cambiar imagen' : 'Subir imagen'}
               </button>
               {form.imagen_url && (
@@ -512,20 +512,20 @@ function WidgetsTab() {
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageFile} />
             </div>
             {uploadError && <p className="text-[10px] text-red-500 mt-1">{uploadError}</p>}
-            <p className="text-[9px] text-ink-400 mt-1">Si no subes una imagen, se usará el emoji y color de fondo de respaldo.</p>
+            <p className="text-[9px] text-[var(--text-tertiary)] mt-1">Si no subes una imagen, se usará el emoji y color de fondo de respaldo.</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Emoji de respaldo (si no hay imagen)</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">Emoji de respaldo (si no hay imagen)</label>
               <input className={fld} value={form.imagen_emoji} onChange={e => setForm(f => ({...f, imagen_emoji: e.target.value}))} placeholder="🧪" />
             </div>
             <div>
-              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Orden (1 = primero)</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">Orden (1 = primero)</label>
               <input type="number" className={fld} value={form.orden} onChange={e => setForm(f => ({...f, orden: Number(e.target.value)}))} />
             </div>
           </div>
           <div>
-            <label className="text-[10px] font-semibold text-ink-600 mb-2 block">Color de fondo de respaldo (si no hay imagen)</label>
+            <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-2 block">Color de fondo de respaldo (si no hay imagen)</label>
             <div className="flex gap-2 flex-wrap">
               {GRADIENTS.map(g => (
                 <button key={g} onClick={() => setForm(f => ({...f, imagen_gradient: g}))}
@@ -535,17 +535,17 @@ function WidgetsTab() {
             </div>
           </div>
           <div>
-            <label className="text-[10px] font-semibold text-ink-600 mb-1 block">URL del botón (página, WhatsApp, email, etc.)</label>
+            <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">URL del botón (página, WhatsApp, email, etc.)</label>
             <input className={fld} value={form.btn_url} onChange={e => setForm(f => ({...f, btn_url: e.target.value}))} placeholder="https://... o wa.me/+57... o mailto:..." />
-            <p className="text-[9px] text-ink-400 mt-1">Acepta cualquier URL: web, WhatsApp (wa.me), correo (mailto:), Instagram, etc.</p>
+            <p className="text-[9px] text-[var(--text-tertiary)] mt-1">Acepta cualquier URL: web, WhatsApp (wa.me), correo (mailto:), Instagram, etc.</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Texto del botón</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">Texto del botón</label>
               <input className={fld} value={form.btn_texto} onChange={e => setForm(f => ({...f, btn_texto: e.target.value}))} placeholder="Más información" />
             </div>
             <div>
-              <label className="text-[10px] font-semibold text-ink-600 mb-1 block">Vista previa del botón</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] mb-1 block">Vista previa del botón</label>
               <div className="flex items-center h-9">
                 <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-md"
                   style={{ background: form.btn_color, color: form.btn_text_color }}>
@@ -556,12 +556,12 @@ function WidgetsTab() {
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="wactivo" checked={form.activo} onChange={e => setForm(f => ({...f, activo: e.target.checked}))} style={{ accentColor: 'var(--accent-deep)' }} />
-            <label htmlFor="wactivo" className="text-xs text-ink-600">Publicar (visible para todos los usuarios)</label>
+            <label htmlFor="wactivo" className="text-xs text-[var(--text-secondary)]">Publicar (visible para todos los usuarios)</label>
           </div>
           <div className="flex gap-2 pt-1">
             {editId && (
               <button onClick={() => { setEditId(null); setForm(WIDGET_FORM_DEFAULT); setUploadError('') }}
-                className="px-4 py-2 rounded-xl text-xs font-medium bg-ink-100 text-ink-700">
+                className="px-4 py-2 rounded-xl text-xs font-medium bg-[var(--border-soft)] text-[var(--text-secondary)]">
                 Cancelar
               </button>
             )}
@@ -586,7 +586,7 @@ export default function AdminPage() {
         {tabs.map((t, i) => (
           <button key={t} onClick={() => setTab(i)}
             className={`text-xs font-medium px-3 py-1.5 rounded-2xl ${
-              tab === i ? 'bg-brand-600 text-white' : 'bg-white text-ink-900 hover:bg-slate-50 border border-ink-300'
+              tab === i ? 'bg-[var(--accent)] text-white' : 'bg-white text-[var(--text-primary)] hover:bg-slate-50 border border-[var(--border)]'
             }`}>
             {i === 0 && <TrendingUp size={12} className="inline mr-1 -mt-0.5" />}
             {t}

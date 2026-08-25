@@ -32,7 +32,7 @@ function MediaGallery({ media }) {
               ? (images.length === 1 ? Math.max(img.w / img.h, 1) : 1)
               : (images.length === 1 ? 16 / 9 : 1)
             return (
-              <div key={idx} className="relative bg-ink-100"
+              <div key={idx} className="relative bg-[var(--border-soft)]"
                 style={{ aspectRatio: String(ratio), ...(images.length === 1 ? { maxHeight: 320 } : {}) }}>
                 <img src={img.url} alt="" loading="lazy" decoding="async"
                   width={img.w || undefined} height={img.h || undefined}
@@ -55,15 +55,15 @@ function MediaGallery({ media }) {
       ))}
       {pdfs.map((pdf, idx) => (
         <a key={idx} href={pdf.url} target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2.5 p-2 rounded-xl border border-ink-200 bg-ink-50 hover:bg-slate-50 transition-colors group">
-          <div className="w-7 h-7 rounded-lg bg-danger-500/10 flex items-center justify-center flex-shrink-0">
-            <FileText size={14} className="text-danger-500" />
+          className="flex items-center gap-2.5 p-2 rounded-xl border border-[var(--border-soft)] bg-[var(--bg-subtle)] hover:bg-slate-50 transition-colors group">
+          <div className="w-7 h-7 rounded-lg bg-[var(--error)]/10 flex items-center justify-center flex-shrink-0">
+            <FileText size={14} className="text-[var(--error)]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-medium text-ink-900 truncate group-hover:text-brand-600">
+            <p className="text-[11px] font-medium text-[var(--text-primary)] truncate group-hover:text-[var(--accent)]">
               {pdf.name || 'Documento PDF'}
             </p>
-            <p className="text-[10px] text-ink-400">PDF · Click para abrir</p>
+            <p className="text-[10px] text-[var(--text-tertiary)]">PDF · Click para abrir</p>
           </div>
         </a>
       ))}
