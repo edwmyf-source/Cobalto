@@ -362,7 +362,6 @@ export default function UserProfilePage() {
             {profile.headline && (
               <p className="text-[13px] mt-1" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
             )}
-            {profile.company_name && <p className="text-[12.5px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{profile.company_name}</p>}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
               {profile.city && (
                 <span className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>

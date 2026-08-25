@@ -180,10 +180,6 @@ export default function ProfilePage() {
             </p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-company" className={labelCls} style={labelStyle}>Empresa</label><PrivacyBadge variant="private" /></div>
-            <input id="profile-company" value={form.company_name} onChange={e => set('company_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Nombre de tu empresa" />
-          </div>
-          <div>
             <div className="flex items-center justify-between mb-1"><label htmlFor="profile-email" className={labelCls} style={labelStyle}>Email</label><PrivacyBadge variant="private" /></div>
             <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
               placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
