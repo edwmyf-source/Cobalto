@@ -36,9 +36,14 @@ export default function BannerCarousel() {
     slideTo(Math.max(0, Math.min(idx, banners.length - 1)))
   }, [banners.length, slideTo])
 
-  // Auto-slide cada 3 segundos, en bucle; se pausa mientras se mantiene el dedo
+  // Auto-slide cada 3 segundos, en bucle; se pausa mientras se mantiene el dedo.
+  // Si el sistema pide reducir movimiento, no se auto-avanza en absoluto: el CSS
+  // global de prefers-reduced-motion solo neutraliza animaciones, no un
+  // setInterval que cambia el contenido por su cuenta.
   useEffect(() => {
     if (banners.length <= 1) return
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduced) return
     timerRef.current = setInterval(() => {
       if (pausedRef.current) return
       slideTo((indexRef.current + 1) % banners.length)
@@ -66,6 +71,10 @@ export default function BannerCarousel() {
           setCurrent(idx)
         }}
         onPointerDown={() => { pausedRef.current = true }}
+        onMouseEnter={() => { pausedRef.current = true }}
+        onMouseLeave={() => { pausedRef.current = false }}
+        onFocusCapture={() => { pausedRef.current = true }}
+        onBlurCapture={() => { pausedRef.current = false }}
         onPointerUp={() => { pausedRef.current = false }}
         onPointerCancel={() => { pausedRef.current = false }}
         onPointerLeave={() => { pausedRef.current = false }}
@@ -85,7 +94,7 @@ export default function BannerCarousel() {
           >
             <img
               src={banner.image_url}
-              alt=""
+              alt={`Banner informativo ${i + 1} de ${banners.length}`}
               className="w-full h-full object-cover"
               loading={i === 0 ? 'eager' : 'lazy'}
               draggable={false}
