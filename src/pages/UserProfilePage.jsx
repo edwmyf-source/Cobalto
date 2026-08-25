@@ -111,6 +111,7 @@ export default function UserProfilePage() {
 
   const [profile, setProfile]             = useState(null)
   const [posts, setPosts]                 = useState([])
+  const [profileTab, setProfileTab]       = useState('muro') // 'muro' | 'publicaciones'
   const [counts, setCounts]               = useState({ followers: 0, following: 0 })
   const [isFollowing, setIsFollowing]     = useState(false)
   const [loadingPage, setLoadingPage]     = useState(true)
@@ -123,6 +124,10 @@ export default function UserProfilePage() {
   const coverInputRef  = useRef(null)
 
   const isOwnProfile = myId === userId
+
+  const visiblePosts = profileTab === 'muro'
+    ? posts.filter(p => p.category === 'muro')
+    : posts.filter(p => p.category !== 'muro')
 
   const load = useCallback(async () => {
     if (!userId) return
@@ -377,25 +382,41 @@ export default function UserProfilePage() {
         </div>
       </section>
 
-      <div className="flex items-end justify-between mb-4 px-1">
-        <div>
-          <p className="t-eyebrow" style={{ color: 'var(--accent)' }}>Actividad</p>
-          <h2 className="t-h3 mt-1" style={{ color: 'var(--text-primary)' }}>Publicaciones</h2>
-        </div>
-        <span className="text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>{posts.length} en total</span>
+      <p className="t-eyebrow px-1 mt-2" style={{ color: 'var(--accent)' }}>Actividad</p>
+
+      <div className="flex items-center gap-1 mb-4 px-1 mt-2">
+        {[
+          { key: 'muro', label: 'Muro' },
+          { key: 'publicaciones', label: 'Publicaciones' },
+        ].map(t => (
+          <button key={t.key} onClick={() => setProfileTab(t.key)}
+            className="px-3.5 h-8 rounded-pill t-caption font-bold transition-all"
+            style={profileTab === t.key
+              ? { background: 'var(--accent-deep)', color: '#fff' }
+              : { background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
+            {t.label}
+          </button>
+        ))}
+        <span className="t-caption ml-auto" style={{ color: 'var(--text-tertiary)' }}>
+          {visiblePosts.length} en total
+        </span>
       </div>
 
-      {posts.length === 0 ? (
+      {visiblePosts.length === 0 ? (
         <div className="rounded-card bg-white border border-line-soft px-6 py-14 text-center" style={{ boxShadow: 'var(--shadow-card)' }}>
           <div className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
             <MessageCircle size={20} />
           </div>
-          <p className="t-body-sm font-bold" style={{ color: 'var(--text-primary)' }}>Aún no hay publicaciones</p>
-          <p className="text-[13px] mt-1" style={{ color: 'var(--text-tertiary)' }}>Cuando comparta algo con la comunidad aparecerá aquí.</p>
+          <p className="t-body-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+            {profileTab === 'muro' ? 'Aún no hay nada en el muro' : 'Aún no hay publicaciones'}
+          </p>
+          <p className="text-[13px] mt-1" style={{ color: 'var(--text-tertiary)' }}>
+            {profileTab === 'muro' ? 'Lo que comparta en Muro aparecerá aquí.' : 'Cuando comparta algo con la comunidad aparecerá aquí.'}
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
-          {posts.map(post => (
+          {visiblePosts.map(post => (
             <MiniPostCard key={post.id} post={post} onContact={handleContact} contactingId={contactingPost}
               onDeleted={(id) => setPosts(prev => prev.filter(p => p.id !== id))} />
           ))}
