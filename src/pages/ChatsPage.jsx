@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getConversations, getMessages, sendMessage, uploadMessageAttachment, getAttachmentUrl, markConversationRead } from '../api/messages'
-import { createNotification } from '../api/notifications'
 import { useAuth } from '../contexts/AuthContext'
 import { useRealtime } from '../hooks/useRealtime'
 import { useToast } from '../components/shared/Toast'
@@ -241,14 +240,10 @@ function ChatThread({ conversation, userId, myProfile, onRead }) {
         media_url: media?.url, media_type: media?.type, media_name: media?.name,
       })
       setMessages(prev => [...prev, { ...sent, profiles: myProfile || {} }])
-      const otherId = conversation.user1_id === userId ? conversation.user2_id : conversation.user1_id
-      createNotification({
-        user_id: otherId,
-        from_user_id: userId,
-        type: 'message',
-        content: media ? 'te envió un adjunto' : 'te envió un mensaje',
-        post_id: conversation.post_id,
-      })
+      // No se crea una notificación por mensaje: en una conversación larga
+      // eso inundaría la bandeja de Notificaciones con decenas de entradas.
+      // El aviso de mensajes nuevos ya vive en el badge de "Msj" (unreadMsgs),
+      // que se calcula directo de messages.read, sin pasar por notifications.
     } catch (e) { toast(safeErrorMessage(e), 'error'); if (content) setText(content) }
     setSending(false)
   }

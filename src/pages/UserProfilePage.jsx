@@ -327,9 +327,9 @@ export default function UserProfilePage() {
             <div className="flex items-center gap-2 pb-1">
               {isOwnProfile ? (
                 <button onClick={() => navigate('/profile')}
-                  className="inline-flex items-center gap-2 px-4 h-11 rounded-btn text-[13px] font-bold transition-all active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 px-4 h-9 rounded-btn text-[13px] font-bold transition-all active:scale-[0.98]"
                   style={{ border: '1px solid var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}>
-                  <Settings size={16} /> Editar perfil
+                  <Settings size={15} /> Editar perfil
                 </button>
               ) : (
                 <>
@@ -351,31 +351,31 @@ export default function UserProfilePage() {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="t-h2" style={{ color: 'var(--text-primary)' }}>{displayName}</h1>
-              <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-pill" style={{ background: 'var(--accent-soft)' }}>
+              <h1 className="font-semibold" style={{ color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.6vw, 20px)', letterSpacing: '-0.015em', lineHeight: 1.25 }}>{displayName}</h1>
+              <span className="inline-flex items-center gap-1 px-1.5 py-[3px] rounded-pill" style={{ background: 'var(--accent-soft)' }}>
                 <RedCobaltoLogo size="sm" markOnly />
-                <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>REDCobalto</span>
+                <span className="text-[10px] font-bold" style={{ color: 'var(--accent-deep)' }}>REDCobalto</span>
               </span>
             </div>
             {profile.headline && (
-              <p className="t-body mt-1.5" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
+              <p className="text-[13px] mt-1" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
             )}
-            {profile.company_name && <p className="t-body-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{profile.company_name}</p>}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3">
+            {profile.company_name && <p className="text-[12.5px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{profile.company_name}</p>}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
               {profile.city && (
-                <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
-                  <MapPin size={14} /> {profile.city}
+                <span className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
+                  <MapPin size={12} /> {profile.city}
                 </span>
               )}
-              <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
+              <span className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent-mint)' }} /> Comunidad profesional
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-6">
+          <div className="grid grid-cols-3 gap-2 mt-3">
             {[
               { value: posts.length, label: 'Publicaciones' },
               { value: counts.followers, label: 'Seguidores' },
