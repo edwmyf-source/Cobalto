@@ -11,9 +11,10 @@ import PrivacyBadge from '../components/shared/PrivacyBadge'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 
-const inputCls = 'w-full px-4 h-14 rounded-card text-[16px] focus:outline-none transition-all'
-const inputStyle = { background: '#ffffff', border: 'none', boxShadow: '0 4px 14px rgba(0,71,171,0.07)', color: 'var(--text-primary)', fontWeight: 500 }
-const labelCls = 'text-[14px] font-bold text-[var(--text-primary)] mb-1.5 block'
+const inputCls = 'w-full px-4 h-12 rounded-input text-[15px] focus:outline-none transition-all'
+const inputStyle = { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', fontWeight: 500 }
+const labelCls = 't-label font-bold block mb-1.5'
+const labelStyle = { color: 'var(--text-primary)' }
 
 export default function ProfilePage() {
   const { session, profile, setProfile } = useAuth()
@@ -114,14 +115,16 @@ export default function ProfilePage() {
   return (
     <div className="page-enter max-w-lg mx-auto px-1">
       <button onClick={() => navigate(userId ? `/u/${userId}` : '/feed')}
-        className="flex items-center gap-1.5 text-[14px] font-medium text-gray-500 hover:text-gray-900 mb-4 transition-colors">
+        className="flex items-center gap-1.5 t-body-sm font-semibold mb-4 transition-colors"
+        style={{ color: 'var(--text-tertiary)' }}>
         <ArrowLeft size={16} /> Ver mi perfil público
       </button>
-      <h2 className="font-extrabold text-[28px] text-[var(--text-primary)] mb-1" style={{ letterSpacing: '-0.03em' }}>Configuración</h2>
-      <p className="text-[15px] text-gray-500 mb-6">Actualiza tus datos cuando quieras.</p>
+      <h1 className="t-h1" style={{ color: 'var(--text-primary)' }}>Configuración</h1>
+      <p className="t-body-sm mt-1 mb-6" style={{ color: 'var(--text-tertiary)' }}>Actualiza tus datos cuando quieras.</p>
 
       {/* Card pública actual — con foto */}
-      <div className="bg-white rounded-3xl p-6 mb-5 flex items-center gap-4" style={{ boxShadow: '0 4px 24px rgba(17,24,39,0.05)' }}>
+      <div className="rounded-panel p-5 mb-5 flex items-center gap-4"
+        style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-soft)' }}>
         {/* Foto de perfil con botón de cambiar */}
         <div className="relative flex-shrink-0">
           <UserAvatar seed={userId} avatarUrl={displayAvatar} size={52} />
@@ -134,7 +137,8 @@ export default function ProfilePage() {
             type="button"
             onClick={() => avatarInputRef.current?.click()}
             disabled={uploadingAvatar}
-            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center border-2 border-white hover:bg-brand-700 transition-colors disabled:opacity-50"
+            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors disabled:opacity-50"
+            style={{ background: 'var(--accent-deep)', borderColor: 'var(--surface)' }}
             title="Cambiar foto"
             aria-label="Cambiar foto de perfil"
           >
@@ -150,47 +154,48 @@ export default function ProfilePage() {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-ink-900">{publicLabel}</p>
-          <p className="text-[11px] text-ink-500 mt-0.5">{form.city || 'Sin departamento'}</p>
-          <p className="text-[10px] text-ink-400 mt-0.5">Lo único público de tu cuenta.</p>
+          <p className="t-body-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{publicLabel}</p>
+          <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{form.city || 'Sin departamento'}</p>
+          <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)', opacity: 0.75 }}>Lo único público de tu cuenta.</p>
         </div>
       </div>
 
       <form onSubmit={submit} className="space-y-3.5">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mt-3">Datos privados</p>
+        <p className="t-eyebrow mt-3" style={{ color: 'var(--text-tertiary)' }}>Datos privados</p>
 
-        <div className="bg-white border border-ink-300 rounded-2xl p-4 space-y-3.5">
+        <div className="rounded-panel p-4 space-y-3.5"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-fullname" className={labelCls}>Nombre completo</label><PrivacyBadge variant="private" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-fullname" className={labelCls} style={labelStyle}>Nombre completo</label><PrivacyBadge variant="private" /></div>
             <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Tu nombre" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-headline" className={labelCls}>Sobre ti</label><PrivacyBadge variant="public" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-headline" className={labelCls} style={labelStyle}>Sobre ti</label><PrivacyBadge variant="public" /></div>
             <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
               className={inputCls} style={inputStyle}
               placeholder="Ej: Química farmacéutica · Control de calidad" />
-            <p className="text-[11px] mt-1" style={{ color: 'var(--text-tertiary)' }}>
+            <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>
               Una frase corta que aparece bajo tu nombre. {120 - form.headline.length} caracteres restantes.
             </p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-company" className={labelCls}>Empresa</label><PrivacyBadge variant="private" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-company" className={labelCls} style={labelStyle}>Empresa</label><PrivacyBadge variant="private" /></div>
             <input id="profile-company" value={form.company_name} onChange={e => set('company_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Nombre de tu empresa" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-email" className={labelCls}>Email</label><PrivacyBadge variant="private" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-email" className={labelCls} style={labelStyle}>Email</label><PrivacyBadge variant="private" /></div>
             <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
               placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
-              className={inputCls} style={{ ...inputStyle, background: '#F3F4F6', color: '#9CA3AF' }} />
-            <p className="text-[11px] text-ink-500 mt-1">Tu email es 100% privado y nunca será visible.</p>
+              className={inputCls} style={{ ...inputStyle, background: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }} />
+            <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>Tu email es 100% privado y nunca será visible.</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-phone" className={labelCls}>Teléfono</label><PrivacyBadge variant="private" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-phone" className={labelCls} style={labelStyle}>Teléfono</label><PrivacyBadge variant="private" /></div>
             <input id="profile-phone" value={form.phone} onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))} className={inputCls} style={inputStyle} placeholder="300 123 4567" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-city" className={labelCls}>Departamento</label><PrivacyBadge variant="public" /></div>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-city" className={labelCls} style={labelStyle}>Departamento</label><PrivacyBadge variant="public" /></div>
             <select id="profile-city" value={form.city} onChange={e => set('city', e.target.value)} className={inputCls}>
               <option value="">Seleccionar...</option>
               {DEPARTAMENTOS.map(d => <option key={d} value={d}>{d}</option>)}
@@ -198,13 +203,14 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mt-3">Identidad pública</p>
+        <p className="t-eyebrow mt-3" style={{ color: 'var(--text-tertiary)' }}>Identidad pública</p>
 
-        {error && <p role="alert" className="text-xs text-danger-500">{error}</p>}
-        {saved && <p className="text-xs text-success-500">Perfil guardado.</p>}
+        {error && <p role="alert" className="t-caption font-semibold" style={{ color: 'var(--error)' }}>{error}</p>}
+        {saved && <p className="t-caption font-semibold" style={{ color: 'var(--success)' }}>Perfil guardado.</p>}
 
         <button type="submit" disabled={!valid || loading}
-          className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-medium py-2.5 rounded-2xl disabled:opacity-50">
+          className="w-full flex items-center justify-center gap-2 text-white t-body-sm font-extrabold h-12 rounded-btn disabled:opacity-40 transition-all active:scale-95"
+          style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
           {loading ? <Spinner size={16} /> : 'Guardar cambios'}
         </button>
       </form>
