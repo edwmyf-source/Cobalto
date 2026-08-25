@@ -76,6 +76,15 @@ export const CATEGORIES = [
       'Novedades',
     ],
   },
+  {
+    value: 'publicidad',
+    label: 'Publicidad',
+    subcategories: [
+      'Promoción',
+      'Lanzamiento',
+      'Patrocinado',
+    ],
+  },
 ]
 
 // Flat lookup
@@ -114,10 +123,11 @@ export const DEPARTAMENTOS_ORDERED = [
 
 // Tabs del marketplace
 export const MARKETPLACE_TABS = [
-  { value: 'todo',      label: 'TODO',      color: '#0047AB', bg: '#EBF1FC' },
-  { value: 'novedades', label: 'INFO',      color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
-  { value: 'tienda',    label: 'MARKET',    color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
-  { value: 'vacantes',  label: 'VACANTES',  color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
+  { value: 'todo',        label: 'TODO',        color: '#0047AB', bg: '#EBF1FC' },
+  { value: 'novedades',   label: 'INFO',        color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
+  { value: 'tienda',      label: 'MARKET',      color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
+  { value: 'vacantes',    label: 'VACANTES',    color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
+  { value: 'publicidad',  label: 'PUBLICIDAD',  color: '#be185d', bg: '#fce7f3', categories: ['publicidad'] },
 ]
 
 export const TAB_COLOR = {
@@ -125,6 +135,7 @@ export const TAB_COLOR = {
   novedades:     { color: '#16a34a', bg: '#dcfce7' },
   tienda:        { color: '#0369a1', bg: '#dbeafe' },
   vacantes:      { color: '#ea580c', bg: '#ffedd5' },
+  publicidad:    { color: '#be185d', bg: '#fce7f3' },
 }
 
 // Estructura de Tienda: intent → categoría → subcategorías
