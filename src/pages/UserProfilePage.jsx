@@ -10,7 +10,6 @@ import { createNotification } from '../api/notifications'
 import { publicName, timeAgo } from '../lib/helpers'
 import { CATEGORY_MAP } from '../lib/constants'
 import UserAvatar from '../components/shared/UserAvatar'
-import RedCobaltoLogo from '../components/shared/RedCobaltoLogo'
 import Spinner from '../components/shared/Spinner'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
@@ -352,26 +351,15 @@ export default function UserProfilePage() {
           </div>
 
           <div className="mt-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-semibold" style={{ color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.6vw, 20px)', letterSpacing: '-0.015em', lineHeight: 1.25 }}>{displayName}</h1>
-              <span className="inline-flex items-center gap-1 px-1.5 py-[3px] rounded-pill" style={{ background: 'var(--accent-soft)' }}>
-                <RedCobaltoLogo size="sm" markOnly />
-                <span className="text-[10px] font-bold" style={{ color: 'var(--accent-deep)' }}>REDCobalto</span>
-              </span>
-            </div>
+            <h1 className="font-semibold" style={{ color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.6vw, 20px)', letterSpacing: '-0.015em', lineHeight: 1.25 }}>{displayName}</h1>
             {profile.headline && (
               <p className="text-[13px] mt-1" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
             )}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
-              {profile.city && (
-                <span className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
-                  <MapPin size={12} /> {profile.city}
-                </span>
-              )}
-              <span className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent-mint)' }} /> Comunidad profesional
+            {profile.city && (
+              <span className="inline-flex items-center gap-1 text-[12px] font-semibold mt-1.5" style={{ color: 'var(--text-tertiary)' }}>
+                <MapPin size={12} /> {profile.city}
               </span>
-            </div>
+            )}
           </div>
 
           <div className="grid grid-cols-3 gap-2 mt-3">
