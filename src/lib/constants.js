@@ -66,11 +66,6 @@ export const CATEGORIES = [
     ],
   },
   {
-    value: 'muro',
-    label: 'Muro',
-    subcategories: [],
-  },
-  {
     value: 'informacion',
     label: 'Información',
     subcategories: [
@@ -121,7 +116,6 @@ export const DEPARTAMENTOS_ORDERED = [
 export const MARKETPLACE_TABS = [
   { value: 'todo',      label: 'TODO',      color: '#0047AB', bg: '#EBF1FC' },
   { value: 'novedades', label: 'INFO',      color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
-  { value: 'muro',      label: 'MURO',      color: '#9333ea', bg: '#f3e8ff', categories: ['muro'] },
   { value: 'tienda',    label: 'TIENDA',    color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
   { value: 'vacantes',  label: 'VACANTES',  color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
 ]
@@ -129,7 +123,6 @@ export const MARKETPLACE_TABS = [
 export const TAB_COLOR = {
   todo:          { color: '#0047AB', bg: '#EBF1FC' },
   novedades:     { color: '#16a34a', bg: '#dcfce7' },
-  muro:          { color: '#9333ea', bg: '#f3e8ff' },
   tienda:        { color: '#0369a1', bg: '#dbeafe' },
   vacantes:      { color: '#ea580c', bg: '#ffedd5' },
 }
