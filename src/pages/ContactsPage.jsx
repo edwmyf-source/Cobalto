@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Search, MessageSquareText, Users, MapPin } from 'lucide-react'
+import { ArrowLeft, Search, MessageSquareText, Users, MapPin, UserPlus, UserCheck } from 'lucide-react'
 import { searchUsers } from '../api/users'
 import { getOrCreateConversation } from '../api/messages'
+import { followUser, unfollowUser, getFollowingIds } from '../api/follows'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/shared/Toast'
 import { safeErrorMessage } from '../lib/errors'
@@ -20,7 +21,38 @@ export default function ContactsPage() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [contactingId, setContactingId] = useState(null)
+  const [followingIds, setFollowingIds] = useState(new Set())
+  const [followBusyId, setFollowBusyId] = useState(null)
   const debounceRef = useRef(null)
+
+  useEffect(() => {
+    if (userId) getFollowingIds(userId).then(setFollowingIds)
+  }, [userId])
+
+  const handleToggleFollow = async (e, user) => {
+    e.stopPropagation()
+    if (followBusyId) return
+    const nowFollowing = followingIds.has(user.id)
+    setFollowBusyId(user.id)
+    // Optimista: refleja el cambio de inmediato, revierte si falla.
+    setFollowingIds(prev => {
+      const next = new Set(prev)
+      nowFollowing ? next.delete(user.id) : next.add(user.id)
+      return next
+    })
+    try {
+      if (nowFollowing) await unfollowUser(userId, user.id)
+      else await followUser(userId, user.id)
+    } catch (err) {
+      setFollowingIds(prev => {
+        const next = new Set(prev)
+        nowFollowing ? next.add(user.id) : next.delete(user.id)
+        return next
+      })
+      toast(safeErrorMessage(err), 'error')
+    }
+    setFollowBusyId(null)
+  }
 
   const runSearch = useCallback(async (q) => {
     setLoading(true)
@@ -95,6 +127,8 @@ export default function ContactsPage() {
         ) : (
           users.map(user => {
             const isContacting = contactingId === user.id
+            const isFollowing = followingIds.has(user.id)
+            const isFollowBusy = followBusyId === user.id
             return (
               <button key={user.id} onClick={() => navigate(`/u/${user.id}`)}
                 className="w-full text-left mb-2 rounded-card transition-all duration-[160ms] ease-premium active:scale-[0.99]"
@@ -113,14 +147,27 @@ export default function ContactsPage() {
                     </span>
                   </div>
 
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleStartChat(user) }}
-                    disabled={isContacting}
-                    aria-label={`Enviar mensaje a ${publicName(user)}`}
-                    className="flex-shrink-0 w-9 h-9 rounded-pill flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
-                    style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
-                    {isContacting ? <Spinner size={14} /> : <MessageSquareText size={16} />}
-                  </button>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <button
+                      onClick={(e) => handleToggleFollow(e, user)}
+                      disabled={isFollowBusy}
+                      aria-label={isFollowing ? `Dejar de seguir a ${publicName(user)}` : `Seguir a ${publicName(user)}`}
+                      aria-pressed={isFollowing}
+                      className="w-9 h-9 rounded-pill flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+                      style={isFollowing
+                        ? { background: 'var(--accent-soft)', color: 'var(--accent)' }
+                        : { background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
+                      {isFollowBusy ? <Spinner size={14} /> : isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleStartChat(user) }}
+                      disabled={isContacting}
+                      aria-label={`Enviar mensaje a ${publicName(user)}`}
+                      className="w-9 h-9 rounded-pill flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+                      style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
+                      {isContacting ? <Spinner size={14} /> : <MessageSquareText size={16} />}
+                    </button>
+                  </div>
                 </div>
               </button>
             )

@@ -28,6 +28,18 @@ export const checkIsFollowing = async (followerId, followingId) => {
   return !!data
 }
 
+// IDs de todas las personas que sigo, en una sola consulta — para pintar el
+// estado "Siguiendo" en una lista completa sin una query por fila.
+export const getFollowingIds = async (userId) => {
+  if (!userId) return new Set()
+  const { data, error } = await supabase
+    .from('follows')
+    .select('following_id')
+    .eq('follower_id', userId)
+  if (error) return new Set()
+  return new Set((data || []).map(r => r.following_id))
+}
+
 export const getFollowCounts = async (userId) => {
   const [frs, fng] = await Promise.all([
     supabase.from('follows').select('id', { count: 'exact', head: true }).eq('following_id', userId),
