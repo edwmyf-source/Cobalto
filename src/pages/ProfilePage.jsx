@@ -11,10 +11,34 @@ import PrivacyBadge from '../components/shared/PrivacyBadge'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 
-const inputCls = 'w-full px-4 h-12 rounded-input text-[15px] focus:outline-none transition-all'
-const inputStyle = { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', fontWeight: 500 }
-const labelCls = 't-label font-bold block mb-1.5'
-const labelStyle = { color: 'var(--text-primary)' }
+// Campo "invisible": sin borde ni caja propia — el contorno lo da la fila
+// que lo contiene (FormRow). Es el patrón de listas de Ajustes de iOS: el
+// valor se ve como texto editable, no como una casilla de formulario aparte.
+const fieldCls = 'w-full bg-transparent border-0 outline-none text-[15px] font-medium p-0 h-6'
+const labelCls = 't-caption font-semibold'
+const labelStyle = { color: 'var(--text-tertiary)' }
+
+// Campo boxed: para SecureAccountSection, que vive fuera de la lista
+// agrupada (es su propia tarjeta), así que sí necesita borde propio.
+const boxedFieldCls = 'w-full px-4 h-12 rounded-input text-[15px] focus:outline-none transition-all'
+const boxedFieldStyle = { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', fontWeight: 500 }
+
+// Una fila de la lista agrupada: etiqueta chica arriba, campo abajo, línea
+// divisoria fina entre filas (no cajas separadas), badge de privacidad a la
+// derecha de la etiqueta.
+function FormRow({ label, htmlFor, privacy, hint, isLast, children }) {
+  return (
+    <div className="px-4 py-3"
+      style={!isLast ? { borderBottom: '1px solid var(--border-soft)' } : undefined}>
+      <div className="flex items-center justify-between mb-1">
+        <label htmlFor={htmlFor} className={labelCls} style={labelStyle}>{label}</label>
+        {privacy && <PrivacyBadge variant={privacy} />}
+      </div>
+      <div style={{ color: 'var(--text-primary)' }}>{children}</div>
+      {hint && <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)', opacity: 0.8 }}>{hint}</p>}
+    </div>
+  )
+}
 
 export default function ProfilePage() {
   const { session, profile, setProfile } = useAuth()
@@ -161,52 +185,49 @@ export default function ProfilePage() {
       </div>
 
       <form onSubmit={submit} className="space-y-3.5">
-        <p className="t-eyebrow mt-3" style={{ color: 'var(--text-tertiary)' }}>Datos privados</p>
+        <p className="t-eyebrow mt-3 px-1" style={{ color: 'var(--text-tertiary)' }}>Datos privados</p>
 
-        <div className="rounded-panel p-4 space-y-3.5"
-          style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-          <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-fullname" className={labelCls} style={labelStyle}>Nombre completo</label><PrivacyBadge variant="private" /></div>
-            <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Tu nombre" />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-headline" className={labelCls} style={labelStyle}>Sobre ti</label><PrivacyBadge variant="public" /></div>
+        <div className="rounded-panel overflow-hidden"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
+          <FormRow label="Nombre completo" privacy="private" isFirst htmlFor="profile-fullname">
+            <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)}
+              className={fieldCls} placeholder="Tu nombre" />
+          </FormRow>
+
+          <FormRow label="Sobre ti" privacy="public" htmlFor="profile-headline"
+            hint={`Aparece bajo tu nombre · ${120 - form.headline.length} caracteres restantes`}>
             <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
-              className={inputCls} style={inputStyle}
-              placeholder="Ej: Química farmacéutica · Control de calidad" />
-            <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>
-              Una frase corta que aparece bajo tu nombre. {120 - form.headline.length} caracteres restantes.
-            </p>
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-email" className={labelCls} style={labelStyle}>Email</label><PrivacyBadge variant="private" /></div>
+              className={fieldCls} placeholder="Ej: Química farmacéutica · Control de calidad" />
+          </FormRow>
+
+          <FormRow label="Email" privacy="private" hint="100% privado, nunca será visible" htmlFor="profile-email">
             <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
               placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
-              className={inputCls} style={{ ...inputStyle, background: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }} />
-            <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)' }}>Tu email es 100% privado y nunca será visible.</p>
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-phone" className={labelCls} style={labelStyle}>Teléfono</label><PrivacyBadge variant="private" /></div>
-            <input id="profile-phone" value={form.phone} onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))} className={inputCls} style={inputStyle} placeholder="300 123 4567" />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-city" className={labelCls} style={labelStyle}>Departamento</label><PrivacyBadge variant="public" /></div>
-            <select id="profile-city" value={form.city} onChange={e => set('city', e.target.value)} className={inputCls}>
+              className={fieldCls} style={{ color: 'var(--text-tertiary)' }} />
+          </FormRow>
+
+          <FormRow label="Teléfono" privacy="private" htmlFor="profile-phone">
+            <input id="profile-phone" value={form.phone}
+              onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))}
+              className={fieldCls} placeholder="300 123 4567" />
+          </FormRow>
+
+          <FormRow label="Departamento" privacy="public" isLast htmlFor="profile-city">
+            <select id="profile-city" value={form.city} onChange={e => set('city', e.target.value)}
+              className={fieldCls + ' appearance-none'}>
               <option value="">Seleccionar...</option>
               {DEPARTAMENTOS.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
-          </div>
+          </FormRow>
         </div>
 
-        <p className="t-eyebrow mt-3" style={{ color: 'var(--text-tertiary)' }}>Identidad pública</p>
-
-        {error && <p role="alert" className="t-caption font-semibold" style={{ color: 'var(--error)' }}>{error}</p>}
-        {saved && <p className="t-caption font-semibold" style={{ color: 'var(--success)' }}>Perfil guardado.</p>}
+        {error && <p role="alert" className="t-caption font-semibold px-1" style={{ color: 'var(--error)' }}>{error}</p>}
+        {saved && <p className="t-caption font-semibold px-1" style={{ color: 'var(--success)' }}>Perfil guardado.</p>}
 
         <button type="submit" disabled={!valid || loading}
-          className="w-full flex items-center justify-center gap-2 text-white t-body-sm font-extrabold h-12 rounded-btn disabled:opacity-40 transition-all active:scale-95"
-          style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+          className="w-full flex items-center justify-center gap-2 text-white t-body-sm font-semibold h-12 rounded-full disabled:opacity-40 transition-all active:scale-[0.98]"
+          style={{ background: 'var(--accent)' }}>
           {loading ? <Spinner size={16} /> : 'Guardar cambios'}
         </button>
       </form>
@@ -285,7 +306,7 @@ function SecureAccountSection({ userId }) {
         <label htmlFor="profile-newpass" className="sr-only">Nueva contraseña</label>
         <input id="profile-newpass" type="password" value={pass} onChange={e => setPass(e.target.value)}
           placeholder="Nueva contraseña" autoComplete="new-password"
-          className={inputCls} style={inputStyle} />
+          className={boxedFieldCls} style={boxedFieldStyle} />
 
         {pass.length > 0 && (() => {
           const level = passStrength <= 2 ? 'low' : passStrength === 3 ? 'mid' : 'high'
@@ -332,7 +353,7 @@ function SecureAccountSection({ userId }) {
         <label htmlFor="profile-pass2" className="sr-only">Repetir contraseña</label>
         <input id="profile-pass2" type="password" value={pass2} onChange={e => setPass2(e.target.value)}
           placeholder="Repítela" autoComplete="new-password"
-          className={inputCls} style={inputStyle} />
+          className={boxedFieldCls} style={boxedFieldStyle} />
       </div>
 
       {error && <p role="alert" className="t-caption font-semibold mt-2" style={{ color: 'var(--error)' }}>{error}</p>}

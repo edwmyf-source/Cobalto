@@ -3,7 +3,7 @@ import { supabase } from './supabase'
 export const getPublicProfile = async (uid) => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, full_name, company_name, city, identity_mode, identity_number, avatar_url, segment')
+    .select('id, full_name, headline, company_name, city, identity_mode, identity_number, avatar_url, cover_url, segment')
     .eq('id', uid)
     .maybeSingle()
   if (error) throw error
