@@ -153,18 +153,18 @@ export default function ContactoPage() {
       </div>
 
       <Card className="p-5">
-        <label className="t-label block mb-2" style={{ color: 'var(--text-secondary)' }}>
+        <label htmlFor="contacto-asunto" className="t-label block mb-2" style={{ color: 'var(--text-secondary)' }}>
           Asunto
         </label>
-        <select value={asunto} onChange={e => setAsunto(e.target.value)}
+        <select id="contacto-asunto" value={asunto} onChange={e => setAsunto(e.target.value)}
           className={`${inputCls} mb-4`} style={inputStyle}>
           {ASUNTOS.map(a => <option key={a} value={a}>{a}</option>)}
         </select>
 
-        <label className="t-label block mb-2" style={{ color: 'var(--text-secondary)' }}>
+        <label htmlFor="contacto-mensaje" className="t-label block mb-2" style={{ color: 'var(--text-secondary)' }}>
           Mensaje
         </label>
-        <textarea value={mensaje} onChange={e => setMensaje(e.target.value)}
+        <textarea id="contacto-mensaje" value={mensaje} onChange={e => setMensaje(e.target.value)}
           rows={5} placeholder="Cuéntanos en qué podemos ayudarte"
           className={`${inputCls} resize-none`} style={{ ...inputStyle, minHeight: 120 }} />
 

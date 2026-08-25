@@ -31,12 +31,12 @@ export default function ResetForm({ onSwitchLogin }) {
       </div>
 
       <div>
-        <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
+        <label htmlFor="reset-email" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
+        <input id="reset-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required
           placeholder="tu@empresa.com" className={inputCls} />
       </div>
 
-      {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
+      {error && <p role="alert" className="text-[12px] font-semibold text-red-500">{error}</p>}
       {success && <p className="text-[12px] font-semibold text-green-600">{success}</p>}
 
       <button type="submit" disabled={loading}

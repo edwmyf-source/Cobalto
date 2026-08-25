@@ -24,7 +24,7 @@ export default function BrandSplash({ onDone }) {
 
   return (
     <div onClick={skip} style={{
-      position: 'fixed', inset: 0, zIndex: 9999, cursor: 'pointer', overflow: 'hidden',
+      position: 'fixed', inset: 0, zIndex: 100, cursor: 'pointer', overflow: 'hidden',
       background: '#FFFFFF',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
     }}>

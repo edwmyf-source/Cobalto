@@ -162,12 +162,12 @@ export default function ProfilePage() {
 
         <div className="bg-white border border-ink-300 rounded-2xl p-4 space-y-3.5">
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Nombre completo</label><PrivacyBadge variant="private" /></div>
-            <input value={form.full_name} onChange={e => set('full_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Tu nombre" />
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-fullname" className={labelCls}>Nombre completo</label><PrivacyBadge variant="private" /></div>
+            <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Tu nombre" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Sobre ti</label><PrivacyBadge variant="public" /></div>
-            <input value={form.headline} maxLength={120}
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-headline" className={labelCls}>Sobre ti</label><PrivacyBadge variant="public" /></div>
+            <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
               className={inputCls} style={inputStyle}
               placeholder="Ej: Química farmacéutica · Control de calidad" />
@@ -176,23 +176,23 @@ export default function ProfilePage() {
             </p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Empresa</label><PrivacyBadge variant="private" /></div>
-            <input value={form.company_name} onChange={e => set('company_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Nombre de tu empresa" />
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-company" className={labelCls}>Empresa</label><PrivacyBadge variant="private" /></div>
+            <input id="profile-company" value={form.company_name} onChange={e => set('company_name', e.target.value)} className={inputCls} style={inputStyle} placeholder="Nombre de tu empresa" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Email</label><PrivacyBadge variant="private" /></div>
-            <input type="email" value={isSyntheticEmail ? '' : userEmail} disabled
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-email" className={labelCls}>Email</label><PrivacyBadge variant="private" /></div>
+            <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
               placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
               className={inputCls} style={{ ...inputStyle, background: '#F3F4F6', color: '#9CA3AF' }} />
             <p className="text-[11px] text-ink-500 mt-1">Tu email es 100% privado y nunca será visible.</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Teléfono</label><PrivacyBadge variant="private" /></div>
-            <input value={form.phone} onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))} className={inputCls} style={inputStyle} placeholder="300 123 4567" />
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-phone" className={labelCls}>Teléfono</label><PrivacyBadge variant="private" /></div>
+            <input id="profile-phone" value={form.phone} onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))} className={inputCls} style={inputStyle} placeholder="300 123 4567" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><label className={labelCls}>Departamento</label><PrivacyBadge variant="public" /></div>
-            <select value={form.city} onChange={e => set('city', e.target.value)} className={inputCls}>
+            <div className="flex items-center justify-between mb-1"><label htmlFor="profile-city" className={labelCls}>Departamento</label><PrivacyBadge variant="public" /></div>
+            <select id="profile-city" value={form.city} onChange={e => set('city', e.target.value)} className={inputCls}>
               <option value="">Seleccionar...</option>
               {DEPARTAMENTOS.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
         <p className="text-[11px] font-medium uppercase tracking-wider text-ink-500 mt-3">Identidad pública</p>
 
-        {error && <p className="text-xs text-danger-500">{error}</p>}
+        {error && <p role="alert" className="text-xs text-danger-500">{error}</p>}
         {saved && <p className="text-xs text-success-500">Perfil guardado.</p>}
 
         <button type="submit" disabled={!valid || loading}
@@ -321,7 +321,8 @@ function SecureAccountSection({ userId }) {
       </p>
 
       <div className="space-y-3">
-        <input type="password" value={pass} onChange={e => setPass(e.target.value)}
+        <label htmlFor="profile-newpass" className="sr-only">Nueva contraseña</label>
+        <input id="profile-newpass" type="password" value={pass} onChange={e => setPass(e.target.value)}
           placeholder="Nueva contraseña" autoComplete="new-password"
           className={inputCls} style={inputStyle} />
 
@@ -367,12 +368,13 @@ function SecureAccountSection({ userId }) {
           )
         })()}
 
-        <input type="password" value={pass2} onChange={e => setPass2(e.target.value)}
+        <label htmlFor="profile-pass2" className="sr-only">Repetir contraseña</label>
+        <input id="profile-pass2" type="password" value={pass2} onChange={e => setPass2(e.target.value)}
           placeholder="Repítela" autoComplete="new-password"
           className={inputCls} style={inputStyle} />
       </div>
 
-      {error && <p className="t-caption font-semibold mt-2" style={{ color: 'var(--error)' }}>{error}</p>}
+      {error && <p role="alert" className="t-caption font-semibold mt-2" style={{ color: 'var(--error)' }}>{error}</p>}
 
       <button type="submit" disabled={loading || !passValid}
         className="mt-4 w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold py-3 rounded-btn disabled:opacity-40 transition-all active:scale-95"

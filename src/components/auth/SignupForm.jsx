@@ -99,15 +99,15 @@ export default function SignupForm({ onSwitchLogin }) {
       <form onSubmit={codeSent ? verify : sendCode} className="space-y-4">
         {!codeSent ? (
           <div>
-            <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Correo electrónico</label>
-            <input type="email" autoComplete="email" autoFocus value={email}
+            <label htmlFor="signup-email" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Correo electrónico</label>
+            <input id="signup-email" type="email" autoComplete="email" autoFocus value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="tu@empresa.com" className={inputCls} />
           </div>
         ) : (
           <div>
-            <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
-            <input type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus value={code}
+            <label htmlFor="signup-code" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
+            <input id="signup-code" type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus value={code}
               onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
               placeholder="000000" className={codeCls} />
             <button type="button" onClick={sendCode} disabled={loading}
@@ -117,7 +117,7 @@ export default function SignupForm({ onSwitchLogin }) {
           </div>
         )}
 
-        {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
+        {error && <p role="alert" className="text-[12px] font-semibold text-red-500">{error}</p>}
         {info && !error && <p className="text-[12px] font-semibold text-green-600">{info}</p>}
 
         <button type="submit" disabled={loading || (!codeSent ? !emailValid : code.length < 6)}

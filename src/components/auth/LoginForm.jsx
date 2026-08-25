@@ -98,8 +98,8 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
 
       {codeSent ? (
         <div>
-          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
-          <input type="text" value={code} inputMode="numeric" autoComplete="one-time-code" required autoFocus
+          <label htmlFor="login-code" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Código de 6 dígitos</label>
+          <input id="login-code" type="text" value={code} inputMode="numeric" autoComplete="one-time-code" required autoFocus
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
             className="w-full px-3 py-3 rounded-btn border border-ink-200 bg-ink-50 text-center text-2xl font-mono tracking-[0.4em] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:bg-white transition-colors" />
@@ -109,24 +109,24 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         </div>
       ) : mode === 'phone' ? (
         <div>
-          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Número de celular</label>
-          <input type="tel" value={phone} inputMode="tel" autoComplete="tel" required
+          <label htmlFor="login-phone" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Número de celular</label>
+          <input id="login-phone" type="tel" value={phone} inputMode="tel" autoComplete="tel" required
             onChange={e => setPhone(e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 16))}
             placeholder="300 123 4567" className={inputCls} />
           <p className="text-[12px] mt-1.5 text-[var(--text-tertiary)]">Colombia (+57) por defecto.</p>
         </div>
       ) : (
         <div>
-          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
+          <label htmlFor="login-email" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Email</label>
+          <input id="login-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required
             placeholder="tu@empresa.com" className={inputCls} autoComplete="email" />
         </div>
       )}
 
       {mode === 'password' && !codeSent && (
         <div>
-          <label className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Contraseña</label>
-          <input type="password" value={pass} onChange={e => setPass(e.target.value)} required
+          <label htmlFor="login-password" className="block text-[12px] font-bold text-[var(--text-primary)] mb-1.5">Contraseña</label>
+          <input id="login-password" type="password" value={pass} onChange={e => setPass(e.target.value)} required
             placeholder="••••••••" className={inputCls} autoComplete="current-password" />
           <button type="button" onClick={onSwitchReset} className="text-[12px] font-bold hover:underline mt-2 inline-block text-[var(--accent-deep)]">
             ¿Olvidaste tu contraseña?
@@ -134,7 +134,7 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         </div>
       )}
 
-      {error && <p className="text-[12px] font-semibold text-red-500">{error}</p>}
+      {error && <p role="alert" className="text-[12px] font-semibold text-red-500">{error}</p>}
 
       <button type="submit" disabled={loading || (codeSent ? code.length < 6 : mode === 'phone' ? phone.replace(/\D/g,'').length < 10 : !email)}
         className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-extrabold h-[38px] rounded-btn disabled:opacity-50 transition-all active:scale-95"

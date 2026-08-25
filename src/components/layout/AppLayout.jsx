@@ -178,7 +178,8 @@ export default function AppLayout() {
           {/* Mensajes */}
           {(() => { const active = currentTab === '/chats'; return (
             <button onClick={() => navigate('/chats')}
-              className="flex flex-col items-center justify-center gap-[1px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Mensajes">
+              className="flex flex-col items-center justify-center gap-[1px] flex-1 h-full relative active:scale-95 transition-transform"
+              aria-label={unreadMsgs > 0 ? `Mensajes, ${unreadMsgs} sin leer` : 'Mensajes'}>
               <div className="relative">
                 <MessageSquare size={22} style={{ color: active ? 'var(--accent-deep)' : 'var(--text-tertiary)' }} strokeWidth={active ? 2.4 : 2} />
                 {unreadMsgs > 0 && (
