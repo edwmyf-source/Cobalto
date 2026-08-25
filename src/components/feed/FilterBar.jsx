@@ -96,7 +96,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
             )}
           </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-1 scroll-x-safe">
+          <div className="flex gap-[7px] overflow-x-auto pb-1 scroll-x-safe">
             {MARKETPLACE_TABS.map(t => (
               <Pill key={t.value} label={t.label} size="lg" active={tab === t.value} onClick={() => {
                 setTab(t.value)
@@ -115,7 +115,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
                   <ChevronDown size={15} style={{ color: 'var(--text-tertiary)', transform: openSecs.has('subcategoria') ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform var(--t-base)' }} />
                 </button>
                 {openSecs.has('subcategoria') && (
-                  <div className="flex gap-2 overflow-x-auto pb-1 scroll-x-safe">
+                  <div className="flex gap-[7px] overflow-x-auto pb-1 scroll-x-safe">
                     {TIENDA_CATS.map(c => (
                       <Pill key={c.value} label={c.label} active={filters.category === c.value} onClick={() => setCat(c.value)} />
                     ))}
@@ -124,7 +124,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
                 {tiendaCat && (
                   <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border-soft)' }}>
                     <p className="text-[11px] font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>{tiendaCat.label}</p>
-                    <div className="flex gap-2 overflow-x-auto pb-1 scroll-x-safe">
+                    <div className="flex gap-[7px] overflow-x-auto pb-1 scroll-x-safe">
                       {tiendaCat.subcategories.map(sub => (
                         <Pill key={sub} label={sub} active={filters.subcategory === sub} onClick={() => setSub(sub)} />
                       ))}
@@ -139,7 +139,7 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
                   <ChevronDown size={15} style={{ color: 'var(--text-tertiary)', transform: openSecs.has('subcategoria') ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform var(--t-base)' }} />
                 </button>
                 {openSecs.has('subcategoria') && (
-                  <div className="flex gap-2 overflow-x-auto pb-1 scroll-x-safe">
+                  <div className="flex gap-[7px] overflow-x-auto pb-1 scroll-x-safe">
                     {subOptions.map(sub => (
                       <Pill key={sub} label={sub} active={filters.subcategory === sub} onClick={() => setSub(sub)} />
                     ))}
