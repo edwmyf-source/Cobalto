@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const PROFILE_FIELDS = 'id, full_name, identity_mode, identity_number, email_domain, city, company_name, avatar_url'
+const PROFILE_FIELDS = 'id, full_name, identity_mode, identity_number, email_domain, city, headline, company_name, avatar_url'
 
 // Lista/busca usuarios registrados (excluye al usuario actual)
 export const searchUsers = async (currentUserId, query = '', limit = 30) => {

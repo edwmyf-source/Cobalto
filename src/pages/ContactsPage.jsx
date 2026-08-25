@@ -142,9 +142,15 @@ export default function ContactsPage() {
                     <span className="t-body-sm truncate block" style={{ color: 'var(--text-primary)', fontWeight: 500 }}>
                       {publicName(user)}
                     </span>
-                    <span className="t-caption truncate flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
-                      {user.city ? <><MapPin size={11} /> {user.city}</> : 'Perfil profesional'}
-                    </span>
+                    {user.city ? (
+                      <span className="t-caption truncate flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
+                        <MapPin size={11} /> {user.city}
+                      </span>
+                    ) : user.headline ? (
+                      <span className="t-caption truncate block" style={{ color: 'var(--text-tertiary)' }}>
+                        {user.headline}
+                      </span>
+                    ) : null}
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-shrink-0">
