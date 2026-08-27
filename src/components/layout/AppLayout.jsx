@@ -81,7 +81,7 @@ export default function AppLayout() {
     { label: 'Notificaciones', icon: Bell, path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
     { label: 'Contáctanos', icon: Mail, path: '/contacto' },
-    ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
+    ...(isAdmin(profile) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
   ]
 
   const mobileNavItems = [

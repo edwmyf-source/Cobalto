@@ -37,7 +37,7 @@ export default function Sidebar({ currentPath, navigate, profile, unreadCount = 
     { path: myId ? `/u/${myId}` : '/profile', label: 'Mi perfil', icon: User, match: '/u/' },
     { path: '/contacto',      label: 'Contáctanos',    icon: Mail },
   ]
-  if (isAdmin(profile, session?.user?.email)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
+  if (isAdmin(profile)) navItems.push({ path: '/admin', label: 'Admin', icon: Lock })
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[220px] flex flex-col z-40"

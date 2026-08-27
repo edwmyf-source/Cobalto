@@ -33,7 +33,7 @@ export default function Topbar({ profile, unreadCount = 0, session }) {
   const menuItems = [
     { label: 'Mi perfil',     Icon: User,         path: session?.user?.id ? `/u/${session.user.id}` : '/profile' },
     { label: 'Contáctanos', Icon: Mail, path: '/contacto' },
-    ...(isAdmin(profile, session?.user?.email) ? [{ label: 'Admin', Icon: Lock, path: '/admin' }] : []),
+    ...(isAdmin(profile) ? [{ label: 'Admin', Icon: Lock, path: '/admin' }] : []),
   ]
 
   return (

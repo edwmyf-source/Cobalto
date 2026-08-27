@@ -1,5 +1,3 @@
-export const ADMIN_EMAILS = ['edwmyf@gmail.com']
-
 // Cuando esté en true, el código de verificación por WhatsApp será OBLIGATORIO
 // en el onboarding. Por ahora el campo se muestra pero es opcional.
 export const WHATSAPP_VERIFICATION_ENABLED = false
@@ -27,8 +25,10 @@ export const PHONE_AUTH_CHANNEL = 'sms' // 'sms' | 'whatsapp'
 // Mientras esté en `false`, el registro usa correo + contraseña tradicional.
 export const EMAIL_CODE_AUTH_ENABLED = true
 
-export const isAdmin = (profile, email = '') =>
-  profile?.role === 'admin' || ADMIN_EMAILS.includes(email) || ADMIN_EMAILS.includes(profile?.email)
+// El rol viene de la base de datos (profiles.role), no de un correo escrito
+// en el código. Es la misma fuente de verdad que usa la función is_admin()
+// de Supabase, que es la que realmente protege los datos vía RLS.
+export const isAdmin = (profile) => profile?.role === 'admin'
 
 // Nuevas categorías con subcategorías
 export const CATEGORIES = [
