@@ -91,10 +91,6 @@ export default function LoginForm({ onSwitchReset }) {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <div>
-        <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>Entrar a Cobalto</h2>
-        <p className="text-[12px] mt-1 font-medium text-[var(--text-tertiary)]">Con Google o con un código a tu correo</p>
-      </div>
 
       {codeSent ? (
         <div>
