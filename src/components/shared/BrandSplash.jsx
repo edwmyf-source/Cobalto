@@ -34,26 +34,40 @@ export default function BrandSplash({ onDone }) {
            misma sensación con la que abre una app nativa (WhatsApp,
            Instagram), en vez de una página web con fondo blanco. ═══ */
 
+        @keyframes cbo-hero-in {
+          0%   { opacity: 0;    transform: scale(0.85); }
+          100% { opacity: 0.14; transform: scale(1);    }
+        }
+        .cbo-hero {
+          position: absolute;
+          width: clamp(360px, 100vw, 620px);
+          aspect-ratio: 1 / 1;
+          right: clamp(-170px, -38vw, -130px);
+          bottom: clamp(-160px, -36vw, -120px);
+          opacity: 0;
+          animation: cbo-hero-in 1300ms cubic-bezier(0.16,1,0.3,1) both;
+          pointer-events: none;
+          z-index: 1;
+        }
+
         @keyframes cbo-mark-in {
           0%   { opacity: 0; transform: scale(0.55); }
           100% { opacity: 1; transform: scale(1); }
         }
-        @keyframes cbo-mark-bounce {
-          0%, 100% { transform: translateY(0)     scaleY(1);    }
-          18%      { transform: translateY(-16px) scaleY(1.06); }
-          36%      { transform: translateY(0)     scaleY(0.90); }
-          50%      { transform: translateY(-7px)  scaleY(1.03); }
-          66%      { transform: translateY(0)     scaleY(0.96); }
-          78%      { transform: translateY(-2px)  scaleY(1);    }
+        /* Respiración suave en vez de rebote: se siente más calmada y
+           acorde al tono editorial del isotipo gigante de fondo. */
+        @keyframes cbo-mark-breathe {
+          0%, 100% { transform: scale(1);    opacity: 1;    }
+          50%      { transform: scale(1.06); opacity: 0.92; }
         }
         .cbo-mark {
           display: inline-flex;
           opacity: 0;
-          /* Entra con rebote elástico y, al terminar, sigue rebotando en
-             bucle: la marca queda "viva" mientras carga la app. */
+          position: relative;
+          z-index: 2;
           animation:
             cbo-mark-in 700ms cubic-bezier(0.34,1.56,0.64,1) both,
-            cbo-mark-bounce 2.1s ease-out 700ms infinite;
+            cbo-mark-breathe 2.6s ease-in-out 700ms infinite;
         }
 
         @keyframes cbo-fade-up {
@@ -90,7 +104,7 @@ export default function BrandSplash({ onDone }) {
         .cbo-tag b { color: #8FB4FF; font-weight: 700; }
 
         @media (prefers-reduced-motion: reduce) {
-          .cbo-mark, .cbo-word, .cbo-tag {
+          .cbo-hero, .cbo-mark, .cbo-word, .cbo-tag {
             animation-duration: 1ms !important;
             animation-delay: 0ms !important;
           }
@@ -98,15 +112,21 @@ export default function BrandSplash({ onDone }) {
         }
       `}</style>
 
+      {/* Isotipo gigante y tenue, recortado en la esquina inferior derecha:
+          solo se ve un fragmento — elemento gráfico de fondo, no protagonista. */}
+      <div className="cbo-hero" aria-hidden="true">
+        <CobaltoMark size="100%" rounded="rounded-none" dark />
+      </div>
+
       <div className="cbo-mark">
         <CobaltoMark size={80} rounded="rounded-none" dark />
       </div>
 
-      <div className="cbo-word">
+      <div className="cbo-word" style={{ position: 'relative', zIndex: 2 }}>
         <span className="cbo-red">Red</span><span className="cbo-cobalto">Cobalto</span><span className="cbo-dot">.</span>
       </div>
 
-      <div className="cbo-tag">
+      <div className="cbo-tag" style={{ position: 'relative', zIndex: 2 }}>
         El lugar donde la <b>industria química</b> se conecta
       </div>
     </div>
