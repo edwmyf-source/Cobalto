@@ -32,7 +32,7 @@ function ContextScreen({ onContinue }) {
       <div className="flex-1 flex flex-col items-center justify-center text-center relative pb-[16vh]">
         <div className="w-full max-w-[380px] flex flex-col items-center">
 
-          <CobaltoMark size={104} />
+          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" />
 
           <p className="font-extrabold leading-none mt-6"
             style={{ letterSpacing: '-0.04em', fontSize: 'clamp(36px, 10.4vw, 46px)' }}>
@@ -40,13 +40,13 @@ function ContextScreen({ onContinue }) {
           </p>
 
           <p className="mt-2.5 font-bold uppercase"
-            style={{ color: 'var(--text-tertiary)', fontSize: 11.5, letterSpacing: '0.16em' }}>
+            style={{ color: 'var(--text-tertiary)', fontSize: 'clamp(10px, 2.8vw, 11.5px)', letterSpacing: '0.16em' }}>
             Industria química · Colombia
           </p>
 
           {/* Filete de marca: separa la identidad del mensaje */}
           <span className="block rounded-full mt-6"
-            style={{ width: 46, height: 4, background: 'linear-gradient(90deg, var(--brand-red), var(--accent))' }} />
+            style={{ width: 'clamp(38px, 11vw, 46px)', height: 4, background: 'linear-gradient(90deg, var(--brand-red), var(--accent))' }} />
 
           <h1 className="font-extrabold mt-6"
             style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.14, fontSize: 'clamp(27px, 7.6vw, 33px)' }}>
@@ -75,9 +75,10 @@ function ContextScreen({ onContinue }) {
       {/* Botón anclado abajo, con aire por debajo para que no quede pegado al borde */}
       <div className="w-full max-w-[380px] mx-auto pt-8 pb-[10vh] relative">
         <button onClick={onContinue}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[54px] text-[16px]
+          className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold
             transition-all duration-[160ms] ease-premium active:scale-[0.98]"
-          style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)' }}>
+          style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)',
+                   height: 'clamp(48px, 13.1vw, 54px)', fontSize: 'clamp(15px, 3.9vw, 16px)' }}>
           Continuar <ArrowRight size={19} strokeWidth={2.5} />
         </button>
       </div>
@@ -99,9 +100,9 @@ function AccessScreen({ children, onBack }) {
         {/* Encabezado centrado, sin tarjeta: el formulario respira sobre el
             fondo en vez de vivir dentro de una caja con borde y sombra. */}
         <div className="flex flex-col items-center text-center mb-8">
-          <CobaltoMark size={56} />
+          <CobaltoMark size="clamp(46px, 13.6vw, 56px)" />
           <h1 className="font-extrabold mt-4"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.025em', fontSize: 22 }}>
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.025em', fontSize: 'clamp(19px, 5.3vw, 22px)' }}>
             Entrar a Cobalto
           </h1>
           <p className="t-body-sm mt-1.5" style={{ color: 'var(--text-tertiary)' }}>

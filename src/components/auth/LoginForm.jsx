@@ -53,11 +53,12 @@ export default function LoginForm() {
     setLoading(false)
   }
 
-  const fieldCls = 'w-full px-4 h-12 rounded-input text-[15px] font-medium transition-colors focus:outline-none'
+  const fieldCls = 'w-full px-4 rounded-input text-[15px] font-medium transition-colors focus:outline-none'
   const fieldStyle = {
     background: 'var(--surface)',
     border: '1px solid var(--border)',
     color: 'var(--text-primary)',
+    height: 'clamp(44px, 11.7vw, 48px)',
   }
 
   return (
@@ -66,8 +67,9 @@ export default function LoginForm() {
         <>
           <button type="button"
             onClick={async () => { try { await signInWithGoogle() } catch (e) { setError(e.message) } }}
-            className="w-full flex items-center justify-center gap-2.5 text-[14px] font-bold h-12 rounded-btn transition-all active:scale-[0.98]"
-            style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}>
+            className="w-full flex items-center justify-center gap-2.5 text-[14px] font-bold rounded-btn transition-all active:scale-[0.98]"
+            style={{ boxShadow: 'inset 0 0 0 1px var(--border)', color: 'var(--text-primary)', background: 'var(--surface)',
+                     height: 'clamp(44px, 11.7vw, 48px)' }}>
             <GoogleIcon /> Continuar con Google
           </button>
 
@@ -90,8 +92,9 @@ export default function LoginForm() {
           <input id="login-code" type="text" value={code} inputMode="numeric" autoComplete="one-time-code"
             required autoFocus placeholder="000000"
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-            className="w-full px-3 h-14 rounded-input text-center text-[26px] font-bold tracking-[0.32em] transition-colors focus:outline-none"
-            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+            className="w-full px-3 rounded-input text-center font-bold tracking-[0.32em] transition-colors focus:outline-none"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-primary)',
+                     height: 'clamp(50px, 13.6vw, 56px)', fontSize: 'clamp(22px, 6.3vw, 26px)' }} />
           <p className="t-caption mt-2 text-center" style={{ color: 'var(--text-tertiary)' }}>
             Enviado a {email}
           </p>
@@ -101,8 +104,9 @@ export default function LoginForm() {
       {error && <p role="alert" className="t-caption font-semibold" style={{ color: 'var(--error)' }}>{error}</p>}
 
       <button type="submit" disabled={loading || (codeSent ? code.length < 6 : !emailValid)}
-        className="w-full flex items-center justify-center gap-2 text-white text-[15px] font-extrabold h-12 rounded-btn disabled:opacity-40 transition-all active:scale-[0.98]"
-        style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)' }}>
+        className="w-full flex items-center justify-center gap-2 text-white text-[15px] font-extrabold rounded-btn disabled:opacity-40 transition-all active:scale-[0.98]"
+        style={{ background: 'var(--accent-deep)', boxShadow: 'var(--shadow-raised)',
+                 height: 'clamp(44px, 11.7vw, 48px)' }}>
         {loading ? <Spinner size={16} /> : codeSent ? 'Verificar y entrar' : 'Enviarme el código'}
       </button>
 
