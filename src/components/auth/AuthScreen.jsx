@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Zap, Building2, MapPin } from 'lucide-react'
+import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Building2, ArrowRight } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import ResetForm from './ResetForm'
@@ -9,19 +9,16 @@ import CobaltoMark from '../shared/CobaltoMark'
 import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '../legal/LegalContent'
 
 // Ventajas con iconografía consistente: misma familia (lucide), mismo tamaño
-// y mismo grosor de trazo en las seis.
+// y mismo grosor de trazo.
 const ADVANTAGES = [
-  { icon: Gift,          title: 'Gratis',          sub: 'Sin costos ocultos'     },
-  { icon: Rocket,        title: 'Rápido',          sub: 'En segundos'            },
   { icon: BadgeCheck,    title: 'Perfiles reales', sub: 'Sabes con quién hablas' },
-  { icon: Lock,          title: 'Privado',         sub: 'Datos protegidos'       },
-  { icon: MessageCircle, title: 'Chat seguro',     sub: 'Contacto interno'       },
-  { icon: FlaskConical,  title: 'Química',         sub: 'Industria y lab'        },
+  { icon: MessageCircle, title: 'Chat seguro',     sub: 'Contacto directo'       },
+  { icon: Gift,          title: 'Gratis',          sub: 'Sin costos ocultos'     },
+  { icon: Lock,          title: 'Privado',         sub: 'Tus datos protegidos'   },
 ]
 
 // Las métricas crecen con el tiempo. Por debajo de 10.000 se muestra el número
-// exacto (más creíble y concreto); por encima se compacta ("12 mil") para que
-// no desborde la tarjeta en móvil ni pierda legibilidad.
+// exacto (más creíble); por encima se compacta para que no desborde en móvil.
 const formatMetric = (n) => {
   const v = n ?? 0
   if (v < 10000) return v.toLocaleString('es-CO')
@@ -29,103 +26,128 @@ const formatMetric = (n) => {
   return new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: decimals }).format(v)
 }
 
-// Barra superior mínima: solo la marca. El formulario ya está siempre visible
-// más abajo, así que no hace falta ningún botón aquí — un único llamado a la
-// acción (el del formulario) es justo el problema que veníamos a resolver.
-function TopBar() {
+// ══════════════════════════════════════════════════════════════════════════
+// PANTALLA 1 — Contexto.
+// Presenta la marca y explica qué es RedCobalto. Un solo botón: "Continuar".
+// No hay formulario aquí: el acceso vive en la pantalla 2, para que nunca
+// haya dos llamados a la acción que digan cosas distintas.
+// ══════════════════════════════════════════════════════════════════════════
+function ContextScreen({ stats, onContinue }) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b" style={{ background: 'rgba(255,255,255,0.86)', backdropFilter: 'blur(18px)', borderColor: 'var(--border-soft)' }}>
-      <div className="max-w-6xl mx-auto h-[64px] flex items-center px-4 md:px-6">
-        <RedCobaltoLogo size="md" />
+    <div className="flex-1 flex flex-col items-center justify-center px-5 py-10"
+      style={{ background: 'linear-gradient(170deg, var(--surface) 0%, var(--accent-softer) 100%)' }}>
+      <div className="w-full max-w-[420px] flex flex-col items-center text-center">
+
+        <CobaltoMark size={72} rounded="rounded-[20px]" />
+
+        <p className="font-extrabold leading-none mt-5" style={{ letterSpacing: '-0.03em', fontSize: 'clamp(26px, 7.4vw, 34px)' }}>
+          <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
+        </p>
+
+        <h1 className="font-extrabold mt-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.025em', lineHeight: 1.2, fontSize: 'clamp(19px, 5.2vw, 24px)' }}>
+          Punto de encuentro de la<br />industria química
+        </h1>
+
+        <p className="mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(13.5px, 3.6vw, 15px)' }}>
+          La comunidad profesional del sector químico en Colombia. Conecta con
+          laboratorios, proveedores y colegas; comparte información técnica,
+          normatividad y oportunidades.
+        </p>
+
+        <div className="mt-4 flex items-center gap-2.5 flex-wrap justify-center">
+          <span className="font-extrabold text-[14px]" style={{ color: 'var(--brand-red)' }}>Conecta</span>
+          <span style={{ color: 'var(--border)' }}>·</span>
+          <span className="font-extrabold text-[14px]" style={{ color: 'var(--accent)' }}>Comparte</span>
+          <span style={{ color: 'var(--border)' }}>·</span>
+          <span className="font-extrabold text-[14px]" style={{ color: 'var(--accent-violet)' }}>Crece</span>
+        </div>
+
+        {/* Métricas reales de la comunidad: dan contexto de tamaño y actividad */}
+        <div className="grid grid-cols-3 gap-2.5 w-full mt-7">
+          {[
+            { icon: Users,        value: stats.members,   label: 'Miembros'      },
+            { icon: FlaskConical, value: stats.posts,     label: 'Publicaciones' },
+            { icon: Building2,    value: stats.companies, label: 'Empresas'      },
+          ].map(({ icon: Icon, value, label }) => (
+            <div key={label} className="rounded-card p-3 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
+              <Icon size={15} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+              <p className="font-extrabold leading-none mt-1.5 tnum"
+                style={{ letterSpacing: '-0.03em', color: 'var(--text-primary)', fontSize: 19 }}>
+                {formatMetric(value)}
+              </p>
+              <p className="text-[9px] mt-1 uppercase font-extrabold leading-tight"
+                style={{ color: 'var(--text-tertiary)', letterSpacing: '0.05em' }}>{label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Ventajas en dos columnas: contexto sin alargar demasiado la pantalla */}
+        <div className="grid grid-cols-2 gap-2.5 w-full mt-3">
+          {ADVANTAGES.map(({ icon: Icon, title, sub }) => (
+            <div key={title} className="rounded-card p-3 border flex items-start gap-2.5 text-left"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
+              <span className="flex items-center justify-center w-8 h-8 rounded-input flex-shrink-0"
+                style={{ background: 'var(--accent-soft)' }}>
+                <Icon size={16} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[12.5px] font-extrabold leading-tight" style={{ color: 'var(--text-primary)' }}>{title}</p>
+                <p className="text-[11px] mt-0.5 leading-tight" style={{ color: 'var(--text-tertiary)' }}>{sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button onClick={onContinue}
+          className="w-full mt-7 inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[48px] text-[15px]
+            transition-all duration-[160ms] ease-premium active:scale-[0.98]"
+          style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)' }}>
+          Continuar <ArrowRight size={18} strokeWidth={2.4} />
+        </button>
       </div>
-    </header>
+    </div>
   )
 }
 
-// ── Hero + formulario en split: titular a la izquierda, tarjeta de acceso a
-// la derecha. En móvil se apila: primero el titular (compacto), luego la
-// tarjeta. El formulario está siempre a la vista, sin ningún clic previo.
-function HeroSplit({ stats, formSlot }) {
+// ══════════════════════════════════════════════════════════════════════════
+// PANTALLA 2 — Acceso.
+// Solo el formulario, sin ruido de marketing. Un único camino: Google o
+// código al correo (que sirve igual para cuenta nueva o existente).
+// ══════════════════════════════════════════════════════════════════════════
+function AccessScreen({ children, onBack }) {
   return (
-    <section className="max-w-6xl w-full mx-auto px-4 md:px-6 pt-8 pb-10 md:pt-14 md:pb-16">
-      <div className="md:grid md:grid-cols-[1.05fr_0.95fr] md:gap-14 md:items-center">
+    <div className="flex-1 flex items-start md:items-center justify-center px-4 py-8 md:py-12"
+      style={{ background: 'radial-gradient(circle at top, rgba(36,87,197,0.06), transparent 34%), var(--bg-app)' }}>
+      <div className="w-full max-w-[400px]">
+        <div className="rounded-panel p-6 md:p-7 border relative overflow-hidden"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
+          <div className="absolute inset-x-0 top-0 h-1.5"
+            style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--accent), var(--accent-violet))' }} />
 
-        {/* ── Columna izquierda: titular ── */}
-        <div>
-          <div className="mb-5 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full" style={{ background: 'var(--brand-red)' }} />
-            <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>COMUNIDAD PROFESIONAL</span>
-          </div>
-
-          <h1 className="text-left font-extrabold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 0.95 }}>
-            <span className="block" style={{ fontSize: 'clamp(34px, 8.6vw, 58px)' }}>Punto de</span>
-            <span className="block" style={{ fontSize: 'clamp(34px, 8.6vw, 58px)' }}>encuentro</span>
-            <span className="block mt-2" style={{ color: 'var(--accent)', fontSize: 'clamp(19px, 4.6vw, 30px)' }}>
-              de la industria química.
-            </span>
-          </h1>
-
-          <p className="mt-6 leading-relaxed max-w-[460px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 3.4vw, 18px)' }}>
-            Conecta con profesionales, laboratorios y proveedores del sector químico en Colombia.
-          </p>
-
-          <div className="mt-5 flex items-center gap-3 flex-wrap">
-            <span className="font-extrabold" style={{ color: 'var(--brand-red)', fontSize: 'clamp(15px, 3.4vw, 18px)' }}>Conecta</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent)', fontSize: 'clamp(15px, 3.4vw, 18px)' }}>Comparte</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent-violet)', fontSize: 'clamp(15px, 3.4vw, 18px)' }}>Crece</span>
-          </div>
-
-          {/* Métricas: solo 3, discretas, dan confianza sin competir con la tarjeta */}
-          <div className="hidden md:grid grid-cols-3 gap-3 mt-10 max-w-[420px]">
-            {[
-              { icon: Users,        value: stats.members, label: 'Miembros'      },
-              { icon: FlaskConical, value: stats.posts,   label: 'Publicaciones' },
-              { icon: Building2,    value: stats.companies, label: 'Empresas'    },
-            ].map(({ icon: Icon, value, label }) => (
-              <div key={label} className="rounded-card p-3 border" style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-                <Icon size={15} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-                <p className="font-extrabold leading-none mt-1.5 tnum" style={{ letterSpacing: '-0.03em', color: 'var(--text-primary)', fontSize: 20 }}>
-                  {formatMetric(value)}
-                </p>
-                <p className="text-[9.5px] mt-0.5 uppercase font-extrabold" style={{ color: 'var(--text-tertiary)', letterSpacing: '0.05em' }}>{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Columna derecha: tarjeta de acceso, siempre visible ── */}
-        <div className="mt-10 md:mt-0 flex justify-center md:justify-end">
-          <div className="relative w-full max-w-[400px]">
-            {/* Círculos decorativos detrás de la tarjeta, mismo lenguaje del splash */}
-            <div className="absolute -z-10 rounded-full" aria-hidden="true"
-              style={{ width: 260, height: 260, top: -40, right: -50, background: 'var(--accent-softer)' }} />
-            <div className="absolute -z-10 rounded-full" aria-hidden="true"
-              style={{ width: 180, height: 180, bottom: -30, left: -40, border: '1px solid var(--border-soft)' }} />
-
-            <div className="rounded-panel p-6 md:p-7 border relative"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
-              <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-panel"
-                style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--accent), var(--accent-violet))' }} />
-              <div className="flex items-center gap-3 mb-6">
-                <CobaltoMark size={38} rounded="rounded-[11px]" />
-                <div>
-                  <p className="t-body-sm font-extrabold" style={{ color: 'var(--text-primary)' }}>Entrar a Cobalto</p>
-                  <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Con Google o con un código a tu correo</p>
-                </div>
-              </div>
-              {formSlot}
+          <div className="flex items-center gap-3 mb-6 mt-1">
+            <CobaltoMark size={38} rounded="rounded-[11px]" />
+            <div>
+              <p className="t-body-sm font-extrabold" style={{ color: 'var(--text-primary)' }}>Entrar a Cobalto</p>
+              <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Con Google o con un código a tu correo</p>
             </div>
           </div>
+
+          {children}
         </div>
+
+        <button onClick={onBack}
+          className="mt-5 mx-auto block text-[13px] font-bold hover:underline"
+          style={{ color: 'var(--accent-deep)' }}>
+          ← Volver
+        </button>
       </div>
-    </section>
+    </div>
   )
 }
 
 export default function AuthScreen() {
-  const [mode, setMode] = useState('main') // main | reset | terminos | privacidad
+  const [mode, setMode] = useState('context') // context | access | reset | terminos | privacidad
   // El estado inicial debe incluir TODAS las métricas que se renderizan: en el
   // primer render (antes de que responda la consulta) una clave faltante seria
   // undefined, y undefined.toLocaleString() rompe la pantalla completa.
@@ -135,57 +157,47 @@ export default function AuthScreen() {
     getCommunityStats().then(setStats).catch(() => {})
   }, [])
 
+  const isLegal = mode === 'terminos' || mode === 'privacidad'
+
   return (
     <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
-      <TopBar />
+
+      {/* La barra superior solo aparece fuera de la pantalla de contexto: ahí
+          la marca ya es el protagonista y repetirla arriba sería redundante. */}
+      {mode !== 'context' && (
+        <header className="sticky top-0 z-40 w-full border-b"
+          style={{ background: 'rgba(255,255,255,0.86)', backdropFilter: 'blur(18px)', borderColor: 'var(--border-soft)' }}>
+          <div className="max-w-6xl mx-auto h-[64px] flex items-center px-4 md:px-6">
+            <button onClick={() => setMode('context')} aria-label="Volver al inicio">
+              <RedCobaltoLogo size="md" />
+            </button>
+          </div>
+        </header>
+      )}
 
       {mode === 'terminos' ? (
-        <LegalLayout title="Términos y Condiciones" updated={LEGAL_UPDATED} onBack={() => setMode('main')}>
+        <LegalLayout title="Términos y Condiciones" updated={LEGAL_UPDATED} onBack={() => setMode('context')}>
           <TerminosContent />
         </LegalLayout>
       ) : mode === 'privacidad' ? (
-        <LegalLayout title="Política de Privacidad y Tratamiento de Datos" updated={LEGAL_UPDATED} onBack={() => setMode('main')}>
+        <LegalLayout title="Política de Privacidad y Tratamiento de Datos" updated={LEGAL_UPDATED} onBack={() => setMode('context')}>
           <PrivacidadContent />
         </LegalLayout>
+      ) : mode === 'context' ? (
+        <ContextScreen stats={stats} onContinue={() => setMode('access')} />
       ) : (
-        <>
-          <HeroSplit
-            stats={stats}
-            formSlot={
-              mode === 'reset'
-                ? <ResetForm onSwitchLogin={() => setMode('main')} />
-                : <LoginForm onSwitchReset={() => setMode('reset')} />
-            }
-          />
+        <AccessScreen onBack={() => setMode('context')}>
+          {mode === 'reset'
+            ? <ResetForm onSwitchLogin={() => setMode('access')} />
+            : <LoginForm onSwitchReset={() => setMode('reset')} />}
+        </AccessScreen>
+      )}
 
-          {/* ── Ventajas: contenido informativo debajo del pliegue, sin CTA
-               propio — el único llamado a la acción de la página ya está
-               arriba, en la tarjeta. ── */}
-          <section className="max-w-6xl w-full mx-auto px-4 md:px-6 pb-14">
-            <h2 className="t-eyebrow mb-4" style={{ color: 'var(--text-tertiary)' }}>
-              ¿Por qué Red Cobalto?
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {ADVANTAGES.map(({ icon: Icon, title, sub }) => (
-                <div key={title}
-                  className="rounded-card p-4 transition-all duration-[160ms] ease-premium hover:shadow-card-hover"
-                  style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-soft)' }}>
-                  <span className="flex items-center justify-center w-11 h-11 rounded-input mb-3"
-                    style={{ background: 'var(--accent-soft)' }}>
-                    <Icon size={24} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
-                  </span>
-                  <p className="text-[15px] font-extrabold" style={{ color: 'var(--text-primary)' }}>{title}</p>
-                  <p className="text-[13px] mt-1 leading-snug" style={{ color: 'var(--text-tertiary)' }}>{sub}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <Footer
-            onTerminos={() => { setMode('terminos'); window.scrollTo({ top: 0 }) }}
-            onPrivacidad={() => { setMode('privacidad'); window.scrollTo({ top: 0 }) }}
-          />
-        </>
+      {!isLegal && (
+        <Footer
+          onTerminos={() => { setMode('terminos'); window.scrollTo({ top: 0 }) }}
+          onPrivacidad={() => { setMode('privacidad'); window.scrollTo({ top: 0 }) }}
+        />
       )}
     </div>
   )
