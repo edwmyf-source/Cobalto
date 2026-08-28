@@ -19,7 +19,7 @@ import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '
 // ══════════════════════════════════════════════════════════════════════════
 function ContextScreen({ onContinue }) {
   return (
-    <div className="min-h-app flex flex-col justify-center px-6 md:px-12 lg:px-20 py-10 relative overflow-hidden"
+    <div className="min-h-app flex flex-col justify-center px-[22px] md:px-[43px] lg:px-[72px] py-10 relative overflow-hidden"
       style={{ background: 'linear-gradient(170deg, var(--surface) 0%, var(--accent-softer) 100%)' }}>
 
       {/* Círculos de fondo: mismo lenguaje visual del splash de carga. Puramente
@@ -29,7 +29,7 @@ function ContextScreen({ onContinue }) {
       <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
         style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
 
-      <div className="w-full max-w-5xl mx-auto relative
+      <div className="w-full max-w-4xl mx-auto relative
         flex flex-col items-center text-center
         md:grid md:grid-cols-[0.85fr_1.15fr] md:gap-14 lg:gap-20 md:items-center md:text-left">
 
@@ -37,7 +37,7 @@ function ContextScreen({ onContinue }) {
         <div className="flex flex-col items-center md:items-start">
           <CobaltoMark size="clamp(78px, 9vw, 132px)" />
 
-          <p className="font-extrabold leading-none mt-4 md:mt-6"
+          <p className="font-extrabold leading-none mt-5 md:mt-7"
             style={{ letterSpacing: '-0.04em', fontSize: 'clamp(32px, 9.5vw, 42px)' }}>
             <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
           </p>
@@ -49,7 +49,7 @@ function ContextScreen({ onContinue }) {
         </div>
 
         {/* ── Mensaje + CTA: cerca uno del otro, sin bloques largos de texto ── */}
-        <div className="mt-7 md:mt-0 flex flex-col items-center md:items-start max-w-[420px] md:max-w-none">
+        <div className="mt-9 md:mt-0 flex flex-col items-center md:items-start max-w-[340px] md:max-w-none">
 
           <h1 className="font-extrabold"
             style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.18, fontSize: 'clamp(24px, 6.8vw, 38px)' }}>
@@ -58,8 +58,8 @@ function ContextScreen({ onContinue }) {
             en Colombia
           </h1>
 
-          <p className="mt-4 leading-relaxed"
-            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 17px)', maxWidth: 480 }}>
+          <p className="mt-5 leading-relaxed"
+            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 17px)', maxWidth: 420 }}>
             Conecta con profesionales, técnicos, tecnólogos, empresas y
             proveedores del sector químico. Comparte conocimiento, encuentra
             oportunidades y haz parte de una comunidad donde la industria se
@@ -67,7 +67,7 @@ function ContextScreen({ onContinue }) {
           </p>
 
           <button onClick={onContinue}
-            className="w-full md:w-auto mt-7 inline-flex items-center justify-center gap-2 rounded-btn font-extrabold px-8
+            className="w-full md:w-auto mt-8 inline-flex items-center justify-center gap-2 rounded-btn font-extrabold px-8
               transition-all duration-[160ms] ease-premium active:scale-[0.98] hover:brightness-110"
             style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)',
                      height: 'clamp(48px, 13.1vw, 56px)', fontSize: 'clamp(15px, 3.9vw, 16.5px)' }}>
