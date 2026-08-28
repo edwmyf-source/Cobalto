@@ -79,7 +79,26 @@ export default function BrandSplash({ onDone }) {
           margin-bottom: 24px;
           opacity: 0;
           transform: scale(0.85);
-          animation: cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both;
+          /* Dos animaciones encadenadas: primero entra en escala, y al
+             terminar arranca el rebote en bucle. */
+          animation:
+            cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both,
+            cbo-mark-bounce 2.1s ease-out 700ms infinite;
+        }
+
+        @keyframes cbo-mark-bounce {
+          0%, 100% { transform: translateY(0)     scaleY(1);    }
+          18%      { transform: translateY(-16px) scaleY(1.06); }
+          36%      { transform: translateY(0)     scaleY(0.90); }
+          50%      { transform: translateY(-7px)  scaleY(1.03); }
+          66%      { transform: translateY(0)     scaleY(0.96); }
+          78%      { transform: translateY(-2px)  scaleY(1);    }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cbo-mark {
+            animation: cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both;
+          }
         }
 
         .cbo-word {
