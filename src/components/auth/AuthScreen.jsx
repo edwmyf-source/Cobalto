@@ -26,40 +26,43 @@ function ContextScreen({ onContinue }) {
       <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
         style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
 
-      {/* Bloque central: se centra en el espacio disponible, pero desplazado
-          hacia arriba (el padding inferior corre el eje de centrado) para que
-          no quede un hueco alto sobre el logo. */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center relative pb-[16vh]">
-        <div className="w-full max-w-[380px] flex flex-col items-center">
+      {/* Contenido repartido en la altura: la marca ocupa el tercio superior,
+          el mensaje el central, y el espacio flexible entre grupos evita que
+          todo quede apiñado al centro. */}
+      <div className="flex-1 flex flex-col items-center text-center relative">
+        <div className="w-full max-w-[380px] flex-1 flex flex-col items-center">
 
-          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" />
+          <div className="flex-[0.8]" />
 
-          <p className="font-extrabold leading-none mt-6"
+          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" className="mark-bounce" />
+
+          <p className="font-extrabold leading-none mt-5"
             style={{ letterSpacing: '-0.04em', fontSize: 'clamp(36px, 10.4vw, 46px)' }}>
             <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
           </p>
 
-          {/* Filete de marca: separa la identidad del mensaje */}
-          <span className="block rounded-full mt-7"
-            style={{ width: 'clamp(38px, 11vw, 46px)', height: 4, background: 'linear-gradient(90deg, var(--brand-red), var(--accent))' }} />
+          <div className="flex-1" />
 
-          <h1 className="font-extrabold mt-7"
+          <h1 className="font-extrabold"
             style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.16, fontSize: 'clamp(26px, 7.3vw, 32px)' }}>
             Punto de encuentro de la{' '}
             <span style={{ color: 'var(--accent)' }}>industria química</span>{' '}
             en Colombia
           </h1>
 
-          <p className="mt-5 leading-relaxed"
+          <div className="flex-[0.45]" />
+
+          <p className="leading-relaxed"
             style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 16px)' }}>
-            El lugar donde se encuentran analistas, formuladores, jefes de
-            planta, comerciales, proveedores y recursos humanos del sector.
+            Todo el sector químico del país, reunido en un mismo espacio.
           </p>
+
+          <div className="flex-[1.1]" />
         </div>
       </div>
 
-      {/* Botón anclado abajo, con aire por debajo para que no quede pegado al borde */}
-      <div className="w-full max-w-[380px] mx-auto pt-8 pb-[10vh] relative">
+      {/* Botón anclado abajo */}
+      <div className="w-full max-w-[380px] mx-auto pb-[4vh] relative">
         <button onClick={onContinue}
           className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold
             transition-all duration-[160ms] ease-premium active:scale-[0.98]"
