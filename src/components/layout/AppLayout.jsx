@@ -20,6 +20,9 @@ export default function AppLayout() {
   const [unreadCount, setUnreadCount] = useState(0)
   const [unreadMsgs, setUnreadMsgs] = useState(0)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  // Desde dónde se abrió el menú: 'top' lo despliega bajo la barra superior,
+  // 'bottom' lo despliega sobre la barra de navegación inferior.
+  const [menuAnchor, setMenuAnchor] = useState('bottom')
   const menuRef = useRef(null)
   const profileBtnRef = useRef(null)
   const greetBtnRef = useRef(null)
@@ -96,6 +99,54 @@ export default function AppLayout() {
     { id: '/notifications', label: 'Notificaciones',  icon: Bell, badge: unreadCount },
   ]
 
+  // Contenido del menú de cuenta. Se define una sola vez y se monta en la
+  // posición que corresponda según desde dónde se haya abierto.
+  const profileMenuContent = (
+    <>
+      <div className="px-4 py-4" style={{ borderBottom: '1px solid var(--border-soft)' }}>
+        <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{name}</p>
+        <p className="t-caption truncate mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
+          {session?.user?.email?.endsWith('@phone.redcobalto.com') ? profile?.phone : session?.user?.email}
+        </p>
+      </div>
+      {profileMenuItems.map(item => {
+        const Icon = item.icon
+        return (
+          <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
+            className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
+            style={{ color: 'var(--text-primary)' }}
+            role="menuitem"
+            {...hoverProps(
+              e => e.currentTarget.style.background = 'var(--bg-subtle)',
+              e => e.currentTarget.style.background = 'transparent',
+            )}>
+            <Icon size={18} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
+            {item.label}
+            {!!item.badge && (
+              <span className="ml-auto text-white text-[10px] font-semibold px-1.5 rounded-full min-w-[18px] text-center leading-5 tnum"
+                style={{ background: 'var(--error)' }}>
+                {item.badge > 99 ? '99+' : item.badge}
+              </span>
+            )}
+            <ChevronRight size={16} className="ml-auto" style={{ color: 'var(--text-tertiary)' }} />
+          </button>
+        )
+      })}
+      <div style={{ borderTop: '1px solid var(--border-soft)' }}>
+        <button onClick={() => signOut()} role="menuitem"
+          className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
+          style={{ color: 'var(--error)' }}
+          {...hoverProps(
+            e => e.currentTarget.style.background = 'var(--error-bg)',
+            e => e.currentTarget.style.background = 'transparent',
+          )}>
+          <LogOut size={18} strokeWidth={2} />
+          Cerrar sesión
+        </button>
+      </div>
+    </>
+  )
+
   return (
     <div className="min-h-app" style={{ background: 'var(--bg-app)' }}>
 
@@ -110,7 +161,7 @@ export default function AppLayout() {
         <RedCobaltoLogo size="md" dark />
         <button
           ref={greetBtnRef}
-          onClick={() => setProfileMenuOpen(o => !o)}
+          onClick={() => { setMenuAnchor('top'); setProfileMenuOpen(o => !(o && menuAnchor === 'top')) }}
           aria-label="Abrir menú de cuenta"
           aria-haspopup="menu"
           aria-expanded={profileMenuOpen}
@@ -121,10 +172,21 @@ export default function AppLayout() {
           </span>
           <ChevronDown size={15} strokeWidth={2.4}
             style={{ color: 'rgba(255,255,255,0.75)', flexShrink: 0,
-                     transform: profileMenuOpen ? 'rotate(180deg)' : 'none',
+                     transform: profileMenuOpen && menuAnchor === 'top' ? 'rotate(180deg)' : 'none',
                      transition: 'transform 160ms ease' }} />
         </button>
       </div>
+
+      {/* Menú desplegado hacia ABAJO, justo bajo la barra superior */}
+      {profileMenuOpen && menuAnchor === 'top' && (
+        <div ref={menuRef}
+          className="md:hidden fixed right-4 rounded-panel overflow-hidden modal-enter z-50"
+          style={{ top: 62, background: 'var(--surface)', boxShadow: 'var(--shadow-dropdown)',
+                   border: '1px solid var(--border-soft)', minWidth: 248 }}
+          role="menu">
+          {profileMenuContent}
+        </div>
+      )}
 
       {/* ── Nav móvil flotante (glass) ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40"
@@ -132,51 +194,11 @@ export default function AppLayout() {
           transform: navVisible ? 'translateY(0)' : 'translateY(120%)',
           transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)' }}>
 
-        {profileMenuOpen && (
+        {profileMenuOpen && menuAnchor === 'bottom' && (
           <div ref={menuRef} className="absolute bottom-full right-4 mb-3 rounded-panel overflow-hidden modal-enter"
             style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-dropdown)', border: '1px solid var(--border-soft)', minWidth: 248, pointerEvents: 'auto' }}
             role="menu">
-            <div className="px-4 py-4" style={{ borderBottom: '1px solid var(--border-soft)' }}>
-              <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{name}</p>
-              <p className="t-caption truncate mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
-                {session?.user?.email?.endsWith('@phone.redcobalto.com') ? profile?.phone : session?.user?.email}
-              </p>
-            </div>
-            {profileMenuItems.map(item => {
-              const Icon = item.icon
-              return (
-                <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
-                  className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
-                  style={{ color: 'var(--text-primary)' }}
-                  role="menuitem"
-                  {...hoverProps(
-                    e => e.currentTarget.style.background = 'var(--bg-subtle)',
-                    e => e.currentTarget.style.background = 'transparent',
-                  )}>
-                  <Icon size={18} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
-                  {item.label}
-                  {!!item.badge && (
-                    <span className="ml-auto text-white text-[10px] font-semibold px-1.5 rounded-full min-w-[18px] text-center leading-5 tnum"
-                      style={{ background: 'var(--error)' }}>
-                      {item.badge > 99 ? '99+' : item.badge}
-                    </span>
-                  )}
-                  <ChevronRight size={16} className="ml-auto" style={{ color: 'var(--text-tertiary)' }} />
-                </button>
-              )
-            })}
-            <div style={{ borderTop: '1px solid var(--border-soft)' }}>
-              <button onClick={() => signOut()} role="menuitem"
-                className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
-                style={{ color: 'var(--error)' }}
-                {...hoverProps(
-                  e => e.currentTarget.style.background = 'var(--error-bg)',
-                  e => e.currentTarget.style.background = 'transparent',
-                )}>
-                <LogOut size={18} strokeWidth={2} />
-                Cerrar sesión
-              </button>
-            </div>
+            {profileMenuContent}
           </div>
         )}
 
@@ -231,7 +253,7 @@ export default function AppLayout() {
           )})()}
 
           {/* Perfil */}
-          <button ref={profileBtnRef} onClick={() => setProfileMenuOpen(o => !o)}
+          <button ref={profileBtnRef} onClick={() => { setMenuAnchor('bottom'); setProfileMenuOpen(o => !(o && menuAnchor === 'bottom')) }}
             className="flex flex-col items-center justify-center gap-[1px] flex-1 h-full relative active:scale-95 transition-transform" aria-label="Perfil">
             <User size={22} style={{ color: profileMenuOpen ? 'var(--accent-deep)' : 'var(--text-tertiary)' }} strokeWidth={profileMenuOpen ? 2.4 : 2} />
             <span className="t-caption font-medium" style={{ color: profileMenuOpen ? 'var(--accent-deep)' : 'var(--text-tertiary)' }}>Perfil</span>
