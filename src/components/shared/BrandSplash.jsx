@@ -30,9 +30,8 @@ export default function BrandSplash({ onDone }) {
       textAlign: 'center', padding: '0 32px',
     }}>
       <style>{`
-        /* ═══ Opción "Puro": solo marca, nombre y frase. Centrado, sin más
-           estímulo visual — la pantalla dura ~3s, cualquier elemento extra
-           compite por atención en vez de dejar la marca en la cabeza. ═══ */
+        /* ═══ Opción "El nombre manda": isotipo pequeño, wordmark grande
+           como protagonista. Registro más tipográfico. ═══ */
 
         @keyframes cbo-mark-in {
           0%   { opacity: 0; transform: scale(0.55); }
@@ -62,13 +61,13 @@ export default function BrandSplash({ onDone }) {
         }
         .cbo-word {
           font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-          font-size: clamp(36px, 11.5vw, 58px);
+          font-size: clamp(42px, 13.5vw, 68px);
           font-weight: 800;
-          letter-spacing: -0.03em;
+          letter-spacing: -0.035em;
           line-height: 1;
-          margin-top: 22px;
+          margin-top: 20px;
           opacity: 0;
-          animation: cbo-fade-up 600ms cubic-bezier(0.16,1,0.3,1) 500ms both;
+          animation: cbo-fade-up 620ms cubic-bezier(0.16,1,0.3,1) 420ms both;
         }
         /* Misma convención de color que en Topbar, AppLayout y AuthScreen:
            "Red" siempre en rojo de marca, "Cobalto" en azul marino. */
@@ -99,7 +98,7 @@ export default function BrandSplash({ onDone }) {
       `}</style>
 
       <div className="cbo-mark">
-        <CobaltoMark size={92} rounded="rounded-2xl" />
+        <CobaltoMark size={54} rounded="rounded-xl" />
       </div>
 
       <div className="cbo-word">
