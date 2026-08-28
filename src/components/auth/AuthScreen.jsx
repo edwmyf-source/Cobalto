@@ -39,36 +39,22 @@ function ContextScreen({ onContinue }) {
             <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
           </p>
 
-          <p className="mt-2.5 font-bold uppercase"
-            style={{ color: 'var(--text-tertiary)', fontSize: 'clamp(10px, 2.8vw, 11.5px)', letterSpacing: '0.16em' }}>
-            Industria química · Colombia
-          </p>
-
           {/* Filete de marca: separa la identidad del mensaje */}
-          <span className="block rounded-full mt-6"
+          <span className="block rounded-full mt-7"
             style={{ width: 'clamp(38px, 11vw, 46px)', height: 4, background: 'linear-gradient(90deg, var(--brand-red), var(--accent))' }} />
 
-          <h1 className="font-extrabold mt-6"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.14, fontSize: 'clamp(27px, 7.6vw, 33px)' }}>
-            Punto de encuentro de la<br />
-            <span style={{ color: 'var(--accent)' }}>industria química</span>
+          <h1 className="font-extrabold mt-7"
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.16, fontSize: 'clamp(26px, 7.3vw, 32px)' }}>
+            Punto de encuentro de la{' '}
+            <span style={{ color: 'var(--accent)' }}>industria química</span>{' '}
+            en Colombia
           </h1>
 
-          <p className="mt-4 leading-relaxed"
+          <p className="mt-5 leading-relaxed"
             style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 16px)' }}>
-            La comunidad profesional del sector. Conecta con laboratorios,
-            proveedores y colegas; comparte información técnica, normatividad
-            y oportunidades.
+            El lugar donde se encuentran analistas, formuladores, jefes de
+            planta, comerciales, proveedores y recursos humanos del sector.
           </p>
-
-          <div className="mt-6 flex items-center gap-3 flex-wrap justify-center"
-            style={{ fontSize: 'clamp(14px, 3.8vw, 15.5px)' }}>
-            <span className="font-extrabold" style={{ color: 'var(--brand-red)' }}>Conecta</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent-violet)' }}>Crece</span>
-          </div>
         </div>
       </div>
 
