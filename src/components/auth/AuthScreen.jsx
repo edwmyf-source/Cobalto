@@ -22,12 +22,42 @@ function ContextScreen({ onContinue }) {
     <div className="min-h-app flex flex-col justify-center px-[22px] md:px-[43px] lg:px-[72px] py-10 relative overflow-hidden"
       style={{ background: 'linear-gradient(170deg, var(--surface) 0%, var(--accent-softer) 100%)' }}>
 
-      {/* Círculos de fondo: mismo lenguaje visual del splash de carga. Puramente
-          decorativos, por eso quedan detrás del contenido y ocultos a lectores. */}
-      <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
-        style={{ width: 420, height: 420, top: -170, right: -190, background: 'var(--accent-soft)', opacity: 0.5 }} />
-      <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
-        style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
+      {/* Isotipo gigante y tenue saliendo por la esquina inferior derecha:
+          elemento gráfico de marca en vez de círculos genéricos. Compensado
+          en tamaño porque el SVG ocupa el 78% de su contenedor. */}
+      <div className="absolute pointer-events-none" aria-hidden="true"
+        style={{ width: 'clamp(400px, 112vw, 760px)', aspectRatio: '1 / 1',
+                 right: 'clamp(-185px, -42vw, -150px)',
+                 bottom: 'clamp(-175px, -40vw, -140px)',
+                 opacity: 0.11 }}>
+        <CobaltoMark size="100%" rounded="rounded-none" />
+      </div>
+
+      {/* Nodos de conexión: sugieren comunidad, sin iconografía de laboratorio */}
+      {[
+        { x: 66, y: 13, s: 7, to: { x: 82, y: 6 } },
+        { x: 82, y: 6,  s: 5 },
+        { x: 9,  y: 80, s: 6, to: { x: 29, y: 87 } },
+        { x: 29, y: 87, s: 4 },
+      ].map((n, i) => {
+        const line = n.to && {
+          len: Math.hypot(n.to.x - n.x, n.to.y - n.y),
+          ang: Math.atan2(n.to.y - n.y, n.to.x - n.x) * 180 / Math.PI,
+        }
+        return (
+          <span key={i} aria-hidden="true" className="hidden sm:block">
+            <span className="absolute rounded-full pointer-events-none"
+              style={{ width: n.s, height: n.s, left: `${n.x}%`, top: `${n.y}%`,
+                       background: 'var(--accent)', opacity: 0.5 }} />
+            {line && (
+              <span className="absolute pointer-events-none"
+                style={{ left: `${n.x}%`, top: `${n.y}%`, width: `${line.len}%`, height: 1,
+                         transformOrigin: 'left center', transform: `rotate(${line.ang}deg)`,
+                         background: 'linear-gradient(90deg, rgba(36,87,197,0.45), rgba(36,87,197,0))' }} />
+            )}
+          </span>
+        )
+      })}
 
       <div className="w-full max-w-4xl mx-auto relative
         flex flex-col items-center text-center
