@@ -7,16 +7,19 @@ import CobaltoMark from '../shared/CobaltoMark'
 import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '../legal/LegalContent'
 
 // ══════════════════════════════════════════════════════════════════════════
-// PANTALLA 1 — Contexto.
-// Presenta la marca y explica qué es RedCobalto. Un solo botón: "Continuar".
-// No hay formulario aquí: el acceso vive en la pantalla 2, para que nunca
-// haya dos llamados a la acción que digan cosas distintas.
-// El bloque de marca queda centrado vertical y horizontalmente; el botón se
-// ancla abajo, separado del contenido.
+// PANTALLA 1 — Bienvenida.
+// Explica qué es RedCobalto y por qué vale la pena entrar. Un solo botón:
+// "Únete a la comunidad". El acceso (Google / código) vive en la pantalla 2.
+//
+// Móvil: todo apilado y centrado, con el botón cerca del mensaje (no
+// forzado al fondo) para que la relación pregunta→respuesta sea inmediata.
+// Escritorio: split horizontal — la marca a la izquierda con peso visual
+// propio, el mensaje y el CTA a la derecha, alineados a la izquierda para
+// una sensación más "de plataforma" que de afiche centrado.
 // ══════════════════════════════════════════════════════════════════════════
 function ContextScreen({ onContinue }) {
   return (
-    <div className="min-h-app flex flex-col px-6 py-9 relative overflow-hidden"
+    <div className="min-h-app flex flex-col justify-center px-6 md:px-12 lg:px-20 py-10 relative overflow-hidden"
       style={{ background: 'linear-gradient(170deg, var(--surface) 0%, var(--accent-softer) 100%)' }}>
 
       {/* Círculos de fondo: mismo lenguaje visual del splash de carga. Puramente
@@ -26,50 +29,51 @@ function ContextScreen({ onContinue }) {
       <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
         style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
 
-      {/* Contenido repartido en la altura: la marca ocupa el tercio superior,
-          el mensaje el central, y el espacio flexible entre grupos evita que
-          todo quede apiñado al centro. */}
-      <div className="flex-1 flex flex-col items-center text-center relative">
-        <div className="w-full max-w-[380px] flex-1 flex flex-col items-center">
+      <div className="w-full max-w-5xl mx-auto relative
+        flex flex-col items-center text-center
+        md:grid md:grid-cols-[0.85fr_1.15fr] md:gap-14 lg:gap-20 md:items-center md:text-left">
 
-          <div className="flex-[0.8]" />
+        {/* ── Marca: protagonista arriba en móvil, columna izquierda en escritorio ── */}
+        <div className="flex flex-col items-center md:items-start">
+          <CobaltoMark size="clamp(78px, 9vw, 132px)" />
 
-          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" />
-
-          <p className="font-extrabold leading-none mt-5"
-            style={{ letterSpacing: '-0.04em', fontSize: 'clamp(36px, 10.4vw, 46px)' }}>
+          <p className="font-extrabold leading-none mt-4 md:mt-6"
+            style={{ letterSpacing: '-0.04em', fontSize: 'clamp(32px, 9.5vw, 42px)' }}>
             <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
           </p>
 
-          <div className="flex-1" />
+          <p className="mt-2 font-bold uppercase hidden md:block"
+            style={{ color: 'var(--text-tertiary)', fontSize: 11.5, letterSpacing: '0.16em' }}>
+            Industria química · Colombia
+          </p>
+        </div>
+
+        {/* ── Mensaje + CTA: cerca uno del otro, sin bloques largos de texto ── */}
+        <div className="mt-7 md:mt-0 flex flex-col items-center md:items-start max-w-[420px] md:max-w-none">
 
           <h1 className="font-extrabold"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.16, fontSize: 'clamp(26px, 7.3vw, 32px)' }}>
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.18, fontSize: 'clamp(24px, 6.8vw, 38px)' }}>
             Punto de encuentro de la{' '}
             <span style={{ color: 'var(--accent)' }}>industria química</span>{' '}
             en Colombia
           </h1>
 
-          <div className="flex-[0.45]" />
-
-          <p className="leading-relaxed"
-            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 16px)' }}>
-            Todo el sector químico del país, reunido en un mismo espacio.
+          <p className="mt-4 leading-relaxed"
+            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 17px)', maxWidth: 480 }}>
+            Conecta con profesionales, técnicos, tecnólogos, empresas y
+            proveedores del sector químico. Comparte conocimiento, encuentra
+            oportunidades y haz parte de una comunidad donde la industria se
+            conecta, colabora y crece.
           </p>
 
-          <div className="flex-[1.1]" />
+          <button onClick={onContinue}
+            className="w-full md:w-auto mt-7 inline-flex items-center justify-center gap-2 rounded-btn font-extrabold px-8
+              transition-all duration-[160ms] ease-premium active:scale-[0.98] hover:brightness-110"
+            style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)',
+                     height: 'clamp(48px, 13.1vw, 56px)', fontSize: 'clamp(15px, 3.9vw, 16.5px)' }}>
+            Únete a la comunidad <ArrowRight size={19} strokeWidth={2.5} />
+          </button>
         </div>
-      </div>
-
-      {/* Botón anclado abajo */}
-      <div className="w-full max-w-[380px] mx-auto pb-[4vh] relative">
-        <button onClick={onContinue}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold
-            transition-all duration-[160ms] ease-premium active:scale-[0.98]"
-          style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)',
-                   height: 'clamp(48px, 13.1vw, 54px)', fontSize: 'clamp(15px, 3.9vw, 16px)' }}>
-          Continuar <ArrowRight size={19} strokeWidth={2.5} />
-        </button>
       </div>
     </div>
   )
