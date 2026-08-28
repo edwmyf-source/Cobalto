@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, Mail, Home, Users, Search } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, ChevronDown, Mail, Home, Users, Search } from 'lucide-react'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
 import { isAdmin } from '../../lib/constants'
@@ -22,6 +22,7 @@ export default function AppLayout() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const profileBtnRef = useRef(null)
+  const greetBtnRef = useRef(null)
   const navVisible = useHideOnScroll({ disabled: profileMenuOpen, resetKey: location.pathname })
 
   const currentTab = '/' + (location.pathname.split('/')[1] || 'feed')
@@ -66,8 +67,13 @@ export default function AppLayout() {
   useEffect(() => {
     if (!profileMenuOpen) return
     const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target) &&
-          profileBtnRef.current && !profileBtnRef.current.contains(e.target)) {
+      // Hay dos disparadores del mismo menú (el saludo de arriba y el botón
+      // Perfil de abajo); ninguno debe contar como "clic afuera", o el menú
+      // se cerraría en el mismo gesto que lo abre.
+      const insideMenu  = menuRef.current?.contains(e.target)
+      const onNavBtn    = profileBtnRef.current?.contains(e.target)
+      const onGreetBtn  = greetBtnRef.current?.contains(e.target)
+      if (!insideMenu && !onNavBtn && !onGreetBtn) {
         setProfileMenuOpen(false)
       }
     }
@@ -102,9 +108,22 @@ export default function AppLayout() {
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4"
         style={{ background: 'linear-gradient(180deg, var(--accent-deep) 0%, #10213A 100%)', height: '56px', boxShadow: '0 1px 0 rgba(255,255,255,.08)' }}>
         <RedCobaltoLogo size="md" dark />
-        <span className="text-[14px] font-medium truncate max-w-[45%]" style={{ color: 'var(--text-inverse)' }}>
-          Hola, {name.split(' ')[0]} 👋
-        </span>
+        <button
+          ref={greetBtnRef}
+          onClick={() => setProfileMenuOpen(o => !o)}
+          aria-label="Abrir menú de cuenta"
+          aria-haspopup="menu"
+          aria-expanded={profileMenuOpen}
+          className="flex items-center gap-1.5 max-w-[52%] rounded-pill px-2.5 py-1 -mr-1 transition-colors active:scale-[0.97]"
+          style={{ background: profileMenuOpen ? 'rgba(255,255,255,0.14)' : 'transparent' }}>
+          <span className="text-[14px] font-medium truncate" style={{ color: 'var(--text-inverse)' }}>
+            Hola, {name.split(' ')[0]} 👋
+          </span>
+          <ChevronDown size={15} strokeWidth={2.4}
+            style={{ color: 'rgba(255,255,255,0.75)', flexShrink: 0,
+                     transform: profileMenuOpen ? 'rotate(180deg)' : 'none',
+                     transition: 'transform 160ms ease' }} />
+        </button>
       </div>
 
       {/* ── Nav móvil flotante (glass) ── */}
