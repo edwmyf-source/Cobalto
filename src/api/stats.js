@@ -24,17 +24,11 @@ export const getCommunityStats = async () => {
     // bienvenida) siempre contaría 0 y el total saldría mal.
     const interactions = (postsCount || 0) + (reactionsCount || 0) + (commentsCount || 0)
 
-    // Empresas y ciudades distintas representadas en la comunidad. Se cuentan
-    // en el cliente porque PostgREST no expone COUNT(DISTINCT) directamente.
-    const { data: orgRows } = await supabase
-      .from('profiles')
-      .select('company_name, city')
-    const companies = new Set()
-    const cities = new Set()
-    ;(orgRows || []).forEach(r => {
-      if (r.company_name?.trim()) companies.add(r.company_name.trim().toLowerCase())
-      if (r.city?.trim()) cities.add(r.city.trim().toLowerCase())
-    })
+    // Empresas y ciudades distintas: se cuentan en la base de datos (devuelve
+    // un solo número) en vez de traer todas las filas de profiles al navegador.
+    const { data: distinct } = await supabase.rpc('community_distinct_counts')
+    const companies = distinct?.[0]?.companies || 0
+    const cities = distinct?.[0]?.cities || 0
 
     return {
       connections: reactionsCount || 0,
@@ -43,8 +37,8 @@ export const getCommunityStats = async () => {
       comments: commentsCount || 0,
       members: membersCount || 0,
       activeThisWeek: activeWeek || 0,
-      companies: companies.size,
-      cities: cities.size,
+      companies,
+      cities,
       interactions,
     }
   } catch (e) {
@@ -61,18 +55,12 @@ export const getAdminStats = async () => {
       .from('profiles')
       .select('id', { count: 'exact', head: true })
 
-    const { data: byDept } = await supabase.from('profiles').select('city')
-    const deptCount = {}
-    ;(byDept || []).forEach(p => { if (p.city) deptCount[p.city] = (deptCount[p.city] || 0) + 1 })
-    const topDepartments = Object.entries(deptCount).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, count]) => ({ name, count }))
-
-    const { data: byDomain } = await supabase.from('profiles').select('email_domain, email')
-    const domainCount = {}
-    ;(byDomain || []).forEach(p => {
-      const d = p.email_domain || (p.email ? '@' + p.email.split('@')[1] : null)
-      if (d) domainCount[d] = (domainCount[d] || 0) + 1
-    })
-    const topDomains = Object.entries(domainCount).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, count]) => ({ name, count }))
+    const [{ data: deptRows }, { data: domainRows }] = await Promise.all([
+      supabase.rpc('top_departments', { lim: 5 }),
+      supabase.rpc('top_domains', { lim: 5 }),
+    ])
+    const topDepartments = (deptRows || []).map(r => ({ name: r.name, count: Number(r.count) }))
+    const topDomains = (domainRows || []).map(r => ({ name: r.name, count: Number(r.count) }))
 
     return { ...base, usersTotal: usersTotal || 0, topDepartments, topDomains }
   } catch (e) {
