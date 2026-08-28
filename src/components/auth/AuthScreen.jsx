@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import LoginForm from './LoginForm'
-import ResetForm from './ResetForm'
 import Footer from '../layout/Footer'
 import RedCobaltoLogo from '../shared/RedCobaltoLogo'
 import CobaltoMark from '../shared/CobaltoMark'
@@ -73,8 +72,8 @@ function ContextScreen({ onContinue }) {
         </div>
       </div>
 
-      {/* Botón anclado abajo, dentro del primer pantallazo */}
-      <div className="w-full max-w-[380px] mx-auto pt-8 relative">
+      {/* Botón anclado abajo, con aire por debajo para que no quede pegado al borde */}
+      <div className="w-full max-w-[380px] mx-auto pt-8 pb-[10vh] relative">
         <button onClick={onContinue}
           className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[54px] text-[16px]
             transition-all duration-[160ms] ease-premium active:scale-[0.98]"
@@ -93,28 +92,28 @@ function ContextScreen({ onContinue }) {
 // ══════════════════════════════════════════════════════════════════════════
 function AccessScreen({ children, onBack }) {
   return (
-    <div className="flex-1 flex items-start md:items-center justify-center px-4 py-8 md:py-12"
-      style={{ background: 'radial-gradient(circle at top, rgba(36,87,197,0.06), transparent 34%), var(--bg-app)' }}>
-      <div className="w-full max-w-[400px]">
-        <div className="rounded-panel p-6 md:p-7 border relative overflow-hidden"
-          style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
-          <div className="absolute inset-x-0 top-0 h-1.5"
-            style={{ background: 'linear-gradient(90deg, var(--brand-red), var(--accent), var(--accent-violet))' }} />
+    <div className="flex-1 flex items-start md:items-center justify-center px-6 py-10 md:py-12"
+      style={{ background: 'var(--bg-app)' }}>
+      <div className="w-full max-w-[360px]">
 
-          <div className="flex items-center gap-3 mb-6 mt-1">
-            <CobaltoMark size={38} rounded="rounded-[11px]" />
-            <div>
-              <p className="t-body-sm font-extrabold" style={{ color: 'var(--text-primary)' }}>Entrar a Cobalto</p>
-              <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>Con Google o con un código a tu correo</p>
-            </div>
-          </div>
-
-          {children}
+        {/* Encabezado centrado, sin tarjeta: el formulario respira sobre el
+            fondo en vez de vivir dentro de una caja con borde y sombra. */}
+        <div className="flex flex-col items-center text-center mb-8">
+          <CobaltoMark size={56} />
+          <h1 className="font-extrabold mt-4"
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.025em', fontSize: 22 }}>
+            Entrar a Cobalto
+          </h1>
+          <p className="t-body-sm mt-1.5" style={{ color: 'var(--text-tertiary)' }}>
+            Con Google o con un código a tu correo
+          </p>
         </div>
 
+        {children}
+
         <button onClick={onBack}
-          className="mt-5 mx-auto block text-[13px] font-bold hover:underline"
-          style={{ color: 'var(--accent-deep)' }}>
+          className="mt-7 mx-auto block text-[13px] font-bold transition-opacity active:opacity-60"
+          style={{ color: 'var(--text-tertiary)' }}>
           ← Volver
         </button>
       </div>
@@ -157,9 +156,7 @@ export default function AuthScreen() {
         <ContextScreen onContinue={() => setMode('access')} />
       ) : (
         <AccessScreen onBack={() => setMode('context')}>
-          {mode === 'reset'
-            ? <ResetForm onSwitchLogin={() => setMode('access')} />
-            : <LoginForm onSwitchReset={() => setMode('reset')} />}
+          <LoginForm />
         </AccessScreen>
       )}
 
