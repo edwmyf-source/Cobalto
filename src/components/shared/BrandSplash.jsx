@@ -25,13 +25,14 @@ export default function BrandSplash({ onDone }) {
   return (
     <div onClick={skip} style={{
       position: 'fixed', inset: 0, zIndex: 100, cursor: 'pointer', overflow: 'hidden',
-      background: '#FFFFFF',
+      background: 'linear-gradient(165deg, var(--accent-deep, #0B2E68) 0%, #0D3670 100%)',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       textAlign: 'center', padding: '0 32px',
     }}>
       <style>{`
-        /* ═══ Opción "El nombre manda": isotipo pequeño, wordmark grande
-           como protagonista. Registro más tipográfico. ═══ */
+        /* ═══ Fondo de marca a toda pantalla, logo como ícono de app: la
+           misma sensación con la que abre una app nativa (WhatsApp,
+           Instagram), en vez de una página web con fondo blanco. ═══ */
 
         @keyframes cbo-mark-in {
           0%   { opacity: 0; transform: scale(0.55); }
@@ -47,6 +48,13 @@ export default function BrandSplash({ onDone }) {
         }
         .cbo-mark {
           display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 84px;
+          height: 84px;
+          border-radius: 22px;
+          background: #FFFFFF;
+          box-shadow: 0 10px 34px rgba(0,0,0,0.22);
           opacity: 0;
           /* Entra con rebote elástico y, al terminar, sigue rebotando en
              bucle: la marca queda "viva" mientras carga la app. */
@@ -61,19 +69,19 @@ export default function BrandSplash({ onDone }) {
         }
         .cbo-word {
           font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-          font-size: clamp(42px, 13.5vw, 68px);
+          font-size: clamp(38px, 12vw, 60px);
           font-weight: 800;
           letter-spacing: -0.035em;
           line-height: 1;
-          margin-top: 20px;
+          margin-top: 22px;
           opacity: 0;
           animation: cbo-fade-up 620ms cubic-bezier(0.16,1,0.3,1) 420ms both;
         }
-        /* Misma convención de color que en Topbar, AppLayout y AuthScreen:
-           "Red" siempre en rojo de marca, "Cobalto" en azul marino. */
+        /* Sobre fondo navy: "Red" mantiene el rojo de marca (sigue leyéndose
+           perfecto), "Cobalto" pasa a blanco para contrastar con el fondo. */
         .cbo-word .cbo-red     { color: var(--brand-red, #E63946); }
-        .cbo-word .cbo-cobalto { color: var(--accent-deep, #0B2E68); }
-        .cbo-word .cbo-dot     { color: var(--accent, #1A5AC8); }
+        .cbo-word .cbo-cobalto { color: #FFFFFF; }
+        .cbo-word .cbo-dot     { color: #8FB4FF; }
 
         .cbo-tag {
           margin-top: 14px;
@@ -81,12 +89,12 @@ export default function BrandSplash({ onDone }) {
           font-size: clamp(14px, 4vw, 17px);
           line-height: 1.5;
           font-weight: 500;
-          color: var(--text-secondary, #475569);
+          color: rgba(255,255,255,0.72);
           max-width: 30ch;
           opacity: 0;
           animation: cbo-fade-up 560ms cubic-bezier(0.16,1,0.3,1) 950ms both;
         }
-        .cbo-tag b { color: var(--accent, #1A5AC8); font-weight: 700; }
+        .cbo-tag b { color: #8FB4FF; font-weight: 700; }
 
         @media (prefers-reduced-motion: reduce) {
           .cbo-mark, .cbo-word, .cbo-tag {
@@ -98,7 +106,7 @@ export default function BrandSplash({ onDone }) {
       `}</style>
 
       <div className="cbo-mark">
-        <CobaltoMark size={54} rounded="rounded-xl" />
+        <CobaltoMark size={50} rounded="rounded-none" />
       </div>
 
       <div className="cbo-word">
