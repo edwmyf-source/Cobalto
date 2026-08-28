@@ -17,38 +17,51 @@ import { LegalLayout, TerminosContent, PrivacidadContent, LEGAL_UPDATED } from '
 // ══════════════════════════════════════════════════════════════════════════
 function ContextScreen({ onContinue }) {
   return (
-    <div className="flex-1 flex flex-col px-6 py-8"
+    <div className="min-h-app flex flex-col px-6 py-9 relative overflow-hidden"
       style={{ background: 'linear-gradient(170deg, var(--surface) 0%, var(--accent-softer) 100%)' }}>
 
+      {/* Círculos de fondo: mismo lenguaje visual del splash de carga. Puramente
+          decorativos, por eso quedan detrás del contenido y ocultos a lectores. */}
+      <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
+        style={{ width: 420, height: 420, top: -170, right: -190, background: 'var(--accent-soft)', opacity: 0.5 }} />
+      <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
+        style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
+
       {/* Bloque central: crece y centra su contenido en el espacio disponible */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <div className="w-full max-w-[360px] flex flex-col items-center">
+      <div className="flex-1 flex flex-col items-center justify-center text-center relative">
+        <div className="w-full max-w-[380px] flex flex-col items-center">
 
-          <CobaltoMark size={92} />
+          <CobaltoMark size={104} />
 
-          <p className="font-extrabold leading-none mt-5"
-            style={{ letterSpacing: '-0.035em', fontSize: 'clamp(30px, 8.6vw, 38px)' }}>
+          <p className="font-extrabold leading-none mt-6"
+            style={{ letterSpacing: '-0.04em', fontSize: 'clamp(36px, 10.4vw, 46px)' }}>
             <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
           </p>
 
-          <p className="mt-2 font-bold uppercase"
-            style={{ color: 'var(--text-tertiary)', fontSize: 11, letterSpacing: '0.13em' }}>
+          <p className="mt-2.5 font-bold uppercase"
+            style={{ color: 'var(--text-tertiary)', fontSize: 11.5, letterSpacing: '0.16em' }}>
             Industria química · Colombia
           </p>
 
-          <h1 className="font-bold mt-6"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.028em', lineHeight: 1.22, fontSize: 'clamp(21px, 5.9vw, 25px)' }}>
-            Punto de encuentro de la industria química
+          {/* Filete de marca: separa la identidad del mensaje */}
+          <span className="block rounded-full mt-6"
+            style={{ width: 46, height: 4, background: 'linear-gradient(90deg, var(--brand-red), var(--accent))' }} />
+
+          <h1 className="font-extrabold mt-6"
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.035em', lineHeight: 1.14, fontSize: 'clamp(27px, 7.6vw, 33px)' }}>
+            Punto de encuentro de la<br />
+            <span style={{ color: 'var(--accent)' }}>industria química</span>
           </h1>
 
-          <p className="mt-3 leading-relaxed"
-            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(13px, 3.5vw, 14px)' }}>
+          <p className="mt-4 leading-relaxed"
+            style={{ color: 'var(--text-secondary)', fontSize: 'clamp(14.5px, 3.9vw, 16px)' }}>
             La comunidad profesional del sector. Conecta con laboratorios,
             proveedores y colegas; comparte información técnica, normatividad
             y oportunidades.
           </p>
 
-          <div className="mt-5 flex items-center gap-2.5 flex-wrap justify-center text-[13px]">
+          <div className="mt-6 flex items-center gap-3 flex-wrap justify-center"
+            style={{ fontSize: 'clamp(14px, 3.8vw, 15.5px)' }}>
             <span className="font-extrabold" style={{ color: 'var(--brand-red)' }}>Conecta</span>
             <span style={{ color: 'var(--border)' }}>·</span>
             <span className="font-extrabold" style={{ color: 'var(--accent)' }}>Comparte</span>
@@ -58,13 +71,13 @@ function ContextScreen({ onContinue }) {
         </div>
       </div>
 
-      {/* Botón anclado abajo */}
-      <div className="w-full max-w-[360px] mx-auto pt-8">
+      {/* Botón anclado abajo, dentro del primer pantallazo */}
+      <div className="w-full max-w-[380px] mx-auto pt-8 relative">
         <button onClick={onContinue}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[50px] text-[15px]
+          className="w-full inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[54px] text-[16px]
             transition-all duration-[160ms] ease-premium active:scale-[0.98]"
           style={{ background: 'var(--accent-deep)', color: '#fff', boxShadow: 'var(--shadow-raised)' }}>
-          Continuar <ArrowRight size={18} strokeWidth={2.4} />
+          Continuar <ArrowRight size={19} strokeWidth={2.5} />
         </button>
       </div>
     </div>
@@ -112,7 +125,10 @@ export default function AuthScreen() {
   const isLegal = mode === 'terminos' || mode === 'privacidad'
 
   return (
-    <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
+    // En modo contexto la propia ContextScreen ya ocupa el alto de la ventana,
+    // así que el contenedor no debe forzar otra pantalla completa: si no, el
+    // pie de página quedaría a dos scrolls de distancia en vez de justo debajo.
+    <div className={`${mode === 'context' ? '' : 'min-h-app'} flex flex-col`} style={{ background: 'var(--bg-app)' }}>
 
       {/* La barra superior solo aparece fuera de la pantalla de contexto: ahí
           la marca ya es el protagonista y repetirla arriba sería redundante. */}
