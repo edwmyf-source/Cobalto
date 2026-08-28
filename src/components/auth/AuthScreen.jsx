@@ -27,8 +27,10 @@ function ContextScreen({ onContinue }) {
       <div className="absolute rounded-full pointer-events-none" aria-hidden="true"
         style={{ width: 300, height: 300, bottom: -130, left: -140, border: '1.5px solid var(--border)', opacity: 0.7 }} />
 
-      {/* Bloque central: crece y centra su contenido en el espacio disponible */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center relative">
+      {/* Bloque central: se centra en el espacio disponible, pero desplazado
+          hacia arriba (el padding inferior corre el eje de centrado) para que
+          no quede un hueco alto sobre el logo. */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center relative pb-[16vh]">
         <div className="w-full max-w-[380px] flex flex-col items-center">
 
           <CobaltoMark size={104} />
