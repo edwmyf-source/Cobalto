@@ -215,22 +215,22 @@ html {
 /* Alto de pantalla seguro en iOS: 100vh incluye la barra del navegador y deja
    la interfaz más alta que el área visible. 100dvh usa el alto real; el 100vh
    previo queda como respaldo para navegadores que no soporten dvh. */
-/* Rebote elástico del logo en la pantalla de entrada. Los rebotes se van
-   apagando y el ligero achatamiento al caer da sensación de peso. Ciclo corto
-   (2.1s) porque esa pantalla dura pocos segundos. */
-@keyframes mark-bounce {
-  0%, 100% { transform: translateY(0)     scaleY(1);    }
-  18%      { transform: translateY(-14px) scaleY(1.06); }
-  36%      { transform: translateY(0)     scaleY(0.90); }
-  50%      { transform: translateY(-6px)  scaleY(1.03); }
-  66%      { transform: translateY(0)     scaleY(0.96); }
-  78%      { transform: translateY(-2px)  scaleY(1);    }
+/* Balancín del logo en la pantalla de entrada: gira rápido a un lado, se
+   sostiene, y vuelve rápido al otro. Ciclo corto porque esa pantalla dura
+   pocos segundos. El rebote (mark-bounce) vive en el splash de carga. */
+@keyframes mark-swing {
+  0%, 100% { transform: rotate(0deg);   }
+  12%      { transform: rotate(19deg);  }
+  24%      { transform: rotate(19deg);  }
+  36%      { transform: rotate(-19deg); }
+  60%      { transform: rotate(-19deg); }
+  72%      { transform: rotate(0deg);   }
 }
-.mark-bounce { animation: mark-bounce 2.1s ease-out infinite; }
+.mark-swing { animation: mark-swing 2.4s cubic-bezier(.68,-0.4,.28,1.4) infinite; }
 
-/* Quien pide reducir movimiento no debería ver el rebote en bucle. */
+/* Quien pide reducir movimiento no debería ver la animación en bucle. */
 @media (prefers-reduced-motion: reduce) {
-  .mark-bounce { animation: none; }
+  .mark-swing { animation: none; }
 }
 
 .min-h-app {

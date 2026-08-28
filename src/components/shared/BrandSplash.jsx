@@ -43,7 +43,7 @@ export default function BrandSplash({ onDone }) {
         }
         @keyframes cbo-bar-grow {
           0%   { width: 0; }
-          100% { width: 64px; }
+          100% { width: 84px; }
         }
 
         /* ── Geometría de fondo: círculo grande y sutil, desplazado a la
@@ -76,15 +76,34 @@ export default function BrandSplash({ onDone }) {
 
         .cbo-mark {
           display: inline-flex;
-          margin-bottom: 18px;
+          margin-bottom: 24px;
           opacity: 0;
           transform: scale(0.85);
-          animation: cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both;
+          /* Dos animaciones encadenadas: primero entra en escala, y al
+             terminar arranca el rebote en bucle. */
+          animation:
+            cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both,
+            cbo-mark-bounce 2.1s ease-out 700ms infinite;
+        }
+
+        @keyframes cbo-mark-bounce {
+          0%, 100% { transform: translateY(0)     scaleY(1);    }
+          18%      { transform: translateY(-16px) scaleY(1.06); }
+          36%      { transform: translateY(0)     scaleY(0.90); }
+          50%      { transform: translateY(-7px)  scaleY(1.03); }
+          66%      { transform: translateY(0)     scaleY(0.96); }
+          78%      { transform: translateY(-2px)  scaleY(1);    }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cbo-mark {
+            animation: cbo-scale-in 550ms cubic-bezier(0.16,1,0.3,1) 80ms both;
+          }
         }
 
         .cbo-word {
           font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-          font-size: clamp(38px, 11.5vw, 58px);
+          font-size: clamp(46px, 14vw, 70px);
           font-weight: 800;
           letter-spacing: -0.025em;
           line-height: 1;
@@ -99,9 +118,9 @@ export default function BrandSplash({ onDone }) {
         .cbo-word .cbo-dot { color: var(--accent, #1A5AC8); }
 
         .cbo-tag {
-          margin-top: 22px;
+          margin-top: 28px;
           font-family: "DM Sans", system-ui, -apple-system, sans-serif;
-          font-size: clamp(14px, 4vw, 17px);
+          font-size: clamp(16px, 4.7vw, 20px);
           line-height: 1.6;
           text-align: center;
         }
@@ -120,8 +139,8 @@ export default function BrandSplash({ onDone }) {
         }
 
         .cbo-bar {
-          margin: 28px auto 0;
-          height: 3px;
+          margin: 34px auto 0;
+          height: 4px;
           width: 0;
           background: var(--brand-red, #E63946);
           border-radius: 2px;
@@ -136,7 +155,7 @@ export default function BrandSplash({ onDone }) {
       {/* Contenido */}
       <div className="cbo-content">
         <div className="cbo-mark">
-          <CobaltoMark size={56} rounded="rounded-2xl" />
+          <CobaltoMark size={84} rounded="rounded-2xl" />
         </div>
 
         <div className="cbo-word">

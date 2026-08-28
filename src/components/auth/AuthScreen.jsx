@@ -34,7 +34,7 @@ function ContextScreen({ onContinue }) {
 
           <div className="flex-[0.8]" />
 
-          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" className="mark-bounce" />
+          <CobaltoMark size="clamp(84px, 25.2vw, 104px)" className="mark-swing" />
 
           <p className="font-extrabold leading-none mt-5"
             style={{ letterSpacing: '-0.04em', fontSize: 'clamp(36px, 10.4vw, 46px)' }}>
