@@ -36,18 +36,25 @@ export default function BrandSplash({ onDone }) {
 
         @keyframes cbo-hero-in {
           0%   { opacity: 0;    transform: scale(0.85); }
-          100% { opacity: 0.14; transform: scale(1);    }
+          100% { opacity: 0.09; transform: scale(1);    }
         }
         .cbo-hero {
           position: absolute;
-          width: clamp(360px, 100vw, 620px);
+          width: clamp(220px, 62vw, 380px);
           aspect-ratio: 1 / 1;
-          right: clamp(-170px, -38vw, -130px);
-          bottom: clamp(-160px, -36vw, -120px);
           opacity: 0;
           animation: cbo-hero-in 1300ms cubic-bezier(0.16,1,0.3,1) both;
           pointer-events: none;
           z-index: 1;
+        }
+        .cbo-hero--tl {
+          top: clamp(-100px, -22vw, -70px);
+          left: clamp(-100px, -22vw, -70px);
+        }
+        .cbo-hero--br {
+          bottom: clamp(-100px, -22vw, -70px);
+          right: clamp(-100px, -22vw, -70px);
+          animation-delay: 220ms;
         }
 
         @keyframes cbo-mark-in {
@@ -112,9 +119,12 @@ export default function BrandSplash({ onDone }) {
         }
       `}</style>
 
-      {/* Isotipo gigante y tenue, recortado en la esquina inferior derecha:
-          solo se ve un fragmento — elemento gráfico de fondo, no protagonista. */}
-      <div className="cbo-hero" aria-hidden="true">
+      {/* Isotipo gigante y transparente, recortado en dos esquinas opuestas:
+          enmarca el contenido central sin ser protagonista. */}
+      <div className="cbo-hero cbo-hero--tl" aria-hidden="true">
+        <CobaltoMark size="100%" rounded="rounded-none" dark />
+      </div>
+      <div className="cbo-hero cbo-hero--br" aria-hidden="true">
         <CobaltoMark size="100%" rounded="rounded-none" dark />
       </div>
 
