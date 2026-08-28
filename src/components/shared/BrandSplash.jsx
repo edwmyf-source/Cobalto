@@ -48,13 +48,6 @@ export default function BrandSplash({ onDone }) {
         }
         .cbo-mark {
           display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 84px;
-          height: 84px;
-          border-radius: 22px;
-          background: #FFFFFF;
-          box-shadow: 0 10px 34px rgba(0,0,0,0.22);
           opacity: 0;
           /* Entra con rebote elástico y, al terminar, sigue rebotando en
              bucle: la marca queda "viva" mientras carga la app. */
@@ -106,7 +99,7 @@ export default function BrandSplash({ onDone }) {
       `}</style>
 
       <div className="cbo-mark">
-        <CobaltoMark size={50} rounded="rounded-none" />
+        <CobaltoMark size={80} rounded="rounded-none" dark />
       </div>
 
       <div className="cbo-word">
