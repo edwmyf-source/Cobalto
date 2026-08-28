@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Gift, Rocket, BadgeCheck, Lock, MessageCircle, FlaskConical, Users, Zap, ArrowRight, Building2, MapPin } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
-import SignupForm from './SignupForm'
 import ResetForm from './ResetForm'
 import Footer from '../layout/Footer'
 import RedCobaltoLogo from '../shared/RedCobaltoLogo'
@@ -64,14 +63,13 @@ function CTA({ children, onClick, variant = 'primary', size = 'md', className = 
 }
 
 // Barra superior fija: logo a la izquierda, acciones a la derecha
-function TopBar({ onLogin, onSignup }) {
+function TopBar({ onEnter }) {
   return (
     <header className="sticky top-0 z-40 w-full border-b" style={{ background: 'rgba(255,255,255,0.86)', backdropFilter: 'blur(18px)', borderColor: 'var(--border-soft)' }}>
       <div className="max-w-6xl mx-auto h-[72px] flex items-center justify-between px-4 md:px-6">
         <RedCobaltoLogo size="md" />
         <div className="flex items-center gap-2">
-          <CTA onClick={onLogin} variant="ghostNavy" className="!bg-transparent !text-[var(--accent-deep)] !shadow-none !px-4 hover:!bg-[var(--accent-softer)]">Iniciar sesión</CTA>
-          <CTA onClick={onSignup} variant="primary" className="!px-4">Unirse ahora</CTA>
+          <CTA onClick={onEnter} variant="primary" className="!px-5">Entrar</CTA>
         </div>
       </div>
     </header>
@@ -209,7 +207,7 @@ export default function AuthScreen() {
 
   return (
     <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
-      <TopBar onLogin={() => setMode('login')} onSignup={() => setMode('signup')} />
+      <TopBar onEnter={() => setMode('login')} />
 
       {mode === 'terminos' ? (
         <LegalLayout title="Términos y Condiciones" updated={LEGAL_UPDATED} onBack={() => setMode('landing')}>
@@ -221,7 +219,7 @@ export default function AuthScreen() {
         </LegalLayout>
       ) : mode === 'landing' ? (
         <>
-          <Landing stats={stats} onSignup={() => setMode('signup')} />
+          <Landing stats={stats} onSignup={() => setMode('login')} />
           <Footer
             onTerminos={() => { setMode('terminos'); window.scrollTo({ top: 0 }) }}
             onPrivacidad={() => { setMode('privacidad'); window.scrollTo({ top: 0 }) }}
@@ -234,8 +232,7 @@ export default function AuthScreen() {
               <RedCobaltoLogo size="md" />
               <span className="text-[11px] font-extrabold uppercase tracking-[0.12em]" style={{ color: 'var(--text-tertiary)' }}>Acceso seguro</span>
             </div>
-            {mode === 'login' && <LoginForm onSwitchSignup={() => setMode('signup')} onSwitchReset={() => setMode('reset')} />}
-            {mode === 'signup' && <SignupForm onSwitchLogin={() => setMode('login')} />}
+            {mode === 'login' && <LoginForm onSwitchReset={() => setMode('reset')} />}
             {mode === 'reset' && <ResetForm onSwitchLogin={() => setMode('login')} />}
             <button onClick={() => setMode('landing')}
               className="mt-6 text-[13px] font-bold hover:underline transition-opacity"

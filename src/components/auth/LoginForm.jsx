@@ -13,7 +13,7 @@ const ERR_MAP = {
 
 const LAST_EMAIL_KEY = 'cobalto-last-email'
 
-export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
+export default function LoginForm({ onSwitchReset }) {
   const [mode, setMode]     = useState('emailcode') // 'password' | 'magic' | 'phone' | 'emailcode'
   const [phone, setPhone]   = useState('')
   const [code, setCode]     = useState('')
@@ -92,8 +92,8 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div>
-        <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>Iniciar sesión</h2>
-        <p className="text-[12px] mt-1 font-medium text-[var(--text-tertiary)]">Bienvenido de vuelta</p>
+        <h2 className="font-extrabold text-[20px] text-[var(--text-primary)]" style={{ letterSpacing: '-0.02em' }}>Entrar a Cobalto</h2>
+        <p className="text-[12px] mt-1 font-medium text-[var(--text-tertiary)]">Con Google o con un código a tu correo</p>
       </div>
 
       {codeSent ? (
@@ -228,12 +228,9 @@ export default function LoginForm({ onSwitchSignup, onSwitchReset }) {
         </div>
       )}
 
-      <div className="text-center text-[12px] pt-4 font-medium text-[var(--text-tertiary)]" style={{ borderTop: '1px solid var(--accent-soft)' }}>
-        ¿Sin cuenta?{' '}
-        <button type="button" onClick={onSwitchSignup} className="font-bold hover:underline text-[var(--accent-deep)]">
-          Crear cuenta
-        </button>
-      </div>
+      <p className="text-center text-[11.5px] pt-4 font-medium text-[var(--text-tertiary)]" style={{ borderTop: '1px solid var(--accent-soft)' }}>
+        ¿Primera vez? Tu cuenta se crea sola al verificar el código.
+      </p>
     </form>
   )
 }
