@@ -24,6 +24,7 @@ import { publicName } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import { preloadedFeed } from '../lib/feedPreloader'
 import { registerCacheCleaner } from '../lib/cacheManager'
+import useVisualViewport from '../hooks/useVisualViewport'
 
 // Cache local — se inicializa desde el preloader si ya tiene datos
 const FEED_CACHE_TTL = 3 * 60 * 1000
@@ -87,6 +88,7 @@ export default function FeedPage() {
   const [filters,        setFilters       ] = useState({})
   const [sort,           setSort          ] = useState('recent')
   const [publishOpen,    setPublishOpen   ] = useState(false)
+  const publishViewport = useVisualViewport(publishOpen)
   const [successOpen,    setSuccessOpen   ] = useState(false)
   const [lastPublishedId,setLastPublishedId] = useState(null)
   const [contactingPost, setContactingPost] = useState(null)
@@ -479,11 +481,15 @@ export default function FeedPage() {
       </div>
 
       {publishOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center px-4 overflow-y-auto"
-          style={{ paddingTop: 'calc(env(safe-area-inset-top) + 56px)', paddingBottom: 24,
+        <div className="fixed inset-x-0 z-50 flex items-start justify-center px-4 overflow-y-auto"
+          style={{ top: publishViewport.offsetTop, height: publishViewport.height,
+            paddingTop: 'calc(env(safe-area-inset-top) + 56px)', paddingBottom: 24,
             background: 'rgba(15,23,42,0.32)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
             // Con el teclado abierto el viewport se encoge: overscroll-contain
-            // evita que el scroll se propague al feed de atrás.
+            // evita que el scroll se propague al feed de atrás. El alto y el
+            // offset vienen del viewport VISUAL (no del de layout), así el
+            // contenedor sabe que hay menos espacio real y sí deja hacer
+            // scroll para ver lo que el teclado tapa.
             overscrollBehavior: 'contain' }}
           onClick={() => setPublishOpen(false)}>
           <div className="w-full max-w-xl" onClick={e => e.stopPropagation()}>
