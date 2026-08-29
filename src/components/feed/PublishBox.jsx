@@ -65,7 +65,11 @@ const CAT_PLACEHOLDER = {
 }
 
 const MAX_FILES = 5
-const MAX_SIZE_MB = 50
+// Debe coincidir con MAX_FILE_MB de api/posts.js (que a su vez debe coincidir
+// con el límite real del bucket post-media en Supabase). Antes decía 50MB
+// aquí mientras el límite real era 15MB: la app dejaba seleccionar un
+// archivo de 30MB y recién fallaba al subirlo.
+const MAX_SIZE_MB = 15
 const MAX_PX = 1920      // máximo ancho/alto en píxeles
 const QUALITY = 0.85     // 85% calidad — indistinguible del original
 
