@@ -260,7 +260,8 @@ export default function UserProfilePage() {
       </button>
 
       <section className="overflow-hidden rounded-panel bg-white mb-7"
-        style={{ border: '1.5px solid var(--accent)', boxShadow: '0 0 0 4px var(--accent-softer), var(--shadow-raised)' }}>
+        style={{ border: '1px solid rgba(36,87,197,0.35)',
+                 boxShadow: '0 0 22px 3px rgba(36,87,197,0.35), 0 0 55px 14px rgba(36,87,197,0.20), 0 0 100px 26px rgba(36,87,197,0.10), var(--shadow-raised)' }}>
         <div className="relative h-44 sm:h-52">
           {coverUrl ? (
             <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
