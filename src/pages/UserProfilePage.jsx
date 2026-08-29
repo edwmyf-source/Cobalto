@@ -259,7 +259,8 @@ export default function UserProfilePage() {
         <ArrowLeft size={16} /> Volver
       </button>
 
-      <section className="overflow-hidden rounded-panel bg-white border border-line-soft mb-7" style={{ boxShadow: 'var(--shadow-raised)' }}>
+      <section className="overflow-hidden rounded-panel bg-white mb-7"
+        style={{ border: '1.5px solid var(--accent)', boxShadow: '0 0 0 4px var(--accent-softer), var(--shadow-raised)' }}>
         <div className="relative h-44 sm:h-52">
           {coverUrl ? (
             <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
