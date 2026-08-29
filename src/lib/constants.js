@@ -67,16 +67,12 @@ export const CATEGORIES = [
   },
   {
     value: 'informacion',
-    label: 'Información',
-    // Mismas 4 opciones que usa el filtro del feed (NOVEDADES_SUBCATS): antes
-    // había una lista distinta aquí para publicar, así que una publicación
-    // con "Recursos" o "Legal" no coincidía con ningún filtro y quedaba
-    // invisible al buscar por subcategoría.
+    label: 'Actualidad',
     subcategories: [
-      'Noticias y eventos',
-      'Normatividad',
-      'Conocimiento técnico',
-      'Preguntas',
+      'Opiniones',
+      'Noticias',
+      'Eventos',
+      'Información',
     ],
   },
 ]
@@ -118,7 +114,7 @@ export const DEPARTAMENTOS_ORDERED = [
 // Tabs del marketplace
 export const MARKETPLACE_TABS = [
   { value: 'todo',      label: 'TODO',      color: '#0047AB', bg: '#EBF1FC' },
-  { value: 'novedades', label: 'INFO',      color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
+  { value: 'novedades', label: 'ACTUALIDAD', color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
   { value: 'tienda',    label: 'PROVEEDORES', color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
   { value: 'vacantes',  label: 'VACANTES',  color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
 ]
@@ -145,7 +141,7 @@ export const TIENDA_CATS = [
 ]
 
 // Subcategorías de Novedades (pestaña "Info")
-export const NOVEDADES_SUBCATS = ['Noticias y eventos', 'Normatividad', 'Conocimiento técnico', 'Preguntas']
+export const NOVEDADES_SUBCATS = ['Opiniones', 'Noticias', 'Eventos', 'Información']
 
 // Niveles de Vacantes
 export const VACANTES_NIVELES = ['Operativo', 'Técnico', 'Profesional', 'Coordinador', 'Gerencial']
