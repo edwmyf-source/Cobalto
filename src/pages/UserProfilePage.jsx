@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, MapPin, UserPlus, UserCheck, MessageCircle, Send, Loader2, Settings, Camera, Trash2 } from 'lucide-react'
+import { MapPin, UserPlus, UserCheck, MessageCircle, Send, Loader2, Settings, Camera, Trash2 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { getPublicProfile, uploadAvatar, uploadCover, updateProfile } from '../api/profiles'
 import { getPostsByUser, deletePost } from '../api/posts'
@@ -253,15 +253,9 @@ export default function UserProfilePage() {
 
   return (
     <div className="page-enter max-w-2xl mx-auto px-1 pb-10">
-      <button onClick={() => navigate(-1)}
-        className="inline-flex items-center gap-1.5 mb-5 text-[14px] font-semibold transition-colors"
-        style={{ color: 'var(--text-secondary)' }}>
-        <ArrowLeft size={16} /> Volver
-      </button>
-
       <section className="overflow-hidden rounded-panel bg-white mb-7"
-        style={{ border: '1px solid rgba(36,87,197,0.35)',
-                 boxShadow: '0 0 22px 3px rgba(36,87,197,0.35), 0 0 55px 14px rgba(36,87,197,0.20), 0 0 100px 26px rgba(36,87,197,0.10), var(--shadow-raised)' }}>
+        style={{ border: '1px solid rgba(36,87,197,0.20)',
+                 boxShadow: '0 0 11px 2px rgba(36,87,197,0.22), 0 0 28px 7px rgba(36,87,197,0.13), 0 0 50px 13px rgba(36,87,197,0.06), var(--shadow-raised)' }}>
         <div className="relative h-44 sm:h-52">
           {coverUrl ? (
             <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
@@ -381,8 +375,7 @@ export default function UserProfilePage() {
 
       <div className="flex items-end justify-between mb-4 px-1">
         <div>
-          <p className="t-eyebrow" style={{ color: 'var(--accent)' }}>Actividad</p>
-          <h2 className="t-h3 mt-1" style={{ color: 'var(--text-primary)' }}>Publicaciones</h2>
+          <h2 className="t-h3" style={{ color: 'var(--text-primary)' }}>Publicaciones</h2>
         </div>
         <span className="text-[12px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>{posts.length} en total</span>
       </div>
