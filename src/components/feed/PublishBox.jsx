@@ -103,6 +103,7 @@ export default function PublishBox({ onClose, onPublished }) {
   const toast = useToast()
   const imageRef = useRef(null)
   const pdfRef   = useRef(null)
+  const submitBtnRef = useRef(null)
 
   const [form, setForm] = useState({ category: '', subcategory: '', title: '', event_date: '' })
   const [files, setFiles] = useState([])   // [{ file, preview, kind }]
@@ -196,6 +197,13 @@ export default function PublishBox({ onClose, onPublished }) {
 
         <textarea value={form.title} onChange={e => set('title', e.target.value)}
           placeholder={placeholder} rows={4} maxLength={280} autoFocus required
+          onFocus={() => {
+            // Red de seguridad ante el teclado: sin importar si el cálculo de
+            // alto del contenedor falla en algún dispositivo puntual, esto
+            // garantiza que el botón de Publicar quede visible. El retraso
+            // deja que la animación del teclado termine antes de desplazar.
+            setTimeout(() => submitBtnRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' }), 350)
+          }}
           className={`${inputCls} resize-none !rounded-[18px]`}
           style={{ background: 'var(--surface)', color: 'var(--text-primary)',
                    border: '1.5px solid var(--accent)', boxShadow: '0 0 0 4px var(--accent-soft)' }} />
@@ -312,7 +320,7 @@ export default function PublishBox({ onClose, onPublished }) {
             </button>
           </div>
 
-          <button type="submit" disabled={!valid || loading}
+          <button ref={submitBtnRef} type="submit" disabled={!valid || loading}
             className="inline-flex items-center gap-2 h-10 px-4 rounded-btn text-[13px] font-semibold text-white transition-all duration-[160ms] active:scale-[0.98] disabled:opacity-50"
             style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-raised)' }}>
             {loading
