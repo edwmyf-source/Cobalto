@@ -60,7 +60,7 @@ function Landing({ stats, onContinue }) {
             Visible en todos los tamaños (antes solo aparecía en escritorio),
             detrás y a la derecha del texto. */}
         <div className="absolute pointer-events-none" aria-hidden="true"
-          style={{ top: '22%', right: 'clamp(-90px, -14vw, -30px)', width: 'clamp(190px, 46vw, 460px)', opacity: 0.9, zIndex: 0 }}>
+          style={{ top: '7%', right: 'clamp(-170px, -28vw, -145px)', width: 'clamp(248px, 60vw, 600px)', opacity: 0.9, zIndex: 0 }}>
           <CobaltoMark size="100%" rounded="rounded-none" />
         </div>
         {/* Puntos suaves: textura geométrica discreta, no decoración genérica */}
