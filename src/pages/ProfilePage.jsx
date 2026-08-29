@@ -24,14 +24,21 @@ const boxedFieldCls = 'w-full px-4 h-12 rounded-input text-[15px] focus:outline-
 const boxedFieldStyle = { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', fontWeight: 500 }
 
 // Una fila de la lista agrupada: etiqueta chica arriba, campo abajo, línea
-// divisoria fina entre filas (no cajas separadas), badge de privacidad a la
-// derecha de la etiqueta.
-function FormRow({ label, htmlFor, privacy, hint, isLast, children }) {
+// divisoria fina entre filas. Cuando el campo es obligatorio y está vacío,
+// la fila se tiñe suavemente y muestra un punto — así se ve de un vistazo
+// qué falta, sin necesidad de textos de ayuda en cada campo.
+function FormRow({ label, htmlFor, privacy, hint, isLast, pendiente, children }) {
   return (
-    <div className="px-4 py-3"
-      style={!isLast ? { borderBottom: '1px solid var(--border-soft)' } : undefined}>
+    <div className="px-4 py-3 transition-colors"
+      style={{
+        borderBottom: isLast ? undefined : '1px solid var(--border-soft)',
+        background: pendiente ? 'var(--warning-bg)' : 'transparent',
+      }}>
       <div className="flex items-center justify-between mb-1">
-        <label htmlFor={htmlFor} className={labelCls} style={labelStyle}>{label}</label>
+        <label htmlFor={htmlFor} className={`${labelCls} inline-flex items-center gap-1.5`} style={labelStyle}>
+          {pendiente && <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--warning)' }} />}
+          {label}
+        </label>
         {privacy && <PrivacyBadge variant={privacy} />}
       </div>
       <div style={{ color: 'var(--text-primary)' }}>{children}</div>
@@ -69,7 +76,14 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false)
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setSaved(false) }
-  const valid = form.full_name && form.phone
+
+  // Para guardar hace falta el perfil mínimo completo: nombre, teléfono y una
+  // frase sobre ti. El correo llega del login, así que no se pide aparte.
+  const faltaNombre   = !form.full_name.trim()
+  const faltaTelefono = !form.phone.trim()
+  const faltaHeadline = !form.headline.trim()
+  const valid = !faltaNombre && !faltaTelefono && !faltaHeadline
+  const pendientes = [faltaNombre, faltaTelefono, faltaHeadline].filter(Boolean).length
 
   // Manejar selección de nueva foto
   const handleAvatarChange = async (e) => {
@@ -143,8 +157,7 @@ export default function ProfilePage() {
         style={{ color: 'var(--text-tertiary)' }}>
         <ArrowLeft size={16} /> Ver mi perfil público
       </button>
-      <h1 className="t-h1" style={{ color: 'var(--text-primary)' }}>Configuración</h1>
-      <p className="t-body-sm mt-1 mb-6" style={{ color: 'var(--text-tertiary)' }}>Actualiza tus datos cuando quieras.</p>
+      <h1 className="t-h1 mb-5" style={{ color: 'var(--text-primary)' }}>Mi perfil</h1>
 
       {/* Card pública actual — con foto */}
       <div className="rounded-panel p-5 mb-5 flex items-center gap-4"
@@ -178,37 +191,33 @@ export default function ProfilePage() {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="t-body-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{publicLabel}</p>
+          <p className="t-body-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{publicLabel}</p>
           <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{form.city || 'Sin departamento'}</p>
-          <p className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)', opacity: 0.75 }}>Lo único público de tu cuenta.</p>
         </div>
       </div>
 
       <form onSubmit={submit} className="space-y-3.5">
-        <p className="t-eyebrow mt-3 px-1" style={{ color: 'var(--text-tertiary)' }}>Datos privados</p>
-
         <div className="rounded-panel overflow-hidden"
           style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
-          <FormRow label="Nombre completo" privacy="private" isFirst htmlFor="profile-fullname">
+          <FormRow label="Nombre" privacy="private" htmlFor="profile-fullname" pendiente={faltaNombre}>
             <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)}
               className={fieldCls} placeholder="Tu nombre" />
           </FormRow>
 
-          <FormRow label="Sobre ti" privacy="public" htmlFor="profile-headline"
-            hint={`Aparece bajo tu nombre · ${120 - form.headline.length} caracteres restantes`}>
+          <FormRow label="Sobre ti" privacy="public" htmlFor="profile-headline" pendiente={faltaHeadline}>
             <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
-              className={fieldCls} placeholder="Ej: Química farmacéutica · Control de calidad" />
+              className={fieldCls} placeholder="Ej: Química farmacéutica" />
           </FormRow>
 
-          <FormRow label="Email" privacy="private" hint="100% privado, nunca será visible" htmlFor="profile-email">
+          <FormRow label="Email" privacy="private" htmlFor="profile-email">
             <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
-              placeholder={isSyntheticEmail ? 'Aún no has agregado un correo' : ''}
+              placeholder={isSyntheticEmail ? 'Sin correo' : ''}
               className={fieldCls} style={{ color: 'var(--text-tertiary)' }} />
           </FormRow>
 
-          <FormRow label="Teléfono" privacy="private" htmlFor="profile-phone">
-            <input id="profile-phone" value={form.phone}
+          <FormRow label="Teléfono" privacy="private" htmlFor="profile-phone" pendiente={faltaTelefono}>
+            <input id="profile-phone" value={form.phone} inputMode="tel"
               onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))}
               className={fieldCls} placeholder="300 123 4567" />
           </FormRow>
@@ -228,7 +237,11 @@ export default function ProfilePage() {
         <button type="submit" disabled={!valid || loading}
           className="w-full flex items-center justify-center gap-2 text-white t-body-sm font-semibold h-12 rounded-full disabled:opacity-40 transition-all active:scale-[0.98]"
           style={{ background: 'var(--accent)' }}>
-          {loading ? <Spinner size={16} /> : 'Guardar cambios'}
+          {loading
+            ? <Spinner size={16} />
+            : valid
+              ? 'Guardar cambios'
+              : `Falta ${pendientes} ${pendientes === 1 ? 'campo' : 'campos'}`}
         </button>
       </form>
 
