@@ -35,7 +35,7 @@ function TopBar({ onLogin }) {
         <RedCobaltoLogo size="md" />
         <button onClick={onLogin}
           className="inline-flex items-center justify-center rounded-btn font-bold h-10 px-5 text-[13.5px] transition-all active:scale-[0.97]"
-          style={{ border: '1.5px solid var(--accent-deep)', color: 'var(--accent-deep)', background: 'transparent' }}>
+          style={{ background: 'var(--brand-red)', color: '#fff', border: 'none' }}>
           Ingresar
         </button>
       </div>
