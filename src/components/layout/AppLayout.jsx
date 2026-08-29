@@ -87,8 +87,8 @@ export default function AppLayout() {
   useEffect(() => { setProfileMenuOpen(false) }, [location.pathname])
 
   const profileMenuItems = [
-    { label: 'Notificaciones', icon: Bell, path: '/notifications', badge: unreadCount },
     { label: 'Mi perfil', icon: User, path: myId ? `/u/${myId}` : '/profile' },
+    { label: 'Notificaciones', icon: Bell, path: '/notifications', badge: unreadCount },
     { label: 'Contáctanos', icon: Mail, path: '/contacto' },
     ...(isAdmin(profile) ? [{ label: 'Admin', icon: Lock, path: '/admin' }] : []),
   ]
@@ -111,35 +111,34 @@ export default function AppLayout() {
       </div>
       {profileMenuItems.map(item => {
         const Icon = item.icon
+        const isProfile = item.label === 'Mi perfil'
         return (
           <button key={item.path} onClick={() => { navigate(item.path); setProfileMenuOpen(false) }}
-            className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
-            style={{ color: 'var(--text-primary)' }}
+            className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms] rounded-input"
+            style={isProfile
+              ? { background: 'var(--accent)', color: '#fff' }
+              : { color: 'var(--text-primary)' }}
             role="menuitem"
-            {...hoverProps(
+            {...(!isProfile ? hoverProps(
               e => e.currentTarget.style.background = 'var(--bg-subtle)',
               e => e.currentTarget.style.background = 'transparent',
-            )}>
-            <Icon size={18} strokeWidth={2} style={{ color: 'var(--text-tertiary)' }} />
+            ) : {})}>
+            <Icon size={18} strokeWidth={2} style={{ color: isProfile ? '#fff' : 'var(--text-tertiary)' }} />
             {item.label}
             {!!item.badge && (
               <span className="ml-auto text-white text-[10px] font-semibold px-1.5 rounded-full min-w-[18px] text-center leading-5 tnum"
-                style={{ background: 'var(--error)' }}>
+                style={{ background: isProfile ? 'rgba(255,255,255,0.3)' : 'var(--error)' }}>
                 {item.badge > 99 ? '99+' : item.badge}
               </span>
             )}
-            <ChevronRight size={16} className="ml-auto" style={{ color: 'var(--text-tertiary)' }} />
+            <ChevronRight size={16} className="ml-auto" style={{ color: isProfile ? 'rgba(255,255,255,0.75)' : 'var(--text-tertiary)' }} />
           </button>
         )
       })}
       <div style={{ borderTop: '1px solid var(--border-soft)' }}>
         <button onClick={() => signOut()} role="menuitem"
           className="w-full flex items-center gap-3 px-4 py-3 t-body-sm font-medium transition-colors duration-[160ms]"
-          style={{ color: 'var(--error)' }}
-          {...hoverProps(
-            e => e.currentTarget.style.background = 'var(--error-bg)',
-            e => e.currentTarget.style.background = 'transparent',
-          )}>
+          style={{ background: 'var(--error)', color: '#fff' }}>
           <LogOut size={18} strokeWidth={2} />
           Cerrar sesión
         </button>
