@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { X, Send, XCircle, ImagePlus, FileText, Loader2, ShoppingBag, Wrench, Briefcase, Megaphone, Sparkles, MapPin, Calendar } from 'lucide-react'
+import { X, Send, XCircle, ImagePlus, FileText, Loader2, ShoppingBag, Wrench, Briefcase, Megaphone, MapPin, Calendar } from 'lucide-react'
 import { createPost } from '../../api/posts'
 import { CATEGORIES, DEPARTAMENTOS } from '../../lib/constants'
 import { useAuth } from '../../contexts/AuthContext'
@@ -53,7 +53,7 @@ const detectDepartamento = async () => {
   })
 }
 
-const CAT_ICONS = { productos: ShoppingBag, servicios: Wrench, empleos: Briefcase, informacion: Megaphone, publicidad: Sparkles }
+const CAT_ICONS = { productos: ShoppingBag, servicios: Wrench, empleos: Briefcase, informacion: Megaphone }
 
 const CAT_PLACEHOLDER = {
   productos:   'Escribe aquí lo que quieres ofrecer o buscar en productos...',

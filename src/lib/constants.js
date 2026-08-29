@@ -68,21 +68,15 @@ export const CATEGORIES = [
   {
     value: 'informacion',
     label: 'Información',
+    // Mismas 4 opciones que usa el filtro del feed (NOVEDADES_SUBCATS): antes
+    // había una lista distinta aquí para publicar, así que una publicación
+    // con "Recursos" o "Legal" no coincidía con ningún filtro y quedaba
+    // invisible al buscar por subcategoría.
     subcategories: [
-      'Noticias',
-      'Eventos',
-      'Recursos',
-      'Legal',
-      'Novedades',
-    ],
-  },
-  {
-    value: 'publicidad',
-    label: 'Publicidad',
-    subcategories: [
-      'Promoción',
-      'Lanzamiento',
-      'Patrocinado',
+      'Noticias y eventos',
+      'Normatividad',
+      'Conocimiento técnico',
+      'Preguntas',
     ],
   },
 ]
@@ -123,11 +117,10 @@ export const DEPARTAMENTOS_ORDERED = [
 
 // Tabs del marketplace
 export const MARKETPLACE_TABS = [
-  { value: 'todo',        label: 'TODO',        color: '#0047AB', bg: '#EBF1FC' },
-  { value: 'novedades',   label: 'INFO',        color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
-  { value: 'tienda',      label: 'PROVEEDORES', color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
-  { value: 'vacantes',    label: 'VACANTES',    color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
-  { value: 'publicidad',  label: 'PUBLICIDAD',  color: '#be185d', bg: '#fce7f3', categories: ['publicidad'] },
+  { value: 'todo',      label: 'TODO',      color: '#0047AB', bg: '#EBF1FC' },
+  { value: 'novedades', label: 'INFO',      color: '#16a34a', bg: '#dcfce7', categories: ['informacion'] },
+  { value: 'tienda',    label: 'PROVEEDORES', color: '#0369a1', bg: '#dbeafe', categories: ['productos', 'servicios'] },
+  { value: 'vacantes',  label: 'VACANTES',  color: '#ea580c', bg: '#ffedd5', categories: ['empleos'] },
 ]
 
 export const TAB_COLOR = {
@@ -135,7 +128,6 @@ export const TAB_COLOR = {
   novedades:     { color: '#16a34a', bg: '#dcfce7' },
   tienda:        { color: '#0369a1', bg: '#dbeafe' },
   vacantes:      { color: '#ea580c', bg: '#ffedd5' },
-  publicidad:    { color: '#be185d', bg: '#fce7f3' },
 }
 
 // Estructura de Tienda: intent → categoría → subcategorías
