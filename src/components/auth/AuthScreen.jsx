@@ -83,11 +83,12 @@ function Landing({ stats, onContinue }) {
           <span className="block rounded-full mt-5" style={{ width: 46, height: 4, background: 'var(--brand-red)' }} />
 
           <p className="mt-6 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15.3px, 4.1vw, 17.5px)' }}>
-            Busca, comparte y encuentra lo que tu trabajo necesita.
+            Busca, comparte y encuentra: información técnica, proveedores,
+            vacantes y profesionales del sector químico.
           </p>
           <p className="mt-4 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15.3px, 4.1vw, 17.5px)' }}>
-            Profesionales, proveedores, recursos humanos y todas las personas
-            del sector químico, en un mismo lugar.
+            Todo lo que tu trabajo necesita, en una sola comunidad de la
+            industria química en Colombia.
           </p>
 
           <div className="mt-6 flex items-center gap-5 flex-wrap">
