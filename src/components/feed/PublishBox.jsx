@@ -169,10 +169,7 @@ export default function PublishBox({ onClose, onPublished }) {
     <div className="overflow-hidden rounded-panel" style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-modal)' }}>
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border-soft)' }}>
-        <div>
-          <p className="text-[17px] font-semibold" style={{ color: 'var(--text-primary)' }}>Crear publicación</p>
-          <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Comparte algo útil con tu comunidad</p>
-        </div>
+        <p className="text-[17px] font-bold" style={{ color: 'var(--text-primary)' }}>Crear publicación</p>
         <button onClick={onClose} aria-label="Cerrar"
           className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
           style={{ color: 'var(--text-tertiary)' }}>
@@ -180,11 +177,11 @@ export default function PublishBox({ onClose, onPublished }) {
         </button>
       </div>
 
-      <form onSubmit={submit} className="px-5 py-5 space-y-5">
+      <form onSubmit={submit} className="px-5 py-6 space-y-6">
         <div className="flex items-center gap-3">
           <UserAvatar seed={session?.user?.id || 'me'} name={publicName(myProfile)} avatarUrl={myProfile?.avatar_url} size={44} />
           <div className="min-w-0">
-            <p className="text-[14px] font-semibold" style={{ color: 'var(--text-primary)' }}>Tu publicación</p>
+            <p className="text-[14px] font-semibold" style={{ color: 'var(--text-primary)' }}>{publicName(myProfile)}</p>
             {!detectingLoc && location && <p className="text-[12px] mt-0.5 flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}><MapPin size={12} /> {location}</p>}
             {detectingLoc && <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Detectando ubicación...</p>}
           </div>
@@ -197,10 +194,7 @@ export default function PublishBox({ onClose, onPublished }) {
 
         {/* Categorías */}
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-[12px] font-semibold" style={{ color: 'var(--text-primary)' }}>¿De qué trata?</p>
-            <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>Obligatorio</span>
-          </div>
+          <p className="t-eyebrow mb-2.5" style={{ color: 'var(--text-tertiary)' }}>¿De qué trata?</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {CATEGORIES.map(c => {
               const Icon = CAT_ICONS[c.value]
@@ -219,14 +213,14 @@ export default function PublishBox({ onClose, onPublished }) {
             })}
           </div>
           {!form.category && form.title.trim() && (
-            <p className="text-[12px] mt-2" style={{ color: 'var(--error)' }}>Selecciona una categoría para poder publicar.</p>
+            <p className="t-caption mt-2" style={{ color: 'var(--error)' }}>Selecciona una categoría para publicar</p>
           )}
         </div>
 
         {/* Subcategorías */}
         {selectedCat && selectedCat.subcategories.length > 0 && (
           <div>
-            <p className="text-[12px] font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Subcategoría</p>
+            <p className="t-eyebrow mb-2.5" style={{ color: 'var(--text-tertiary)' }}>Subcategoría</p>
             <div className="flex flex-wrap gap-2">
               {selectedCat.subcategories.map(s => {
                 const active = form.subcategory === s
@@ -248,8 +242,8 @@ export default function PublishBox({ onClose, onPublished }) {
         {/* Fecha del evento */}
         {form.subcategory === 'Eventos' && (
           <div>
-            <p className="text-[12px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
-              <Calendar size={14} style={{ color: 'var(--accent)' }} /> Fecha del evento
+            <p className="t-eyebrow mb-2.5 flex items-center gap-1.5" style={{ color: 'var(--text-tertiary)' }}>
+              <Calendar size={13} style={{ color: 'var(--accent)' }} /> Fecha del evento
             </p>
             <input type="date"
               value={form.event_date}
@@ -264,8 +258,8 @@ export default function PublishBox({ onClose, onPublished }) {
         {/* Adjuntos */}
         {files.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-[12px] font-semibold" style={{ color: 'var(--text-primary)' }}>Adjuntos</p>
+            <div className="flex items-center justify-between mb-2.5">
+              <p className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>Adjuntos</p>
               <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{files.length}/{MAX_FILES}</span>
             </div>
             <div className="flex gap-2 flex-wrap">
