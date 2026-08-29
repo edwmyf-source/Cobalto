@@ -116,7 +116,7 @@ function Landing({ stats, onContinue }) {
            circular pastel por dato — se siente a comunidad, no a dashboard. ── */}
       <section className="rounded-panel p-5 md:p-7 border relative"
         style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
-        <div className="grid grid-cols-3 gap-x-4 gap-y-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6">
           {[
             { icon: Users,          value: stats.members,      label: 'Miembros',      bg: 'var(--error-bg)',   fg: 'var(--error)'         },
             { icon: BadgeCheck,     value: stats.posts,        label: 'Publicaciones', bg: 'var(--accent-soft)', fg: 'var(--accent)'        },
@@ -125,17 +125,17 @@ function Landing({ stats, onContinue }) {
             { icon: TrendingUp,     value: stats.companies,    label: 'Empresas',      bg: 'var(--warning-bg)', fg: 'var(--warning)'        },
             { icon: BadgeCheck,     value: stats.cities,       label: 'Ciudades',      bg: 'var(--accent-softer)', fg: 'var(--accent-deep)' },
           ].map(({ icon: Icon, value, label, bg, fg }) => (
-            <div key={label} className="flex items-center gap-3">
-              <span className="flex items-center justify-center rounded-full flex-shrink-0" style={{ width: 40, height: 40, background: bg }}>
-                <Icon size={18} strokeWidth={2.2} style={{ color: fg }} />
+            <div key={label} className="flex items-center gap-2.5">
+              <span className="flex items-center justify-center rounded-full flex-shrink-0" style={{ width: 38, height: 38, background: bg }}>
+                <Icon size={17} strokeWidth={2.2} style={{ color: fg }} />
               </span>
               <div className="min-w-0">
                 <p className="font-extrabold leading-none tnum"
-                  style={{ letterSpacing: '-0.03em', color: 'var(--text-primary)', fontSize: 'clamp(18px, 4.6vw, 24px)' }}>
+                  style={{ letterSpacing: '-0.03em', color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.2vw, 22px)' }}>
                   {formatMetric(value)}
                 </p>
-                <p className="text-[10.5px] mt-1 uppercase font-extrabold leading-tight truncate"
-                  style={{ color: 'var(--text-tertiary)', letterSpacing: '0.04em' }}>
+                <p className="text-[10px] mt-1 uppercase font-extrabold leading-tight truncate"
+                  style={{ color: 'var(--text-tertiary)', letterSpacing: '0.03em' }}>
                   {label}
                 </p>
               </div>
@@ -144,14 +144,16 @@ function Landing({ stats, onContinue }) {
         </div>
       </section>
 
-      {/* ── Ventajas: fila con separadores suaves entre cada elemento ── */}
-      <section className="flex flex-wrap items-center justify-center md:justify-start">
+      {/* ── Ventajas: en móvil, tarjetas en grid (no fila que se envuelve mal);
+           en escritorio, fila con separadores verticales ── */}
+      <section className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-0 sm:items-center justify-center md:justify-start">
         {ADVANTAGES.map(({ icon: Icon, title }, i) => (
-          <span key={title} className="inline-flex items-center">
-            {i > 0 && <span className="hidden sm:block mx-5" style={{ width: 1, height: 18, background: 'var(--border)' }} />}
-            <span className="inline-flex items-center gap-2 my-1.5 sm:my-0">
+          <span key={title} className="inline-flex items-center justify-center sm:justify-start rounded-card sm:rounded-none py-3 sm:py-0 border sm:border-0"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)' }}>
+            {i > 0 && <span className="hidden sm:block mr-5" style={{ width: 1, height: 18, background: 'var(--border)' }} />}
+            <span className="inline-flex items-center gap-2">
               <Icon size={17} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-              <span className="text-[14px] font-bold" style={{ color: 'var(--text-secondary)' }}>{title}</span>
+              <span className="text-[13.5px] font-bold" style={{ color: 'var(--text-secondary)' }}>{title}</span>
             </span>
           </span>
         ))}
