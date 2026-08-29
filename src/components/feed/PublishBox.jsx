@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../shared/Toast'
 import { safeErrorMessage } from '../../lib/errors'
 import { publicName } from '../../lib/helpers'
+import { generatePdfThumbnail } from '../../lib/pdfThumbnail'
 import UserAvatar from '../shared/UserAvatar'
 import Spinner from '../shared/Spinner'
 
@@ -130,7 +131,13 @@ export default function PublishBox({ onClose, onPublished }) {
       }
       const kind = fileKind(f)
       const processedFile = kind === 'image' ? await compressImage(f) : f
-      const preview = kind === 'image' ? URL.createObjectURL(processedFile) : null
+      const preview = kind === 'image'
+        ? URL.createObjectURL(processedFile)
+        : kind === 'pdf'
+          // Miniatura generada en el momento: si falla, sigue siendo null y
+          // el archivo cae al ícono genérico, sin bloquear la selección.
+          ? await generatePdfThumbnail(f).then(t => t && URL.createObjectURL(t)).catch(() => null)
+          : null
       valid.push({ file: processedFile, preview, kind })
     }
     setFiles(prev => [...prev, ...valid].slice(0, MAX_FILES))
@@ -268,10 +275,14 @@ export default function PublishBox({ onClose, onPublished }) {
                 <div key={idx} className="relative rounded-input overflow-hidden" style={{ width: 78, height: 78, border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
                   {f.kind === 'image' && <img src={f.preview} alt="" className="w-full h-full object-cover" />}
                   {f.kind === 'pdf' && (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 px-1">
-                      <FileText size={20} style={{ color: 'var(--error)' }} />
-                      <span className="text-[9px] truncate max-w-full" style={{ color: 'var(--text-secondary)' }}>{f.file.name}</span>
-                    </div>
+                    f.preview ? (
+                      <img src={f.preview} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center gap-1 px-1">
+                        <FileText size={20} style={{ color: 'var(--error)' }} />
+                        <span className="text-[9px] truncate max-w-full" style={{ color: 'var(--text-secondary)' }}>{f.file.name}</span>
+                      </div>
+                    )
                   )}
                   <button type="button" onClick={() => removeFile(idx)} aria-label="Quitar archivo"
                     className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-white"

@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { compressImage } from '../lib/imageCompress'
+import { generatePdfThumbnail } from '../lib/pdfThumbnail'
 
 const MAX_FILE_MB = 15
 const UPLOAD_TIMEOUT_MS = 30_000
@@ -37,12 +38,32 @@ export const uploadMedia = async (rawFile, authorId) => {
   if (error) throw error
   const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(path)
   const size = await sizePromise
+
+  // PDF: generar una miniatura de la primera página y subirla aparte, para
+  // que el post muestre una "foto de portada" del documento en vez de solo
+  // un ícono con el nombre. Si falla (PDF protegido, corrupto), el post se
+  // publica igual sin miniatura — nunca bloquea la publicación.
+  let thumbUrl = null
+  if (file.type === 'application/pdf') {
+    const thumb = await generatePdfThumbnail(file)
+    if (thumb) {
+      const thumbPath = path.replace(/\.pdf$/i, '') + '-thumb.jpg'
+      const { error: thumbErr } = await supabase.storage
+        .from('post-media')
+        .upload(thumbPath, thumb, { cacheControl: '3600', upsert: false })
+      if (!thumbErr) {
+        thumbUrl = supabase.storage.from('post-media').getPublicUrl(thumbPath).data.publicUrl
+      }
+    }
+  }
+
   return {
     url: urlData.publicUrl,
     type: file.type,
     name: file.name,
     path,
     ...(size ? { w: size.w, h: size.h } : {}),
+    ...(thumbUrl ? { thumbUrl } : {}),
   }
 }
 

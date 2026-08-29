@@ -54,18 +54,38 @@ function MediaGallery({ media }) {
         </div>
       ))}
       {pdfs.map((pdf, idx) => (
-        <a key={idx} href={pdf.url} target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2.5 p-2 rounded-xl border border-[var(--border-soft)] bg-[var(--bg-subtle)] hover:bg-slate-50 transition-colors group">
-          <div className="w-7 h-7 rounded-lg bg-[var(--error)]/10 flex items-center justify-center flex-shrink-0">
-            <FileText size={14} className="text-[var(--error)]" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-medium text-[var(--text-primary)] truncate group-hover:text-[var(--accent)]">
-              {pdf.name || 'Documento PDF'}
-            </p>
-            <p className="text-[10px] text-[var(--text-tertiary)]">PDF · Click para abrir</p>
-          </div>
-        </a>
+        pdf.thumbUrl ? (
+          // Con miniatura: se ve como una foto de portada del documento,
+          // igual que cualquier imagen del feed.
+          <a key={idx} href={pdf.url} target="_blank" rel="noopener noreferrer"
+            className="relative block rounded-2xl overflow-hidden bg-[var(--border-soft)]"
+            style={{ maxHeight: 320 }}>
+            <img src={pdf.thumbUrl} alt="" loading="lazy" decoding="async"
+              className="w-full h-full object-cover" style={{ maxHeight: 320 }} />
+            <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+              style={{ background: 'rgba(15,23,42,0.72)', backdropFilter: 'blur(4px)' }}>
+              <FileText size={12} className="text-white" />
+              <span className="text-[11px] font-medium text-white truncate max-w-[180px]">
+                {pdf.name || 'Documento PDF'}
+              </span>
+            </div>
+          </a>
+        ) : (
+          // Sin miniatura (PDF anterior a esta función, o no se pudo generar):
+          // tarjeta de respaldo con ícono y nombre.
+          <a key={idx} href={pdf.url} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-2.5 p-2 rounded-xl border border-[var(--border-soft)] bg-[var(--bg-subtle)] hover:bg-slate-50 transition-colors group">
+            <div className="w-7 h-7 rounded-lg bg-[var(--error)]/10 flex items-center justify-center flex-shrink-0">
+              <FileText size={14} className="text-[var(--error)]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-medium text-[var(--text-primary)] truncate group-hover:text-[var(--accent)]">
+                {pdf.name || 'Documento PDF'}
+              </p>
+              <p className="text-[10px] text-[var(--text-tertiary)]">PDF · Click para abrir</p>
+            </div>
+          </a>
+        )
       ))}
     </div>
   )
