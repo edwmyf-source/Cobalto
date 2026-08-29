@@ -189,8 +189,9 @@ export default function PublishBox({ onClose, onPublished }) {
 
         <textarea value={form.title} onChange={e => set('title', e.target.value)}
           placeholder={placeholder} rows={4} maxLength={280} autoFocus required
-          className={`${inputCls} resize-none`}
-          style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)', borderColor: 'var(--border-soft)' }} />
+          className={`${inputCls} resize-none !rounded-[18px]`}
+          style={{ background: 'var(--surface)', color: 'var(--text-primary)',
+                   border: '1.5px solid var(--accent)', boxShadow: '0 0 0 4px var(--accent-soft)' }} />
 
         {/* Categorías */}
         <div>
