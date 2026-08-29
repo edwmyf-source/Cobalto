@@ -7,7 +7,6 @@ import { useAuth } from '../contexts/AuthContext'
 import { DEPARTAMENTOS } from '../lib/constants'
 import { safeErrorMessage } from '../lib/errors'
 import { generateIdentityNumber } from '../lib/helpers'
-import PrivacyBadge from '../components/shared/PrivacyBadge'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 
@@ -25,22 +24,16 @@ const boxedFieldStyle = { background: 'var(--surface)', border: '1px solid var(-
 
 // Una fila de la lista agrupada: etiqueta chica arriba, campo abajo, línea
 // divisoria fina entre filas. Cuando el campo es obligatorio y está vacío,
-// la fila se tiñe suavemente y muestra un punto — así se ve de un vistazo
-// qué falta, sin necesidad de textos de ayuda en cada campo.
-function FormRow({ label, htmlFor, privacy, hint, isLast, pendiente, children }) {
+// un punto discreto junto a la etiqueta lo señala — sin teñir toda la fila,
+// para no romper el fondo blanco limpio del resto de la pantalla.
+function FormRow({ label, htmlFor, hint, isLast, pendiente, children }) {
   return (
-    <div className="px-4 py-3 transition-colors"
-      style={{
-        borderBottom: isLast ? undefined : '1px solid var(--border-soft)',
-        background: pendiente ? 'var(--warning-bg)' : 'transparent',
-      }}>
-      <div className="flex items-center justify-between mb-1">
-        <label htmlFor={htmlFor} className={`${labelCls} inline-flex items-center gap-1.5`} style={labelStyle}>
-          {pendiente && <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--warning)' }} />}
-          {label}
-        </label>
-        {privacy && <PrivacyBadge variant={privacy} />}
-      </div>
+    <div className="px-4 py-3"
+      style={!isLast ? { borderBottom: '1px solid var(--border-soft)' } : undefined}>
+      <label htmlFor={htmlFor} className={`${labelCls} inline-flex items-center gap-1.5 mb-1`} style={labelStyle}>
+        {pendiente && <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--warning)' }} />}
+        {label}
+      </label>
       <div style={{ color: 'var(--text-primary)' }}>{children}</div>
       {hint && <p className="t-caption mt-1" style={{ color: 'var(--text-tertiary)', opacity: 0.8 }}>{hint}</p>}
     </div>
@@ -199,30 +192,30 @@ export default function ProfilePage() {
       <form onSubmit={submit} className="space-y-3.5">
         <div className="rounded-panel overflow-hidden"
           style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)' }}>
-          <FormRow label="Nombre" privacy="private" htmlFor="profile-fullname" pendiente={faltaNombre}>
+          <FormRow label="Nombre" htmlFor="profile-fullname" pendiente={faltaNombre}>
             <input id="profile-fullname" value={form.full_name} onChange={e => set('full_name', e.target.value)}
               className={fieldCls} placeholder="Tu nombre" />
           </FormRow>
 
-          <FormRow label="Sobre ti" privacy="public" htmlFor="profile-headline" pendiente={faltaHeadline}>
+          <FormRow label="Sobre ti" htmlFor="profile-headline" pendiente={faltaHeadline}>
             <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
               className={fieldCls} placeholder="Ej: Química farmacéutica" />
           </FormRow>
 
-          <FormRow label="Email" privacy="private" htmlFor="profile-email">
+          <FormRow label="Email" htmlFor="profile-email">
             <input id="profile-email" type="email" value={isSyntheticEmail ? '' : userEmail} disabled
               placeholder={isSyntheticEmail ? 'Sin correo' : ''}
               className={fieldCls} style={{ color: 'var(--text-tertiary)' }} />
           </FormRow>
 
-          <FormRow label="Teléfono" privacy="private" htmlFor="profile-phone" pendiente={faltaTelefono}>
+          <FormRow label="Teléfono" htmlFor="profile-phone" pendiente={faltaTelefono}>
             <input id="profile-phone" value={form.phone} inputMode="tel"
               onChange={e => set('phone', e.target.value.replace(/[^0-9+ ]/g, '').slice(0, 15))}
               className={fieldCls} placeholder="300 123 4567" />
           </FormRow>
 
-          <FormRow label="Departamento" privacy="public" isLast htmlFor="profile-city">
+          <FormRow label="Departamento" isLast htmlFor="profile-city">
             <select id="profile-city" value={form.city} onChange={e => set('city', e.target.value)}
               className={fieldCls + ' appearance-none'}>
               <option value="">Seleccionar...</option>
