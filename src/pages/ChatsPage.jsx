@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ArrowLeft, Send, Search, MessageSquareText, MoreHorizontal, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
+import { ArrowLeft, Send, Search, MessageSquareText, Paperclip, Smile, CheckCheck, Sparkles, FileText } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getConversations, getMessages, sendMessage, uploadMessageAttachment, getAttachmentUrl, markConversationRead } from '../api/messages'
 import { useAuth } from '../contexts/AuthContext'
@@ -11,6 +11,15 @@ import { CATEGORY_MAP } from '../lib/constants'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
 import { Card, EmptyState } from '../components/ui'
+
+// Emojis de uso frecuente en conversación profesional. Se muestran en una
+// cuadrícula pequeña; no hace falta un selector completo con buscador.
+const CHAT_EMOJIS = [
+  '👍', '🙏', '👌', '💪', '🤝', '👏',
+  '😊', '😄', '🙂', '😅', '🤔', '😮',
+  '✅', '❌', '⚠️', '📌', '📄', '🔔',
+  '🎉', '🔥', '⭐', '❤️', '☑️', '⏰',
+]
 
 /* ─── Bandeja estilo B1 (WhatsApp) ─── */
 function ConversationList({ conversations, activeId, onSelect, userId }) {
@@ -32,9 +41,6 @@ function ConversationList({ conversations, activeId, onSelect, userId }) {
             <p className="t-eyebrow mb-1" style={{ color: 'var(--accent)' }}>REDCobalto</p>
             <h2 className="t-h2" style={{ color: 'var(--text-primary)' }}>Mensajes</h2>
           </div>
-          <button aria-label="Más opciones" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ background:'var(--bg-subtle)', color:'var(--text-secondary)' }}>
-            <MoreHorizontal size={18} />
-          </button>
         </div>
       </div>
 
@@ -186,6 +192,7 @@ function ChatThread({ conversation, userId, myProfile, onRead }) {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
+  const [emojiOpen, setEmojiOpen] = useState(false)
   const [sending, setSending] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef(null)
@@ -287,9 +294,6 @@ function ChatThread({ conversation, userId, myProfile, onRead }) {
             {other?.city && <span className="t-caption truncate" style={{ color: 'var(--text-tertiary)' }}>· {other.city}</span>}
           </div>
         </div>
-        <button aria-label="Más opciones" className="w-9 h-9 rounded-pill flex items-center justify-center" style={{ background:'var(--bg-subtle)', color:'var(--text-secondary)' }}>
-          <MoreHorizontal size={18} />
-        </button>
       </div>
 
       {/* Post de referencia */}
@@ -398,7 +402,34 @@ function ChatThread({ conversation, userId, myProfile, onRead }) {
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() } }}
           onInput={e => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px' }}
         />
-        <button aria-label="Añadir emoji" className="hidden sm:flex w-9 h-9 rounded-pill flex items-center justify-center" style={{ color:'var(--text-secondary)', background:'transparent' }}><Smile size={17}/></button>
+        <div className="relative hidden sm:block">
+          {emojiOpen && (
+            <>
+              {/* Capa invisible para cerrar al tocar fuera */}
+              <div className="fixed inset-0 z-10" onClick={() => setEmojiOpen(false)} />
+              <div className="absolute bottom-full right-0 mb-2 z-20 rounded-panel p-2.5 grid grid-cols-6 gap-1"
+                style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)',
+                         boxShadow: 'var(--shadow-dropdown)', width: 232 }}>
+                {CHAT_EMOJIS.map(e => (
+                  <button key={e} type="button"
+                    onClick={() => { setText(t => t + e); setEmojiOpen(false) }}
+                    className="w-9 h-9 rounded-input flex items-center justify-center text-[19px] transition-transform active:scale-90"
+                    style={{ background: 'transparent' }}
+                    aria-label={`Insertar ${e}`}>
+                    {e}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+          <button type="button" onClick={() => setEmojiOpen(o => !o)}
+            aria-label="Añadir emoji" aria-expanded={emojiOpen}
+            className="w-9 h-9 rounded-pill flex items-center justify-center transition-colors"
+            style={{ color: emojiOpen ? 'var(--accent)' : 'var(--text-secondary)',
+                     background: emojiOpen ? 'var(--accent-soft)' : 'transparent' }}>
+            <Smile size={17}/>
+          </button>
+        </div>
         <button onClick={() => handleSend()} disabled={!text.trim() || sending} aria-label="Enviar mensaje"
           className="w-11 h-11 rounded-btn flex items-center justify-center flex-shrink-0 transition-all duration-[160ms] active:scale-95 disabled:opacity-40"
           style={{ background: 'var(--accent)', color:'#fff' }}>

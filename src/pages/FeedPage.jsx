@@ -349,7 +349,10 @@ export default function FeedPage() {
                   </div>
                 </div>
               ))}
-              <button className="text-[12px] font-semibold mt-1" style={{ color: 'var(--accent)' }}>Ver todos →</button>
+              <button onClick={() => { setFilters(f => ({ ...f, subcategory: 'Eventos' })); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+                className="text-[12px] font-semibold mt-1 transition-opacity active:opacity-60" style={{ color: 'var(--accent)' }}>
+                Ver todos →
+              </button>
             </div>
           </div>
 
