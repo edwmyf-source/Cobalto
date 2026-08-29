@@ -50,7 +50,7 @@ function TopBar({ onLogin }) {
 // ══════════════════════════════════════════════════════════════════════════
 function Landing({ stats, onContinue }) {
   return (
-    <div className="flex-1 max-w-6xl w-full mx-auto px-4 md:px-6 py-8 md:py-12 flex flex-col gap-10 md:gap-14">
+    <div className="flex-1 max-w-6xl w-full mx-auto px-4 md:px-6 py-8 md:py-12 flex flex-col gap-10 md:gap-14 overflow-x-hidden">
 
       {/* ── Hero ── */}
       <section className="relative md:flex md:items-center md:gap-12">
@@ -60,7 +60,7 @@ function Landing({ stats, onContinue }) {
             Visible en todos los tamaños (antes solo aparecía en escritorio),
             detrás y a la derecha del texto. */}
         <div className="absolute pointer-events-none" aria-hidden="true"
-          style={{ top: '7%', right: 'clamp(-245px, -26.5vw, -49px)', width: 'clamp(322px, 78vw, 780px)', opacity: 0.9, zIndex: 0 }}>
+          style={{ top: '2%', right: 'clamp(-390px, -39vw, -161px)', width: 'clamp(322px, 78vw, 780px)', opacity: 0.9, zIndex: 0 }}>
           <CobaltoMark size="100%" rounded="rounded-none" />
         </div>
         {/* Puntos suaves: textura geométrica discreta, no decoración genérica */}
