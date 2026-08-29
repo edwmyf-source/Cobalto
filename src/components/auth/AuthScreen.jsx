@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BadgeCheck, Lock, MessageCircle, Gift, ArrowRight } from 'lucide-react'
+import { BadgeCheck, Lock, MessageCircle, Gift, ArrowRight, Users, Share2, TrendingUp } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import Footer from '../layout/Footer'
@@ -25,14 +25,19 @@ const formatMetric = (n) => {
   return new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: decimals }).format(v)
 }
 
-// Barra superior: solo el logo. Un único CTA vive en el hero (y se repite,
-// con el mismo texto, al final): evita la mezcla "Entrar" arriba / "Unirse"
-// abajo / "Crear cuenta" al fondo que hacía confusa la pantalla anterior.
-function TopBar() {
+// Barra superior: logo a la izquierda, un único botón "Ingresar" a la
+// derecha (estilo outline, discreto). El acceso real (Google/código) vive
+// en la pantalla 2 — este botón solo navega hasta ahí.
+function TopBar({ onLogin }) {
   return (
     <header className="sticky top-0 z-40 w-full border-b" style={{ background: 'rgba(255,255,255,0.86)', backdropFilter: 'blur(18px)', borderColor: 'var(--border-soft)' }}>
-      <div className="max-w-6xl mx-auto h-[72px] flex items-center px-4 md:px-6">
+      <div className="max-w-6xl mx-auto h-[72px] flex items-center justify-between px-4 md:px-6">
         <RedCobaltoLogo size="md" />
+        <button onClick={onLogin}
+          className="inline-flex items-center justify-center rounded-btn font-bold h-10 px-5 text-[13.5px] transition-all active:scale-[0.97]"
+          style={{ border: '1.5px solid var(--accent-deep)', color: 'var(--accent-deep)', background: 'transparent' }}>
+          Ingresar
+        </button>
       </div>
     </header>
   )
@@ -45,36 +50,62 @@ function TopBar() {
 // ══════════════════════════════════════════════════════════════════════════
 function Landing({ stats, onContinue }) {
   return (
-    <div className="flex-1 max-w-6xl w-full mx-auto px-4 md:px-6 py-8 md:py-12 flex flex-col gap-8 md:gap-12">
+    <div className="flex-1 max-w-6xl w-full mx-auto px-4 md:px-6 py-8 md:py-12 flex flex-col gap-10 md:gap-14">
 
       {/* ── Hero ── */}
-      <section className="md:flex md:items-center md:gap-12">
-        <div className="md:flex-1">
-          <div className="mb-5 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full" style={{ background: 'var(--brand-red)' }} />
-            <span className="t-eyebrow" style={{ color: 'var(--text-tertiary)' }}>COMUNIDAD PROFESIONAL</span>
+      <section className="relative md:flex md:items-center md:gap-12">
+
+        {/* Gráfico: el propio logo, agrandado — "círculo incompleto, una
+            parte roja, una parte azul" es literalmente el isotipo de marca.
+            Visible en todos los tamaños (antes solo aparecía en escritorio),
+            detrás y a la derecha del texto. */}
+        <div className="absolute pointer-events-none" aria-hidden="true"
+          style={{ top: '-8%', right: 'clamp(-40px, -8vw, 10px)', width: 'clamp(190px, 46vw, 460px)', opacity: 0.9, zIndex: 0 }}>
+          <CobaltoMark size="100%" rounded="rounded-none" />
+        </div>
+        {/* Puntos suaves: textura geométrica discreta, no decoración genérica */}
+        <div className="absolute pointer-events-none hidden md:block" aria-hidden="true"
+          style={{ right: 20, bottom: -10, width: 120, height: 90,
+                   backgroundImage: 'radial-gradient(var(--border) 1.5px, transparent 1.5px)',
+                   backgroundSize: '14px 14px', opacity: 0.7, zIndex: 0 }} />
+
+        <div className="md:flex-1 md:max-w-[560px] relative" style={{ zIndex: 1 }}>
+          <div className="mb-5 flex items-center gap-2 max-w-[64%] sm:max-w-none">
+            <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: 'var(--brand-red)' }} />
+            <span className="t-eyebrow font-bold" style={{ color: 'var(--brand-red)' }}>COMUNIDAD PROFESIONAL</span>
           </div>
 
-          <h1 className="text-left font-extrabold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 0.96 }}>
-            <span className="block" style={{ fontSize: 'clamp(30px, 9.5vw, 54px)' }}>Punto de encuentro</span>
-            <span className="block mt-2" style={{ color: 'var(--accent)', fontSize: 'clamp(19px, 5.8vw, 32px)' }}>
-              de la industria química en Colombia
+          <h1 className="text-left font-extrabold max-w-[64%] sm:max-w-none" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 1.04 }}>
+            <span className="block" style={{ fontSize: 'clamp(30px, 8.6vw, 50px)' }}>El punto de encuentro</span>
+            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(30px, 8.6vw, 50px)' }}>
+              de la industria química
+            </span>
+            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(30px, 8.6vw, 50px)' }}>
+              en Colombia
             </span>
           </h1>
 
-          <p className="mt-6 leading-relaxed max-w-[520px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 18px)' }}>
+          <span className="block rounded-full mt-5" style={{ width: 46, height: 4, background: 'var(--brand-red)' }} />
+
+          <p className="mt-6 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
             Conecta con profesionales, técnicos, tecnólogos, empresas y
-            proveedores del sector químico. Comparte conocimiento, encuentra
-            oportunidades y haz parte de una comunidad donde la industria se
-            conecta, colabora y crece.
+            proveedores del sector químico.
+          </p>
+          <p className="mt-4 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
+            Comparte conocimiento, encuentra oportunidades y haz parte de una
+            comunidad donde la industria se conecta, colabora y crece.
           </p>
 
-          <div className="mt-5 flex items-center gap-3 flex-wrap">
-            <span className="font-extrabold" style={{ color: 'var(--brand-red)', fontSize: 'clamp(15px, 4vw, 19px)' }}>Conecta</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent)', fontSize: 'clamp(15px, 4vw, 19px)' }}>Comparte</span>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <span className="font-extrabold" style={{ color: 'var(--accent-violet)', fontSize: 'clamp(15px, 4vw, 19px)' }}>Crece</span>
+          <div className="mt-6 flex items-center gap-5 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 font-extrabold" style={{ color: 'var(--brand-red)', fontSize: 'clamp(15px, 4vw, 18px)' }}>
+              <Users size={18} strokeWidth={2.3} /> Conecta
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-extrabold" style={{ color: 'var(--accent)', fontSize: 'clamp(15px, 4vw, 18px)' }}>
+              <Share2 size={18} strokeWidth={2.3} /> Comparte
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-extrabold" style={{ color: 'var(--accent-violet)', fontSize: 'clamp(15px, 4vw, 18px)' }}>
+              <TrendingUp size={18} strokeWidth={2.3} /> Crece
+            </span>
           </div>
 
           <button onClick={onContinue}
@@ -84,59 +115,49 @@ function Landing({ stats, onContinue }) {
             Únete a la comunidad <ArrowRight size={19} strokeWidth={2.5} />
           </button>
         </div>
+      </section>
 
-        {/* ── Marca: llena el vacío de la derecha en escritorio ── */}
-        <div className="hidden md:flex md:flex-col md:items-center md:justify-center md:w-[360px] flex-shrink-0">
-          <div className="relative flex items-center justify-center w-full">
-            {/* Círculo sutil de fondo, mismo lenguaje visual que el splash */}
-            <div className="absolute rounded-full" aria-hidden="true"
-              style={{ width: 300, height: 300, background: 'var(--accent-softer)' }} />
-            <div className="absolute rounded-full" aria-hidden="true"
-              style={{ width: 230, height: 230, border: '1px solid var(--border-soft)' }} />
-            <div className="relative flex flex-col items-center gap-5">
-              <CobaltoMark size={104} rounded="rounded-[28px]" />
-              <div className="text-center">
-                <p className="font-extrabold leading-none" style={{ letterSpacing: '-0.03em', fontSize: 34 }}>
-                  <span style={{ color: 'var(--brand-red)' }}>RED</span><span style={{ color: 'var(--accent-deep)' }}>COBALTO</span>
+      {/* ── Estadísticas: una sola tarjeta flotante, grid 3×2, con icono
+           circular pastel por dato — se siente a comunidad, no a dashboard. ── */}
+      <section className="rounded-panel p-5 md:p-7 border relative"
+        style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-modal)' }}>
+        <div className="grid grid-cols-3 gap-x-4 gap-y-6">
+          {[
+            { icon: Users,          value: stats.members,      label: 'Miembros',      bg: 'var(--error-bg)',   fg: 'var(--error)'         },
+            { icon: BadgeCheck,     value: stats.posts,        label: 'Publicaciones', bg: 'var(--accent-soft)', fg: 'var(--accent)'        },
+            { icon: MessageCircle,  value: stats.interactions, label: 'Interacciones', bg: '#F1EEFC',            fg: 'var(--accent-violet)' },
+            { icon: Share2,         value: stats.comments,     label: 'Comentarios',   bg: 'var(--success-bg)', fg: 'var(--success)'        },
+            { icon: TrendingUp,     value: stats.companies,    label: 'Empresas',      bg: 'var(--warning-bg)', fg: 'var(--warning)'        },
+            { icon: BadgeCheck,     value: stats.cities,       label: 'Ciudades',      bg: 'var(--accent-softer)', fg: 'var(--accent-deep)' },
+          ].map(({ icon: Icon, value, label, bg, fg }) => (
+            <div key={label} className="flex items-center gap-3">
+              <span className="flex items-center justify-center rounded-full flex-shrink-0" style={{ width: 40, height: 40, background: bg }}>
+                <Icon size={18} strokeWidth={2.2} style={{ color: fg }} />
+              </span>
+              <div className="min-w-0">
+                <p className="font-extrabold leading-none tnum"
+                  style={{ letterSpacing: '-0.03em', color: 'var(--text-primary)', fontSize: 'clamp(18px, 4.6vw, 24px)' }}>
+                  {formatMetric(value)}
                 </p>
-                <p className="t-eyebrow mt-2.5" style={{ color: 'var(--text-tertiary)' }}>
-                  INDUSTRIA QUÍMICA · COLOMBIA
+                <p className="text-[10.5px] mt-1 uppercase font-extrabold leading-tight truncate"
+                  style={{ color: 'var(--text-tertiary)', letterSpacing: '0.04em' }}>
+                  {label}
                 </p>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ── Métricas: fila completa bajo el hero, ahora sin caja ni sombra ── */}
-      <section className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
-        {[
-          { value: stats.members,        label: 'Miembros'      },
-          { value: stats.posts,          label: 'Publicaciones' },
-          { value: stats.interactions,   label: 'Interacciones' },
-          { value: stats.comments,       label: 'Comentarios'   },
-          { value: stats.companies,      label: 'Empresas'      },
-          { value: stats.cities,         label: 'Ciudades'      },
-        ].map(({ value, label }) => (
-          <div key={label} className="text-center md:text-left">
-            <p className="font-extrabold leading-none tnum"
-              style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(20px, 5.3vw, 28px)' }}>
-              {formatMetric(value)}
-            </p>
-            <p className="text-[10px] md:text-[11px] mt-1.5 uppercase font-extrabold leading-tight"
-              style={{ color: 'var(--text-tertiary)', letterSpacing: '0.06em' }}>
-              {label}
-            </p>
-          </div>
-        ))}
-      </section>
-
-      {/* ── Ventajas: línea simple, sin tarjetas ── */}
-      <section className="flex flex-wrap items-center gap-x-8 gap-y-4 justify-center md:justify-start">
-        {ADVANTAGES.map(({ icon: Icon, title }) => (
-          <span key={title} className="inline-flex items-center gap-2">
-            <Icon size={17} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-            <span className="text-[14px] font-bold" style={{ color: 'var(--text-secondary)' }}>{title}</span>
+      {/* ── Ventajas: fila con separadores suaves entre cada elemento ── */}
+      <section className="flex flex-wrap items-center justify-center md:justify-start">
+        {ADVANTAGES.map(({ icon: Icon, title }, i) => (
+          <span key={title} className="inline-flex items-center">
+            {i > 0 && <span className="hidden sm:block mx-5" style={{ width: 1, height: 18, background: 'var(--border)' }} />}
+            <span className="inline-flex items-center gap-2 my-1.5 sm:my-0">
+              <Icon size={17} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+              <span className="text-[14px] font-bold" style={{ color: 'var(--text-secondary)' }}>{title}</span>
+            </span>
           </span>
         ))}
       </section>
@@ -193,7 +214,7 @@ export default function AuthScreen() {
 
   return (
     <div className="min-h-app flex flex-col" style={{ background: 'var(--bg-app)' }}>
-      <TopBar />
+      <TopBar onLogin={() => setMode('access')} />
 
       {mode === 'terminos' ? (
         <LegalLayout title="Términos y Condiciones" updated={LEGAL_UPDATED} onBack={() => setMode('landing')}>
