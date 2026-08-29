@@ -30,8 +30,14 @@ export default function ContactoPage() {
   const { profile, session } = useAuth()
   const toast = useToast()
 
-  const [asunto, setAsunto] = useState(ASUNTOS[0])
-  const [mensaje, setMensaje] = useState('')
+  // Si se llegó aquí desde "Reportar" en un mensaje de error, la URL trae el
+  // asunto y el mensaje ya armados con el contexto real del problema.
+  const params = new URLSearchParams(window.location.search)
+  const prefillAsunto = params.get('asunto')
+  const prefillMensaje = params.get('mensaje')
+
+  const [asunto, setAsunto] = useState(prefillAsunto && ASUNTOS.includes(prefillAsunto) ? prefillAsunto : ASUNTOS[0])
+  const [mensaje, setMensaje] = useState(prefillMensaje || '')
   const [copied, setCopied] = useState(false)
 
   const nombre = profile?.full_name || ''
