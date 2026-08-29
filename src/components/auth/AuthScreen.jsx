@@ -60,7 +60,7 @@ function Landing({ stats, onContinue }) {
             Visible en todos los tamaños (antes solo aparecía en escritorio),
             detrás y a la derecha del texto. */}
         <div className="absolute pointer-events-none" aria-hidden="true"
-          style={{ top: '7%', right: 'clamp(-170px, -28vw, -145px)', width: 'clamp(248px, 60vw, 600px)', opacity: 0.9, zIndex: 0 }}>
+          style={{ top: '2%', right: 'clamp(-325px, -46vw, -244px)', width: 'clamp(322px, 78vw, 780px)', opacity: 0.9, zIndex: 0 }}>
           <CobaltoMark size="100%" rounded="rounded-none" />
         </div>
         {/* Puntos suaves: textura geométrica discreta, no decoración genérica */}
@@ -70,27 +70,22 @@ function Landing({ stats, onContinue }) {
                    backgroundSize: '14px 14px', opacity: 0.7, zIndex: 0 }} />
 
         <div className="md:flex-1 md:max-w-[560px] relative" style={{ zIndex: 1 }}>
-          <div className="mb-5 flex items-center gap-2 max-w-[64%] sm:max-w-none">
-            <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: 'var(--brand-red)' }} />
-            <span className="t-eyebrow font-bold" style={{ color: 'var(--brand-red)' }}>COMUNIDAD PROFESIONAL</span>
-          </div>
-
           <h1 className="text-left font-extrabold max-w-[64%] sm:max-w-none" style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 1.04 }}>
-            <span className="block" style={{ fontSize: 'clamp(30px, 8.6vw, 50px)' }}>El punto de encuentro</span>
-            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(30px, 8.6vw, 50px)' }}>
+            <span className="block" style={{ fontSize: 'clamp(39px, 11.2vw, 65px)' }}>El punto de encuentro</span>
+            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(39px, 11.2vw, 65px)' }}>
               de la industria química
             </span>
-            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(30px, 8.6vw, 50px)' }}>
+            <span className="block" style={{ color: 'var(--accent)', fontSize: 'clamp(39px, 11.2vw, 65px)' }}>
               en Colombia
             </span>
           </h1>
 
           <span className="block rounded-full mt-5" style={{ width: 46, height: 4, background: 'var(--brand-red)' }} />
 
-          <p className="mt-6 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
+          <p className="mt-6 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(17px, 4.6vw, 19.5px)' }}>
             Busca, comparte y encuentra lo que tu trabajo necesita.
           </p>
-          <p className="mt-4 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
+          <p className="mt-4 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(17px, 4.6vw, 19.5px)' }}>
             Profesionales, proveedores, recursos humanos y todas las personas
             del sector químico, en un mismo lugar.
           </p>
