@@ -60,7 +60,7 @@ function Landing({ stats, onContinue }) {
             Visible en todos los tamaños (antes solo aparecía en escritorio),
             detrás y a la derecha del texto. */}
         <div className="absolute pointer-events-none" aria-hidden="true"
-          style={{ top: '-8%', right: 'clamp(-40px, -8vw, 10px)', width: 'clamp(190px, 46vw, 460px)', opacity: 0.9, zIndex: 0 }}>
+          style={{ top: '22%', right: 'clamp(-90px, -14vw, -30px)', width: 'clamp(190px, 46vw, 460px)', opacity: 0.9, zIndex: 0 }}>
           <CobaltoMark size="100%" rounded="rounded-none" />
         </div>
         {/* Puntos suaves: textura geométrica discreta, no decoración genérica */}
@@ -88,12 +88,11 @@ function Landing({ stats, onContinue }) {
           <span className="block rounded-full mt-5" style={{ width: 46, height: 4, background: 'var(--brand-red)' }} />
 
           <p className="mt-6 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
-            Conecta con profesionales, técnicos, tecnólogos, empresas y
-            proveedores del sector químico.
+            Busca, comparte y encuentra lo que tu trabajo necesita.
           </p>
           <p className="mt-4 leading-relaxed max-w-[480px]" style={{ color: 'var(--text-secondary)', fontSize: 'clamp(15px, 4vw, 17px)' }}>
-            Comparte conocimiento, encuentra oportunidades y haz parte de una
-            comunidad donde la industria se conecta, colabora y crece.
+            Profesionales, proveedores, recursos humanos y todas las personas
+            del sector químico, en un mismo lugar.
           </p>
 
           <div className="mt-6 flex items-center gap-5 flex-wrap">
