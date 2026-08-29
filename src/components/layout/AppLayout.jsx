@@ -164,10 +164,12 @@ export default function AppLayout() {
           aria-label="Abrir menú de cuenta"
           aria-haspopup="menu"
           aria-expanded={profileMenuOpen}
-          className="flex items-center gap-1.5 max-w-[52%] rounded-pill px-2.5 py-1 -mr-1 transition-colors active:scale-[0.97]"
-          style={{ background: profileMenuOpen ? 'rgba(255,255,255,0.14)' : 'transparent' }}>
-          <span className="text-[14px] font-medium truncate" style={{ color: 'var(--text-inverse)' }}>
-            Hola, {name.split(' ')[0]} 👋
+          className="flex items-center gap-1.5 max-w-[52%] rounded-pill px-3 py-1.5 -mr-1 transition-all active:scale-[0.97]"
+          style={{ background: profileMenuOpen ? 'rgba(255,255,255,0.20)' : 'rgba(255,255,255,0.10)',
+                   border: '1px solid rgba(255,255,255,0.16)',
+                   backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
+          <span className="text-[14px] font-semibold truncate" style={{ color: 'var(--text-inverse)' }}>
+            {name.split(' ')[0]}
           </span>
           <ChevronDown size={15} strokeWidth={2.4}
             style={{ color: 'rgba(255,255,255,0.75)', flexShrink: 0,
