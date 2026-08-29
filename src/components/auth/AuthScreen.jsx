@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BadgeCheck, Lock, MessageCircle, Gift, Users, FlaskConical, Zap, Building2, MapPin, ArrowRight } from 'lucide-react'
+import { BadgeCheck, Lock, MessageCircle, Gift, ArrowRight } from 'lucide-react'
 import { getCommunityStats } from '../../api/stats'
 import LoginForm from './LoginForm'
 import Footer from '../layout/Footer'
@@ -108,24 +108,22 @@ function Landing({ stats, onContinue }) {
         </div>
       </section>
 
-      {/* ── Métricas: fila completa bajo el hero ── */}
+      {/* ── Métricas: fila completa bajo el hero, ahora sin caja ni sombra ── */}
       <section className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
         {[
-          { icon: Users,          value: stats.members,        label: 'Miembros'      },
-          { icon: FlaskConical,   value: stats.posts,          label: 'Publicaciones' },
-          { icon: Zap,            value: stats.interactions,   label: 'Interacciones' },
-          { icon: MessageCircle,  value: stats.comments,       label: 'Comentarios'   },
-          { icon: Building2,      value: stats.companies,      label: 'Empresas'      },
-          { icon: MapPin,         value: stats.cities,         label: 'Ciudades'      },
-        ].map(({ icon: Icon, value, label }) => (
-          <div key={label} className="rounded-card p-3 md:p-4 border"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
-            <Icon size={18} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-            <p className="font-extrabold leading-none mt-2 tnum"
-              style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(20px, 5.3vw, 30px)' }}>
+          { value: stats.members,        label: 'Miembros'      },
+          { value: stats.posts,          label: 'Publicaciones' },
+          { value: stats.interactions,   label: 'Interacciones' },
+          { value: stats.comments,       label: 'Comentarios'   },
+          { value: stats.companies,      label: 'Empresas'      },
+          { value: stats.cities,         label: 'Ciudades'      },
+        ].map(({ value, label }) => (
+          <div key={label} className="text-center md:text-left">
+            <p className="font-extrabold leading-none tnum"
+              style={{ letterSpacing: '-0.04em', color: 'var(--text-primary)', fontSize: 'clamp(20px, 5.3vw, 28px)' }}>
               {formatMetric(value)}
             </p>
-            <p className="text-[10px] md:text-[11px] mt-1 uppercase font-extrabold leading-tight"
+            <p className="text-[10px] md:text-[11px] mt-1.5 uppercase font-extrabold leading-tight"
               style={{ color: 'var(--text-tertiary)', letterSpacing: '0.06em' }}>
               {label}
             </p>
@@ -133,43 +131,14 @@ function Landing({ stats, onContinue }) {
         ))}
       </section>
 
-      {/* ── Ventajas ── */}
-      <section>
-        <h2 className="t-eyebrow mb-4" style={{ color: 'var(--text-tertiary)' }}>
-          ¿Por qué Red Cobalto?
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {ADVANTAGES.map(({ icon: Icon, title, sub }) => (
-            <div key={title}
-              className="rounded-card p-4 transition-all duration-[160ms] ease-premium hover:shadow-card-hover"
-              style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-soft)' }}>
-              <span className="flex items-center justify-center w-11 h-11 rounded-input mb-3"
-                style={{ background: 'var(--accent-soft)' }}>
-                <Icon size={22} strokeWidth={2} style={{ color: 'var(--accent-deep)' }} />
-              </span>
-              <p className="text-[15px] font-extrabold" style={{ color: 'var(--text-primary)' }}>{title}</p>
-              <p className="text-[13px] mt-1 leading-snug" style={{ color: 'var(--text-tertiary)' }}>{sub}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── CTA final: mismo texto y misma acción que el de arriba, solo
-           repetido como recordatorio al final de una página larga. No es un
-           segundo camino distinto — es el mismo botón. ── */}
-      <section className="py-12 px-6 text-center rounded-panel border relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, var(--accent-deep), #223B68)', borderColor: 'rgba(36,87,197,0.18)', boxShadow: 'var(--shadow-raised)' }}>
-        <div className="absolute -right-2 -top-2 opacity-[0.12]"><RedCobaltoLogo size="xl" dark markOnly /></div>
-        <h2 className="text-[20px] md:text-[26px] font-extrabold text-white max-w-[480px] mx-auto leading-snug"
-          style={{ letterSpacing: '-0.02em' }}>
-          Únete a la comunidad química de Colombia
-        </h2>
-        <button onClick={onContinue}
-          className="mt-8 inline-flex items-center justify-center gap-2 rounded-btn font-extrabold h-[52px] px-8 text-[15.5px]
-            transition-all duration-[160ms] ease-premium active:scale-[0.98]"
-          style={{ background: '#ffffff', color: 'var(--accent-deep)', boxShadow: 'var(--shadow-card)' }}>
-          Únete a la comunidad <ArrowRight size={19} strokeWidth={2.5} />
-        </button>
+      {/* ── Ventajas: línea simple, sin tarjetas ── */}
+      <section className="flex flex-wrap items-center gap-x-8 gap-y-4 justify-center md:justify-start">
+        {ADVANTAGES.map(({ icon: Icon, title }) => (
+          <span key={title} className="inline-flex items-center gap-2">
+            <Icon size={17} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+            <span className="text-[14px] font-bold" style={{ color: 'var(--text-secondary)' }}>{title}</span>
+          </span>
+        ))}
       </section>
     </div>
   )
