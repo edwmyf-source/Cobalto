@@ -63,6 +63,7 @@ export default {
         card:  'var(--r-card)',
         panel: 'var(--r-panel)',
         modal: 'var(--r-modal)',
+        pill:  'var(--r-pill)',
       },
       boxShadow: {
         card:       'var(--shadow-card)',

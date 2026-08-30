@@ -47,7 +47,7 @@ function MiniPostCard({ post, onContact, contactingId, onDeleted }) {
           </div>
           <div className="min-w-0">
             {catLabel ? (
-              <span className="inline-flex items-center px-2.5 py-1 rounded-pill text-[11px] font-bold" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
+              <span className="inline-flex items-center px-2 py-[3px] rounded-pill text-[10.5px] font-bold" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
                 {catLabel}
               </span>
             ) : (
