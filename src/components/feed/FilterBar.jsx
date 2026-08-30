@@ -65,9 +65,10 @@ export default function FilterBar({ filters, setFilters, autoFocusSearch = false
           placeholder="Buscar personas, publicaciones, comunidades..."
           aria-label="Buscar personas, publicaciones, comunidades"
           className="w-full h-11 pl-11 pr-11 rounded-card text-[14px] transition-all duration-[160ms]"
-          style={{ background: 'var(--surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)' }}
-          onFocus={e => e.currentTarget.style.boxShadow = 'var(--shadow-raised), 0 0 0 3px var(--accent-soft)'}
-          onBlur={e => e.currentTarget.style.boxShadow = 'var(--shadow-card)'}
+          style={{ background: 'var(--surface)', color: 'var(--text-primary)', border: '1px solid var(--border)',
+                   boxShadow: 'var(--shadow-card), 0 0 14px 1px rgba(36,87,197,0.12)' }}
+          onFocus={e => e.currentTarget.style.boxShadow = 'var(--shadow-raised), 0 0 0 3px var(--accent-soft), 0 0 18px 2px rgba(36,87,197,0.18)'}
+          onBlur={e => e.currentTarget.style.boxShadow = 'var(--shadow-card), 0 0 14px 1px rgba(36,87,197,0.12)'}
         />
         {filters.search && (
           <button onClick={() => set('search', '')} aria-label="Limpiar búsqueda"

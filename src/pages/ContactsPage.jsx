@@ -113,7 +113,10 @@ export default function ContactsPage() {
             placeholder="Buscar por nombre o ciudad"
             aria-label="Buscar personas"
             className="w-full h-10 pl-9 pr-3 rounded-input t-body-sm transition-all duration-[160ms]"
-            style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)' }}
+            style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)',
+                     boxShadow: '0 0 14px 1px rgba(36,87,197,0.12)' }}
+            onFocus={e => e.currentTarget.style.boxShadow = '0 0 0 3px var(--accent-soft), 0 0 18px 2px rgba(36,87,197,0.18)'}
+            onBlur={e => e.currentTarget.style.boxShadow = '0 0 14px 1px rgba(36,87,197,0.12)'}
           />
         </div>
       </div>
