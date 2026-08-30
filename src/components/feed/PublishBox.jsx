@@ -117,7 +117,10 @@ export default function PublishBox({ onClose, onPublished }) {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const selectedCat = CATEGORIES.find(c => c.value === form.category)
-  const valid = form.category && form.title.trim()
+  const faltaTexto = !form.title.trim()
+  const faltaCategoria = !form.category
+  const valid = !faltaTexto && !faltaCategoria
+  const pendientes = [faltaTexto, faltaCategoria].filter(Boolean).length
   const placeholder = CAT_PLACEHOLDER[form.category] || CAT_PLACEHOLDER.default
 
   useEffect(() => {
@@ -214,7 +217,10 @@ export default function PublishBox({ onClose, onPublished }) {
 
         {/* Categorías */}
         <div>
-          <p className="t-eyebrow mb-2.5" style={{ color: 'var(--text-tertiary)' }}>¿De qué trata?</p>
+          <p className="t-eyebrow mb-2.5 inline-flex items-center gap-1.5" style={{ color: 'var(--text-tertiary)' }}>
+            {faltaCategoria && form.title.trim() && <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--warning)' }} />}
+            ¿De qué trata?
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {CATEGORIES.map(c => {
               const Icon = CAT_ICONS[c.value]
@@ -232,9 +238,6 @@ export default function PublishBox({ onClose, onPublished }) {
               )
             })}
           </div>
-          {!form.category && form.title.trim() && (
-            <p className="t-caption mt-2" style={{ color: 'var(--error)' }}>Selecciona una categoría para publicar</p>
-          )}
         </div>
 
         {/* Subcategorías */}
@@ -329,7 +332,9 @@ export default function PublishBox({ onClose, onPublished }) {
             style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-raised)' }}>
             {loading
               ? <><Loader2 size={14} className="animate-spin" /> Publicando...</>
-              : <><Send size={14} /> Publicar</>}
+              : valid
+                ? <><Send size={14} /> Publicar</>
+                : `Falta ${pendientes} ${pendientes === 1 ? 'campo' : 'campos'}`}
           </button>
         </div>
       </form>
