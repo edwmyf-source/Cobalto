@@ -362,7 +362,6 @@ export default function FeedPage() {
         <div className="flex-1 min-w-0 space-y-4">
           <div className="hidden md:flex items-center justify-between px-1">
             <div>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'var(--text-tertiary)' }}>Tu comunidad</p>
               <p className="text-[24px] font-semibold tracking-[-0.02em]" style={{ color: 'var(--text-primary)' }}>Inicio</p>
             </div>
             <button onClick={() => setPublishOpen(true)} className="h-10 px-4 rounded-btn text-[13px] font-semibold text-white transition-all duration-[160ms] hover:-translate-y-px active:translate-y-0" style={{ background: 'var(--accent)', boxShadow: 'var(--shadow-raised)' }}>
@@ -430,7 +429,6 @@ export default function FeedPage() {
       <div className="md:hidden max-w-2xl mx-auto px-4 pt-3">
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'var(--text-tertiary)' }}>Tu comunidad</p>
             <p className="text-[22px] font-semibold tracking-[-0.02em]" style={{ color: 'var(--text-primary)' }}>Inicio</p>
           </div>
           <button onClick={() => setPublishOpen(true)} className="h-9 px-3 rounded-btn text-[12px] font-semibold text-white" style={{ background: 'var(--accent)' }}>Publicar</button>

@@ -256,7 +256,7 @@ export default function UserProfilePage() {
       <section className="overflow-hidden rounded-panel bg-white mb-7"
         style={{ border: '1px solid rgba(36,87,197,0.20)',
                  boxShadow: '0 0 11px 2px rgba(36,87,197,0.22), 0 0 28px 7px rgba(36,87,197,0.13), 0 0 50px 13px rgba(36,87,197,0.06), var(--shadow-raised)' }}>
-        <div className="relative h-44 sm:h-52">
+        <div className="relative h-[140px] sm:h-[166px]">
           {coverUrl ? (
             <img src={coverUrl} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           ) : (
@@ -288,8 +288,8 @@ export default function UserProfilePage() {
           )}
         </div>
 
-        <div className="px-5 sm:px-7 pb-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between -mt-12 relative">
+        <div className="px-5 sm:px-7 pb-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between -mt-11 relative">
             <div className="relative w-fit">
               <div
                 className="w-[104px] h-[104px] rounded-[24px] overflow-hidden border-4 border-white bg-white"
@@ -319,46 +319,50 @@ export default function UserProfilePage() {
               )}
             </div>
 
-            <div className="flex items-center gap-2 pb-1">
-              {isOwnProfile ? (
-                <button onClick={() => navigate('/profile')}
-                  className="inline-flex items-center gap-2 px-4 h-9 rounded-btn text-[13px] font-bold transition-all active:scale-[0.98]"
-                  style={{ border: '1px solid var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}>
-                  <Settings size={15} /> Editar perfil
+            {!isOwnProfile && (
+              <div className="flex items-center gap-2 pb-1">
+                <button onClick={handleMessage} disabled={messagingUser}
+                  className="inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all active:scale-[0.98] disabled:opacity-60"
+                  style={{ borderColor: 'var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}
+                  aria-label="Enviar mensaje">
+                  {messagingUser ? <Spinner size={15} /> : <Send size={17} />}
                 </button>
-              ) : (
-                <>
-                  <button onClick={handleMessage} disabled={messagingUser}
-                    className="inline-flex items-center justify-center w-11 h-11 rounded-full border transition-all active:scale-[0.98] disabled:opacity-60"
-                    style={{ borderColor: 'var(--border)', color: 'var(--text-primary)', background: 'var(--surface)' }}
-                    aria-label="Enviar mensaje">
-                    {messagingUser ? <Spinner size={15} /> : <Send size={17} />}
-                  </button>
-                  <button onClick={handleFollow} disabled={loadingFollow}
-                    className="inline-flex items-center gap-2 px-5 h-11 rounded-btn text-[13px] font-bold transition-all disabled:opacity-60 active:scale-[0.98]"
-                    style={isFollowing
-                      ? { border: '1px solid var(--accent)', color: 'var(--accent)', background: 'var(--surface)' }
-                      : { background: 'var(--accent)', color: '#fff', boxShadow: '0 8px 20px rgba(36,87,197,0.20)' }}>
-                    {loadingFollow ? <Spinner size={15} /> : isFollowing ? <><UserCheck size={16} /> Siguiendo</> : <><UserPlus size={16} /> Seguir</>}
-                  </button>
-                </>
+                <button onClick={handleFollow} disabled={loadingFollow}
+                  className="inline-flex items-center gap-2 px-5 h-11 rounded-btn text-[13px] font-bold transition-all disabled:opacity-60 active:scale-[0.98]"
+                  style={isFollowing
+                    ? { border: '1px solid var(--accent)', color: 'var(--accent)', background: 'var(--surface)' }
+                    : { background: 'var(--accent)', color: '#fff', boxShadow: '0 8px 20px rgba(36,87,197,0.20)' }}>
+                  {loadingFollow ? <Spinner size={15} /> : isFollowing ? <><UserCheck size={16} /> Siguiendo</> : <><UserPlus size={16} /> Seguir</>}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-2.5 flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h1 className="font-semibold" style={{ color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.6vw, 20px)', letterSpacing: '-0.015em', lineHeight: 1.25 }}>{displayName}</h1>
+              {profile.headline && (
+                <p className="text-[13px] mt-1" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
+              )}
+              {profile.city && (
+                <span className="inline-flex items-center gap-1 text-[12px] font-semibold mt-1.5" style={{ color: 'var(--text-tertiary)' }}>
+                  <MapPin size={12} /> {profile.city}
+                </span>
               )}
             </div>
-          </div>
 
-          <div className="mt-3">
-            <h1 className="font-semibold" style={{ color: 'var(--text-primary)', fontSize: 'clamp(17px, 4.6vw, 20px)', letterSpacing: '-0.015em', lineHeight: 1.25 }}>{displayName}</h1>
-            {profile.headline && (
-              <p className="text-[13px] mt-1" style={{ color: 'var(--text-primary)' }}>{profile.headline}</p>
-            )}
-            {profile.city && (
-              <span className="inline-flex items-center gap-1 text-[12px] font-semibold mt-1.5" style={{ color: 'var(--text-tertiary)' }}>
-                <MapPin size={12} /> {profile.city}
-              </span>
+            {/* Editar perfil: icono de engranaje junto al nombre, no una fila
+                 completa aparte — ahorra el alto que antes ocupaba de sobra. */}
+            {isOwnProfile && (
+              <button onClick={() => navigate('/profile')} aria-label="Editar perfil"
+                className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-95 mt-0.5"
+                style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
+                <Settings size={16} />
+              </button>
             )}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="grid grid-cols-3 gap-2 mt-2.5">
             {[
               { value: posts.length, label: 'Publicaciones' },
               { value: counts.followers, label: 'Seguidores' },
