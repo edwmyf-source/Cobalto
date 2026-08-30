@@ -200,7 +200,7 @@ export default function ProfilePage() {
           <FormRow label="Sobre ti" htmlFor="profile-headline" pendiente={faltaHeadline}>
             <input id="profile-headline" value={form.headline} maxLength={120}
               onChange={e => set('headline', e.target.value)}
-              className={fieldCls} placeholder="Ej: Química farmacéutica" />
+              className={fieldCls} placeholder="¿Dónde trabajas? Profesión, habilidades..." />
           </FormRow>
 
           <FormRow label="Email" htmlFor="profile-email">
