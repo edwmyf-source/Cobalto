@@ -118,66 +118,66 @@ export default function ContactsPage() {
         </div>
       </div>
 
-      {/* Lista — mismas filas que la bandeja de Mensajes */}
-      <div className="flex-1 overflow-y-auto px-3 pb-4">
+      {/* Cuadrícula — cada persona como tarjeta, avatar centrado arriba,
+           acciones abajo. Se siente más interactivo que una lista plana. */}
+      <div className="flex-1 overflow-y-auto px-4 pb-4">
         {loading ? null : users.length === 0 ? (
           <EmptyState icon={Users}
             title={query ? 'Sin resultados' : 'Sin personas aún'}
             description={query ? 'Prueba con otro nombre o ciudad.' : 'Todavía no hay más profesionales para mostrar.'} />
         ) : (
-          users.map(user => {
-            const isContacting = contactingId === user.id
-            const isFollowing = followingIds.has(user.id)
-            const isFollowBusy = followBusyId === user.id
-            return (
-              <button key={user.id} onClick={() => navigate(`/u/${user.id}`)}
-                className="w-full text-left mb-2 rounded-card transition-all duration-[160ms] ease-premium active:scale-[0.99]"
-                style={{ background: 'var(--surface)', border: '1px solid transparent' }}>
-                <div className="flex items-center gap-3 px-3 py-3">
-                  <div className="relative flex-shrink-0">
-                    <UserAvatar seed={user.id} name={publicName(user)} avatarUrl={user.avatar_url} size={40} />
-                  </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {users.map(user => {
+              const isContacting = contactingId === user.id
+              const isFollowing = followingIds.has(user.id)
+              const isFollowBusy = followBusyId === user.id
+              const subtitle = user.city || user.headline || null
+              return (
+                <div key={user.id}
+                  className="rounded-card p-4 flex flex-col items-center text-center transition-all duration-[160ms] ease-premium hover:shadow-card-hover"
+                  style={{ background: 'var(--surface)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-card)' }}>
 
-                  <div className="flex-1 min-w-0">
-                    <span className="t-body-sm truncate block" style={{ color: 'var(--text-primary)', fontWeight: 500 }}>
+                  <button onClick={() => navigate(`/u/${user.id}`)} className="flex flex-col items-center w-full"
+                    aria-label={`Ver perfil de ${publicName(user)}`}>
+                    <UserAvatar seed={user.id} name={publicName(user)} avatarUrl={user.avatar_url} size={64} />
+                    <span className="t-body-sm font-semibold truncate w-full mt-3" style={{ color: 'var(--text-primary)' }}>
                       {publicName(user)}
                     </span>
-                    {user.city ? (
-                      <span className="t-caption truncate flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
-                        <MapPin size={11} /> {user.city}
+                    {subtitle ? (
+                      <span className="t-caption truncate w-full mt-0.5 flex items-center justify-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
+                        {user.city && <MapPin size={11} className="flex-shrink-0" />} {subtitle}
                       </span>
-                    ) : user.headline ? (
-                      <span className="t-caption truncate block" style={{ color: 'var(--text-tertiary)' }}>
-                        {user.headline}
-                      </span>
-                    ) : null}
-                  </div>
+                    ) : (
+                      <span className="t-caption mt-0.5" style={{ color: 'var(--text-tertiary)', opacity: 0.6 }}>&nbsp;</span>
+                    )}
+                  </button>
 
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <div className="flex items-center gap-2 w-full mt-3.5">
                     <button
                       onClick={(e) => handleToggleFollow(e, user)}
                       disabled={isFollowBusy}
                       aria-label={isFollowing ? `Dejar de seguir a ${publicName(user)}` : `Seguir a ${publicName(user)}`}
                       aria-pressed={isFollowing}
-                      className="w-9 h-9 rounded-pill flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+                      className="flex-1 h-9 rounded-pill flex items-center justify-center gap-1.5 transition-all active:scale-95 disabled:opacity-50"
                       style={isFollowing
                         ? { background: 'var(--accent-soft)', color: 'var(--accent)' }
                         : { background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
-                      {isFollowBusy ? <Spinner size={14} /> : isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
+                      {isFollowBusy ? <Spinner size={13} /> : isFollowing ? <UserCheck size={14} /> : <UserPlus size={14} />}
+                      <span className="text-[11.5px] font-bold">{isFollowing ? 'Sigues' : 'Seguir'}</span>
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); handleStartChat(user) }}
+                      onClick={() => handleStartChat(user)}
                       disabled={isContacting}
                       aria-label={`Enviar mensaje a ${publicName(user)}`}
-                      className="w-9 h-9 rounded-pill flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+                      className="w-9 h-9 rounded-pill flex items-center justify-center flex-shrink-0 transition-all active:scale-90 disabled:opacity-50"
                       style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)' }}>
                       {isContacting ? <Spinner size={14} /> : <MessageSquareText size={16} />}
                     </button>
                   </div>
                 </div>
-              </button>
-            )
-          })
+              )
+            })}
+          </div>
         )}
       </div>
     </div>
