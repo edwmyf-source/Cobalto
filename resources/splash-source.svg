@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2732" height="2732" viewBox="0 0 2732 2732">
+  <rect width="2732" height="2732" fill="#162A4A"/>
+  <!-- El isotipo centrado, mismo tamaño relativo que en la app instalada -->
+  <g transform="translate(1366,1366) scale(11) translate(-20,-20)">
+    <path d="M33.8 14.7A15.8 15.8 0 0 0 20 4.8a15.8 15.8 0 0 0-13.8 7.9"
+      stroke="#E63946" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M6.2 25.3A15.8 15.8 0 0 0 20 35.2a15.8 15.8 0 0 0 13.8-7.9"
+      stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
