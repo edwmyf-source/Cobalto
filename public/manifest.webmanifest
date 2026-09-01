@@ -1,4 +1,23 @@
 {
+  "name": "RedCobalto",
+  "short_name": "RedCobalto",
+  "description": "Punto de encuentro de la industria química en Colombia",
+  "start_url": "/feed",
+  "display": "standalone",
+  "background_color": "#162A4A",
+  "theme_color": "#162A4A",
+  "orientation": "portrait",
+
+  "share_target": {
+    "action": "/compartir",
+    "method": "GET",
+    "params": {
+      "title": "titulo",
+      "text": "texto",
+      "url": "enlace"
+    }
+  },
+
   "icons": [
     {
       "src": "../icons/icon-48.webp",

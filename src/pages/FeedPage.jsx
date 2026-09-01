@@ -59,10 +59,19 @@ export default function FeedPage() {
   const location    = useLocation()
 
   const [focusSearch, setFocusSearch] = useState(false)
+  const [sharedText, setSharedText] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     if (params.get('publish') === '1') {
+      // Si viene de "Compartir" desde otra app (LinkedIn, WhatsApp, etc.),
+      // el texto y el enlace ya vienen listos para poner en el cuadro de
+      // publicar — la persona solo revisa y confirma, nunca se publica sola.
+      const titulo = params.get('t') || ''
+      const texto = params.get('x') || ''
+      const enlace = params.get('u') || ''
+      const combinado = [titulo, texto, enlace].filter(Boolean).join('\n\n')
+      if (combinado) setSharedText(combinado)
       setPublishOpen(true)
       navigate('/feed', { replace: true })
     }
@@ -494,7 +503,7 @@ export default function FeedPage() {
             overscrollBehavior: 'contain' }}
           onClick={() => setPublishOpen(false)}>
           <div className="w-full max-w-xl" onClick={e => e.stopPropagation()}>
-            <PublishBox onClose={() => setPublishOpen(false)} onPublished={handlePublished} />
+            <PublishBox onClose={() => setPublishOpen(false)} onPublished={handlePublished} initialText={sharedText} />
           </div>
         </div>
       )}

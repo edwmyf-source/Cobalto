@@ -102,14 +102,14 @@ const fileKind = (file) => {
   return 'other'
 }
 
-export default function PublishBox({ onClose, onPublished }) {
+export default function PublishBox({ onClose, onPublished, initialText = '' }) {
   const { session, profile: myProfile } = useAuth()
   const toast = useToast()
   const imageRef = useRef(null)
   const pdfRef   = useRef(null)
   const submitBtnRef = useRef(null)
 
-  const [form, setForm] = useState({ category: '', subcategory: '', title: '', event_date: '' })
+  const [form, setForm] = useState({ category: '', subcategory: '', title: initialText, event_date: '' })
   const [files, setFiles] = useState([])   // [{ file, preview, kind }]
   const [loading, setLoading] = useState(false)
   const [location, setLocation] = useState(null)

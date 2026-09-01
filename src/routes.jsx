@@ -13,6 +13,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'))
 const ContactoPage = lazy(() => import('./pages/ContactoPage'))
+const CompartirPage = lazy(() => import('./pages/CompartirPage'))
 const TerminosPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.TerminosPage })))
 const PrivacidadPage = lazy(() => import('./pages/LegalPage').then(m => ({ default: m.PrivacidadPage })))
 const ContactsPage = lazy(() => import('./pages/ContactsPage'))
@@ -53,6 +54,7 @@ export const routes = [
       { path: 'u/:userId', element: <Page><UserProfilePage /></Page> },
       { path: 'contacts', element: <Page><ContactsPage /></Page> },
       { path: 'contacto', element: <Page><ContactoPage /></Page> },
+      { path: 'compartir', element: <Page><CompartirPage /></Page> },
       { path: 'terminos', element: <Page><TerminosPage /></Page> },
       { path: 'privacidad', element: <Page><PrivacidadPage /></Page> },
       {
