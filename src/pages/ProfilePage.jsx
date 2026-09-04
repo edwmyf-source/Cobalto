@@ -9,6 +9,7 @@ import { safeErrorMessage } from '../lib/errors'
 import { generateIdentityNumber } from '../lib/helpers'
 import UserAvatar from '../components/shared/UserAvatar'
 import Spinner from '../components/shared/Spinner'
+import { useToast } from '../components/shared/Toast'
 
 // Campo "invisible": sin borde ni caja propia — el contorno lo da la fila
 // que lo contiene (FormRow). Es el patrón de listas de Ajustes de iOS: el
@@ -43,6 +44,7 @@ function FormRow({ label, htmlFor, hint, isLast, pendiente, children }) {
 export default function ProfilePage() {
   const { session, profile, setProfile } = useAuth()
   const navigate = useNavigate()
+  const toast = useToast()
   const userId = session?.user?.id || ''
   const rawEmail = session?.user?.email || ''
   // Ver nota en ProfileSetup.jsx: el registro exprés por celular usa un correo
@@ -133,6 +135,7 @@ export default function ProfilePage() {
       })
       setProfile(p)
       setSaved(true)
+      toast('Cambios guardados con éxito', 'success')
     } catch (err) { setError(safeErrorMessage(err)) }
     setLoading(false)
   }
@@ -225,7 +228,14 @@ export default function ProfilePage() {
         </div>
 
         {error && <p role="alert" className="t-caption font-semibold px-1" style={{ color: 'var(--error)' }}>{error}</p>}
-        {saved && <p className="t-caption font-semibold px-1" style={{ color: 'var(--success)' }}>Perfil guardado.</p>}
+        {saved && (
+          <div className="flex items-center gap-2.5 px-4 py-3 rounded-card" style={{ background: 'var(--success-bg)' }}>
+            <span className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--success)' }}>
+              <Check size={14} className="text-white" strokeWidth={3} />
+            </span>
+            <p className="t-body-sm font-bold" style={{ color: 'var(--success)' }}>Cambios guardados con éxito</p>
+          </div>
+        )}
 
         <button type="submit" disabled={!valid || loading}
           className="w-full flex items-center justify-center gap-2 text-white t-body-sm font-semibold h-12 rounded-full disabled:opacity-40 transition-all active:scale-[0.98]"
