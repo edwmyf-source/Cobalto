@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, ChevronDown, Mail, Home, Users, Search } from 'lucide-react'
+import { LayoutList, MessageSquare, Bell, Calculator, Plus, LogOut, User, HelpCircle, Lock, ChevronRight, Mail, Home, Users, Search } from 'lucide-react'
 import Topbar from './Topbar'
 import { useAuth } from '../../contexts/AuthContext'
 import { isAdmin } from '../../lib/constants'
@@ -12,6 +12,7 @@ import { publicName } from '../../lib/helpers'
 import useHideOnScroll from '../../lib/useHideOnScroll'
 import { hoverProps } from '../../lib/hover'
 import RedCobaltoLogo from '../shared/RedCobaltoLogo'
+import UserAvatar from '../shared/UserAvatar'
 
 export default function AppLayout() {
   const { session, profile } = useAuth()
@@ -158,24 +159,35 @@ export default function AppLayout() {
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4"
         style={{ background: 'linear-gradient(180deg, var(--accent-deep) 0%, #10213A 100%)', height: '56px', boxShadow: '0 1px 0 rgba(255,255,255,.08)' }}>
         <RedCobaltoLogo size="md" dark />
-        <button
-          ref={greetBtnRef}
-          onClick={() => { setMenuAnchor('top'); setProfileMenuOpen(o => !(o && menuAnchor === 'top')) }}
-          aria-label="Abrir menú de cuenta"
-          aria-haspopup="menu"
-          aria-expanded={profileMenuOpen}
-          className="flex items-center gap-1.5 max-w-[52%] rounded-pill px-3 py-1.5 -mr-1 transition-all active:scale-[0.97]"
-          style={{ background: profileMenuOpen ? 'rgba(255,255,255,0.20)' : 'rgba(255,255,255,0.10)',
-                   border: '1px solid rgba(255,255,255,0.16)',
-                   backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
-          <span className="text-[14px] font-semibold truncate" style={{ color: 'var(--text-inverse)' }}>
-            {name.split(' ')[0]}
-          </span>
-          <ChevronDown size={15} strokeWidth={2.4}
-            style={{ color: 'rgba(255,255,255,0.75)', flexShrink: 0,
-                     transform: profileMenuOpen && menuAnchor === 'top' ? 'rotate(180deg)' : 'none',
-                     transition: 'transform 160ms ease' }} />
-        </button>
+
+        <div className="flex items-center gap-3">
+          {/* Campana de notificaciones, con el numerito de pendientes */}
+          <button onClick={() => navigate('/notifications')}
+            aria-label={unreadCount > 0 ? `Notificaciones, ${unreadCount} sin leer` : 'Notificaciones'}
+            className="relative w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90"
+            style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.16)' }}>
+            <Bell size={17} style={{ color: 'var(--text-inverse)' }} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 rounded-full flex items-center justify-center text-[9.5px] font-extrabold text-white tnum"
+                style={{ background: 'var(--brand-red)', border: '1.5px solid var(--accent-deep)' }}>
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </button>
+
+          {/* Foto de perfil: entra al menu de cuenta, mas grande que antes */}
+          <button
+            ref={greetBtnRef}
+            onClick={() => { setMenuAnchor('top'); setProfileMenuOpen(o => !(o && menuAnchor === 'top')) }}
+            aria-label="Abrir menú de cuenta"
+            aria-haspopup="menu"
+            aria-expanded={profileMenuOpen}
+            className="rounded-full transition-all active:scale-95 -mr-1"
+            style={{ padding: 2, background: profileMenuOpen ? 'rgba(255,255,255,0.20)' : 'transparent',
+                     border: profileMenuOpen ? '1px solid rgba(255,255,255,0.3)' : '1px solid transparent' }}>
+            <UserAvatar seed={session?.user?.id} name={name} avatarUrl={profile?.avatar_url} size={38} />
+          </button>
+        </div>
       </div>
 
       {/* Menú desplegado hacia ABAJO, justo bajo la barra superior */}
